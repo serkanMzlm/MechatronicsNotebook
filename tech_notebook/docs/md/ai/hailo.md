@@ -25,11 +25,11 @@ Tasarruf: 10-15× daha hızlı, 60× daha az güç tüketimi
 
 ### Hailo Ürün Ailesi
 
-| Çip | TOPS | Güç | Tipik Kullanım |
-|-----|:----:|:---:|----------------|
-| Hailo-8L | 13 TOPS | ~1.5W | Raspberry Pi AI HAT+ |
-| Hailo-8  | 26 TOPS | ~2.5W | Genel kenar AI |
-| Hailo-10H | 40 TOPS (INT4) | ~2.5W | LLM, üretken AI |
+| Çip       |      TOPS      |  Güç  | Tipik Kullanım       |
+| --------- | :------------: | :---: | -------------------- |
+| Hailo-8L  |    13 TOPS     | ~1.5W | Raspberry Pi AI HAT+ |
+| Hailo-8   |    26 TOPS     | ~2.5W | Genel kenar AI       |
+| Hailo-10H | 40 TOPS (INT4) | ~2.5W | LLM, üretken AI      |
 
 **TOPS = Tera Operations Per Second** — saniyede yapılabilen işlem sayısı (çarpma+toplama).
 
@@ -464,13 +464,13 @@ gst-launch-1.0 \
 
 ### GStreamer Elementleri
 
-| Element | Ne Yapar |
-|---------|---------|
-| `hailonet` | Görüntüyü Hailo'ya gönderir, çıkarım yaptırır |
-| `hailofilter` | Post-processing: NMS, sınıf eşleştirme |
-| `hailooverlay` | Tespit kutularını görüntüye çizer |
-| `hailotracker` | Nesne takibi ekler (ByteTrack) |
-| `fpsdisplaysink` | FPS göstergeli ekran çıkışı |
+| Element          | Ne Yapar                                      |
+| ---------------- | --------------------------------------------- |
+| `hailonet`       | Görüntüyü Hailo'ya gönderir, çıkarım yaptırır |
+| `hailofilter`    | Post-processing: NMS, sınıf eşleştirme        |
+| `hailooverlay`   | Tespit kutularını görüntüye çizer             |
+| `hailotracker`   | Nesne takibi ekler (ByteTrack)                |
+| `fpsdisplaysink` | FPS göstergeli ekran çıkışı                   |
 
 ---
 

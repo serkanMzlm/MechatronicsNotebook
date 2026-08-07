@@ -9,28 +9,28 @@
 
 ### Kapsam (Scope)
 
-| Kapsam | Açıklama |
-|--------|---------|
-| **File Scope (Global)** | Tüm dosya genelinde görünürdür |
+| Kapsam                  | Açıklama                                            |
+| ----------------------- | --------------------------------------------------- |
+| **File Scope (Global)** | Tüm dosya genelinde görünürdür                      |
 | **Block Scope (Local)** | Yalnızca tanımlandığı `{ }` bloğu içinde geçerlidir |
 
 ### Tür Dönüşümü (Type Conversion)
 
-| Tür | Açıklama | Örnek |
-|-----|---------|-------|
-| **Implicit (Örtük)** | Derleyicinin otomatik dönüştürmesi | `int x = 3.14;` → `x = 3` |
-| **Explicit (Açık / Cast)** | Geliştiricinin manuel dönüştürmesi | `int x = (int)y;` |
+| Tür                        | Açıklama                           | Örnek                     |
+| -------------------------- | ---------------------------------- | ------------------------- |
+| **Implicit (Örtük)**       | Derleyicinin otomatik dönüştürmesi | `int x = 3.14;` → `x = 3` |
+| **Explicit (Açık / Cast)** | Geliştiricinin manuel dönüştürmesi | `int x = (int)y;`         |
 
 ### Depolama Sınıfları
 
-| Anahtar Kelime | Yaşam Süresi | Kapsam | Açıklama |
-|----------------|-------------|--------|---------|
-| `auto` | Block | Local | Varsayılan yerel değişken sınıfı; artık kullanılmaz |
-| `register` | Block | Local | CPU register'ında tutulmasını önerir; adresi alınamaz (`&`) |
-| `static` (local) | Program | Local | Fonksiyon bittikten sonra değerini korur; Data Segment'te tutulur |
-| `static` (global) | Program | File | Değişkeni/fonksiyonu yalnızca o `.c` dosyasına özel yapar |
-| `extern` | Program | Global | Değişkenin/fonksiyonun başka bir dosyada tanımlı olduğunu bildirir |
-| `volatile` | Block | Local | Derleyici optimizasyonunu engeller; doğrudan bellekten okur |
+| Anahtar Kelime    | Yaşam Süresi | Kapsam | Açıklama                                                           |
+| ----------------- | ------------ | ------ | ------------------------------------------------------------------ |
+| `auto`            | Block        | Local  | Varsayılan yerel değişken sınıfı; artık kullanılmaz                |
+| `register`        | Block        | Local  | CPU register'ında tutulmasını önerir; adresi alınamaz (`&`)        |
+| `static` (local)  | Program      | Local  | Fonksiyon bittikten sonra değerini korur; Data Segment'te tutulur  |
+| `static` (global) | Program      | File   | Değişkeni/fonksiyonu yalnızca o `.c` dosyasına özel yapar          |
+| `extern`          | Program      | Global | Değişkenin/fonksiyonun başka bir dosyada tanımlı olduğunu bildirir |
+| `volatile`        | Block        | Local  | Derleyici optimizasyonunu engeller; doğrudan bellekten okur        |
 
 !!! tip "static — Global Seviye"
     Bir global değişken veya fonksiyonun başına `static` koyulursa, o sembol yalnızca tanımlandığı `.c` dosyasına özel (private) hale gelir. Başka bir dosya onu `extern` ile bile çağıramaz. İsim çakışmalarını önlemek için etkili bir yöntemdir.
@@ -40,11 +40,11 @@
 
 ### Temel Operatörler
 
-| Operatör | Açıklama |
-|----------|---------|
-| `sizeof` | Veri tipi veya değişkenin bellekte kapladığı boyutu **byte** cinsinden döndürür. Fonksiyon değil, derleme zamanı operatörüdür (`sizeof(a++)` ifadesinde `a++` çalıştırılmaz) |
-| `const` | Verinin değerini sabitler; yanlışlıkla değiştirilmeye karşı koruma sağlar |
-| `typedef` | Mevcut bir veri tipine takma isim (alias) verir; gerçek bir C deyimidir, tip güvenliği sağlar |
+| Operatör  | Açıklama                                                                                                                                                                     |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sizeof`  | Veri tipi veya değişkenin bellekte kapladığı boyutu **byte** cinsinden döndürür. Fonksiyon değil, derleme zamanı operatörüdür (`sizeof(a++)` ifadesinde `a++` çalıştırılmaz) |
+| `const`   | Verinin değerini sabitler; yanlışlıkla değiştirilmeye karşı koruma sağlar                                                                                                    |
+| `typedef` | Mevcut bir veri tipine takma isim (alias) verir; gerçek bir C deyimidir, tip güvenliği sağlar                                                                                |
 
 !!! example "#define vs typedef"
     ```c
@@ -57,23 +57,23 @@
 
 ### Faydalı String/Bellek Fonksiyonları
 
-| Fonksiyon | Açıklama |
-|-----------|---------|
-| `sprintf(buf, fmt, ...)` | Formatlanmış veriyi ekrana değil, `char` dizisine yazar |
-| `sscanf(str, fmt, ...)` | Karakter dizisini belirtilen formatla analiz edip veri çıkarır |
+| Fonksiyon                | Açıklama                                                       |
+| ------------------------ | -------------------------------------------------------------- |
+| `sprintf(buf, fmt, ...)` | Formatlanmış veriyi ekrana değil, `char` dizisine yazar        |
+| `sscanf(str, fmt, ...)`  | Karakter dizisini belirtilen formatla analiz edip veri çıkarır |
 
 ### Dosya Modu (Text vs Binary)
 
-| Mod | Flagler | Açıklama |
-|-----|---------|---------|
-| **Text** | `"r"`, `"w"` | Satır sonu karakterleri işletim sistemine göre otomatik dönüştürülür |
-| **Binary** | `"rb"`, `"wb"` | Diskteki byte'lara hiç dokunulmaz; gömülü sistemlerde tercih edilir |
+| Mod        | Flagler        | Açıklama                                                             |
+| ---------- | -------------- | -------------------------------------------------------------------- |
+| **Text**   | `"r"`, `"w"`   | Satır sonu karakterleri işletim sistemine göre otomatik dönüştürülür |
+| **Binary** | `"rb"`, `"wb"` | Diskteki byte'lara hiç dokunulmaz; gömülü sistemlerde tercih edilir  |
 
-| fseek Sabiti | Açıklama |
-|-------------|---------|
-| `SEEK_SET` | Dosyanın en başından `offset` kadar ilerler |
-| `SEEK_CUR` | İmlecin bulunduğu yerden `offset` kadar ilerler |
-| `SEEK_END` | Dosyanın sonundan geriye/ileriye gider |
+| fseek Sabiti | Açıklama                                        |
+| ------------ | ----------------------------------------------- |
+| `SEEK_SET`   | Dosyanın en başından `offset` kadar ilerler     |
+| `SEEK_CUR`   | İmlecin bulunduğu yerden `offset` kadar ilerler |
+| `SEEK_END`   | Dosyanın sonundan geriye/ileriye gider          |
 
 ---
 
@@ -95,11 +95,11 @@ C dilinde koşul yapıları: `if-else`, `switch-case`, `? :` (ternary), `goto`
 
 C dilinde döngü yapıları: `for`, `while`, `do-while`
 
-| Deyim | Etki |
-|-------|------|
-| `break` | Döngüyü sonlandırır |
+| Deyim      | Etki                         |
+| ---------- | ---------------------------- |
+| `break`    | Döngüyü sonlandırır          |
 | `continue` | Bir sonraki iterasyona geçer |
-| `return` | Fonksiyondan çıkar |
+| `return`   | Fonksiyondan çıkar           |
 
 ```c
 if (printf("Hello World")) {}  // ";" kullanılmadan çıktı oluşturur (bir kez)
@@ -127,24 +127,24 @@ while (printf("Hello World"))  // ";" kullanılmadan çıktı oluşturur (sonsuz
 
 ### Temel Tipler
 
-| Tip | Boyut | Açıklama |
-|-----|-------|---------|
-| `char` | 1 byte | Karakter veya küçük tam sayı |
-| `int` | 2 veya 4 byte | Tam sayı (mimariye bağlı) |
-| `float` | 4 byte | Tek hassasiyetli ondalık |
-| `double` | 8 byte | Çift hassasiyetli ondalık |
-| `void` | — | Tip yok; fonksiyon dönüş tipi veya generic pointer için |
-| `enum` | `int` boyutu | Numaralandırma; varsayılan olarak `0`'dan başlar |
+| Tip      | Boyut         | Açıklama                                                |
+| -------- | ------------- | ------------------------------------------------------- |
+| `char`   | 1 byte        | Karakter veya küçük tam sayı                            |
+| `int`    | 2 veya 4 byte | Tam sayı (mimariye bağlı)                               |
+| `float`  | 4 byte        | Tek hassasiyetli ondalık                                |
+| `double` | 8 byte        | Çift hassasiyetli ondalık                               |
+| `void`   | —             | Tip yok; fonksiyon dönüş tipi veya generic pointer için |
+| `enum`   | `int` boyutu  | Numaralandırma; varsayılan olarak `0`'dan başlar        |
 
 !!! note "Sabit Boyutlu Tipler"
     Veri boyutları derleyici ve mimariye göre değişkendir. Pointer'lar **32-bit** sistemlerde 4 byte, **64-bit** sistemlerde 8 byte kaplar. Sabit boyut için `<stdint.h>` kütüphanesi (`int8_t`, `uint8_t`, `uint32_t` vb.) kullanılmalıdır.
 
 ### struct ve union
 
-| Yapı | Bellek | Açıklama |
-|------|--------|---------|
-| `struct` | Üyelerin toplamı (+ padding) | Her üye kendi bellek alanına sahiptir |
-| `union` | En büyük üye kadar | Tüm üyeler aynı bellek alanını paylaşır |
+| Yapı     | Bellek                       | Açıklama                                |
+| -------- | ---------------------------- | --------------------------------------- |
+| `struct` | Üyelerin toplamı (+ padding) | Her üye kendi bellek alanına sahiptir   |
+| `union`  | En büyük üye kadar           | Tüm üyeler aynı bellek alanını paylaşır |
 
 !!! tip "__attribute__((packed))"
     `__attribute__((packed))` hizalama boşluklarını (padding) engelleyerek yapının bellekte tam ihtiyaç duyduğu boyutta yer kaplamasını sağlar. Gömülü sistemlerde donanım register haritalarına doğrudan map etmek için kullanılır.
@@ -227,18 +227,18 @@ struct AracKontrol {
 
 Birden fazla byte kaplayan bir verinin bellekte hangi byte sırasıyla yazılacağını belirleyen mimari kuraldır.
 
-| Terim | Açıklama |
-|-------|---------|
-| **MSB** (Most Significant Byte) | En yüksek değeri taşıyan byte |
-| **LSB** (Least Significant Byte) | En düşük değeri taşıyan byte |
+| Terim                            | Açıklama                      |
+| -------------------------------- | ----------------------------- |
+| **MSB** (Most Significant Byte)  | En yüksek değeri taşıyan byte |
+| **LSB** (Least Significant Byte) | En düşük değeri taşıyan byte  |
 
 !!! example "4 byte'lık `int sayi = 0x12345678;`"
-    | Adres | Little-Endian | Big-Endian |
-    |-------|:-------------:|:----------:|
-    | `0x00` | `78` (LSB) | `12` (MSB) |
-    | `0x01` | `56` | `34` |
-    | `0x02` | `34` | `56` |
-    | `0x03` | `12` (MSB) | `78` (LSB) |
+    | Adres  | Little-Endian | Big-Endian |
+    | ------ | :-----------: | :--------: |
+    | `0x00` |   `78` (LSB)  | `12` (MSB) |
+    | `0x01` |      `56`     |    `34`    |
+    | `0x02` |      `34`     |    `56`    |
+    | `0x03` |   `12` (MSB)  | `78` (LSB) |
 
 ```c
 // Sistemin Endianness'ini tespit etme
@@ -270,10 +270,10 @@ Bilgisayarlar negatif sayıları **Two's Complement** yöntemiyle saklar. Bu say
      100000000  ← 9. bit taşar ve dışarı atılır → sonuç: 00000000 = 0 ✓
     ```
 
-| Durum | Açıklama |
-|-------|---------|
-| `signed char`: `127 + 1` | **Signed Overflow** → Undefined Behavior (UB); pratikte `-128` görülür |
-| `unsigned char`: `255 + 1` | Tanımlı davranış: `0`'a döner (modular arithmetic) |
+| Durum                      | Açıklama                                                               |
+| -------------------------- | ---------------------------------------------------------------------- |
+| `signed char`: `127 + 1`   | **Signed Overflow** → Undefined Behavior (UB); pratikte `-128` görülür |
+| `unsigned char`: `255 + 1` | Tanımlı davranış: `0`'a döner (modular arithmetic)                     |
 
 ---
 
@@ -348,12 +348,12 @@ graph TD
 
 ### Dinamik Bellek Fonksiyonları
 
-| Fonksiyon | Başlangıç Değeri | Açıklama |
-|-----------|:----------------:|---------|
-| `malloc(n)` | Garbage (çöp) | `n` byte ayırır; içeriği sıfırlamaz |
-| `calloc(count, size)` | `0` | `count * size` byte ayırır; tüm byte'ları sıfırlar |
-| `realloc(ptr, n)` | Korunur | Mevcut bloğu `n` byte'a yeniden boyutlandırır |
-| `free(ptr)` | — | Ayrılan belleği işletim sistemine iade eder |
+| Fonksiyon             | Başlangıç Değeri | Açıklama                                           |
+| --------------------- | :--------------: | -------------------------------------------------- |
+| `malloc(n)`           |  Garbage (çöp)   | `n` byte ayırır; içeriği sıfırlamaz                |
+| `calloc(count, size)` |       `0`        | `count * size` byte ayırır; tüm byte'ları sıfırlar |
+| `realloc(ptr, n)`     |     Korunur      | Mevcut bloğu `n` byte'a yeniden boyutlandırır      |
+| `free(ptr)`           |        —         | Ayrılan belleği işletim sistemine iade eder        |
 
 ```c
 int n = 10;
@@ -420,16 +420,16 @@ graph LR
 
 ## Bitwise Operatörler
 
-| Operatör | Tür | Açıklama |
-|----------|-----|---------|
-| `&` | Bitwise AND | Her iki bitte de 1 ise sonuç 1 |
-| `|` | Bitwise OR | Herhangi bir bitte 1 ise sonuç 1 |
-| `^` | Bitwise XOR | Bitler farklıysa sonuç 1 |
-| `~` | Bitwise NOT | Tüm bitleri tersine çevirir |
-| `<<` | Left Shift | Sola kaydırma; `n` kez kaydırmak `2^n` ile çarpmaktır |
-| `>>` | Right Shift | Sağa kaydırma; `n` kez kaydırmak `2^n`'e bölmektir |
-| `&&` | Logical AND | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |
-| `||` | Logical OR | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |
+| Operatör | Tür         | Açıklama                                                      |                                  |                                                               |
+| -------- | ----------- | ------------------------------------------------------------- | -------------------------------- | ------------------------------------------------------------- |
+| `&`      | Bitwise AND | Her iki bitte de 1 ise sonuç 1                                |                                  |                                                               |
+| `        | `           | Bitwise OR                                                    | Herhangi bir bitte 1 ise sonuç 1 |                                                               |
+| `^`      | Bitwise XOR | Bitler farklıysa sonuç 1                                      |                                  |                                                               |
+| `~`      | Bitwise NOT | Tüm bitleri tersine çevirir                                   |                                  |                                                               |
+| `<<`     | Left Shift  | Sola kaydırma; `n` kez kaydırmak `2^n` ile çarpmaktır         |                                  |                                                               |
+| `>>`     | Right Shift | Sağa kaydırma; `n` kez kaydırmak `2^n`'e bölmektir            |                                  |                                                               |
+| `&&`     | Logical AND | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |                                  |                                                               |
+| `        |             | `                                                             | Logical OR                       | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |
 
 !!! tip "Short-Circuit Evaluation"
     `if(a && 5/a)` ifadesinde `a = 0` ise sol taraf `false` olduğu için sağ taraf (`5/a`) hiç değerlendirilmez. Bu sayede `division by zero` hatası önlenmiş olur.
@@ -444,10 +444,10 @@ graph LR
 
 Bir değişken bellekte bir değer saklar. Pointer ise içinde **bellek adresi** saklar.
 
-| Operatör | İsim | Açıklama |
-|----------|------|---------|
-| `&` | Address-of | Değişkenin RAM'deki adresini verir |
-| `*` | Dereference | Pointer'ın işaret ettiği adresteki değeri okur veya değiştirir |
+| Operatör | İsim        | Açıklama                                                       |
+| -------- | ----------- | -------------------------------------------------------------- |
+| `&`      | Address-of  | Değişkenin RAM'deki adresini verir                             |
+| `*`      | Dereference | Pointer'ın işaret ettiği adresteki değeri okur veya değiştirir |
 
 ```c
 int  x = 10;
@@ -459,10 +459,10 @@ int *p = &x;   // p, x'in adresini tutuyor
     Pointer'a gidildiğinde o adresten **kaç byte okunacağı ve nasıl yorumlanacağı** bilgisi tipin içindedir:
 
     | Pointer Tipi | Okunan Boyut |
-    |-------------|:------------:|
-    | `char *` | 1 byte |
-    | `int *` | 4 byte |
-    | `double *` | 8 byte |
+    | ------------ | :----------: |
+    | `char *`     |    1 byte    |
+    | `int *`      |    4 byte    |
+    | `double *`   |    8 byte    |
 
 ### Pointer Aritmetiği
 
@@ -500,14 +500,14 @@ C'de yerleşik string tipi yoktur. Metinler `char` dizileri olarak tutulur ve so
     ```
     `str2[0] = 'M';` → **Segmentation Fault**. String literal pointer'ı için mutlaka `const char *str2` kullanılmalıdır.
 
-| Fonksiyon | Açıklama |
-|-----------|---------|
-| `strcpy(dest, src)` | `src`'yi `dest`'e kopyalar; sınır kontrolü yapmaz — güvensiz |
-| `strncpy(dest, src, n)` | En fazla `n` byte kopyalar — güvenli |
-| `strlen(s)` | `\0` görene kadar karakterleri sayar (runtime) |
-| `memset(ptr, val, n)` | `n` byte'ı `val` ile doldurur |
-| `memcpy(dst, src, n)` | `n` byte'ı kaynaktan hedefe kopyalar (overlap'te UB) |
-| `memmove(dst, src, n)` | `memcpy` gibi çalışır; overlap olan bölgelerde de güvenlidir |
+| Fonksiyon               | Açıklama                                                     |
+| ----------------------- | ------------------------------------------------------------ |
+| `strcpy(dest, src)`     | `src`'yi `dest`'e kopyalar; sınır kontrolü yapmaz — güvensiz |
+| `strncpy(dest, src, n)` | En fazla `n` byte kopyalar — güvenli                         |
+| `strlen(s)`             | `\0` görene kadar karakterleri sayar (runtime)               |
+| `memset(ptr, val, n)`   | `n` byte'ı `val` ile doldurur                                |
+| `memcpy(dst, src, n)`   | `n` byte'ı kaynaktan hedefe kopyalar (overlap'te UB)         |
+| `memmove(dst, src, n)`  | `memcpy` gibi çalışır; overlap olan bölgelerde de güvenlidir |
 
 ```c
 char text[100] = "C Language";
@@ -530,11 +530,11 @@ printf("%d", *(int *)vptr);    // DOĞRU: önce int*'a cast et
 ### const Pointer Çeşitleri
 
 !!! note "Sağdan Sola Okuma Kuralı"
-    | Tanım | İsim | Adres Değişir mi? | Değer Değişir mi? |
-    |-------|------|:-----------------:|:-----------------:|
-    | `const int *p` | Pointer to Constant | ✓ | ✗ |
-    | `int *const p` | Constant Pointer | ✗ | ✓ |
-    | `const int *const p` | Constant Pointer to Constant | ✗ | ✗ |
+    | Tanım                | İsim                         | Adres Değişir mi? | Değer Değişir mi? |
+    | -------------------- | ---------------------------- | :---------------: | :---------------: |
+    | `const int *p`       | Pointer to Constant          |         ✓         |         ✗         |
+    | `int *const p`       | Constant Pointer             |         ✗         |         ✓         |
+    | `const int *const p` | Constant Pointer to Constant |         ✗         |         ✗         |
 
     ```c
     int x = 10, y = 20;
@@ -597,26 +597,26 @@ int main(void) {
 
 Önişlemci saf bir **metin düzenleyicisidir**. Yalnızca `#` ile başlayan satırları okur; kesme-biçme-yapıştırma işlemleri yaparak saf C kodunu derleyiciye teslim eder.
 
-| Direktif | Açıklama |
-|----------|---------|
-| `#include` | Başlık dosyası ekler |
-| `#define` | Sembol veya makro tanımlar (text replacement; tip kontrolü yapmaz) |
-| `#ifdef / #ifndef / #endif` | Koşullu derleme ve Include Guard |
-| `#pragma once` | Include Guard'ın modern alternatifi |
+| Direktif                    | Açıklama                                                           |
+| --------------------------- | ------------------------------------------------------------------ |
+| `#include`                  | Başlık dosyası ekler                                               |
+| `#define`                   | Sembol veya makro tanımlar (text replacement; tip kontrolü yapmaz) |
+| `#ifdef / #ifndef / #endif` | Koşullu derleme ve Include Guard                                   |
+| `#pragma once`              | Include Guard'ın modern alternatifi                                |
 
 !!! tip "Makro Özel Operatörleri"
-    | Operatör | Açıklama |
-    |----------|---------|
-    | `#` | Argümanı **string literal**'e dönüştürür (Stringification) |
-    | `##` | İki sembolü birleştirerek yeni bir tanımlayıcı oluşturur (Token Pasting) |
+    | Operatör | Açıklama                                                                 |
+    | -------- | ------------------------------------------------------------------------ |
+    | `#`      | Argümanı **string literal**'e dönüştürür (Stringification)               |
+    | `##`     | İki sembolü birleştirerek yeni bir tanımlayıcı oluşturur (Token Pasting) |
 
 !!! note "Önceden Tanımlı Makrolar"
-    | Makro | Açıklama |
-    |-------|---------|
+    | Makro      | Açıklama                     |
+    | ---------- | ---------------------------- |
     | `__FILE__` | Kaynak dosyanın adı (string) |
     | `__LINE__` | Geçerli satır numarası (int) |
-    | `__DATE__` | Derleme tarihi (string) |
-    | `__TIME__` | Derleme saati (string) |
+    | `__DATE__` | Derleme tarihi (string)      |
+    | `__TIME__` | Derleme saati (string)       |
 
 ```c
 // donanim.h
@@ -680,20 +680,20 @@ sequenceDiagram
     Func-->>Main: Return address'e dön
 ```
 
-| Fonksiyon Türü | Açıklama |
-|----------------|---------|
-| **Normal** | Stack frame oluşturularak çağrılır |
-| **Recursive** | Fonksiyonun kendi kendini çağırması; her çağrıda yeni frame açılır |
-| **Variadic** | `stdarg.h` ile değişken sayıda parametre alır (`printf` gibi) |
-| **inline** | Derleyiciye fonksiyon gövdesini çağrıldığı yere kopyalamasını önerir; küçük ve sık çağrılan fonksiyonlarda overhead'i azaltır |
+| Fonksiyon Türü | Açıklama                                                                                                                      |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Normal**     | Stack frame oluşturularak çağrılır                                                                                            |
+| **Recursive**  | Fonksiyonun kendi kendini çağırması; her çağrıda yeni frame açılır                                                            |
+| **Variadic**   | `stdarg.h` ile değişken sayıda parametre alır (`printf` gibi)                                                                 |
+| **inline**     | Derleyiciye fonksiyon gövdesini çağrıldığı yere kopyalamasını önerir; küçük ve sık çağrılan fonksiyonlarda overhead'i azaltır |
 
 !!! tip "inline vs Makro"
-    | Özellik | `inline` | `#define` |
-    |---------|:--------:|:---------:|
-    | Tip kontrolü | ✓ | ✗ |
-    | Scope kuralları | ✓ | ✗ |
-    | Debugger görünürlüğü | ✓ | ✗ |
-    | Garanti | Öneri (derleyici görmezden gelebilir) | Kesin metin ikamesi |
+    | Özellik              |                `inline`               |      `#define`      |
+    | -------------------- | :-----------------------------------: | :-----------------: |
+    | Tip kontrolü         |                   ✓                   |          ✗          |
+    | Scope kuralları      |                   ✓                   |          ✗          |
+    | Debugger görünürlüğü |                   ✓                   |          ✗          |
+    | Garanti              | Öneri (derleyici görmezden gelebilir) | Kesin metin ikamesi |
 
 ---
 
@@ -710,13 +710,13 @@ graph TD
     C --> C1["Child fork dönüş: 0"]
 ```
 
-| Özellik | Multi-processing | Multi-threading |
-|---------|:---------------:|:---------------:|
-| Bellek alanı | Ayrı | Paylaşımlı (Heap/Global) |
-| İzolasyon | Tam | Yok |
-| Maliyet | Yüksek (context switch) | Düşük (lightweight) |
-| İletişim | IPC (Pipe, Shared Mem) | Ortak bellek |
-| Race Condition riski | Düşük | Yüksek |
+| Özellik              |     Multi-processing    |     Multi-threading      |
+| -------------------- | :---------------------: | :----------------------: |
+| Bellek alanı         |           Ayrı          | Paylaşımlı (Heap/Global) |
+| İzolasyon            |           Tam           |           Yok            |
+| Maliyet              | Yüksek (context switch) |   Düşük (lightweight)    |
+| İletişim             |  IPC (Pipe, Shared Mem) |       Ortak bellek       |
+| Race Condition riski |          Düşük          |          Yüksek          |
 
 ```c
 pid_t pid = fork();
@@ -816,11 +816,11 @@ C dilinde yerleşik `try-catch` mekanizması yoktur. Hata yönetimi dönüş de�
 
 Standart kütüphane fonksiyonları hata oluştuğunda işletim sistemi tarafından set edilen `errno` global değişkenine kod yazar.
 
-| Errno Kodu | Açıklama |
-|------------|---------|
-| `ENOENT` | Dosya veya dizin bulunamadı |
-| `EACCES` | İzin hatası (yetkisiz erişim) |
-| `ENOMEM` | RAM'de yeterli yer yok |
+| Errno Kodu | Açıklama                      |
+| ---------- | ----------------------------- |
+| `ENOENT`   | Dosya veya dizin bulunamadı   |
+| `EACCES`   | İzin hatası (yetkisiz erişim) |
+| `ENOMEM`   | RAM'de yeterli yer yok        |
 
 ### assert
 
@@ -837,10 +837,10 @@ Kodun çalışması esnasında **"kesinlikle doğru olması gereken"** varsayım
 
 Derleyici her `.c` dosyasını ayrı ayrı `object file`'a dönüştürür. Linker bu dosyaları birleştirirken bir fonksiyonun veya değişkenin tanımını bulamazsa hata verir.
 
-| Hata | Nedeni |
-|------|--------|
+| Hata                         | Nedeni                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------ |
 | `undefined reference to 'X'` | Fonksiyonun prototipi var, gövdesi yok; ilgili `.c` derlemeye eklenmemiş |
-| `multiple definition of 'X'` | Aynı global değişken/fonksiyon birden fazla `.c`'de tanımlanmış |
+| `multiple definition of 'X'` | Aynı global değişken/fonksiyon birden fazla `.c`'de tanımlanmış          |
 
 !!! tip "Kurallar"
     - `.c` dosyaları `#include` edilmez; yalnızca `.h` dosyaları eklenir.
@@ -859,10 +859,10 @@ Her argümanı ve tüm ifadeyi paranteze al: `#define KARE(x) ((x) * (x))`
 
 C standardı belirli durumlarda derleyiciye davranışı garanti etme yükümlülüğü vermez.
 
-| UB Türü | Açıklama |
-|---------|---------|
-| **Uninitialized Variable** | İlk değer atanmamış değişken; bellekte kalan çöp değer okunur |
-| **Out of Bounds** | Dizi sınırı aşılırsa komşu bellek alanı bozulabilir |
-| **Signed Overflow** | İşaretli tam sayı sınırını aşması |
-| **Dangling Pointer** | `free()` sonrası geçersiz adrese erişim |
-| **Null Pointer Dereference** | `NULL` pointer'ının içeriğini okuma/yazma |
+| UB Türü                      | Açıklama                                                      |
+| ---------------------------- | ------------------------------------------------------------- |
+| **Uninitialized Variable**   | İlk değer atanmamış değişken; bellekte kalan çöp değer okunur |
+| **Out of Bounds**            | Dizi sınırı aşılırsa komşu bellek alanı bozulabilir           |
+| **Signed Overflow**          | İşaretli tam sayı sınırını aşması                             |
+| **Dangling Pointer**         | `free()` sonrası geçersiz adrese erişim                       |
+| **Null Pointer Dereference** | `NULL` pointer'ının içeriğini okuma/yazma                     |

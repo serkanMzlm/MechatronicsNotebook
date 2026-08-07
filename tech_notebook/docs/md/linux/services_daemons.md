@@ -24,23 +24,23 @@ graph TD
 
 ## Systemd Unit Türleri
 
-| Uzantı | Tür | Açıklama |
-|:------:|-----|---------|
-| `.service` | Service | Arka plan hizmetleri (daemon) |
-| `.target` | Target | Unit grupları; run level yerine geçer |
-| `.socket` | Socket | Socket-activated servisler |
-| `.timer` | Timer | Zamanlanmış görevler (cron alternatifi) |
-| `.mount` | Mount | Dosya sistemi otomatik mount |
-| `.path` | Path | Dosya/dizin değişikliklerini tetikleyici |
-| `.slice` | Slice | Cgroups kaynak sınırı grubu |
+|   Uzantı   | Tür     | Açıklama                                 |
+| :--------: | ------- | ---------------------------------------- |
+| `.service` | Service | Arka plan hizmetleri (daemon)            |
+| `.target`  | Target  | Unit grupları; run level yerine geçer    |
+| `.socket`  | Socket  | Socket-activated servisler               |
+|  `.timer`  | Timer   | Zamanlanmış görevler (cron alternatifi)  |
+|  `.mount`  | Mount   | Dosya sistemi otomatik mount             |
+|  `.path`   | Path    | Dosya/dizin değişikliklerini tetikleyici |
+|  `.slice`  | Slice   | Cgroups kaynak sınırı grubu              |
 
 **Unit dosyaları konumları:**
 
-| Konum | Kapsam | Öncelik |
-|-------|--------|:-------:|
-| `/etc/systemd/system/` | Sistem geneli (admin değişikliği) | Yüksek |
-| `/usr/lib/systemd/system/` | Dağıtım paketleri | Orta |
-| `~/.config/systemd/user/` | Kullanıcı bazlı | — |
+| Konum                      | Kapsam                            | Öncelik |
+| -------------------------- | --------------------------------- | :-----: |
+| `/etc/systemd/system/`     | Sistem geneli (admin değişikliği) |  Yüksek |
+| `/usr/lib/systemd/system/` | Dağıtım paketleri                 |   Orta  |
+| `~/.config/systemd/user/`  | Kullanıcı bazlı                   |    —    |
 
 ---
 
@@ -80,38 +80,38 @@ WantedBy=multi-user.target
 
 ### [Unit] Bölümü
 
-| Direktif | Açıklama |
-|----------|---------|
-| `Description` | İnsan okunabilir kısa açıklama |
-| `After` | Başlama sırasını belirler; belirtilen unit'ten sonra başlar |
-| `Before` | Belirtilen unit'ten önce başlar |
-| `Wants` | Zayıf bağımlılık; bağımlı unit başlamasa da devam eder |
-| `Requires` | Güçlü bağımlılık; bağımlı başlamazsa bu da başlamaz |
-| `Conflicts` | Çakışan unit; biri başlayınca diğeri durur |
+| Direktif      | Açıklama                                                    |
+| ------------- | ----------------------------------------------------------- |
+| `Description` | İnsan okunabilir kısa açıklama                              |
+| `After`       | Başlama sırasını belirler; belirtilen unit'ten sonra başlar |
+| `Before`      | Belirtilen unit'ten önce başlar                             |
+| `Wants`       | Zayıf bağımlılık; bağımlı unit başlamasa da devam eder      |
+| `Requires`    | Güçlü bağımlılık; bağımlı başlamazsa bu da başlamaz         |
+| `Conflicts`   | Çakışan unit; biri başlayınca diğeri durur                  |
 
 ### [Service] Bölümü
 
-| Direktif | Açıklama |
-|----------|---------|
-| `Type=simple` | ExecStart fork etmeden çalışır (varsayılan) |
-| `Type=forking` | Daemon arka plana fork ettiğinde kabul edilir |
-| `Type=oneshot` | Tek seferlik kısa işler |
-| `Type=notify` | Daemon sd_notify() ile hazır sinyali gönderir |
-| `Restart=no` | Yeniden başlatma yok |
-| `Restart=on-failure` | Başarısız çıkışta yeniden başlat |
-| `Restart=always` | Her zaman yeniden başlat |
-| `User` | Hangi kullanıcı altında çalışacağı |
-| `Environment` | Ortam değişkeni |
-| `EnvironmentFile` | Dosyadan ortam değişkeni yükle |
-| `WorkingDirectory` | Çalışma dizini |
+| Direktif             | Açıklama                                      |
+| -------------------- | --------------------------------------------- |
+| `Type=simple`        | ExecStart fork etmeden çalışır (varsayılan)   |
+| `Type=forking`       | Daemon arka plana fork ettiğinde kabul edilir |
+| `Type=oneshot`       | Tek seferlik kısa işler                       |
+| `Type=notify`        | Daemon sd_notify() ile hazır sinyali gönderir |
+| `Restart=no`         | Yeniden başlatma yok                          |
+| `Restart=on-failure` | Başarısız çıkışta yeniden başlat              |
+| `Restart=always`     | Her zaman yeniden başlat                      |
+| `User`               | Hangi kullanıcı altında çalışacağı            |
+| `Environment`        | Ortam değişkeni                               |
+| `EnvironmentFile`    | Dosyadan ortam değişkeni yükle                |
+| `WorkingDirectory`   | Çalışma dizini                                |
 
 ### [Install] Bölümü
 
-| Direktif | Açıklama |
-|----------|---------|
-| `WantedBy=multi-user.target` | `systemctl enable` ile bu target'a bağlanır |
-| `RequiredBy` | Zorunlu bağımlılık olarak bağlanır |
-| `Also` | Bu unit enable edildiğinde başka unit de enable et |
+| Direktif                     | Açıklama                                           |
+| ---------------------------- | -------------------------------------------------- |
+| `WantedBy=multi-user.target` | `systemctl enable` ile bu target'a bağlanır        |
+| `RequiredBy`                 | Zorunlu bağımlılık olarak bağlanır                 |
+| `Also`                       | Bu unit enable edildiğinde başka unit de enable et |
 
 ---
 
@@ -288,13 +288,13 @@ ForwardToSyslog=no           # /var/log/syslog'a da yönlendir
 
 ## Cron vs systemd Timer
 
-| Özellik | cron | systemd timer |
-|---------|:----:|:-------------:|
-| Başarısız job retry | ✗ | ✓ |
-| Log (journald) | ✗ (mail) | ✓ |
-| Boot'ta kaçırılan job | ✗ | ✓ (Persistent=true) |
-| Bağımlılık yönetimi | ✗ | ✓ |
-| Kolaylık | Yüksek | Orta |
+| Özellik               |   cron   |    systemd timer    |
+| --------------------- | :------: | :-----------------: |
+| Başarısız job retry   |    ✗     |          ✓          |
+| Log (journald)        | ✗ (mail) |          ✓          |
+| Boot'ta kaçırılan job |    ✗     | ✓ (Persistent=true) |
+| Bağımlılık yönetimi   |    ✗     |          ✓          |
+| Kolaylık              |  Yüksek  |         Orta        |
 
 !!! tip "Cron Hâlâ Geçerli"
     Basit zamanlama gereksinimleri için `crontab -e` hızlıdır. Retry, logging veya servis bağımlılığı gerektiren kritik görevler için systemd timer tercih edin.
@@ -303,15 +303,15 @@ ForwardToSyslog=no           # /var/log/syslog'a da yönlendir
 
 ## Ortak Sistem Servisleri
 
-| Servis | Açıklama |
-|--------|---------|
-| `sshd` | SSH sunucusu |
-| `NetworkManager` | Ağ yönetimi |
-| `cron` / `crond` | Zamanlanmış görevler |
-| `rsyslog` | Syslog daemon |
-| `udev` | Aygıt olaylarını yönetir |
-| `dbus` | Süreçler arası mesajlaşma (IPC) |
-| `avahi-daemon` | mDNS/DNS-SD yerel ağ keşfi |
-| `bluetooth` | Bluetooth yönetimi |
-| `cups` | Yazıcı yönetimi |
-| `snapd` | Snap paket yöneticisi |
+| Servis           | Açıklama                        |
+| ---------------- | ------------------------------- |
+| `sshd`           | SSH sunucusu                    |
+| `NetworkManager` | Ağ yönetimi                     |
+| `cron` / `crond` | Zamanlanmış görevler            |
+| `rsyslog`        | Syslog daemon                   |
+| `udev`           | Aygıt olaylarını yönetir        |
+| `dbus`           | Süreçler arası mesajlaşma (IPC) |
+| `avahi-daemon`   | mDNS/DNS-SD yerel ağ keşfi      |
+| `bluetooth`      | Bluetooth yönetimi              |
+| `cups`           | Yazıcı yönetimi                 |
+| `snapd`          | Snap paket yöneticisi           |

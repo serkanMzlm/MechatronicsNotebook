@@ -9,25 +9,25 @@
 
 ### Değişken Başlatma
 
-| Yöntem | Sözdizimi | Açıklama |
-|--------|-----------|---------|
-| Copy initialization | `int a = 5;` | C'den gelen klasik yöntem |
-| Direct initialization | `int b(5);` | Constructor çağrısına benzer |
-| **List initialization** | `int c{5};` | Modern ve en güvenli yöntem |
+| Yöntem                  | Sözdizimi    | Açıklama                     |
+| ----------------------- | ------------ | ---------------------------- |
+| Copy initialization     | `int a = 5;` | C'den gelen klasik yöntem    |
+| Direct initialization   | `int b(5);`  | Constructor çağrısına benzer |
+| **List initialization** | `int c{5};`  | Modern ve en güvenli yöntem  |
 
 !!! tip "Neden List Initialization?"
     **Daraltıcı dönüşümlere (narrowing conversion) izin vermez.** `int x{3.14}` derleme hatası verir; `int x = 3.14` ise sessizce `3` atar. Yeni kodda her zaman `{}` tercih edilmelidir.
 
 ### Önemli Anahtar Kelimeler
 
-| Anahtar Kelime | Açıklama |
-|----------------|---------|
-| `constexpr` | Derleme zamanında kesin sabit; `const`'tan güçlüdür (`const` runtime'da da değer alabilir) |
-| `consteval` | Her çağrısı derleme zamanında zorunlu olarak değerlendirilir (C++20) |
-| `[[maybe_unused]]` | Kullanılmayan değişken için derleyici uyarısını bastırır (C++17) |
-| `auto` | Değişken tipini sağ taraftaki ifadeden çıkarır; sıfır runtime maliyeti |
-| `decltype` | İfadenin tam tipini `const`/referans niteliğiyle birlikte verir |
-| `::` | Önünde isim yoksa global kapsamı ifade eder |
+| Anahtar Kelime     | Açıklama                                                                                   |
+| ------------------ | ------------------------------------------------------------------------------------------ |
+| `constexpr`        | Derleme zamanında kesin sabit; `const`'tan güçlüdür (`const` runtime'da da değer alabilir) |
+| `consteval`        | Her çağrısı derleme zamanında zorunlu olarak değerlendirilir (C++20)                       |
+| `[[maybe_unused]]` | Kullanılmayan değişken için derleyici uyarısını bastırır (C++17)                           |
+| `auto`             | Değişken tipini sağ taraftaki ifadeden çıkarır; sıfır runtime maliyeti                     |
+| `decltype`         | İfadenin tam tipini `const`/referans niteliğiyle birlikte verir                            |
+| `::`               | Önünde isim yoksa global kapsamı ifade eder                                                |
 
 !!! note "Sayı Gösterimleri"
     ```cpp
@@ -47,33 +47,33 @@ typedef unsigned long long ULLI1;  // C tarzı (eski)
 using   ULLI2 = unsigned long long; // Modern C++ (tercih edilmeli)
 ```
 
-| Özellik | C | C++ |
-|---------|---|-----|
-| `struct` tanımlama | `struct Adi var;` veya `typedef` şart | `Adi var;` doğrudan kullanılabilir |
-| `struct` içi fonksiyon | Yasak | Tam destekli |
-| `enum` tip güvenliği | Zayıf; `int`'e karışabilir | `enum class` ile tamamen izole |
-| `enum` kapsam | Tanımlandığı kapsama sızar | `enum class` ile kendi kapsamı |
-| `enum` boyutu | Derleyiciye bağlı | `: type` ile yazılımcı belirler |
+| Özellik                | C                                     | C++                                |
+| ---------------------- | ------------------------------------- | ---------------------------------- |
+| `struct` tanımlama     | `struct Adi var;` veya `typedef` şart | `Adi var;` doğrudan kullanılabilir |
+| `struct` içi fonksiyon | Yasak                                 | Tam destekli                       |
+| `enum` tip güvenliği   | Zayıf; `int`'e karışabilir            | `enum class` ile tamamen izole     |
+| `enum` kapsam          | Tanımlandığı kapsama sızar            | `enum class` ile kendi kapsamı     |
+| `enum` boyutu          | Derleyiciye bağlı                     | `: type` ile yazılımcı belirler    |
 
 ### std::string ve std::string_view
 
-| | `std::string` | `std::string_view` |
-|--|:-------------:|:------------------:|
-| Bellek sahibi | ✓ | ✗ (sadece bakış) |
-| Bellek ayırır | ✓ | ✗ |
-| Değiştirilebilir | ✓ | ✗ |
-| Kopyalama maliyeti | Yüksek | Sıfır |
-| Ömür bağımlılığı | Kendi yönetir | Gösterdiği veriye bağımlı |
+|                    | `std::string` |     `std::string_view`    |
+| ------------------ | :-----------: | :-----------------------: |
+| Bellek sahibi      |       ✓       |      ✗ (sadece bakış)     |
+| Bellek ayırır      |       ✓       |             ✗             |
+| Değiştirilebilir   |       ✓       |             ✗             |
+| Kopyalama maliyeti |     Yüksek    |           Sıfır           |
+| Ömür bağımlılığı   | Kendi yönetir | Gösterdiği veriye bağımlı |
 
 !!! danger "std::string_view Ömür Riski"
     `string_view` gösterdiği verinin sahibi değildir. Kaynak string destroy edilirse `string_view` geçersiz bir veriye işaret eder.
 
 ### Prefix vs Postfix
 
-| Operatör | Davranış | Performans |
-|----------|----------|-----------|
-| `++i` (Prefix) | Hemen artırır, nesnenin referansını döndürür | Geçici nesne oluşturmaz |
-| `i++` (Postfix) | Kopyayı alır, ardından artırır, kopyayı döndürür | Geçici nesne oluşturur |
+| Operatör        | Davranış                                         | Performans              |
+| --------------- | ------------------------------------------------ | ----------------------- |
+| `++i` (Prefix)  | Hemen artırır, nesnenin referansını döndürür     | Geçici nesne oluşturmaz |
+| `i++` (Postfix) | Kopyayı alır, ardından artırır, kopyayı döndürür | Geçici nesne oluşturur  |
 
 !!! tip "Spaceship Operator (C++20)"
     `<=>` tek bir satırda iki değerin küçüklük, büyüklük ve eşitlik durumunu analiz eder; `std::strong_ordering` veya `std::partial_ordering` döner.
@@ -101,12 +101,12 @@ for (const auto& sayi : sayilar) {
 
 C++'ın dört özel cast operatörü, C'nin tek formatlı `(tip)deger` dönüşümüne karşı tip güvenliği ve niyet netliği sağlar.
 
-| Cast Operatörü | Zaman | Maliyet | Amaç |
-|----------------|-------|---------|------|
-| `static_cast` | Derleme | Sıfır | Mantıksal, güvenli tip dönüşümleri |
-| `dynamic_cast` | Runtime | **Yüksek** (RTTI + vtable taraması) | Polimorfik hiyerarşide güvenli downcast |
-| `const_cast` | Derleme | Sıfır | `const`/`volatile` niteleyici manipülasyonu |
-| `reinterpret_cast` | Derleme | Sıfır | Bit seviyesinde ham ve tehlikeli dönüşüm |
+| Cast Operatörü     | Zaman   | Maliyet                             | Amaç                                        |
+| ------------------ | ------- | ----------------------------------- | ------------------------------------------- |
+| `static_cast`      | Derleme | Sıfır                               | Mantıksal, güvenli tip dönüşümleri          |
+| `dynamic_cast`     | Runtime | **Yüksek** (RTTI + vtable taraması) | Polimorfik hiyerarşide güvenli downcast     |
+| `const_cast`       | Derleme | Sıfır                               | `const`/`volatile` niteleyici manipülasyonu |
+| `reinterpret_cast` | Derleme | Sıfır                               | Bit seviyesinde ham ve tehlikeli dönüşüm    |
 
 === "static_cast"
     ```cpp
@@ -227,22 +227,22 @@ Mantıksal olarak ilişkili kod bloklarını, sınıfları ve fonksiyonları bel
 
 ## Standart IO
 
-| Nesne | Açıklama |
-|-------|---------|
-| `std::cout` | Tamponlu; buffer dolduğunda veya flush olduğunda yazar |
+| Nesne       | Açıklama                                                          |
+| ----------- | ----------------------------------------------------------------- |
+| `std::cout` | Tamponlu; buffer dolduğunda veya flush olduğunda yazar            |
 | `std::cerr` | Tamponsuz; hata anında anında yazar (çökme senaryolarında kritik) |
-| `<<` | Insertion — veriyi akışa gönderir |
-| `>>` | Extraction — akıştan veri çeker; boşluk/tab/newline'da durur |
+| `<<`        | Insertion — veriyi akışa gönderir                                 |
+| `>>`        | Extraction — akıştan veri çeker; boşluk/tab/newline'da durur      |
 
 !!! tip "std::endl vs '\\n'"
     `std::endl` yeni satır ekler **ve** buffer'ı flush eder. Performans kritik sistemlerde bu flush bottleneck yaratabilir. Sadece yeni satır için `'\n'` kullanın; flush gerektiğinde `std::flush` çağırın.
 
-| Format Manipülatör | Açıklama |
-|-------------------|---------|
-| `std::setw(n)` | Minimum karakter genişliği (sağa hizalı) |
-| `std::setprecision(n)` | Ondalık basamak sayısı |
-| `std::fixed` | Bilimsel gösterim yerine sabit ondalık |
-| `std::hex` / `std::oct` / `std::dec` | Sayı tabanı seçimi |
+| Format Manipülatör                   | Açıklama                                 |
+| ------------------------------------ | ---------------------------------------- |
+| `std::setw(n)`                       | Minimum karakter genişliği (sağa hizalı) |
+| `std::setprecision(n)`               | Ondalık basamak sayısı                   |
+| `std::fixed`                         | Bilimsel gösterim yerine sabit ondalık   |
+| `std::hex` / `std::oct` / `std::dec` | Sayı tabanı seçimi                       |
 
 ```cpp
 std::cout << std::fixed << std::setprecision(2) << 3.14159; // 3.14
@@ -282,13 +282,13 @@ void f(int a, int b = 10, int c = 20);  // Geçerli
 auto topla = [](int a, int b) -> int { return a + b; };
 ```
 
-| Capture | Açıklama |
-|---------|---------|
-| `[]` | Hiçbir dış değişkene erişemez |
-| `[x]` | `x`'in kopyasını alır |
-| `[&x]` | `x`'e referansla erişir |
-| `[=]` | Tüm dış değişkenleri kopyayla yakalar |
-| `[&]` | Tüm dış değişkenleri referansla yakalar |
+| Capture | Açıklama                                |
+| ------- | --------------------------------------- |
+| `[]`    | Hiçbir dış değişkene erişemez           |
+| `[x]`   | `x`'in kopyasını alır                   |
+| `[&x]`  | `x`'e referansla erişir                 |
+| `[=]`   | Tüm dış değişkenleri kopyayla yakalar   |
+| `[&]`   | Tüm dış değişkenleri referansla yakalar |
 
 !!! tip "mutable Lambda"
     Değer olarak yakalanan değişkeni lambda içinde değiştirmek için `mutable` eklenir:
@@ -303,26 +303,26 @@ auto topla = [](int a, int b) -> int { return a + b; };
 
 ### nullptr vs NULL
 
-| | `NULL` | `nullptr` |
-|--|:------:|:---------:|
-| Tür | `0` (tam sayı) | `std::nullptr_t` |
-| Overloading güvenliği | ✗ — `0` ile karışır | ✓ |
-| C++ versiyonu | C'den miras | C++11 |
+|                       |        `NULL`       |    `nullptr`     |
+| --------------------- | :-----------------: | :--------------: |
+| Tür                   |    `0` (tam sayı)   | `std::nullptr_t` |
+| Overloading güvenliği | ✗ — `0` ile karışır |        ✓         |
+| C++ versiyonu         |     C'den miras     |      C++11       |
 
 !!! note "C++ Güvenlik Notu"
     Modern C++ mimarisinde ham pointer (`*`) ve `delete` kullanımı birer güvenlik zafiyeti (code smell) olarak görülür. Bunların yerini `nullptr` ve Akıllı İşaretçiler almıştır.
 
 ### Pointer vs Referans
 
-| Kriter | Pointer (`*`) | Referans (`&`) |
-|--------|:------------:|:--------------:|
-| Bağımsız nesne | ✓ (kendi bellek alanı var) | ✗ (takma isim) |
-| Null değeri | ✓ (`nullptr`) | ✗ |
-| Yeniden bağlanabilir | ✓ | ✗ |
-| İlk değersiz bırakılabilir | ✓ | ✗ |
-| Dereference operatörü | Açıkça `*` veya `->` | Gerekmez |
-| sizeof davranışı | Pointer'ın kendi boyutu (8 byte / 64-bit) | Bağlandığı nesnenin boyutu |
-| Multi-level | ✓ (`int**`) | ✗ |
+| Kriter                     |               Pointer (`*`)               |       Referans (`&`)       |
+| -------------------------- | :---------------------------------------: | :------------------------: |
+| Bağımsız nesne             |         ✓ (kendi bellek alanı var)        |       ✗ (takma isim)       |
+| Null değeri                |               ✓ (`nullptr`)               |             ✗              |
+| Yeniden bağlanabilir       |                     ✓                     |             ✗              |
+| İlk değersiz bırakılabilir |                     ✓                     |             ✗              |
+| Dereference operatörü      |            Açıkça `*` veya `->`           |          Gerekmez          |
+| sizeof davranışı           | Pointer'ın kendi boyutu (8 byte / 64-bit) | Bağlandığı nesnenin boyutu |
+| Multi-level                |                ✓ (`int**`)                |             ✗              |
 
 ### Smart Pointers
 
@@ -336,11 +336,11 @@ graph LR
     WP["weak_ptr\n(Gözlemci)"] -->|ref_count artırmaz| SP
 ```
 
-| Smart Pointer | Sahiplik | Kopyalanabilir | Kullanım |
-|---------------|:--------:|:--------------:|---------|
-| `unique_ptr` | Tek sahip | ✗ (sadece `move`) | Varsayılan tercih; zero-overhead |
-| `shared_ptr` | Çok sahip | ✓ (ref count artar) | Paylaşımlı sahiplik |
-| `weak_ptr` | Sahipsiz gözlemci | ✓ | Döngüsel bağımlılığı kırar |
+| Smart Pointer |      Sahiplik     |    Kopyalanabilir   | Kullanım                         |
+| ------------- | :---------------: | :-----------------: | -------------------------------- |
+| `unique_ptr`  |     Tek sahip     |  ✗ (sadece `move`)  | Varsayılan tercih; zero-overhead |
+| `shared_ptr`  |     Çok sahip     | ✓ (ref count artar) | Paylaşımlı sahiplik              |
+| `weak_ptr`    | Sahipsiz gözlemci |          ✓          | Döngüsel bağımlılığı kırar       |
 
 ```cpp
 auto ptr = std::make_unique<int>(42);           // C++14
@@ -355,17 +355,17 @@ auto sp  = std::make_shared<std::string>("hi"); // Paylaşımlı
 
 ## Dosya İşlemleri
 
-| Sınıf | Amaç |
-|-------|------|
-| `std::ifstream` | Dosyadan okuma |
+| Sınıf           | Amaç                                                  |
+| --------------- | ----------------------------------------------------- |
+| `std::ifstream` | Dosyadan okuma                                        |
 | `std::ofstream` | Dosyaya yazma (yoksa oluşturur, varsa içini temizler) |
-| `std::fstream` | Hem okuma hem yazma |
+| `std::fstream`  | Hem okuma hem yazma                                   |
 
-| | Text Modu | Binary Modu |
-|--|:---------:|:-----------:|
-| Satır sonu | `\n` ↔ `\r\n` (OS'a göre otomatik) | Dönüşüm yok |
-| Metotlar | `<<`, `>>`, `getline()` | `.write()`, `.read()` |
-| Performans | Dönüşüm yüzünden yavaş | Hızlı |
+|            |             Text Modu              |      Binary Modu      |
+| ---------- | :--------------------------------: | :-------------------: |
+| Satır sonu | `\n` ↔ `\r\n` (OS'a göre otomatik) |      Dönüşüm yok      |
+| Metotlar   |      `<<`, `>>`, `getline()`       | `.write()`, `.read()` |
+| Performans |       Dönüşüm yüzünden yavaş       |         Hızlı         |
 
 !!! note "Otomatik Kapatma"
     Dosyayı `.close()` ile manuel kapatmak şart değildir. Sınıfın destructor'ı scope dışına çıkıldığında dosyayı otomatik kapatır (RAII).
@@ -461,11 +461,11 @@ bool isEqual<const char*>(const char* a, const char* b) {
 
 ### struct vs class
 
-| | `struct` | `class` |
-|--|:--------:|:-------:|
-| Varsayılan erişim | `public` | `private` |
-| Varsayılan kalıtım | `public` | `private` |
-| Teknik fark | Yalnızca bu iki kural farklı |
+|                    |           `struct`           |  `class`  |
+| ------------------ | :--------------------------: | :-------: |
+| Varsayılan erişim  |           `public`           | `private` |
+| Varsayılan kalıtım |           `public`           | `private` |
+| Teknik fark        | Yalnızca bu iki kural farklı |           |
 
 !!! tip "Kural"
     Passive data (sadece veri tutan) yapılar için `struct`; davranışı olan, kapsülleme gerektiren yapılar için `class` tercih edilir.
@@ -500,18 +500,18 @@ graph TD
     style A fill:#2196F3,color:#fff
 ```
 
-| Kalıtım Türü | Yapı | İlişki |
-|-------------|------|--------|
-| Single | `A → B` | Baba → Çocuk |
-| Multiple | `A + B → C` | Anne + Baba → Çocuk |
-| Multilevel | `A → B → C` | Dede → Baba → Torun |
+| Kalıtım Türü | Yapı               | İlişki                            |
+| ------------ | ------------------ | --------------------------------- |
+| Single       | `A → B`            | Baba → Çocuk                      |
+| Multiple     | `A + B → C`        | Anne + Baba → Çocuk               |
+| Multilevel   | `A → B → C`        | Dede → Baba → Torun               |
 | Hierarchical | `A → B` ve `A → C` | Tek ebeveynin birden fazla çocuğu |
 
-| Base Üyesi | public kalıtım | protected kalıtım | private kalıtım |
-|------------|:--------------:|:-----------------:|:---------------:|
-| `public` | `public` | `protected` | `private` |
-| `protected` | `protected` | `protected` | `private` |
-| `private` | Erişilemez | Erişilemez | Erişilemez |
+| Base Üyesi  | public kalıtım | protected kalıtım | private kalıtım |
+| ----------- | :------------: | :---------------: | :-------------: |
+| `public`    |    `public`    |    `protected`    |    `private`    |
+| `protected` |  `protected`   |    `protected`    |    `private`    |
+| `private`   |   Erişilemez   |     Erişilemez    |    Erişilemez   |
 
 !!! danger "Virtual Destructor"
     Base class pointer üzerinden Derived nesne yönetilecekse destructor **kesinlikle `virtual`** olmalıdır. Aksi hâlde `delete base_ptr` yalnızca Base destructor'ını çağırır; Derived'ın heap kaynakları sızar.
@@ -531,10 +531,10 @@ graph LR
     end
 ```
 
-| Tür | Çözülme Zamanı | Maliyet | Mekanizma |
-|-----|:--------------:|:-------:|-----------|
-| Compile-Time | Derleme | Sıfır | Overloading, Templates |
-| Runtime | Çalışma zamanı | vtable indirection | `virtual` + kalıtım |
+| Tür          | Çözülme Zamanı |      Maliyet       | Mekanizma              |
+| ------------ | :------------: | :----------------: | ---------------------- |
+| Compile-Time |    Derleme     |       Sıfır        | Overloading, Templates |
+| Runtime      | Çalışma zamanı | vtable indirection | `virtual` + kalıtım    |
 
 !!! note "vtable / vptr Mekanizması"
     ```
@@ -607,15 +607,15 @@ graph LR
 
 ### Sequence Containers Karşılaştırması
 
-| | `array` | `vector` | `deque` | `list` |
-|--|:-------:|:--------:|:-------:|:------:|
-| Bellek | Stack (Ardışık) | Heap (Ardışık) | Heap (Parçalı Bloklar) | Heap (Dağınık Node) |
-| Rastgele Erişim `[]` | O(1) ⚡ | O(1) ⚡ | O(1) ufak maliyet | O(N) ✗ |
-| Sona Ekleme | N/A | O(1)* | O(1) | O(1) |
-| Başa Ekleme | N/A | O(N) ✗ | O(1) ⚡ | O(1) ⚡ |
-| Araya Ekleme | N/A | O(N) | O(N) | **O(1)** ⚡ |
-| Cache Locality | ⚡⚡⚡ | ⚡⚡ | ⚡ | ✗ |
-| Boyut | Sabit (Compile-time) | Dinamik | Dinamik | Dinamik |
+|                      |       `array`        |    `vector`    |        `deque`         |        `list`       |
+| -------------------- | :------------------: | :------------: | :--------------------: | :-----------------: |
+| Bellek               |   Stack (Ardışık)    | Heap (Ardışık) | Heap (Parçalı Bloklar) | Heap (Dağınık Node) |
+| Rastgele Erişim `[]` |        O(1) ⚡        |     O(1) ⚡     |   O(1) ufak maliyet    |        O(N) ✗       |
+| Sona Ekleme          |         N/A          |     O(1)*      |          O(1)          |         O(1)        |
+| Başa Ekleme          |         N/A          |     O(N) ✗     |         O(1) ⚡         |        O(1) ⚡       |
+| Araya Ekleme         |         N/A          |      O(N)      |          O(N)          |      **O(1)** ⚡     |
+| Cache Locality       |         ⚡⚡⚡          |       ⚡⚡       |           ⚡            |          ✗          |
+| Boyut                | Sabit (Compile-time) |    Dinamik     |        Dinamik         |       Dinamik       |
 
 *`vector` kapasitesi dolunca reallocation → O(N)
 
@@ -623,13 +623,13 @@ graph LR
 
 Dinamik boyutlu, bellekte **ardışık** dizi; en sık kullanılan konteyner.
 
-| Fonksiyon | Açıklama |
-|-----------|---------|
-| `size()` | Aktif eleman sayısı |
-| `capacity()` | Reallocation olmadan tutulabilecek maksimum eleman sayısı |
-| `reserve(n)` | Capacity'yi en az `n` yapar; size değişmez |
-| `resize(n)` | Size'ı `n` yapar; yeni elemanlar default-construct edilir |
-| `push_back(v)` | Dışarıda oluşturulmuş nesneyi kopyalar/taşır |
+| Fonksiyon           | Açıklama                                                        |
+| ------------------- | --------------------------------------------------------------- |
+| `size()`            | Aktif eleman sayısı                                             |
+| `capacity()`        | Reallocation olmadan tutulabilecek maksimum eleman sayısı       |
+| `reserve(n)`        | Capacity'yi en az `n` yapar; size değişmez                      |
+| `resize(n)`         | Size'ı `n` yapar; yeni elemanlar default-construct edilir       |
+| `push_back(v)`      | Dışarıda oluşturulmuş nesneyi kopyalar/taşır                    |
 | `emplace_back(...)` | Nesneyi **içeride in-place** inşa eder; geçici nesne oluşturmaz |
 
 !!! note "Reallocation Zinciri"
@@ -676,12 +676,12 @@ capacity(), reserve(), shrink_to_fit()
 
 Her düğüm bağımsız Node; bellekte ardışık değil.
 
-| | `list` | `forward_list` |
-|--|:------:|:--------------:|
-| Yön | Çift yönlü | Tek yönlü |
-| Düğüm pointer sayısı | 2 (prev + next) | 1 (next) |
-| `size()` | ✓ | ✗ (O(N) saymak gerekir) |
-| Bellek per eleman | +16 byte | +8 byte |
+|                      |      `list`     |      `forward_list`     |
+| -------------------- | :-------------: | :---------------------: |
+| Yön                  |    Çift yönlü   |        Tek yönlü        |
+| Düğüm pointer sayısı | 2 (prev + next) |         1 (next)        |
+| `size()`             |        ✓        | ✗ (O(N) saymak gerekir) |
+| Bellek per eleman    |     +16 byte    |         +8 byte         |
 
 !!! note "forward_list — C Felsefesi"
     Ham C tek yönlü bağlı listesinden daha fazla bellek kaplamasın ve yavaş olmasın ilkesiyle tasarlanmıştır. `push_back` yoktur (sona gitmek O(N)); `insert_after`/`erase_after` kullanılır.
@@ -716,12 +716,12 @@ std::array<int, 5> kopya = arr;  // Ham C dizisinin aksine doğrudan kopyalanabi
 
 İç yapı: **Red-Black Tree** (Self-balancing BST). Otomatik sıralama, O(log N) arama/ekleme/silme.
 
-| Container | Anahtar | Tekrar | Operatör[] |
-|-----------|:-------:|:------:|:----------:|
-| `set` | Değerin kendisi | ✗ | ✗ |
-| `multiset` | Değerin kendisi | ✓ | ✗ |
-| `map` | Key (unique) | ✗ (key) | ✓ |
-| `multimap` | Key (non-unique) | ✓ | ✗ |
+| Container  |     Anahtar      |  Tekrar | Operatör[] |
+| ---------- | :--------------: | :-----: | :--------: |
+| `set`      | Değerin kendisi  |    ✗    |     ✗      |
+| `multiset` | Değerin kendisi  |    ✓    |     ✗      |
+| `map`      |   Key (unique)   | ✗ (key) |     ✓      |
+| `multimap` | Key (non-unique) |    ✓    |     ✗      |
 
 !!! tip "map operator[]"
     `m[key]` key yoksa **varsayılan değerle oluşturur**. Sadece kontrol edecekseniz `find()` veya `contains()` (C++20) kullanın.
@@ -730,17 +730,17 @@ std::array<int, 5> kopya = arr;  // Ham C dizisinin aksine doğrudan kopyalanabi
 
 İç yapı: **Hash Table**. Ortalama O(1) arama/ekleme/silme; sıralama garantisi yok.
 
-| Container | Anahtar | Tekrar |
-|-----------|:-------:|:------:|
-| `unordered_set` | Değerin kendisi | ✗ |
-| `unordered_map` | Key (unique) | ✗ |
+| Container       |     Anahtar     | Tekrar |
+| --------------- | :-------------: | :----: |
+| `unordered_set` | Değerin kendisi |   ✗    |
+| `unordered_map` |   Key (unique)  |   ✗    |
 
-| | `map` / `set` | `unordered_map` / `unordered_set` |
-|--|:------------:|:---------------------------------:|
-| Veri Yapısı | Red-Black Tree | Hash Table |
-| Arama | O(log N) | Ortalama O(1) |
-| Sıralama | ✓ (otomatik) | ✗ |
-| Range sorgusu | ✓ | ✗ |
+|               | `map` / `set`  | `unordered_map` / `unordered_set` |
+| ------------- | :------------: | :-------------------------------: |
+| Veri Yapısı   | Red-Black Tree |             Hash Table            |
+| Arama         |    O(log N)    |           Ortalama O(1)           |
+| Sıralama      |  ✓ (otomatik)  |                 ✗                 |
+| Range sorgusu |       ✓        |                 ✗                 |
 
 !!! tip "Ne Zaman Hangisini Kullanmak Gerekir?"
     - Sıralama veya range sorgusu gerekiyorsa → `map`/`set`
@@ -748,46 +748,46 @@ std::array<int, 5> kopya = arr;  // Ham C dizisinin aksine doğrudan kopyalanabi
 
 ### Container Adaptors
 
-| Adaptor | Prensibi | Arka Planda | Temel Operasyonlar |
-|---------|:--------:|:-----------:|--------------------|
-| `stack` | LIFO | `deque` | `push`, `pop`, `top` |
-| `queue` | FIFO | `deque` | `push`, `pop`, `front`, `back` |
-| `priority_queue` | Öncelikli FIFO | `vector` + heap | `push`, `pop`, `top` |
+| Adaptor          |    Prensibi    |   Arka Planda   | Temel Operasyonlar             |
+| ---------------- | :------------: | :-------------: | ------------------------------ |
+| `stack`          |      LIFO      |     `deque`     | `push`, `pop`, `top`           |
+| `queue`          |      FIFO      |     `deque`     | `push`, `pop`, `front`, `back` |
+| `priority_queue` | Öncelikli FIFO | `vector` + heap | `push`, `pop`, `top`           |
 
 ### STL Algorithms
 
-| Algoritma | Karmaşıklık | Açıklama |
-|-----------|:-----------:|---------|
-| `std::sort` | O(N log N) | Sıralar |
-| `std::find` | O(N) | İlk eşleşmede durur, iterator döner |
-| `std::count` | O(N) | Sona kadar gider, sayı döner |
-| `std::transform` | O(N) | Her elemanı fonksiyondan geçirir |
-| `std::accumulate` | O(N) | Elemanları tek değere indirger (`<numeric>`) |
-| `std::remove` / `std::remove_if` | O(N) | Erase-Remove idiom için kullanılır |
+| Algoritma                        | Karmaşıklık | Açıklama                                     |
+| -------------------------------- | :---------: | -------------------------------------------- |
+| `std::sort`                      |  O(N log N) | Sıralar                                      |
+| `std::find`                      |     O(N)    | İlk eşleşmede durur, iterator döner          |
+| `std::count`                     |     O(N)    | Sona kadar gider, sayı döner                 |
+| `std::transform`                 |     O(N)    | Her elemanı fonksiyondan geçirir             |
+| `std::accumulate`                |     O(N)    | Elemanları tek değere indirger (`<numeric>`) |
+| `std::remove` / `std::remove_if` |     O(N)    | Erase-Remove idiom için kullanılır           |
 
 ---
 
 ## Modern C++ (C++11 ve Sonrası)
 
-| Özellik | Versiyon | Açıklama |
-|---------|:--------:|---------|
-| `auto` | C++11 | Derleme zamanında tip çıkarımı; runtime maliyeti yok |
-| `decltype` | C++11 | İfadenin tam tipini const/ref ile birlikte verir |
-| Lambda | C++11 | İsimsiz fonksiyon nesneleri |
-| `nullptr` | C++11 | Tip güvenli null pointer sabiti |
-| Smart Pointers | C++11 | `unique_ptr`, `shared_ptr`, `weak_ptr` |
-| `constexpr` | C++11 | Derleme zamanı sabit |
-| Range-based for | C++11 | `for (auto& x : container)` |
-| `std::move` | C++11 | Nesneyi kopyalamadan taşır |
-| `=default`/`=delete` | C++11 | Özel üyeleri açıkça yönetir |
-| Variadic Templates | C++11 | Değişken sayıda şablon argümanı |
-| `std::atomic` | C++11 | Lock-free senkronizasyon |
-| `[[maybe_unused]]` | C++17 | Kullanılmayan sembol uyarısını bastırır |
-| CTAD | C++17 | Sınıf şablon argümanı otomatik çıkarımı |
-| Structured Bindings | C++17 | `auto [key, val] = pair;` |
-| `consteval` | C++20 | Derleme zamanında zorunlu değerlendirme |
-| `<=>` Spaceship | C++20 | Üç yönlü karşılaştırma operatörü |
-| `contains()` | C++20 | Associative container varlık kontrolü |
+| Özellik              | Versiyon | Açıklama                                             |
+| -------------------- | :------: | ---------------------------------------------------- |
+| `auto`               |  C++11   | Derleme zamanında tip çıkarımı; runtime maliyeti yok |
+| `decltype`           |  C++11   | İfadenin tam tipini const/ref ile birlikte verir     |
+| Lambda               |  C++11   | İsimsiz fonksiyon nesneleri                          |
+| `nullptr`            |  C++11   | Tip güvenli null pointer sabiti                      |
+| Smart Pointers       |  C++11   | `unique_ptr`, `shared_ptr`, `weak_ptr`               |
+| `constexpr`          |  C++11   | Derleme zamanı sabit                                 |
+| Range-based for      |  C++11   | `for (auto& x : container)`                          |
+| `std::move`          |  C++11   | Nesneyi kopyalamadan taşır                           |
+| `=default`/`=delete` |  C++11   | Özel üyeleri açıkça yönetir                          |
+| Variadic Templates   |  C++11   | Değişken sayıda şablon argümanı                      |
+| `std::atomic`        |  C++11   | Lock-free senkronizasyon                             |
+| `[[maybe_unused]]`   |  C++17   | Kullanılmayan sembol uyarısını bastırır              |
+| CTAD                 |  C++17   | Sınıf şablon argümanı otomatik çıkarımı              |
+| Structured Bindings  |  C++17   | `auto [key, val] = pair;`                            |
+| `consteval`          |  C++20   | Derleme zamanında zorunlu değerlendirme              |
+| `<=>` Spaceship      |  C++20   | Üç yönlü karşılaştırma operatörü                     |
+| `contains()`         |  C++20   | Associative container varlık kontrolü                |
 
 ---
 
@@ -797,10 +797,10 @@ Modern C++ bellek güvenliğinin temel felsefesidir: **Bir kaynak edinildiğinde
 
 C++'ta fonksiyon sonlandığında (normal veya exception ile), kapsamdaki tüm yerel nesnelerin destructor'ları otomatik çağrılır — **Stack Unwinding**. RAII bu garantiyi kullanarak kaynak yönetimini otomatize eder.
 
-| Kaynak Türü | RAII Sınıfı |
-|-------------|------------|
-| Bellek | `std::unique_ptr`, `std::shared_ptr` |
-| Dosya | `std::ifstream`, `std::ofstream` |
+| Kaynak Türü  | RAII Sınıfı                           |
+| ------------ | ------------------------------------- |
+| Bellek       | `std::unique_ptr`, `std::shared_ptr`  |
+| Dosya        | `std::ifstream`, `std::ofstream`      |
 | Mutex kilidi | `std::lock_guard`, `std::unique_lock` |
 
 ```cpp
@@ -831,14 +831,14 @@ t.join();     // Ana thread bekler, t biter → kaynaklar temizlenir
 
 ### Senkronizasyon Mekanizmaları
 
-| Mekanizma | Açıklama | Ne Zaman |
-|-----------|---------|---------|
-| `std::mutex` | Temel kilit; critical section'a tek thread | Genel amaçlı koruma |
-| `std::recursive_mutex` | Aynı thread aynı kilidi tekrar alabilir | Recursive fonksiyonlar |
-| `std::shared_mutex` | Çok okuyucu / tek yazıcı (Reader-Writer) | Ağırlıklı okuma senaryoları |
-| `std::lock_guard` | RAII mutex wrapper; scope bitince kilit açılır | Basit critical section |
-| `std::unique_lock` | `lock_guard`'dan esnek; defer/try lock destekler | Karmaşık kilit senaryoları |
-| `std::atomic<T>` | Lock-free; CPU donanımsal atomik işlem | Sayaç, flag gibi basit tipler |
+| Mekanizma              | Açıklama                                         | Ne Zaman                      |
+| ---------------------- | ------------------------------------------------ | ----------------------------- |
+| `std::mutex`           | Temel kilit; critical section'a tek thread       | Genel amaçlı koruma           |
+| `std::recursive_mutex` | Aynı thread aynı kilidi tekrar alabilir          | Recursive fonksiyonlar        |
+| `std::shared_mutex`    | Çok okuyucu / tek yazıcı (Reader-Writer)         | Ağırlıklı okuma senaryoları   |
+| `std::lock_guard`      | RAII mutex wrapper; scope bitince kilit açılır   | Basit critical section        |
+| `std::unique_lock`     | `lock_guard`'dan esnek; defer/try lock destekler | Karmaşık kilit senaryoları    |
+| `std::atomic<T>`       | Lock-free; CPU donanımsal atomik işlem           | Sayaç, flag gibi basit tipler |
 
 ```cpp
 std::mutex  mtx;
@@ -903,10 +903,10 @@ void consumer() {
 
 ### Futures ve Async
 
-| | `std::async` | `std::promise` / `std::future` |
-|--|:------------:|:------------------------------:|
-| Kullanım kolaylığı | ✓ (yüksek seviye) | Manuel kontrol |
-| Dönüş değeri | `std::future<T>` | `future` ile `promise`'i çiftle |
+|                    |    `std::async`   |  `std::promise` / `std::future` |
+| ------------------ | :---------------: | :-----------------------------: |
+| Kullanım kolaylığı | ✓ (yüksek seviye) |          Manuel kontrol         |
+| Dönüş değeri       |  `std::future<T>` | `future` ile `promise`'i çiftle |
 
 ```cpp
 // std::async — arka planda çalıştır, sonucu future ile al
@@ -1045,8 +1045,8 @@ T topla(T a, T b) { return a + b; }
 // SFINAE ile aynı hata onlarca satır karmaşık mesaj olurdu
 ```
 
-| | SFINAE | Concepts |
-|--|:------:|:--------:|
-| Hata mesajı | Karmaşık ve uzun | Net ve okunabilir |
-| Sözdizimi | `enable_if`, `void_t` karmaşası | `requires` / `concept` anahtar kelimeleri |
-| Versiyon | C++98+ | C++20 |
+|             |              SFINAE             |                  Concepts                 |
+| ----------- | :-----------------------------: | :---------------------------------------: |
+| Hata mesajı |         Karmaşık ve uzun        |             Net ve okunabilir             |
+| Sözdizimi   | `enable_if`, `void_t` karmaşası | `requires` / `concept` anahtar kelimeleri |
+| Versiyon    |              C++98+             |                   C++20                   |

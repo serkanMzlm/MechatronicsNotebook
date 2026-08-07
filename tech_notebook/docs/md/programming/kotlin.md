@@ -51,10 +51,10 @@ graph LR
 
 ### Değişkenler
 
-| Anahtar Kelime | Anlam | Açıklama |
-|----------------|-------|---------|
-| `val` | Value (değer) | Atandıktan sonra değiştirilemez (read-only) |
-| `var` | Variable (değişken) | Değiştirilebilir |
+| Anahtar Kelime | Anlam               | Açıklama                                    |
+| -------------- | ------------------- | ------------------------------------------- |
+| `val`          | Value (değer)       | Atandıktan sonra değiştirilemez (read-only) |
+| `var`          | Variable (değişken) | Değiştirilebilir                            |
 
 !!! tip "val vs const val"
     `val` runtime'da belirlenir; `const val` derleme zamanında sabit olup yalnızca `String` ve temel tip (`Int`, `Double` vb.) alır. `const val` yalnızca top-level veya `object` içinde tanımlanabilir.
@@ -76,20 +76,20 @@ println("Yaş + 1 = ${yas + 1}")  // Expression için {}
 
 ### Tip Sistemi
 
-| Kotlin Tipi | Boyut | Not |
-|-------------|-------|-----|
-| `Byte` | 8-bit | -128..127 |
-| `Short` | 16-bit | |
-| `Int` | 32-bit | Varsayılan tam sayı |
-| `Long` | 64-bit | Literal: `100L` |
-| `Float` | 32-bit | Literal: `3.14f` |
-| `Double` | 64-bit | Varsayılan ondalık |
-| `Boolean` | — | `true` / `false` |
-| `Char` | 16-bit | Unicode; `'A'` |
-| `String` | — | Immutable; UTF-16 |
-| `Any` | — | Tüm tiplerin üst sınıfı (Java `Object`) |
-| `Unit` | — | `void` karşılığı |
-| `Nothing` | — | Asla değer döndürmez; `throw` ve sonsuz döngü |
+| Kotlin Tipi | Boyut  | Not                                           |
+| ----------- | ------ | --------------------------------------------- |
+| `Byte`      | 8-bit  | -128..127                                     |
+| `Short`     | 16-bit |                                               |
+| `Int`       | 32-bit | Varsayılan tam sayı                           |
+| `Long`      | 64-bit | Literal: `100L`                               |
+| `Float`     | 32-bit | Literal: `3.14f`                              |
+| `Double`    | 64-bit | Varsayılan ondalık                            |
+| `Boolean`   | —      | `true` / `false`                              |
+| `Char`      | 16-bit | Unicode; `'A'`                                |
+| `String`    | —      | Immutable; UTF-16                             |
+| `Any`       | —      | Tüm tiplerin üst sınıfı (Java `Object`)       |
+| `Unit`      | —      | `void` karşılığı                              |
+| `Nothing`   | —      | Asla değer döndürmez; `throw` ve sonsuz döngü |
 
 !!! note "Sayı Gösterimleri"
     ```kotlin
@@ -104,13 +104,13 @@ println("Yaş + 1 = ${yas + 1}")  // Expression için {}
 
 Kotlin'in en kritik özelliğidir. Tip sistemi, nullable ve non-nullable değerleri derleme zamanında birbirinden ayırır.
 
-| Operatör | İsim | Açıklama |
-|----------|------|---------|
-| `T?` | Nullable tip | `null` değeri alabilir |
-| `?.` | Safe call | Null ise atlar, `null` döner |
-| `?:` | Elvis | Null ise sağ taraftaki değeri kullanır |
-| `!!` | Not-null assertion | Null ise `NullPointerException` fırlatır |
-| `as?` | Safe cast | Dönüşüm başarısızsa `null` döner |
+| Operatör | İsim               | Açıklama                                 |
+| -------- | ------------------ | ---------------------------------------- |
+| `T?`     | Nullable tip       | `null` değeri alabilir                   |
+| `?.`     | Safe call          | Null ise atlar, `null` döner             |
+| `?:`     | Elvis              | Null ise sağ taraftaki değeri kullanır   |
+| `!!`     | Not-null assertion | Null ise `NullPointerException` fırlatır |
+| `as?`    | Safe cast          | Dönüşüm başarısızsa `null` döner         |
 
 ```kotlin
 val isim: String? = null
@@ -138,12 +138,12 @@ val n: Int?    = nesne as? Int       // null — fırlatmaz
 
 ### Ranges ve Progressions
 
-| Sözdizimi | Aralık | Açıklama |
-|-----------|--------|---------|
-| `1..10` | 1 ≤ x ≤ 10 | Başlangıç ve bitiş dahil |
-| `1 until 10` | 1 ≤ x < 10 | Bitiş hariç |
-| `10 downTo 1` | 10 ≥ x ≥ 1 | Geriye doğru |
-| `1..10 step 2` | 1, 3, 5, 7, 9 | Adım belirleme |
+| Sözdizimi      | Aralık        | Açıklama                 |
+| -------------- | ------------- | ------------------------ |
+| `1..10`        | 1 ≤ x ≤ 10    | Başlangıç ve bitiş dahil |
+| `1 until 10`   | 1 ≤ x < 10    | Bitiş hariç              |
+| `10 downTo 1`  | 10 ≥ x ≥ 1    | Geriye doğru             |
+| `1..10 step 2` | 1, 3, 5, 7, 9 | Adım belirleme           |
 
 ```kotlin
 for (i in 1..5) print("$i ")         // 1 2 3 4 5
@@ -333,12 +333,12 @@ class Kisi(
 
 ### Visibility Modifiers
 
-| Modifier | Sınıf | Top-Level |
-|----------|-------|-----------|
-| `public` | Herkes görür (varsayılan) | Herkes görür |
-| `private` | Yalnızca bu sınıf | Yalnızca bu dosya |
-| `protected` | Bu sınıf + alt sınıflar | Kullanılamaz |
-| `internal` | Aynı modül | Aynı modül |
+| Modifier    | Sınıf                     | Top-Level         |
+| ----------- | ------------------------- | ----------------- |
+| `public`    | Herkes görür (varsayılan) | Herkes görür      |
+| `private`   | Yalnızca bu sınıf         | Yalnızca bu dosya |
+| `protected` | Bu sınıf + alt sınıflar   | Kullanılamaz      |
+| `internal`  | Aynı modül                | Aynı modül        |
 
 ### Data Class
 
@@ -459,13 +459,13 @@ class UcanBalik : Sekil(), Ucabilir, Yuzebi_lir {
 }
 ```
 
-| | Abstract Class | Interface |
-|--|:--------------:|:---------:|
-| Miras/Implementation | Tek | Sınırsız |
-| Constructor | ✓ | ✗ |
-| State (backing field) | ✓ | ✗ |
-| Varsayılan gövde | ✓ | ✓ (Kotlin) |
-| İlişki | "is-a" | "can-do" |
+|                       | Abstract Class | Interface  |
+| --------------------- | :------------: | :--------: |
+| Miras/Implementation  |      Tek       |  Sınırsız  |
+| Constructor           |       ✓        |     ✗      |
+| State (backing field) |       ✓        |     ✗      |
+| Varsayılan gövde      |       ✓        | ✓ (Kotlin) |
+| İlişki                |     "is-a"     |  "can-do"  |
 
 ---
 
@@ -473,13 +473,13 @@ class UcanBalik : Sekil(), Ucabilir, Yuzebi_lir {
 
 ### Immutable vs Mutable
 
-| Immutable | Mutable | Açıklama |
-|-----------|---------|---------|
-| `listOf` | `mutableListOf` | Sıralı, tekrar eden |
-| `setOf` | `mutableSetOf` | Sırasız, benzersiz |
-| `mapOf` | `mutableMapOf` | Anahtar-değer |
-| `arrayOf` | `Array<T>` | Sabit boyut |
-| `intArrayOf` | — | Primitive int dizisi |
+| Immutable    | Mutable         | Açıklama             |
+| ------------ | --------------- | -------------------- |
+| `listOf`     | `mutableListOf` | Sıralı, tekrar eden  |
+| `setOf`      | `mutableSetOf`  | Sırasız, benzersiz   |
+| `mapOf`      | `mutableMapOf`  | Anahtar-değer        |
+| `arrayOf`    | `Array<T>`      | Sabit boyut          |
+| `intArrayOf` | —               | Primitive int dizisi |
 
 !!! note "Kotlin Koleksiyon Felsefesi"
     Kotlin standart kütüphanesi Java koleksiyonlarını wrap eder; ek bir runtime maliyet olmaz. `listOf()` gerçekte `java.util.List` döner — sadece read-only görünüm sağlar.
@@ -554,13 +554,13 @@ listOf(1..1_000_000)
 
 Nesne bağlamında lambda çalıştırmak için; farklı `this`/`it` ve dönüş değeri semantiği.
 
-| Fonksiyon | Referans | Dönüş | Kullanım |
-|-----------|:--------:|:-----:|---------|
-| `let` | `it` | Lambda sonucu | Null check, dönüşüm zinciri |
-| `run` | `this` | Lambda sonucu | Nesne başlatma + hesaplama |
-| `with` | `this` | Lambda sonucu | Receiver olmadan, grup işlem |
-| `apply` | `this` | Nesnenin kendisi | Nesne yapılandırma (builder) |
-| `also` | `it` | Nesnenin kendisi | Side effect (log, debug) |
+| Fonksiyon | Referans |      Dönüş       | Kullanım                     |
+| --------- | :------: | :--------------: | ---------------------------- |
+| `let`     |   `it`   |  Lambda sonucu   | Null check, dönüşüm zinciri  |
+| `run`     |  `this`  |  Lambda sonucu   | Nesne başlatma + hesaplama   |
+| `with`    |  `this`  |  Lambda sonucu   | Receiver olmadan, grup işlem |
+| `apply`   |  `this`  | Nesnenin kendisi | Nesne yapılandırma (builder) |
+| `also`    |   `it`   | Nesnenin kendisi | Side effect (log, debug)     |
 
 ```kotlin
 // let — nullable ile kullanım
@@ -609,11 +609,11 @@ maksimum("Ali", "Veli") // Veli
 
 ### Variance (in / out / *)
 
-| | Kullanım | Açıklama |
-|--|:--------:|---------|
-| `out T` (Covariant) | Yalnızca üretir (döndürür) | `List<out Animal>` → `List<Dog>` atanabilir |
-| `in T` (Contravariant) | Yalnızca tüketir (alır) | `Comparable<in String>` |
-| `*` (Star Projection) | Tip bilinmiyor | `List<*>` — okuma güvenli |
+|                        |          Kullanım          | Açıklama                                    |
+| ---------------------- | :------------------------: | ------------------------------------------- |
+| `out T` (Covariant)    | Yalnızca üretir (döndürür) | `List<out Animal>` → `List<Dog>` atanabilir |
+| `in T` (Contravariant) |  Yalnızca tüketir (alır)   | `Comparable<in String>`                     |
+| `*` (Star Projection)  |       Tip bilinmiyor       | `List<*>` — okuma güvenli                   |
 
 ```kotlin
 // Covariant — sadece döndürür
@@ -652,20 +652,20 @@ stateDiagram-v2
 
 ### Dispatcher'lar
 
-| Dispatcher | Kullanım | Thread Havuzu |
-|-----------|---------|--------------|
-| `Dispatchers.Main` | UI güncellemeleri (Android) | Ana thread |
-| `Dispatchers.IO` | Ağ, dosya, veritabanı | Geniş havuz (64+) |
-| `Dispatchers.Default` | CPU-bound hesaplama | CPU çekirdeği sayısı kadar |
-| `Dispatchers.Unconfined` | Test veya özel kullanım | Kısıtlama yok |
+| Dispatcher               | Kullanım                    | Thread Havuzu              |
+| ------------------------ | --------------------------- | -------------------------- |
+| `Dispatchers.Main`       | UI güncellemeleri (Android) | Ana thread                 |
+| `Dispatchers.IO`         | Ağ, dosya, veritabanı       | Geniş havuz (64+)          |
+| `Dispatchers.Default`    | CPU-bound hesaplama         | CPU çekirdeği sayısı kadar |
+| `Dispatchers.Unconfined` | Test veya özel kullanım     | Kısıtlama yok              |
 
 ### launch vs async
 
-| | `launch` | `async` |
-|--|:--------:|:-------:|
-| Dönüş | `Job` | `Deferred<T>` |
-| Sonuç alma | — | `.await()` |
-| Kullanım | "Fire and forget" | Değer bekleniyorsa |
+|            |      `launch`     |      `async`       |
+| ---------- | :---------------: | :----------------: |
+| Dönüş      |       `Job`       |   `Deferred<T>`    |
+| Sonuç alma |         —         |     `.await()`     |
+| Kullanım   | "Fire and forget" | Değer bekleniyorsa |
 
 ```kotlin
 // launch — Job döner; dönüş değeri yok
@@ -740,11 +740,11 @@ private val _olaylar = MutableSharedFlow<UIEvent>()
 val olaylar = _olaylar.asSharedFlow()
 ```
 
-| | `StateFlow` | `SharedFlow` |
-|--|:-----------:|:------------:|
-| Başlangıç değeri | Zorunlu | İsteğe bağlı |
+|                  |          `StateFlow`           |      `SharedFlow`      |
+| ---------------- | :----------------------------: | :--------------------: |
+| Başlangıç değeri |            Zorunlu             |      İsteğe bağlı      |
 | Son değer replay | 1 (değişmeyenler emit edilmez) | Ayarlanabilir `replay` |
-| Kullanım | UI state | Tek seferlik olaylar |
+| Kullanım         |            UI state            |  Tek seferlik olaylar  |
 
 ### Exception Handling
 
@@ -802,11 +802,11 @@ graph LR
     style DT fill:#4CAF50,color:#fff
 ```
 
-| Katman | Sorumluluk | Bileşenler |
-|--------|-----------|-----------|
-| **Domain** | İş mantığı; bağımsız | UseCase, Model (Entity), Repository Interface |
-| **Data** | Veri kaynakları | Repository Impl, DTO, Mapper, API, Database |
-| **Presentation** | Kullanıcı arayüzü | ViewModel, Activity/Fragment, UI State |
+| Katman           | Sorumluluk           | Bileşenler                                    |
+| ---------------- | -------------------- | --------------------------------------------- |
+| **Domain**       | İş mantığı; bağımsız | UseCase, Model (Entity), Repository Interface |
+| **Data**         | Veri kaynakları      | Repository Impl, DTO, Mapper, API, Database   |
+| **Presentation** | Kullanıcı arayüzü    | ViewModel, Activity/Fragment, UI State        |
 
 ```
 com.proje/
@@ -832,13 +832,13 @@ com.proje/
 
 ### Hangi Katmana Nereye Koymalı?
 
-| Soru | Evet → Katman |
-|------|---------------|
-| Kullanıcı bunu ekranında görüyor mu? | `presentation/` |
-| Uygulamanın yapabildiği tekil bir iş mi? | `domain/usecase/` |
-| API veya veritabanıyla konuşuyor mu? | `data/` |
-| Her yerden erişilen genel araç mı? | `core/` veya `util/` |
-| Ekran kapansa bile arka planda çalışmalı mı? | `service/` |
+| Soru                                         | Evet → Katman        |
+| -------------------------------------------- | -------------------- |
+| Kullanıcı bunu ekranında görüyor mu?         | `presentation/`      |
+| Uygulamanın yapabildiği tekil bir iş mi?     | `domain/usecase/`    |
+| API veya veritabanıyla konuşuyor mu?         | `data/`              |
+| Her yerden erişilen genel araç mı?           | `core/` veya `util/` |
+| Ekran kapansa bile arka planda çalışmalı mı? | `service/`           |
 
 ---
 
@@ -901,14 +901,14 @@ dependencies {
 </manifest>
 ```
 
-| Bölüm | Açıklama |
-|-------|---------|
-| `<uses-permission>` | Sistem izinleri (internet, kamera, konum) |
-| `<application>` | Uygulama geneli ayarlar (ikon, tema, isim) |
-| `<activity>` | Her Activity kayıtlı olmalı; `exported=true` dışarıdan erişilebilir |
-| `<service>` | Arka plan servisleri |
-| `<receiver>` | Broadcast receiver'lar |
-| `<provider>` | Content provider'lar |
+| Bölüm               | Açıklama                                                            |
+| ------------------- | ------------------------------------------------------------------- |
+| `<uses-permission>` | Sistem izinleri (internet, kamera, konum)                           |
+| `<application>`     | Uygulama geneli ayarlar (ikon, tema, isim)                          |
+| `<activity>`        | Her Activity kayıtlı olmalı; `exported=true` dışarıdan erişilebilir |
+| `<service>`         | Arka plan servisleri                                                |
+| `<receiver>`        | Broadcast receiver'lar                                              |
+| `<provider>`        | Content provider'lar                                                |
 
 ### Logcat
 
@@ -924,13 +924,13 @@ Log.w(ETIKET, "Warning — uyarı durumu")     // Uyarı
 Log.e(ETIKET, "Error — hata!", exception)   // Hata
 ```
 
-| Seviye | Kısaltma | Kullanım |
-|--------|:--------:|---------|
-| Verbose | `V` | En ayrıntılı; sadece geliştirmede |
-| Debug | `D` | Debug bilgisi |
-| Info | `I` | Önemli olaylar |
-| Warning | `W` | Potansiyel sorun |
-| Error | `E` | Hata durumu |
+| Seviye  | Kısaltma | Kullanım                          |
+| ------- | :------: | --------------------------------- |
+| Verbose |   `V`    | En ayrıntılı; sadece geliştirmede |
+| Debug   |   `D`    | Debug bilgisi                     |
+| Info    |   `I`    | Önemli olaylar                    |
+| Warning |   `W`    | Potansiyel sorun                  |
+| Error   |   `E`    | Hata durumu                       |
 
 !!! tip "BuildConfig ile Production Log Kapatma"
     ```kotlin

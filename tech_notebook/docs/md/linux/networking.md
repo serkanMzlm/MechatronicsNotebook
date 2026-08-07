@@ -18,21 +18,21 @@ graph LR
 
 ### IP Adresleri ve Sınıfları
 
-| Sınıf | Aralık | Kullanım |
-|:-----:|--------|---------|
-| A | 0.0.0.0 – 127.255.255.255 | Çok büyük ağlar |
-| B | 128.0.0.0 – 191.255.255.255 | Orta boy ağlar |
-| C | 192.0.0.0 – 223.255.255.255 | Küçük ağlar |
-| D | 224.0.0.0 – 239.255.255.255 | Multicast |
-| E | 240.0.0.0 – 255.255.255.255 | Deneysel / rezerve |
+| Sınıf | Aralık                      | Kullanım           |
+| :---: | --------------------------- | ------------------ |
+|   A   | 0.0.0.0 – 127.255.255.255   | Çok büyük ağlar    |
+|   B   | 128.0.0.0 – 191.255.255.255 | Orta boy ağlar     |
+|   C   | 192.0.0.0 – 223.255.255.255 | Küçük ağlar        |
+|   D   | 224.0.0.0 – 239.255.255.255 | Multicast          |
+|   E   | 240.0.0.0 – 255.255.255.255 | Deneysel / rezerve |
 
-| Özel Adres | Anlamı |
-|:----------:|--------|
-| `127.0.0.1` | Loopback (kendi cihaz) |
-| `169.254.x.x` | Link-local (APIPA — DHCP yoksa) |
-| `10.x.x.x`, `172.16-31.x.x`, `192.168.x.x` | Özel (Private) ağlar |
-| `0.0.0.0` | Tüm arayüzleri dinle |
-| `255.255.255.255` | Broadcast |
+|                 Özel Adres                 | Anlamı                          |
+| :----------------------------------------: | ------------------------------- |
+|                `127.0.0.1`                 | Loopback (kendi cihaz)          |
+|               `169.254.x.x`                | Link-local (APIPA — DHCP yoksa) |
+| `10.x.x.x`, `172.16-31.x.x`, `192.168.x.x` | Özel (Private) ağlar            |
+|                 `0.0.0.0`                  | Tüm arayüzleri dinle            |
+|             `255.255.255.255`              | Broadcast                       |
 
 ### Subnet Mask ve CIDR
 
@@ -45,13 +45,13 @@ Mask: 255.255.255.0  →  /24
 /24 → ilk 24 bit ağ, son 8 bit host → 254 kullanılabilir host
 ```
 
-| CIDR | Subnet Mask | Host Sayısı |
-|:----:|:-----------:|:-----------:|
-| /8 | 255.0.0.0 | 16.777.214 |
-| /16 | 255.255.0.0 | 65.534 |
-| /24 | 255.255.255.0 | 254 |
-| /28 | 255.255.255.240 | 14 |
-| /30 | 255.255.255.252 | 2 |
+| CIDR |   Subnet Mask   | Host Sayısı |
+| :--: | :-------------: | :---------: |
+|  /8  |    255.0.0.0    |  16.777.214 |
+| /16  |   255.255.0.0   |    65.534   |
+| /24  |  255.255.255.0  |     254     |
+| /28  | 255.255.255.240 |      14     |
+| /30  | 255.255.255.252 |      2      |
 
 ### MAC Adresi
 
@@ -102,11 +102,11 @@ ip -s link          # Paket sayaçları
 ```
 
 !!! tip "ifconfig'den ip'ye Geçiş"
-    | eski | yeni |
-    |------|------|
-    | `ifconfig` | `ip addr` |
-    | `route -n` | `ip route` |
-    | `arp -n` | `ip neigh` |
+    | eski                    | yeni                       |
+    | ----------------------- | -------------------------- |
+    | `ifconfig`              | `ip addr`                  |
+    | `route -n`              | `ip route`                 |
+    | `arp -n`                | `ip neigh`                 |
     | `ifconfig eth0 up/down` | `ip link set eth0 up/down` |
 
 ---
@@ -197,13 +197,13 @@ ss -s        # Özet istatistik
 ss -tnp state established '( dport = :80 or sport = :80 )'
 ```
 
-| Bayrak | Anlam |
-|:------:|-------|
-| `-l` | Listening (dinleyen) socket'ler |
-| `-n` | Numeric (DNS çözme yapma) |
-| `-t` | TCP |
-| `-u` | UDP |
-| `-p` | Process (PID ve uygulama adı) |
+| Bayrak | Anlam                           |
+| :----: | ------------------------------- |
+|  `-l`  | Listening (dinleyen) socket'ler |
+|  `-n`  | Numeric (DNS çözme yapma)       |
+|  `-t`  | TCP                             |
+|  `-u`  | UDP                             |
+|  `-p`  | Process (PID ve uygulama adı)   |
 
 ---
 
@@ -323,14 +323,14 @@ sudo sshd -t                     # Yapılandırmayı doğrula
     rsync -avz -e "ssh -p 2222" /src/ user@host:/dst/
     ```
 
-    | Bayrak | Anlam |
-    |:------:|-------|
-    | `-a` | Arşiv (izin, tarih, semlink koru) |
-    | `-v` | Ayrıntılı çıktı |
-    | `-z` | Aktarımda sıkıştır |
-    | `--delete` | Hedefte fazla olan dosyaları sil |
-    | `--progress` | İlerleme göster |
-    | `--dry-run` | Gerçekten yazmadan simülasyon |
+    |    Bayrak    | Anlam                             |
+    | :----------: | --------------------------------- |
+    |     `-a`     | Arşiv (izin, tarih, semlink koru) |
+    |     `-v`     | Ayrıntılı çıktı                   |
+    |     `-z`     | Aktarımda sıkıştır                |
+    |  `--delete`  | Hedefte fazla olan dosyaları sil  |
+    | `--progress` | İlerleme göster                   |
+    | `--dry-run`  | Gerçekten yazmadan simülasyon     |
 
 === "FTP / SFTP"
 

@@ -54,14 +54,14 @@ Aktivasyon fonksiyonu olmadan, ne kadar çok katman eklerseniz ekleyin, ağ tek 
 
 **Sezgi:** Doğrusal olmama olmadan, sinir ağı ne kadar derin olursa olsun verinin üzerine sadece düz bir çizgi çizebilir. Aktivasyon fonksiyonu bu çizgiyi kıvırma yeteneği kazandırır; karmaşık sınırlar çizebilir.
 
-| Fonksiyon | Çıktı Aralığı | Tipik Kullanım | Önemli Özellik |
-|-----------|:------------:|:--------------:|----------------|
-| **Sigmoid** | (0, 1) | İkili sınıflandırma çıkış katmanı | Olasılık yorumu doğal; derin ağlarda gradyan kaybına yol açar |
-| **Tanh** | (-1, 1) | RNN gizli katmanlar | Sigmoid'den daha iyi: ortalama sıfır, daha güçlü gradyanlar |
-| **ReLU** | [0, ∞) | CNN ve MLP gizli katmanlar | Hesaplaması basit, hızlı; derin ağların standardı |
-| **Leaky ReLU** | (-∞, ∞) | ReLU alternatifi | Negatif girdi için küçük de olsa gradyan üretir |
-| **GELU** | (-∞, ∞) | Transformer (BERT, GPT) | ReLU'nun pürüzsüz versiyonu; son yıllarda tercih |
-| **Softmax** | (0, 1), toplam=1 | Çok sınıflı çıkış katmanı | Tüm sınıflar için olasılık dağılımı üretir |
+| Fonksiyon      |  Çıktı Aralığı   |           Tipik Kullanım          | Önemli Özellik                                                |
+| -------------- | :--------------: | :-------------------------------: | ------------------------------------------------------------- |
+| **Sigmoid**    |      (0, 1)      | İkili sınıflandırma çıkış katmanı | Olasılık yorumu doğal; derin ağlarda gradyan kaybına yol açar |
+| **Tanh**       |     (-1, 1)      |        RNN gizli katmanlar        | Sigmoid'den daha iyi: ortalama sıfır, daha güçlü gradyanlar   |
+| **ReLU**       |      [0, ∞)      |     CNN ve MLP gizli katmanlar    | Hesaplaması basit, hızlı; derin ağların standardı             |
+| **Leaky ReLU** |     (-∞, ∞)      |          ReLU alternatifi         | Negatif girdi için küçük de olsa gradyan üretir               |
+| **GELU**       |     (-∞, ∞)      |      Transformer (BERT, GPT)      | ReLU'nun pürüzsüz versiyonu; son yıllarda tercih              |
+| **Softmax**    | (0, 1), toplam=1 |     Çok sınıflı çıkış katmanı     | Tüm sınıflar için olasılık dağılımı üretir                    |
 
 !!! warning "Dying ReLU Sorunu"
     ReLU, negatif girdi için sıfır gradyan üretir. Bir nöron sürekli negatif değer alıyorsa asla güncellenmez — "ölmüş nöron" olur. **Leaky ReLU**, negatif tarafta küçük bir eğim (0.01) tutarak bunu çözer. **Batch Normalization** da bu riski önemli ölçüde azaltır.
@@ -183,15 +183,15 @@ graph LR
     POOL2 --> FLAT[Flatten] --> FC[Tam Bağlantılı] --> OUT[Çıktı\nSoftmax]
 ```
 
-| Katman | Ne Yapar | Neden Gerekli |
-|--------|---------|:-------------:|
-| **Conv2d** | Filtreler uygular, özellik haritası çıkarır | Uzamsal örüntüleri yakalar |
-| **BatchNorm** | Her mini-batch'i normalleştirir | Eğitimi hızlandırır, kararlı kılar |
-| **ReLU** | Negatif değerleri sıfırlar | Doğrusal olmama katar |
-| **MaxPool** | Bölgedeki en büyük değeri alır, boyutu küçültür | Konum hassasiyetini azaltır; hesaplamayı hızlandırır |
-| **Dropout** | Rastgele nöronları kapatır | Overfitting önler |
-| **Flatten** | 2D özellik haritasını 1D vektöre dönüştürür | FC katmana hazırlık |
-| **Linear (FC)** | Final sınıflandırma kararı | — |
+| Katman          | Ne Yapar                                        |                    Neden Gerekli                     |
+| --------------- | ----------------------------------------------- | :--------------------------------------------------: |
+| **Conv2d**      | Filtreler uygular, özellik haritası çıkarır     |              Uzamsal örüntüleri yakalar              |
+| **BatchNorm**   | Her mini-batch'i normalleştirir                 |          Eğitimi hızlandırır, kararlı kılar          |
+| **ReLU**        | Negatif değerleri sıfırlar                      |                Doğrusal olmama katar                 |
+| **MaxPool**     | Bölgedeki en büyük değeri alır, boyutu küçültür | Konum hassasiyetini azaltır; hesaplamayı hızlandırır |
+| **Dropout**     | Rastgele nöronları kapatır                      |                  Overfitting önler                   |
+| **Flatten**     | 2D özellik haritasını 1D vektöre dönüştürür     |                 FC katmana hazırlık                  |
+| **Linear (FC)** | Final sınıflandırma kararı                      |                          —                           |
 
 **Hiyerarşik özellik öğrenimi:**
 
@@ -222,15 +222,15 @@ Bu sayede gradyan iki yoldan geri akabilir: normal yol ve skip yol. Skip yol üz
 
 ### Popüler CNN Mimarileri
 
-| Mimari | Yıl | Parametre | Neden Önemli |
-|--------|:---:|:---------:|-------------|
-| **LeNet-5** | 1998 | 60 K | İlk modern CNN; el yazısı rakam tanıma |
-| **AlexNet** | 2012 | 60 M | ImageNet'i fethetti; derin öğrenme devrimini başlattı |
-| **VGG16** | 2014 | 138 M | Çok derin, çok parametreli; ama anlaşılması kolay yapı |
-| **GoogLeNet** | 2014 | 6.8 M | Inception modülü: farklı boyutlu filtreler paralel uygulanır |
-| **ResNet-50** | 2015 | 25 M | Skip Connection: gradyan doğrudan aktarılır, çok derin ağlar mümkün |
-| **EfficientNet** | 2019 | 5–66 M | Derinlik, genişlik ve çözünürlüğü birlikte dengeler |
-| **ConvNeXt** | 2022 | 29–350 M | Transformer fikirlerini CNN'e entegre eder |
+| Mimari           | Yıl  | Parametre | Neden Önemli                                                        |
+| ---------------- | :--: | :-------: | ------------------------------------------------------------------- |
+| **LeNet-5**      | 1998 |    60 K   | İlk modern CNN; el yazısı rakam tanıma                              |
+| **AlexNet**      | 2012 |    60 M   | ImageNet'i fethetti; derin öğrenme devrimini başlattı               |
+| **VGG16**        | 2014 |   138 M   | Çok derin, çok parametreli; ama anlaşılması kolay yapı              |
+| **GoogLeNet**    | 2014 |   6.8 M   | Inception modülü: farklı boyutlu filtreler paralel uygulanır        |
+| **ResNet-50**    | 2015 |    25 M   | Skip Connection: gradyan doğrudan aktarılır, çok derin ağlar mümkün |
+| **EfficientNet** | 2019 |   5–66 M  | Derinlik, genişlik ve çözünürlüğü birlikte dengeler                 |
+| **ConvNeXt**     | 2022 |  29–350 M | Transformer fikirlerini CNN'e entegre eder                          |
 
 ### Transfer Learning — Neden İşe Yarar?
 
@@ -240,12 +240,12 @@ Bu alt katman özellikleri tıbbi görüntüde de, uydu görüntüsünde de, ür
 
 **Ne zaman hangi strateji?**
 
-| Durumunuz | Strateji |
-|-----------|---------|
-| Az veri (< 1 K), benzer domain | Son katmanı değiştir, sadece onu eğit; geri kalanı dondur |
-| Orta veri (1 K – 10 K), benzer domain | Son birkaç katmanı fine-tune et |
-| Çok veri (> 100 K), farklı domain | Tüm ağı fine-tune et veya sıfırdan eğit |
-| Çok veri (> 1 M), çok farklı domain | Sıfırdan eğit |
+| Durumunuz                             | Strateji                                                  |
+| ------------------------------------- | --------------------------------------------------------- |
+| Az veri (< 1 K), benzer domain        | Son katmanı değiştir, sadece onu eğit; geri kalanı dondur |
+| Orta veri (1 K – 10 K), benzer domain | Son birkaç katmanı fine-tune et                           |
+| Çok veri (> 100 K), farklı domain     | Tüm ağı fine-tune et veya sıfırdan eğit                   |
+| Çok veri (> 1 M), çok farklı domain   | Sıfırdan eğit                                             |
 
 ---
 
@@ -332,22 +332,22 @@ graph LR
 
 ### Encoder — Decoder — Encoder-Decoder Farkı
 
-| Mimari | Ne Yapar | Örnek |
-|--------|---------|-------|
-| **Encoder** | Girdiyi anlar, temsil üretir; yeni token üretemez | BERT — metin anlama |
-| **Decoder** | Önceki çıktıya bakarak sonraki tokeni üretir | GPT — metin üretme |
-| **Encoder-Decoder** | Girdiyi anlayıp farklı bir dile/forma dönüştürür | T5 — çeviri, özetleme |
+| Mimari              | Ne Yapar                                          | Örnek                 |
+| ------------------- | ------------------------------------------------- | --------------------- |
+| **Encoder**         | Girdiyi anlar, temsil üretir; yeni token üretemez | BERT — metin anlama   |
+| **Decoder**         | Önceki çıktıya bakarak sonraki tokeni üretir      | GPT — metin üretme    |
+| **Encoder-Decoder** | Girdiyi anlayıp farklı bir dile/forma dönüştürür  | T5 — çeviri, özetleme |
 
 ### Popüler Transformer Modelleri
 
-| Model | Mimari | Parametre | Güçlü Olduğu Alan |
-|-------|:------:|:---------:|:-----------------:|
-| **BERT** | Encoder | 110 M | Metin anlama, soru-cevap, NER |
-| **GPT-4** | Decoder | ~1.8 T | Metin üretme, kod yazma, sohbet |
-| **T5** | Encoder-Decoder | 11 B | Çeviri, özetleme, soru yanıtlama |
-| **ViT** | Encoder (görüntü) | 86 M | Görüntü sınıflandırma (patch tabanlı) |
-| **CLIP** | Çift Encoder | 400 M | Metin-görüntü eşleştirme |
-| **Whisper** | Encoder-Decoder | 39 M–1.5 B | Konuşma tanıma |
+| Model       |       Mimari      | Parametre  |           Güçlü Olduğu Alan           |
+| ----------- | :---------------: | :--------: | :-----------------------------------: |
+| **BERT**    |      Encoder      |   110 M    |     Metin anlama, soru-cevap, NER     |
+| **GPT-4**   |      Decoder      |   ~1.8 T   |    Metin üretme, kod yazma, sohbet    |
+| **T5**      |  Encoder-Decoder  |    11 B    |    Çeviri, özetleme, soru yanıtlama   |
+| **ViT**     | Encoder (görüntü) |    86 M    | Görüntü sınıflandırma (patch tabanlı) |
+| **CLIP**    |    Çift Encoder   |   400 M    |        Metin-görüntü eşleştirme       |
+| **Whisper** |  Encoder-Decoder  | 39 M–1.5 B |             Konuşma tanıma            |
 
 ---
 
@@ -395,15 +395,15 @@ Az veriden daha fazlasını simüle etmenin yolu: mevcut görüntüleri dönüş
 
 **Görüntü augmentation teknikleri ve amacı:**
 
-| Teknik | Ne Yapar | Sağladığı Dayanıklılık |
-|--------|---------|----------------------|
-| **Yatay Çevirme** | Görüntüyü aynalar | "Nesne solda da sağda da aynı nesne" |
-| **Rastgele Kırpma** | Farklı bir bölgeyi seçer | "Nesne görüntünün her konumunda olabilir" |
-| **Renk Değişimi** | Parlaklık, kontrast, renk tonu değiştirir | "Farklı ışık koşullarına dayanıklılık" |
-| **Döndürme** | Belirli açıda döndürür | "Yatık veya eğik nesneleri tanı" |
-| **Gürültü Ekleme** | Rastgele piksel gürültüsü | "Gerçek dünya kamera gürültüsüne dayanıklılık" |
-| **Cutout / Erasing** | Rastgele bir bölgeyi siyah yapar | "Parçalı veya örtülü nesneleri tanı" |
-| **Mixup** | İki görüntüyü ağırlıklı olarak karıştırır | "Sınırlar arası genelleme" |
+| Teknik               | Ne Yapar                                  | Sağladığı Dayanıklılık                         |
+| -------------------- | ----------------------------------------- | ---------------------------------------------- |
+| **Yatay Çevirme**    | Görüntüyü aynalar                         | "Nesne solda da sağda da aynı nesne"           |
+| **Rastgele Kırpma**  | Farklı bir bölgeyi seçer                  | "Nesne görüntünün her konumunda olabilir"      |
+| **Renk Değişimi**    | Parlaklık, kontrast, renk tonu değiştirir | "Farklı ışık koşullarına dayanıklılık"         |
+| **Döndürme**         | Belirli açıda döndürür                    | "Yatık veya eğik nesneleri tanı"               |
+| **Gürültü Ekleme**   | Rastgele piksel gürültüsü                 | "Gerçek dünya kamera gürültüsüne dayanıklılık" |
+| **Cutout / Erasing** | Rastgele bir bölgeyi siyah yapar          | "Parçalı veya örtülü nesneleri tanı"           |
+| **Mixup**            | İki görüntüyü ağırlıklı olarak karıştırır | "Sınırlar arası genelleme"                     |
 
 !!! tip "Ne zaman ne kadar augmentation?"
     Az veri + derin model kombinasyonunda augmentation zorunludur. Çok veri varsa fayda azalır. Sağlıksız augmentation (örn. tıbbi görüntüde dikey çevirme — "böbrek yukarı aşağı olamaz") zararla sonuçlanır.
@@ -453,13 +453,13 @@ graph LR
 
 **GAN vs VAE:**
 
-| | GAN | VAE |
-|--|:---:|:---:|
-| **Görüntü kalitesi** | Daha gerçekçi | Daha bulanık |
-| **Latent uzay** | Düzensiz | Düzenli, enterpolasyon mükemmel |
-| **Eğitim kararlılığı** | Zor | Daha kararlı |
-| **Kontrol** | Zor | Kolay (latent vektör üzerinden) |
-| **Kullanım** | Gerçekçi üretim | Sıkıştırma, enterpolasyon, yapılandırılmış üretim |
+|                        |       GAN       |                        VAE                        |
+| ---------------------- | :-------------: | :-----------------------------------------------: |
+| **Görüntü kalitesi**   |  Daha gerçekçi  |                    Daha bulanık                   |
+| **Latent uzay**        |     Düzensiz    |          Düzenli, enterpolasyon mükemmel          |
+| **Eğitim kararlılığı** |       Zor       |                    Daha kararlı                   |
+| **Kontrol**            |       Zor       |          Kolay (latent vektör üzerinden)          |
+| **Kullanım**           | Gerçekçi üretim | Sıkıştırma, enterpolasyon, yapılandırılmış üretim |
 
 ---
 
@@ -479,9 +479,9 @@ graph TD
     SIZE -->|Çok| SCRATCH[Sıfırdan Eğit]
 ```
 
-| Veri Boyutu | Öneri |
-|:-----------:|-------|
-| **< 1 K** | Klasik ML — RF, SVM, GBM. Derin öğrenme overfit eder |
-| **1 K – 100 K** | Transfer learning — önceden eğitilmiş ağı fine-tune et |
-| **> 100 K** | CNN / Transformer sıfırdan veya büyük ölçekli fine-tune |
-| **> 1 M** | Dağıtık eğitim, büyük modeller |
+|   Veri Boyutu   | Öneri                                                   |
+| :-------------: | ------------------------------------------------------- |
+|    **< 1 K**    | Klasik ML — RF, SVM, GBM. Derin öğrenme overfit eder    |
+| **1 K – 100 K** | Transfer learning — önceden eğitilmiş ağı fine-tune et  |
+|   **> 100 K**   | CNN / Transformer sıfırdan veya büyük ölçekli fine-tune |
+|    **> 1 M**    | Dağıtık eğitim, büyük modeller                          |

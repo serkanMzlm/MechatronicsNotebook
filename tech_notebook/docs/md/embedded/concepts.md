@@ -29,14 +29,14 @@ graph LR
     style MPU_ fill:#E8F5E9,stroke:#4CAF50
 ```
 
-| Özellik | CPU | MPU | MCU |
-|---------|:---:|:---:|:---:|
-| İşlemci | ✓ | ✓ | ✓ |
-| Dahili Bellek | ✗ | ✗ | ✓ (Flash + SRAM) |
-| Dahili Peripheral | ✗ | ✗ | ✓ |
-| MMU | ✗ | ✓ | ✗ (genellikle MPU) |
-| İşletim Sistemi | ✗ | Linux vb. | Bare-metal / RTOS |
-| Kullanım Alanı | Hesaplama | PC, SBC | IoT, gömülü, otomotiv |
+| Özellik           |    CPU    |    MPU    |          MCU          |
+| ----------------- | :-------: | :-------: | :-------------------: |
+| İşlemci           |     ✓     |     ✓     |           ✓           |
+| Dahili Bellek     |     ✗     |     ✗     |    ✓ (Flash + SRAM)   |
+| Dahili Peripheral |     ✗     |     ✗     |           ✓           |
+| MMU               |     ✗     |     ✓     |   ✗ (genellikle MPU)  |
+| İşletim Sistemi   |     ✗     | Linux vb. |   Bare-metal / RTOS   |
+| Kullanım Alanı    | Hesaplama |  PC, SBC  | IoT, gömülü, otomotiv |
 
 !!! note "CPU vs MCU"
     - **MCU:** Tek çipte CPU + Flash + SRAM + peripheral. Düşük maliyet, düşük güç. STM32, AVR, PIC.
@@ -46,16 +46,16 @@ graph LR
 
 ## Terimler
 
-| Terim | Açıklama |
-|-------|---------|
-| **ALU** | Aritmetik (toplama, çıkarma) ve mantıksal (AND, OR, XOR) işlemler |
-| **CU (Control Unit)** | Komutları sırayla okur, çözümler, kontrol sinyalleri üretir |
-| **Register** | CPU içindeki çok hızlı, küçük kapasiteli geçici depolama |
-| **Peripheral** | CPU çekirdeği dışında donanımsal iş yapan modüller (GPIO, UART, ADC…) |
-| **FPU** | Kayan nokta işlemlerini yazılım yerine donanımda yapar |
-| **T Bit** | İşlemcinin hangi komut setini çalıştırdığını belirler (ARM/Thumb) |
-| **PLL** | Düşük frekanslı giriş sinyalini çarparak yüksek frekans üretir |
-| **Callee-saved** | Fonksiyon kullanılan register'ları işi bitince eski haline getirir (R4–R11) |
+| Terim                 | Açıklama                                                                    |
+| --------------------- | --------------------------------------------------------------------------- |
+| **ALU**               | Aritmetik (toplama, çıkarma) ve mantıksal (AND, OR, XOR) işlemler           |
+| **CU (Control Unit)** | Komutları sırayla okur, çözümler, kontrol sinyalleri üretir                 |
+| **Register**          | CPU içindeki çok hızlı, küçük kapasiteli geçici depolama                    |
+| **Peripheral**        | CPU çekirdeği dışında donanımsal iş yapan modüller (GPIO, UART, ADC…)       |
+| **FPU**               | Kayan nokta işlemlerini yazılım yerine donanımda yapar                      |
+| **T Bit**             | İşlemcinin hangi komut setini çalıştırdığını belirler (ARM/Thumb)           |
+| **PLL**               | Düşük frekanslı giriş sinyalini çarparak yüksek frekans üretir              |
+| **Callee-saved**      | Fonksiyon kullanılan register'ları işi bitince eski haline getirir (R4–R11) |
 
 !!! danger "T Bit — HardFault Sebebi"
     Cortex-M mimarisinde T Bit **her zaman 1** olmalıdır (Thumb modu). Yanlış adresleme veya hatalı fonksiyon işaretçisi T Bit'i 0'a düşürür → `HardFault`. LSB = 1 → Thumb, LSB = 0 → ARM (Cortex-M'de desteklenmez).
@@ -82,9 +82,9 @@ graph TD
 
 ### Stack Belleği
 
-| Pointer | Kullanım Alanı | Mod |
-|---------|---------------|-----|
-| **MSP** (Main Stack Pointer) | Kesme (ISR) ve sistem başlatma | Privileged |
+| Pointer                         | Kullanım Alanı                                  | Mod           |
+| ------------------------------- | ----------------------------------------------- | ------------- |
+| **MSP** (Main Stack Pointer)    | Kesme (ISR) ve sistem başlatma                  | Privileged    |
 | **PSP** (Process Stack Pointer) | RTOS thread'leri; her task kendi PSP'sine sahip | Thread (user) |
 
 ```c
@@ -109,14 +109,14 @@ graph LR
     A -->|"Stack\n5. param ve sonrası"| B
 ```
 
-| Register Grubu | Roller | Kim Korur? |
-|----------------|--------|-----------|
-| R0 – R3 | Parametre + dönüş değeri | Caller-saved (caller korumalı) |
-| R4 – R11 | Genel amaçlı uzun ömürlü | Callee-saved (callee korumalı) |
-| R12 (IP) | Geçici / derleyici ara değeri | Caller-saved |
-| SP (R13) | Stack pointer | Otomatik |
-| LR (R14) | Geri dönüş adresi | Caller-saved |
-| PC (R15) | Program counter | Otomatik |
+| Register Grubu | Roller                        | Kim Korur?                     |
+| -------------- | ----------------------------- | ------------------------------ |
+| R0 – R3        | Parametre + dönüş değeri      | Caller-saved (caller korumalı) |
+| R4 – R11       | Genel amaçlı uzun ömürlü      | Callee-saved (callee korumalı) |
+| R12 (IP)       | Geçici / derleyici ara değeri | Caller-saved                   |
+| SP (R13)       | Stack pointer                 | Otomatik                       |
+| LR (R14)       | Geri dönüş adresi             | Caller-saved                   |
+| PC (R15)       | Program counter               | Otomatik                       |
 
 ---
 
@@ -124,12 +124,12 @@ graph LR
 
 ARM Cortex-M kesme yönetim donanımıdır.
 
-| Özellik | Açıklama |
-|---------|---------|
-| **Vectored** | Her kesme için vektör tablosunda önceden tanımlı ISR adresi |
-| **Nested** | Yüksek öncelikli kesme, düşük öncelikli ISR'ı kesebilir |
-| **Öncelik** | 0 (en yüksek) → 255 (en düşük); sayı küçüldükçe öncelik artar |
-| **Enable/Disable** | `NVIC_EnableIRQ(IRQn)` / `NVIC_DisableIRQ(IRQn)` |
+| Özellik            | Açıklama                                                      |
+| ------------------ | ------------------------------------------------------------- |
+| **Vectored**       | Her kesme için vektör tablosunda önceden tanımlı ISR adresi   |
+| **Nested**         | Yüksek öncelikli kesme, düşük öncelikli ISR'ı kesebilir       |
+| **Öncelik**        | 0 (en yüksek) → 255 (en düşük); sayı küçüldükçe öncelik artar |
+| **Enable/Disable** | `NVIC_EnableIRQ(IRQn)` / `NVIC_DisableIRQ(IRQn)`              |
 
 !!! note "Sabit Öncelikli İstisnalar"
     Reset (-3), NMI (-2), HardFault (-1) sabittir ve değiştirilemez; diğer kesmelerin önceliği yazılımla ayarlanabilir.
@@ -154,13 +154,13 @@ graph LR
     style SYSCLK fill:#F8BBD0
 ```
 
-| Kaynak | Tip | Doğruluk | Kullanım |
-|--------|-----|:--------:|---------|
-| **HSI** | Dahili RC | ±1 % | Hızlı başlatma, genel amaçlı |
-| **HSE** | Harici kristal | < 100 ppm | USB, CAN, hassas UART |
-| **LSI** | Dahili RC, 32 kHz | Düşük | IWDG, RTC (düşük hassasiyet) |
-| **LSE** | Harici 32.768 kHz | Çok yüksek | RTC (yüksek hassasiyet) |
-| **PLL** | HSI/HSE tabanlı çarpan | HSE kadar | Yüksek sistem frekansı |
+| Kaynak  | Tip                    |  Doğruluk  | Kullanım                     |
+| ------- | ---------------------- | :--------: | ---------------------------- |
+| **HSI** | Dahili RC              |    ±1 %    | Hızlı başlatma, genel amaçlı |
+| **HSE** | Harici kristal         | < 100 ppm  | USB, CAN, hassas UART        |
+| **LSI** | Dahili RC, 32 kHz      |   Düşük    | IWDG, RTC (düşük hassasiyet) |
+| **LSE** | Harici 32.768 kHz      | Çok yüksek | RTC (yüksek hassasiyet)      |
+| **PLL** | HSI/HSE tabanlı çarpan | HSE kadar  | Yüksek sistem frekansı       |
 
 ---
 
@@ -178,13 +178,13 @@ graph TD
     AHB --> USB[USB OTG]
 ```
 
-| Özellik | AHB | APB |
-|---------|:---:|:---:|
-| Hız | Yüksek (burst, pipeline) | Düşük (basit, pipelinesız) |
-| Gecikme | Düşük | Yüksek |
-| Karmaşıklık | Yüksek | Düşük |
-| Güç | Yüksek | Düşük |
-| Tipik bağlılar | CPU, DMA, GPIO, USB | UART, SPI, I2C, Timer |
+| Özellik        |           AHB            |            APB             |
+| -------------- | :----------------------: | :------------------------: |
+| Hız            | Yüksek (burst, pipeline) | Düşük (basit, pipelinesız) |
+| Gecikme        |          Düşük           |           Yüksek           |
+| Karmaşıklık    |          Yüksek          |           Düşük            |
+| Güç            |          Yüksek          |           Düşük            |
+| Tipik bağlılar |   CPU, DMA, GPIO, USB    |   UART, SPI, I2C, Timer    |
 
 ---
 
@@ -192,10 +192,10 @@ graph TD
 
 Belirli bir bellek bölgesindeki her bit için ayrı alias adresi üretir; RMW (Read-Modify-Write) döngüsünü atomik tek yazıya indirir.
 
-| Bölge | Gerçek Adres | Alias Başlangıcı |
-|-------|:------------:|:---------------:|
-| SRAM | 0x2000_0000 – 0x200F_FFFF | 0x2200_0000 |
-| Peripheral | 0x4000_0000 – 0x400F_FFFF | 0x4200_0000 |
+| Bölge      |        Gerçek Adres       | Alias Başlangıcı |
+| ---------- | :-----------------------: | :--------------: |
+| SRAM       | 0x2000_0000 – 0x200F_FFFF |   0x2200_0000    |
+| Peripheral | 0x4000_0000 – 0x400F_FFFF |   0x4200_0000    |
 
 ```c
 /* Alias adresi hesabı */
@@ -223,11 +223,11 @@ stateDiagram-v2
     Handler_Mode --> Thread_Privileged : EXC_RETURN
 ```
 
-| Mod | Erişim | Açıklama |
-|-----|:------:|---------|
-| **Handler Mode** | Privileged (zorunlu) | ISR ve exception handler'lar |
-| **Thread — Privileged** | Tam erişim | Kernel kodu, RTOS kodu |
-| **Thread — Unprivileged** | Kısıtlı | Kullanıcı uygulama kodu (MPU korumalı) |
+| Mod                       |        Erişim        | Açıklama                               |
+| ------------------------- | :------------------: | -------------------------------------- |
+| **Handler Mode**          | Privileged (zorunlu) | ISR ve exception handler'lar           |
+| **Thread — Privileged**   |      Tam erişim      | Kernel kodu, RTOS kodu                 |
+| **Thread — Unprivileged** |       Kısıtlı        | Kullanıcı uygulama kodu (MPU korumalı) |
 
 ---
 
@@ -268,13 +268,13 @@ __ASM("svc 5");   /* SVC #5 ile kernel çağrısı */
 
 ### SWD vs JTAG
 
-| Özellik | JTAG | SWD |
-|---------|:----:|:---:|
-| Pin sayısı | 4–5 | 2 (SWDIO, SWCLK) |
-| Zincirleme | ✓ (daisy-chain) | ✗ |
-| ARM Cortex-M | ✓ | ✓ (tercih edilen) |
-| Trace çıkışı | ✓ (ETM) | ✓ (SWO) |
-| Kullanım | FPGA, üretim testi | MCU debug |
+| Özellik      |        JTAG        |        SWD        |
+| ------------ | :----------------: | :---------------: |
+| Pin sayısı   |        4–5         |  2 (SWDIO, SWCLK) |
+| Zincirleme   |  ✓ (daisy-chain)   |         ✗         |
+| ARM Cortex-M |         ✓          | ✓ (tercih edilen) |
+| Trace çıkışı |      ✓ (ETM)       |      ✓ (SWO)      |
+| Kullanım     | FPGA, üretim testi |     MCU debug     |
 
 !!! note "OpenOCD"
     OpenOCD (Open On-Chip Debugger), JTAG/SWD üzerinden mikrodenetleyici programlama ve debug yapılmasını sağlayan açık kaynaklı debug sunucusudur. GDB ile birlikte `arm-none-eabi-gdb` + OpenOCD + ST-Link/J-Link üçlüsü tipik geliştirme ortamını oluşturur.
@@ -300,20 +300,20 @@ graph LR
 
 ## GPIO — Nibble — Bit İşlemleri
 
-| Terim | Açıklama |
-|-------|---------|
-| **Nibble** | 4 bit; 0x0–0xF arası hex değer |
-| **MSB** | Most Significant Bit — en soldaki bit |
-| **LSB** | Least Significant Bit — en sağdaki bit |
+| Terim      | Açıklama                               |
+| ---------- | -------------------------------------- |
+| **Nibble** | 4 bit; 0x0–0xF arası hex değer         |
+| **MSB**    | Most Significant Bit — en soldaki bit  |
+| **LSB**    | Least Significant Bit — en sağdaki bit |
 
-| Operatör | İşlem |
-|----------|-------|
-| `&` | Bitwise AND — bit maskeleme için |
-| `\|` | Bitwise OR — bit set için |
-| `^` | Bitwise XOR — bit toggle için |
-| `~` | Bitwise NOT — tüm bitleri çevirir |
-| `<<` | Bit sola kaydır |
-| `>>` | Bit sağa kaydır |
+| Operatör | İşlem                             |
+| -------- | --------------------------------- |
+| `&`      | Bitwise AND — bit maskeleme için  |
+| `\|`     | Bitwise OR — bit set için         |
+| `^`      | Bitwise XOR — bit toggle için     |
+| `~`      | Bitwise NOT — tüm bitleri çevirir |
+| `<<`     | Bit sola kaydır                   |
+| `>>`     | Bit sağa kaydır                   |
 
 ```c
 /* Set, Clear, Toggle kalıpları */
@@ -337,11 +337,11 @@ arm-none-eabi-gcc
 └─ arm (ARM mimarisi)
 ```
 
-| Çıktı Formatı | Uzantı | Açıklama |
-|---------------|:------:|---------|
-| ELF | `.elf` | Debug bilgisi + sembol tablosu; GDB ile kullanılır |
-| Intel HEX | `.hex` | ASCII kodlu; bootloader ile flashing |
-| Binary | `.bin` | Saf makine kodu; doğrudan flash adresine yazılır |
+| Çıktı Formatı | Uzantı | Açıklama                                           |
+| ------------- | :----: | -------------------------------------------------- |
+| ELF           | `.elf` | Debug bilgisi + sembol tablosu; GDB ile kullanılır |
+| Intel HEX     | `.hex` | ASCII kodlu; bootloader ile flashing               |
+| Binary        | `.bin` | Saf makine kodu; doğrudan flash adresine yazılır   |
 
 ```mermaid
 graph LR

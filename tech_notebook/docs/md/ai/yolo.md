@@ -25,12 +25,12 @@ Nesne tespiti: "Bu görüntüde kaç tane nesne var, ne, ve tam olarak nerede?" 
 
 ### Detection vs Segmentation vs Pose
 
-| Görev | Ne Verir | Kullanım |
-|-------|---------|---------|
-| **Detection** | Bounding box (dikdörtgen) | Hız odaklı uygulamalar |
-| **Segmentation** | Piksel maskesi (tam şekil) | Hassas sınır gerektiğinde |
-| **Pose Estimation** | İskelet noktaları | İnsan hareketi analizi |
-| **OBB** | Döndürülmüş kutu | Hava fotoğrafları, metinler |
+| Görev               | Ne Verir                   | Kullanım                    |
+| ------------------- | -------------------------- | --------------------------- |
+| **Detection**       | Bounding box (dikdörtgen)  | Hız odaklı uygulamalar      |
+| **Segmentation**    | Piksel maskesi (tam şekil) | Hassas sınır gerektiğinde   |
+| **Pose Estimation** | İskelet noktaları          | İnsan hareketi analizi      |
+| **OBB**             | Döndürülmüş kutu           | Hava fotoğrafları, metinler |
 
 ---
 
@@ -299,13 +299,13 @@ timeline
     2024 : YOLOv11 — Daha küçük, daha doğru
 ```
 
-| Model | mAP50-95 | Hız (ms) | Parametre |
-|-------|:--------:|:--------:|:---------:|
-| YOLOv8n | 37.3 | 0.99 | 3.2 M |
-| YOLOv8s | 44.9 | 1.20 | 11.2 M |
-| YOLOv8m | 50.2 | 1.83 | 25.9 M |
-| YOLOv8l | 52.9 | 2.39 | 43.7 M |
-| YOLOv8x | 53.9 | 3.53 | 68.2 M |
+| Model   | mAP50-95 | Hız (ms) | Parametre |
+| ------- | :------: | :------: | :-------: |
+| YOLOv8n |   37.3   |   0.99   |   3.2 M   |
+| YOLOv8s |   44.9   |   1.20   |   11.2 M  |
+| YOLOv8m |   50.2   |   1.83   |   25.9 M  |
+| YOLOv8l |   52.9   |   2.39   |   43.7 M  |
+| YOLOv8x |   53.9   |   3.53   |   68.2 M  |
 
 ---
 

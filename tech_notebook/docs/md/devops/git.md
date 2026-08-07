@@ -48,12 +48,12 @@ git status -s        # Kısa format
 git status --ignored # .gitignore'daki değişiklikler de görünür
 ```
 
-| Sembol | Anlam |
-|--------|-------|
-| `??` | İzlenmeyen (untracked) dosya |
-| `A` | Staging area'ya eklendi |
-| `M` | Değiştirildi (modified) |
-| `D` | Silindi (deleted) |
+| Sembol | Anlam                        |
+| ------ | ---------------------------- |
+| `??`   | İzlenmeyen (untracked) dosya |
+| `A`    | Staging area'ya eklendi      |
+| `M`    | Değiştirildi (modified)      |
+| `D`    | Silindi (deleted)            |
 
 !!! note "Commit Sonrası .gitignore Eklemek"
     Önceden commit edilmiş bir dosyayı `.gitignore`'a eklemek onu takipten çıkarmaz. Önce: `git rm --cached <file>`
@@ -350,22 +350,22 @@ git filter-branch --force \
     - Feature flags ile tamamlanmamış özellikler gizlenir
     - Sürekli entegrasyon zorunlu
 
-| Strateji | Takım Büyüklüğü | Sürüm Sıklığı | Karmaşıklık |
-|----------|:--------------:|:-------------:|:-----------:|
-| Git Flow | Büyük | Periyodik | Yüksek |
-| GitHub Flow | Küçük-Orta | Sürekli | Düşük |
-| Trunk Based | Her boyut | Çok sık | Orta |
+| Strateji    | Takım Büyüklüğü | Sürüm Sıklığı | Karmaşıklık |
+| ----------- | :-------------: | :-----------: | :---------: |
+| Git Flow    |      Büyük      |   Periyodik   |    Yüksek   |
+| GitHub Flow |    Küçük-Orta   |    Sürekli    |    Düşük    |
+| Trunk Based |    Her boyut    |    Çok sık    |     Orta    |
 
 ---
 
 ## Hızlı Başvuru
 
-| Komut | Açıklama |
-|-------|---------|
-| `git stash` | Değişiklikleri geçici sakla |
-| `git cherry-pick <hash>` | Tek commit taşı |
-| `git revert <hash>` | Güvenli geri al |
+| Komut                     | Açıklama                                     |
+| ------------------------- | -------------------------------------------- |
+| `git stash`               | Değişiklikleri geçici sakla                  |
+| `git cherry-pick <hash>`  | Tek commit taşı                              |
+| `git revert <hash>`       | Güvenli geri al                              |
 | `git reset --soft HEAD~1` | Son commit'i geri al, değişiklikler korunsun |
-| `git bisect` | Hatalı commit'i ikili aramayla bul |
-| `git blame <file>` | Satır bazlı yazar/commit |
-| `git reflog` | Tüm HEAD geçmişi (kurtarma için) |
+| `git bisect`              | Hatalı commit'i ikili aramayla bul           |
+| `git blame <file>`        | Satır bazlı yazar/commit                     |
+| `git reflog`              | Tüm HEAD geçmişi (kurtarma için)             |

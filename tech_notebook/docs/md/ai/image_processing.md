@@ -44,13 +44,13 @@ graph LR
 
 ### Çözünürlük ve Boyut Kavramları
 
-| Kavram | Açıklama | Örnek |
-|--------|---------|-------|
-| **Çözünürlük** | Toplam piksel sayısı (Genişlik × Yükseklik) | 1920×1080 = ~2 Megapiksel |
-| **Aspect Ratio** | Genişlik / Yükseklik oranı | 16:9 geniş ekran, 4:3 klasik |
-| **Kanal** | Renk bileşeni | RGB=3, RGBA=4, Grayscale=1 |
-| **Bit Derinliği** | Piksel başına bit | 8-bit: 256 seviye; 16-bit: 65536 seviye |
-| **DPI** | İnç başına nokta (baskı kalitesi) | 72 DPI ekran, 300 DPI baskı |
+| Kavram            | Açıklama                                    | Örnek                                   |
+| ----------------- | ------------------------------------------- | --------------------------------------- |
+| **Çözünürlük**    | Toplam piksel sayısı (Genişlik × Yükseklik) | 1920×1080 = ~2 Megapiksel               |
+| **Aspect Ratio**  | Genişlik / Yükseklik oranı                  | 16:9 geniş ekran, 4:3 klasik            |
+| **Kanal**         | Renk bileşeni                               | RGB=3, RGBA=4, Grayscale=1              |
+| **Bit Derinliği** | Piksel başına bit                           | 8-bit: 256 seviye; 16-bit: 65536 seviye |
+| **DPI**           | İnç başına nokta (baskı kalitesi)           | 72 DPI ekran, 300 DPI baskı             |
 
 ---
 
@@ -90,13 +90,13 @@ Parlaklık (Y) ile renk farkı (Cr, Cb) bileşenlerine ayırır. JPEG sıkışt�
 
 Ten tonu tespiti için de kullanılır: ten tonu Cb ve Cr değerleri oldukça sabit bir aralıkta kalır.
 
-| Renk Uzayı | En İyi Kullanım |
-|:----------:|:---------------:|
-| **RGB / BGR** | Genel amaç, görüntü okuma/yazma |
-| **HSV** | Renk tabanlı nesne tespiti ve segmentasyon |
-| **LAB** | Renk karşılaştırma, renk transferi, kalite kontrol |
-| **Grayscale** | Kenar tespiti, yoğunluk analizi, hız kritikse |
-| **YCrCb** | Ten tonu tespiti, sıkıştırma |
+|   Renk Uzayı  |                  En İyi Kullanım                   |
+| :-----------: | :------------------------------------------------: |
+| **RGB / BGR** |          Genel amaç, görüntü okuma/yazma           |
+|    **HSV**    |     Renk tabanlı nesne tespiti ve segmentasyon     |
+|    **LAB**    | Renk karşılaştırma, renk transferi, kalite kontrol |
+| **Grayscale** |   Kenar tespiti, yoğunluk analizi, hız kritikse    |
+|   **YCrCb**   |            Ten tonu tespiti, sıkıştırma            |
 
 ---
 
@@ -113,12 +113,12 @@ Piksel sayısını artırır veya azaltır. İki temel durum:
 
 **Interpolasyon yöntemleri:**
 
-| Yöntem | Kalite | Hız | Ne Zaman |
-|--------|:------:|:---:|---------|
+| Yöntem               |      Kalite      |   Hız    | Ne Zaman                                  |
+| -------------------- | :--------------: | :------: | ----------------------------------------- |
 | **Nearest Neighbor** | Düşük (pikselli) | En hızlı | Segmentasyon maskeleri (etiketleri bozma) |
-| **Bilinear** | İyi | Hızlı | Genel amaç, küçültme |
-| **Bicubic** | Çok iyi | Orta | Kaliteli büyütme |
-| **Lanczos** | En iyi | Yavaş | Baskı kalitesi büyütme |
+| **Bilinear**         |       İyi        |  Hızlı   | Genel amaç, küçültme                      |
+| **Bicubic**          |     Çok iyi      |   Orta   | Kaliteli büyütme                          |
+| **Lanczos**          |      En iyi      |  Yavaş   | Baskı kalitesi büyütme                    |
 
 ### Döndürme ve Afin Dönüşüm
 
@@ -149,11 +149,11 @@ Filtreler, her pikselin değerini komşuluğuna göre yeniden hesaplar. Matemati
 
 **Farklı çekirdekler farklı etkiler üretir:**
 
-| Çekirdek Türü | Etki | Uygulama |
-|:------------:|:----:|:--------:|
-| Tüm değerler eşit, toplam=1 | Bulanıklaştırma | Gürültü azaltma |
-| Merkez yüksek pozitif, etraf negatif | Keskinleştirme | Detay artırma |
-| Bir yönde pozitif, diğer yönde negatif | Kenar tespiti | Nesne sınırı bulma |
+|             Çekirdek Türü              |       Etki      |      Uygulama      |
+| :------------------------------------: | :-------------: | :----------------: |
+|      Tüm değerler eşit, toplam=1       | Bulanıklaştırma |  Gürültü azaltma   |
+|  Merkez yüksek pozitif, etraf negatif  |  Keskinleştirme |   Detay artırma    |
+| Bir yönde pozitif, diğer yönde negatif |  Kenar tespiti  | Nesne sınırı bulma |
 
 ### Gaussian Bulanıklaştırma
 
@@ -206,12 +206,12 @@ Tek eşik tüm görüntü için uygun değilse (gölge, değişen aydınlatma, y
 
 ### Eşik Seçim Rehberi
 
-| Durum | Yöntem |
-|-------|--------|
-| Eşit aydınlatma, net kontrast | **Otsu (Global)** |
+| Durum                          | Yöntem                |
+| ------------------------------ | --------------------- |
+| Eşit aydınlatma, net kontrast  | **Otsu (Global)**     |
 | Değişken aydınlatma, gölge var | **Adaptive Gaussian** |
-| Bilinen sabit eşik | **Global Binary** |
-| Çok kanallı, renk tabanlı | **HSV renk maskesi** |
+| Bilinen sabit eşik             | **Global Binary**     |
+| Çok kanallı, renk tabanlı      | **HSV renk maskesi**  |
 
 ---
 
@@ -304,11 +304,11 @@ En güvenilir ve yaygın kullanılan kenar tespit algoritmasıdır. John Canny t
     
     Bu, güçlü kenarlara bağlı zayıf devamları korurken, izole gürültü noktalarını atar.
 
-| Dedektör | Gürültü Duyarlılığı | Yön Bilgisi | Kullanım |
-|----------|:-------------------:|:-----------:|---------|
-| **Canny** | Düşük (Gaussian dahil) | Hayır | **Genel amaçlı (en iyi seçenek)** |
-| **Sobel** | Orta | Evet | Gradyan yönü gerektiğinde |
-| **Laplacian** | Yüksek | Hayır | Blob tespiti, odak ölçümü |
+| Dedektör      |  Gürültü Duyarlılığı   | Yön Bilgisi | Kullanım                          |
+| ------------- | :--------------------: | :---------: | --------------------------------- |
+| **Canny**     | Düşük (Gaussian dahil) |    Hayır    | **Genel amaçlı (en iyi seçenek)** |
+| **Sobel**     |          Orta          |     Evet    | Gradyan yönü gerektiğinde         |
+| **Laplacian** |         Yüksek         |    Hayır    | Blob tespiti, odak ölçümü         |
 
 ---
 
@@ -318,13 +318,13 @@ Görüntüdeki piksel yoğunluk dağılımını gösterir. Her yoğunluk değeri
 
 **Histogramdan ne okunur?**
 
-| Histogram Şekli | Yorum |
-|:---------------:|-------|
-| Sola yığılmış | Görüntü çok koyu (underexposed) |
-| Sağa yığılmış | Görüntü aşırı parlak (overexposed) |
+|  Histogram Şekli   | Yorum                                                   |
+| :----------------: | ------------------------------------------------------- |
+|   Sola yığılmış    | Görüntü çok koyu (underexposed)                         |
+|   Sağa yığılmış    | Görüntü aşırı parlak (overexposed)                      |
 | İki tepe (bimodal) | Koyu arka plan + aydınlık ön plan — eşikleme için ideal |
-| Geniş yayılım | Yüksek kontrast |
-| Dar yayılım | Düşük kontrast |
+|   Geniş yayılım    | Yüksek kontrast                                         |
+|    Dar yayılım     | Düşük kontrast                                          |
 
 ### Histogram Eşitleme
 
@@ -353,15 +353,15 @@ Konturlar, aynı yoğunluğa sahip sürekli piksel eğrileridir. Pratik olarak: 
 
 ### Kontur Özellikleri ve Kullanımı
 
-| Özellik | Tanım | Kullanım |
-|---------|-------|---------|
-| **Alan** | İçindeki piksel sayısı | Küçük gürültüyü filtrele; nesne boyutu sınıflandırma |
-| **Çevre** | Sınırın toplam uzunluğu | Şekil karmaşıklığı ölçümü |
-| **Dairesellik** | 4πA / P² → 1.0 = mükemmel daire | Yuvarlak nesneleri ayırt etme |
-| **Bounding Rect** | Nesneyi çeviren dikdörtgen | Kırpma, ROI belirleme, koordinat çıkarımı |
-| **Doluluk Oranı** | Alan / Bounding Rect Alanı | Kompakt vs uzun nesneler |
-| **Solidity** | Alan / Convex Hull Alanı → 1.0 = dışbükey | İç bükey girinti var mı? |
-| **Moment Merkezi** | Piksel ağırlıklı merkez koordinatı | Nesne konumunu bul |
+| Özellik            | Tanım                                     | Kullanım                                             |
+| ------------------ | ----------------------------------------- | ---------------------------------------------------- |
+| **Alan**           | İçindeki piksel sayısı                    | Küçük gürültüyü filtrele; nesne boyutu sınıflandırma |
+| **Çevre**          | Sınırın toplam uzunluğu                   | Şekil karmaşıklığı ölçümü                            |
+| **Dairesellik**    | 4πA / P² → 1.0 = mükemmel daire           | Yuvarlak nesneleri ayırt etme                        |
+| **Bounding Rect**  | Nesneyi çeviren dikdörtgen                | Kırpma, ROI belirleme, koordinat çıkarımı            |
+| **Doluluk Oranı**  | Alan / Bounding Rect Alanı                | Kompakt vs uzun nesneler                             |
+| **Solidity**       | Alan / Convex Hull Alanı → 1.0 = dışbükey | İç bükey girinti var mı?                             |
+| **Moment Merkezi** | Piksel ağırlıklı merkez koordinatı        | Nesne konumunu bul                                   |
 
 **Hiyerarşi:** `findContours` dış konturlar ile iç konturlar (delikler) arasındaki hiyerarşik ilişkiyi döndürür.
 - `RETR_EXTERNAL`: Sadece en dıştaki konturlar.
@@ -390,12 +390,12 @@ Köşeler, blob'lar (yuvarlak bölgeler), kenar kesişimleri gibi "ilginç" nokt
 
 ### Popüler Algoritmalar
 
-| Algoritma | Hız | Ölçek Değişmez | Döndürme Değişmez | Patent | Kullanım |
-|-----------|:---:|:--------------:|:-----------------:|:------:|---------|
-| **SIFT** | Yavaş | ✓ | ✓ | Açık (2020+) | Hassas eşleştirme, 3D rekonstrüksiyon |
-| **ORB** | Çok hızlı | Kısmen | ✓ | Açık | Gerçek zamanlı, mobil, gömülü |
-| **AKAZE** | Orta | ✓ | ✓ | Açık | SLAM, otonom gezinme |
-| **SuperPoint** | Orta | ✓ | ✓ | Açık | Derin öğrenme tabanlı, güncel |
+| Algoritma      |    Hız    | Ölçek Değişmez | Döndürme Değişmez |    Patent    | Kullanım                              |
+| -------------- | :-------: | :------------: | :---------------: | :----------: | ------------------------------------- |
+| **SIFT**       |   Yavaş   |       ✓        |         ✓         | Açık (2020+) | Hassas eşleştirme, 3D rekonstrüksiyon |
+| **ORB**        | Çok hızlı |     Kısmen     |         ✓         |     Açık     | Gerçek zamanlı, mobil, gömülü         |
+| **AKAZE**      |    Orta   |       ✓        |         ✓         |     Açık     | SLAM, otonom gezinme                  |
+| **SuperPoint** |    Orta   |       ✓        |         ✓         |     Açık     | Derin öğrenme tabanlı, güncel         |
 
 ### Eşleştirme Yöntemleri
 
@@ -580,17 +580,17 @@ graph TD
     DATA -->|Az| PRETRAIN[Önceden eğitilmiş model\n+ transfer learning]
 ```
 
-| Görev | Önerilen Yaklaşım |
-|-------|:-----------------:|
-| Renk tabanlı nesne tespiti | HSV eşikleme + kontur analizi |
-| Belge / tahta tarama | Perspektif dönüşüm + adaptif eşik |
-| Gürültü azaltma | Gaussian (genel) veya Median (tuz-biber) |
-| Kontrast iyileştirme | CLAHE |
-| Kenar tespiti | Canny |
-| İkili görüntü temizleme | Morfolojik açma/kapama |
-| Yüz tespiti | MTCNN veya Haar Cascade |
-| Genel nesne tespiti | YOLOv8 |
-| Segmentasyon | SAM (Segment Anything) veya Mask R-CNN |
-| Özellik eşleştirme / panorama | ORB (hızlı) veya SIFT (hassas) |
-| Derinlik ölçümü | Stereo kalibrasyon + disparity |
-| Hareket takibi | Lucas-Kanade veya RAFT |
+| Görev                         |            Önerilen Yaklaşım             |
+| ----------------------------- | :--------------------------------------: |
+| Renk tabanlı nesne tespiti    |      HSV eşikleme + kontur analizi       |
+| Belge / tahta tarama          |    Perspektif dönüşüm + adaptif eşik     |
+| Gürültü azaltma               | Gaussian (genel) veya Median (tuz-biber) |
+| Kontrast iyileştirme          |                  CLAHE                   |
+| Kenar tespiti                 |                  Canny                   |
+| İkili görüntü temizleme       |          Morfolojik açma/kapama          |
+| Yüz tespiti                   |         MTCNN veya Haar Cascade          |
+| Genel nesne tespiti           |                  YOLOv8                  |
+| Segmentasyon                  |  SAM (Segment Anything) veya Mask R-CNN  |
+| Özellik eşleştirme / panorama |      ORB (hızlı) veya SIFT (hassas)      |
+| Derinlik ölçümü               |      Stereo kalibrasyon + disparity      |
+| Hareket takibi                |          Lucas-Kanade veya RAFT          |

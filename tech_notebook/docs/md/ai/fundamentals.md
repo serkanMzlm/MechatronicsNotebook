@@ -31,11 +31,11 @@ Bir çocuğa "kedi" ile "köpeği" nasıl ayırt etmeyi öğretirsiniz? Yüzlerc
 
 **Klasik programlama ile farkı:**
 
-| | Klasik Programlama | Makine Öğrenimi |
-|--|:-:|:-:|
-| **Girdi** | Kurallar + Veri | Veri + Doğru Cevaplar |
-| **Çıktı** | Cevaplar | Kurallar (Model) |
-| **Kim karar verir?** | Geliştirici | Sistem |
+|                          |      Klasik Programlama      |          Makine Öğrenimi           |
+| ------------------------ | :--------------------------: | :--------------------------------: |
+| **Girdi**                |       Kurallar + Veri        |       Veri + Doğru Cevaplar        |
+| **Çıktı**                |           Cevaplar           |          Kurallar (Model)          |
+| **Kim karar verir?**     |         Geliştirici          |               Sistem               |
 | **Ne zaman kullanılır?** | Kural yazılabilir problemler | Kural çok karmaşık veya bilinmiyor |
 
 **Neden son yıllarda bu kadar güçlendi?** Üç şey bir araya geldi: *büyük veri* (internet, sensörler), *güçlü donanım* (GPU'lar) ve *gelişmiş algoritmalar* (derin öğrenme). Bu üçlü birlikte AI devrimini mümkün kıldı.
@@ -59,14 +59,14 @@ $$\theta^* = \arg\min_\theta \mathcal{L}(f_\theta(X), y)$$
 
 Bu formül "öyle bir θ bul ki, kayıp fonksiyonu en küçük olsun" demektir. Kayıp fonksiyonu, modelin ne kadar yanıldığını ölçen bir cetveldir.
 
-| Kavram | Gerçek Hayat Karşılığı |
-|--------|----------------------|
-| **Parametreler (θ)** | Eğitim sırasında otomatik güncellenen değerler — modelin "öğrendiği" şeyler |
-| **Hiperparametreler** | Eğitim başlamadan siz belirliyorsunuz (kaç katman? ne hızla öğrensin?) |
-| **Kayıp Fonksiyonu** | Modelin karne notu — ne kadar düşük, o kadar iyi |
-| **Optimizer** | Kayıp notunu düşürmek için parametreleri güncelleyen mekanizma |
-| **Epoch** | Tüm eğitim verisinin bir kez modelden geçirilmesi |
-| **Batch** | Her güncelleme adımında kullanılan örnek sayısı |
+| Kavram                | Gerçek Hayat Karşılığı                                                      |
+| --------------------- | --------------------------------------------------------------------------- |
+| **Parametreler (θ)**  | Eğitim sırasında otomatik güncellenen değerler — modelin "öğrendiği" şeyler |
+| **Hiperparametreler** | Eğitim başlamadan siz belirliyorsunuz (kaç katman? ne hızla öğrensin?)      |
+| **Kayıp Fonksiyonu**  | Modelin karne notu — ne kadar düşük, o kadar iyi                            |
+| **Optimizer**         | Kayıp notunu düşürmek için parametreleri güncelleyen mekanizma              |
+| **Epoch**             | Tüm eğitim verisinin bir kez modelden geçirilmesi                           |
+| **Batch**             | Her güncelleme adımında kullanılan örnek sayısı                             |
 
 ---
 
@@ -99,14 +99,14 @@ Sınıflandırmada model, her kategori için bir olasılık hesaplar. En yüksek
 
 **Önemli algoritmalar ve kullanım alanları:**
 
-| Algoritma | Ne Zaman Seç | Neden |
-|-----------|:------------:|-------|
-| **Lojistik Regresyon** | Hızlı başlangıç, açıklanabilirlik gerekli | Sonuçları yorumlamak kolay; sağlık/finans gibi regüle alanlarda |
-| **Karar Ağaçları** | Kurallar görünür olsun | "Eğer şuysa, buysa" mantığı — insan gibi karar verir |
-| **Random Forest** | Genel amaç, güvenilir | Yüzlerce ağacın oylaması — tek ağacın hatalarını siler |
-| **Gradient Boosting / XGBoost** | Maksimum performans | Hatalara odaklanarak kendini düzelten sistemli yaklaşım |
-| **SVM** | Yüksek boyutlu veri, az örnek | Az örnekle dahi iyi çalışır; metin sınıflandırmada klasik |
-| **Sinir Ağları** | Görüntü, ses, metin | Ham veriden otomatik özellik çıkarımı; en esnek |
+| Algoritma                       |                Ne Zaman Seç               | Neden                                                           |
+| ------------------------------- | :---------------------------------------: | --------------------------------------------------------------- |
+| **Lojistik Regresyon**          | Hızlı başlangıç, açıklanabilirlik gerekli | Sonuçları yorumlamak kolay; sağlık/finans gibi regüle alanlarda |
+| **Karar Ağaçları**              |           Kurallar görünür olsun          | "Eğer şuysa, buysa" mantığı — insan gibi karar verir            |
+| **Random Forest**               |           Genel amaç, güvenilir           | Yüzlerce ağacın oylaması — tek ağacın hatalarını siler          |
+| **Gradient Boosting / XGBoost** |            Maksimum performans            | Hatalara odaklanarak kendini düzelten sistemli yaklaşım         |
+| **SVM**                         |       Yüksek boyutlu veri, az örnek       | Az örnekle dahi iyi çalışır; metin sınıflandırmada klasik       |
+| **Sinir Ağları**                |            Görüntü, ses, metin            | Ham veriden otomatik özellik çıkarımı; en esnek                 |
 
 **Sınıflandırma metrikleri:** Accuracy (genel doğruluk), Precision (yanlış alarm azalt), Recall (hiç kaçırma), F1-Score (ikisinin dengesi), ROC-AUC.
 
@@ -118,12 +118,12 @@ Regresyon aslında sınıflandırmanın sayısal versiyonudur: kategoriler yerin
 
 **Regresyon metrikleri:**
 
-| Metrik | Ne Ölçer | Ne Zaman Önemli |
-|--------|---------|:--------------:|
-| **MAE** | Ortalama mutlak hata — sonuçla aynı birimde, sezgisel | Her zaman iyi bir başlangıç metrigi |
-| **RMSE** | Büyük hataları orantısız cezalandırır | Büyük hatalar kabul edilemezse |
-| **R²** | Modelin varyansın ne kadarını açıkladığı (0–1) | Karşılaştırma ve genel iyilik ölçümü |
-| **MAPE** | Yüzde cinsinden hata | Farklı ölçekli değerler karşılaştırılırken |
+| Metrik   | Ne Ölçer                                              |              Ne Zaman Önemli               |
+| -------- | ----------------------------------------------------- | :----------------------------------------: |
+| **MAE**  | Ortalama mutlak hata — sonuçla aynı birimde, sezgisel |    Her zaman iyi bir başlangıç metrigi     |
+| **RMSE** | Büyük hataları orantısız cezalandırır                 |       Büyük hatalar kabul edilemezse       |
+| **R²**   | Modelin varyansın ne kadarını açıkladığı (0–1)        |    Karşılaştırma ve genel iyilik ölçümü    |
+| **MAPE** | Yüzde cinsinden hata                                  | Farklı ölçekli değerler karşılaştırılırken |
 
 !!! tip "R² Yorumu"
     R² = 0.85 → "Model, hedef değişkendeki değişkenliğin %85'ini açıklıyor." 1.0 mükemmel, 0.0 rastgele tahmin kadar iyi. Negatif değer, modelin veriyi hiç öğrenemediği anlamına gelir.
@@ -207,14 +207,14 @@ sequenceDiagram
     A->>E: Eylem (a_{t+1})
 ```
 
-| Bileşen | Açıklama | Örnek |
-|---------|---------|-------|
-| **Durum (s)** | Ortamın mevcut fotoğrafı | Satranç tahtasının anlık konumu |
-| **Eylem (a)** | Ajanın yapabileceği seçenekler | Satranç taşını hangi kareye taşımak |
-| **Ödül (r)** | Eylemin anlık değerlendirmesi | +1 rakip taş yenilince, -1 taş kaybedince |
-| **Politika (π)** | Duruma karşılık eylem seçme stratejisi | "Bu konumda şu taşı taşı" kuralı |
-| **Değer Fonksiyonu V(s)** | Bir durumun uzun vadeli beklenen ödülü | "Bu satranç pozisyonu kazanmama ne kadar yardımcı?" |
-| **Q-Fonksiyonu Q(s,a)** | Belirli bir eylem-durum çiftinin değeri | "Bu taşı şu kareye taşımanın uzun vadeli getirisi" |
+| Bileşen                   | Açıklama                                | Örnek                                               |
+| ------------------------- | --------------------------------------- | --------------------------------------------------- |
+| **Durum (s)**             | Ortamın mevcut fotoğrafı                | Satranç tahtasının anlık konumu                     |
+| **Eylem (a)**             | Ajanın yapabileceği seçenekler          | Satranç taşını hangi kareye taşımak                 |
+| **Ödül (r)**              | Eylemin anlık değerlendirmesi           | +1 rakip taş yenilince, -1 taş kaybedince           |
+| **Politika (π)**          | Duruma karşılık eylem seçme stratejisi  | "Bu konumda şu taşı taşı" kuralı                    |
+| **Değer Fonksiyonu V(s)** | Bir durumun uzun vadeli beklenen ödülü  | "Bu satranç pozisyonu kazanmama ne kadar yardımcı?" |
+| **Q-Fonksiyonu Q(s,a)**   | Belirli bir eylem-durum çiftinin değeri | "Bu taşı şu kareye taşımanın uzun vadeli getirisi"  |
 
 **Keşif-Sömürü Dengesi (Exploration-Exploitation):** Ajan her zaman en iyi bildiği eylemi mi seçmeli, yoksa yeni şeyler mi denemeli? Sadece bilinen en iyiyi seçmek (sömürü) daha iyi bir stratejinin keşfedilmesini engeller. Sadece keşif yapmak verimsizdir. ε-greedy: %ε olasılıkla rastgele, %1-ε olasılıkla en iyi bilinen eylemi seç.
 
@@ -248,23 +248,23 @@ Model çok karmaşık — eğitim verisindeki gürültüyü bile ezberler, yeni 
 
 **Çözüm:** Regularizasyon, daha fazla veri, dropout, early stopping.
 
-| | Yüksek Bias | İdeal | Yüksek Variance |
-|--|:-----------:|:-----:|:---------------:|
-| **Eğitim Hatası** | Yüksek | Düşük | Çok düşük |
-| **Test Hatası** | Yüksek | Düşük | Yüksek |
-| **Durum** | Underfitting | — | Overfitting |
+|                   | Yüksek Bias  | İdeal | Yüksek Variance |
+| ----------------- | :----------: | :---: | :-------------: |
+| **Eğitim Hatası** |    Yüksek    | Düşük |    Çok düşük    |
+| **Test Hatası**   |    Yüksek    | Düşük |      Yüksek     |
+| **Durum**         | Underfitting |   —   |   Overfitting   |
 
 ### Overfitting'i Önleme Yöntemleri
 
-| Yöntem | Nasıl Çalışır |
-|--------|--------------|
-| **Daha fazla veri** | Model ezberleyemeyecek kadar çok örnek görür; genelleme zorunlu hale gelir. En etkili yöntem. |
-| **Cross-Validation** | Veriyi parçalara böl, farklı parçaları test seti olarak kullan; gerçek genelleme hatasını ölç. |
-| **Regularizasyon (L1/L2)** | Ağırlıkları büyümesini cezalandırır; model basit kalmaya zorlanır. |
-| **Dropout (Sinir Ağları)** | Eğitim sırasında rastgele nöronları devre dışı bırakır; her nörona körü körüne güvenilemez. |
-| **Early Stopping** | Doğrulama hatası artmaya başlayınca eğitimi durdur. |
-| **Veri Artırma** | Mevcut veriyi döndürerek, kırparak, renk değiştirerek çoğalt. |
-| **Ensemble** | Birden fazla modelin tahminlerini birleştir — hatalar kısmen birbirini siler. |
+| Yöntem                     | Nasıl Çalışır                                                                                  |
+| -------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Daha fazla veri**        | Model ezberleyemeyecek kadar çok örnek görür; genelleme zorunlu hale gelir. En etkili yöntem.  |
+| **Cross-Validation**       | Veriyi parçalara böl, farklı parçaları test seti olarak kullan; gerçek genelleme hatasını ölç. |
+| **Regularizasyon (L1/L2)** | Ağırlıkları büyümesini cezalandırır; model basit kalmaya zorlanır.                             |
+| **Dropout (Sinir Ağları)** | Eğitim sırasında rastgele nöronları devre dışı bırakır; her nörona körü körüne güvenilemez.    |
+| **Early Stopping**         | Doğrulama hatası artmaya başlayınca eğitimi durdur.                                            |
+| **Veri Artırma**           | Mevcut veriyi döndürerek, kırparak, renk değiştirerek çoğalt.                                  |
+| **Ensemble**               | Birden fazla modelin tahminlerini birleştir — hatalar kısmen birbirini siler.                  |
 
 ---
 
@@ -276,21 +276,21 @@ Kayıp fonksiyonu, modelin ne kadar yanlış tahmin ettiğini sayısal olarak ö
 
 === "Regresyon Kayıpları"
 
-    | Kayıp | Ne Ölçer | Ne Zaman Kullan |
-    |-------|---------|:---------------:|
-    | **MSE** (Ortalama Kare Hata) | Hataların karesinin ortalaması — büyük hatalar orantısız cezalandırılır | Büyük hatalar kabul edilemezse |
-    | **MAE** (Ortalama Mutlak Hata) | Hataların mutlak değerinin ortalaması — daha sağlam | Aykırı değerler varsa, dengeli ceza istiyorsanız |
-    | **Huber** | Küçük hatalarda MSE, büyük hatalarda MAE davranışı | İkisinin dengesi istendiğinde |
-    | **RMSE** | MSE'nin karekökü — veriyle aynı birimde, yorumlanabilir | Yorumlanabilirlik önemli olduğunda |
+    | Kayıp                          | Ne Ölçer                                                                |                 Ne Zaman Kullan                  |
+    | ------------------------------ | ----------------------------------------------------------------------- | :----------------------------------------------: |
+    | **MSE** (Ortalama Kare Hata)   | Hataların karesinin ortalaması — büyük hatalar orantısız cezalandırılır |          Büyük hatalar kabul edilemezse          |
+    | **MAE** (Ortalama Mutlak Hata) | Hataların mutlak değerinin ortalaması — daha sağlam                     | Aykırı değerler varsa, dengeli ceza istiyorsanız |
+    | **Huber**                      | Küçük hatalarda MSE, büyük hatalarda MAE davranışı                      |          İkisinin dengesi istendiğinde           |
+    | **RMSE**                       | MSE'nin karekökü — veriyle aynı birimde, yorumlanabilir                 |        Yorumlanabilirlik önemli olduğunda        |
 
 === "Sınıflandırma Kayıpları"
 
-    | Kayıp | Ne Zaman Kullan |
-    |-------|:---------------:|
-    | **Binary Cross-Entropy** | İki sınıf: spam/ham, hasta/sağlıklı |
-    | **Categorical Cross-Entropy** | Çok sınıf: rakam tanıma, dil tespiti |
-    | **Hinge Loss** | SVM'e özgü; "yeterince güvenli sınıflandır" demek |
-    | **Focal Loss** | Dengesiz sınıflarda az görülen sınıfa daha fazla ağırlık ver |
+    | Kayıp                         |                       Ne Zaman Kullan                        |
+    | ----------------------------- | :----------------------------------------------------------: |
+    | **Binary Cross-Entropy**      |             İki sınıf: spam/ham, hasta/sağlıklı              |
+    | **Categorical Cross-Entropy** |             Çok sınıf: rakam tanıma, dil tespiti             |
+    | **Hinge Loss**                |      SVM'e özgü; "yeterince güvenli sınıflandır" demek       |
+    | **Focal Loss**                | Dengesiz sınıflarda az görülen sınıfa daha fazla ağırlık ver |
 
 ---
 
@@ -311,13 +311,13 @@ Gerçek: Negatif  FP (Yanlış Alarm) TN (Doğru -)
 - **FP (False Positive — Tip I Hata):** Sağlıklı olan, hasta dendi. Gereksiz tedavi.
 - **FN (False Negative — Tip II Hata):** Hasta olan, sağlıklı dendi. Tehlikeli: hastalık atlandı.
 
-| Metrik | Formül | Soru | Kritik Olduğu Yer |
-|--------|:------:|------|:-----------------:|
-| **Accuracy** | (TP+TN) / Toplam | "Genel olarak ne kadar doğruyum?" | Dengeli sınıflar |
-| **Precision** | TP / (TP+FP) | "Pozitif dediğimin kaçı gerçekten pozitif?" | Yanlış alarm pahalıysa (spam filtresi) |
-| **Recall** | TP / (TP+FN) | "Gerçek pozitiflerin kaçını buldum?" | Kaçırma tehlikeliyse (hastalık tespiti) |
-| **F1-Score** | 2·P·R / (P+R) | "Precision ve Recall'un harmonik ortalaması" | İkisi de önemliyse |
-| **Specificity** | TN / (TN+FP) | "Gerçek negatiflerin kaçını doğru sınıfladım?" | Yanlış alarm kritikse |
+| Metrik          |      Formül      | Soru                                           |            Kritik Olduğu Yer            |
+| --------------- | :--------------: | ---------------------------------------------- | :-------------------------------------: |
+| **Accuracy**    | (TP+TN) / Toplam | "Genel olarak ne kadar doğruyum?"              |             Dengeli sınıflar            |
+| **Precision**   |   TP / (TP+FP)   | "Pozitif dediğimin kaçı gerçekten pozitif?"    |  Yanlış alarm pahalıysa (spam filtresi) |
+| **Recall**      |   TP / (TP+FN)   | "Gerçek pozitiflerin kaçını buldum?"           | Kaçırma tehlikeliyse (hastalık tespiti) |
+| **F1-Score**    |  2·P·R / (P+R)   | "Precision ve Recall'un harmonik ortalaması"   |            İkisi de önemliyse           |
+| **Specificity** |   TN / (TN+FP)   | "Gerçek negatiflerin kaçını doğru sınıfladım?" |          Yanlış alarm kritikse          |
 
 !!! warning "Dengesiz Sınıf Tuzağı"
     %99 negatif olan bir veri setinde her şeye "negatif" desen Accuracy %99 çıkar ama model hiçbir şey öğrenmemiştir. Dengesiz veri setlerinde Accuracy yanıltıcıdır; F1-Score, ROC-AUC veya Precision-Recall kullanın.
@@ -335,22 +335,22 @@ ROC (Receiver Operating Characteristic) eğrisi, farklı karar eşiklerinde mode
 
 **AUC (Eğri Altı Alan):** Modelin rastgele seçimden ne kadar iyi olduğunun tek sayılık özeti.
 
-| AUC Değeri | Yorum |
-|:----------:|-------|
-| **1.0** | Mükemmel sınıflandırıcı — gerçek dünyada şüphe uyandırır |
-| **0.9–0.99** | Çok iyi |
-| **0.7–0.89** | Kullanılabilir, iyileştirme gerekli |
-| **0.5** | Rastgele tahmin — modelin hiçbir değeri yok |
-| **< 0.5** | Etiketler ters çevrilmiş olabilir |
+|  AUC Değeri  | Yorum                                                    |
+| :----------: | -------------------------------------------------------- |
+|   **1.0**    | Mükemmel sınıflandırıcı — gerçek dünyada şüphe uyandırır |
+| **0.9–0.99** | Çok iyi                                                  |
+| **0.7–0.89** | Kullanılabilir, iyileştirme gerekli                      |
+|   **0.5**    | Rastgele tahmin — modelin hiçbir değeri yok              |
+|  **< 0.5**   | Etiketler ters çevrilmiş olabilir                        |
 
 ### Regresyon Metrikleri
 
-| Metrik | Yorum |
-|--------|-------|
+| Metrik       | Yorum                                                                                              |
+| ------------ | -------------------------------------------------------------------------------------------------- |
 | **R² (0–1)** | 1'e yakın: model veriyi iyi açıklıyor. 0: rastgele kadar iyi. Negatif: modelinizde ciddi sorun var |
-| **RMSE** | Hata birimi veri ile aynı; büyük hatalara duyarlı |
-| **MAE** | Daha sezgisel; outlier'a dayanıklı |
-| **MAPE** | Yüzde hata; farklı ölçekli veri karşılaştırması için |
+| **RMSE**     | Hata birimi veri ile aynı; büyük hatalara duyarlı                                                  |
+| **MAE**      | Daha sezgisel; outlier'a dayanıklı                                                                 |
+| **MAPE**     | Yüzde hata; farklı ölçekli veri karşılaştırması için                                               |
 
 ---
 
@@ -365,20 +365,20 @@ $$\theta \leftarrow \theta - \alpha \cdot \nabla_\theta \mathcal{L}$$
 - **α (Learning Rate):** Her adımın büyüklüğü. Çok büyük olursa minimum etrafında zıplar, yaklaşamaz. Çok küçük olursa milyonlarca adım atar — çok yavaş öğrenir.
 - **∇L (Gradyan):** Kayıp fonksiyonunun her parametreye göre hangi yönde ne kadar değiştiği.
 
-| Varyant | Nasıl Çalışır | Avantaj | Dezavantaj |
-|---------|:------------:|---------|:----------:|
-| **Batch GD** | Tüm veriyle güncelle | Kararlı, tutarlı | Büyük veride çok yavaş |
-| **Stochastic GD** | Her örnekle ayrı ayrı güncelle | Çok hızlı | Gürültülü, kararsız |
-| **Mini-batch GD** | Küçük gruplarla güncelle | İkisinin dengesi | **Pratikte en yaygın** |
+| Varyant           |         Nasıl Çalışır          | Avantaj          |       Dezavantaj       |
+| ----------------- | :----------------------------: | ---------------- | :--------------------: |
+| **Batch GD**      |      Tüm veriyle güncelle      | Kararlı, tutarlı | Büyük veride çok yavaş |
+| **Stochastic GD** | Her örnekle ayrı ayrı güncelle | Çok hızlı        |  Gürültülü, kararsız   |
+| **Mini-batch GD** |    Küçük gruplarla güncelle    | İkisinin dengesi | **Pratikte en yaygın** |
 
 **Popüler optimizerlar:**
 
-| Optimizer | Özelliği | Ne Zaman |
-|-----------|---------|:--------:|
-| **SGD + Momentum** | Geçmiş gradyanları biriktirir; sarkacın ivmesi gibi | Derin sinir ağları |
-| **RMSprop** | Her parametreye uyarlanır learning rate | RNN, zaman serileri |
-| **Adam** | Momentum + RMSprop kombinasyonu | **Genel varsayılan** |
-| **AdamW** | Adam + weight decay (L2 regularizasyon) | Transformer modelleri |
+| Optimizer          | Özelliği                                            |        Ne Zaman       |
+| ------------------ | --------------------------------------------------- | :-------------------: |
+| **SGD + Momentum** | Geçmiş gradyanları biriktirir; sarkacın ivmesi gibi |   Derin sinir ağları  |
+| **RMSprop**        | Her parametreye uyarlanır learning rate             |  RNN, zaman serileri  |
+| **Adam**           | Momentum + RMSprop kombinasyonu                     |  **Genel varsayılan** |
+| **AdamW**          | Adam + weight decay (L2 regularizasyon)             | Transformer modelleri |
 
 **Learning rate schedule:** Eğitim boyunca sabit learning rate yerine, başta büyük sonra küçülecek şekilde ayarlamak genellikle daha iyi sonuç verir. Warmup (başta yavaş başla), cosine annealing (kosinüs eğrisiyle azalt) yaygın stratejilerdir.
 

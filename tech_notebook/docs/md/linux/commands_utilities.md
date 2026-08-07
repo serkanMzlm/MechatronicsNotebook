@@ -7,23 +7,23 @@
 
 ## Dosya ve Dizin İşlemleri
 
-| Komut | Açıklama |
-|-------|---------|
-| `pwd` | Mevcut dizin yolunu gösterir |
-| `cd` | Dizin değiştirir |
-| `ls` | Dizin içeriğini listeler |
-| `mkdir` | Dizin oluşturur |
-| `rmdir` | Boş dizin siler |
-| `touch` | Boş dosya oluşturur veya tarih günceller |
-| `cp` | Dosya/dizin kopyalar |
-| `mv` | Dosya taşır veya yeniden adlandırır |
-| `rm` | Dosya/dizin siler |
-| `ln` | Link oluşturur (-s: sembolik, -i: hard) |
-| `file` | Dosyanın gerçek türünü içerik analizi ile belirler |
-| `stat` | Ayrıntılı dosya meta bilgileri |
-| `tree` | Dizin yapısını ağaç şeklinde gösterir |
-| `readlink` | Sembolik linkin gerçek hedefini gösterir |
-| `install` | Kopyalama + izin + sahip atama birleşimi |
+| Komut      | Açıklama                                           |
+| ---------- | -------------------------------------------------- |
+| `pwd`      | Mevcut dizin yolunu gösterir                       |
+| `cd`       | Dizin değiştirir                                   |
+| `ls`       | Dizin içeriğini listeler                           |
+| `mkdir`    | Dizin oluşturur                                    |
+| `rmdir`    | Boş dizin siler                                    |
+| `touch`    | Boş dosya oluşturur veya tarih günceller           |
+| `cp`       | Dosya/dizin kopyalar                               |
+| `mv`       | Dosya taşır veya yeniden adlandırır                |
+| `rm`       | Dosya/dizin siler                                  |
+| `ln`       | Link oluşturur (-s: sembolik, -i: hard)            |
+| `file`     | Dosyanın gerçek türünü içerik analizi ile belirler |
+| `stat`     | Ayrıntılı dosya meta bilgileri                     |
+| `tree`     | Dizin yapısını ağaç şeklinde gösterir              |
+| `readlink` | Sembolik linkin gerçek hedefini gösterir           |
+| `install`  | Kopyalama + izin + sahip atama birleşimi           |
 
 ```bash
 # cd kullanımı
@@ -69,15 +69,15 @@ install -d /etc/myapp                  # Dizin oluştur
 
 ## Dosya Görüntüleme
 
-| Komut | Açıklama |
-|-------|---------|
-| `cat` | Dosya içeriğini ekrana basar |
-| `less` | Sayfalı, aranabilir görüntüleme |
-| `more` | `less`'in eski ve sınırlı hali |
+| Komut  | Açıklama                                        |
+| ------ | ----------------------------------------------- |
+| `cat`  | Dosya içeriğini ekrana basar                    |
+| `less` | Sayfalı, aranabilir görüntüleme                 |
+| `more` | `less`'in eski ve sınırlı hali                  |
 | `head` | Dosyanın başını gösterir (varsayılan: 10 satır) |
-| `tail` | Dosyanın sonunu gösterir |
-| `tac` | Satırları ters sırada gösterir |
-| `wc` | Satır, kelime, byte sayar |
+| `tail` | Dosyanın sonunu gösterir                        |
+| `tac`  | Satırları ters sırada gösterir                  |
+| `wc`   | Satır, kelime, byte sayar                       |
 
 ```bash
 cat -n dosya.txt           # Satır numarası ile
@@ -102,13 +102,13 @@ wc -c dosya.txt            # Byte sayısı
 
 ## Arama Komutları
 
-| Komut | Açıklama |
-|-------|---------|
-| `find` | Gerçek zamanlı dosya arama |
-| `locate` | İndeks tabanlı hızlı arama (gerçek zamanlı değil) |
-| `which` | PATH üzerindeki executable konumu |
-| `whereis` | Binary, source, manual konumları |
-| `grep` | Metin içinde desen arama |
+| Komut     | Açıklama                                          |
+| --------- | ------------------------------------------------- |
+| `find`    | Gerçek zamanlı dosya arama                        |
+| `locate`  | İndeks tabanlı hızlı arama (gerçek zamanlı değil) |
+| `which`   | PATH üzerindeki executable konumu                 |
+| `whereis` | Binary, source, manual konumları                  |
+| `grep`    | Metin içinde desen arama                          |
 
 ```bash
 # find
@@ -143,17 +143,17 @@ grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+" dosya  # Sadece eşleşen kısmı
 
 ## Metin İşleme
 
-| Komut | Açıklama |
-|-------|---------|
-| `sed` | Akış düzenleyici; satır içi değiştirme |
-| `awk` | Alan bazlı metin işleme programlama dili |
-| `cut` | Belirli sütunları veya karakterleri ayıklar |
-| `sort` | Satırları sıralar |
+| Komut  | Açıklama                                          |
+| ------ | ------------------------------------------------- |
+| `sed`  | Akış düzenleyici; satır içi değiştirme            |
+| `awk`  | Alan bazlı metin işleme programlama dili          |
+| `cut`  | Belirli sütunları veya karakterleri ayıklar       |
+| `sort` | Satırları sıralar                                 |
 | `uniq` | Birbirini izleyen tekrar eden satırları filtreler |
-| `tr` | Karakter dönüşümleri |
-| `diff` | Dosya farklılıklarını satır bazında gösterir |
-| `cmp` | Dosyaları byte bazında karşılaştırır |
-| `tee` | Çıktıyı hem terminale hem dosyaya yazar |
+| `tr`   | Karakter dönüşümleri                              |
+| `diff` | Dosya farklılıklarını satır bazında gösterir      |
+| `cmp`  | Dosyaları byte bazında karşılaştırır              |
+| `tee`  | Çıktıyı hem terminale hem dosyaya yazar           |
 
 ```bash
 # sed
@@ -199,14 +199,14 @@ cat dosya.txt | tr -s ' '               # Çoklu boşluğu tekleştir
 
 ## Arşiv ve Sıkıştırma
 
-| Komut | Açıklama |
-|-------|---------|
-| `tar` | Arşivleme aracı (`.tar`, `.tar.gz`, `.tar.xz`) |
-| `gzip`/`gunzip` | `.gz` sıkıştırma |
-| `bzip2`/`bunzip2` | `.bz2` sıkıştırma |
-| `xz`/`unxz` | `.xz` yüksek sıkıştırma |
-| `zip`/`unzip` | `.zip` arşivi |
-| `zcat` | `.gz` dosyasını açmadan görüntüle |
+| Komut             | Açıklama                                       |
+| ----------------- | ---------------------------------------------- |
+| `tar`             | Arşivleme aracı (`.tar`, `.tar.gz`, `.tar.xz`) |
+| `gzip`/`gunzip`   | `.gz` sıkıştırma                               |
+| `bzip2`/`bunzip2` | `.bz2` sıkıştırma                              |
+| `xz`/`unxz`       | `.xz` yüksek sıkıştırma                        |
+| `zip`/`unzip`     | `.zip` arşivi                                  |
+| `zcat`            | `.gz` dosyasını açmadan görüntüle              |
 
 ```bash
 # tar
@@ -233,21 +233,21 @@ zcat arsiv.log.gz | grep error  # Açmadan içinde ara
 
 ## Process ve Sistem Yönetimi
 
-| Komut | Açıklama |
-|-------|---------|
-| `ps` | Çalışan process listesi |
-| `top` | Canlı sistem kaynak monitörü |
-| `htop` | Gelişmiş interaktif process monitörü |
-| `kill` | Process'e sinyal gönderir |
-| `pkill` | İsimle process öldürür |
+| Komut     | Açıklama                                |
+| --------- | --------------------------------------- |
+| `ps`      | Çalışan process listesi                 |
+| `top`     | Canlı sistem kaynak monitörü            |
+| `htop`    | Gelişmiş interaktif process monitörü    |
+| `kill`    | Process'e sinyal gönderir               |
+| `pkill`   | İsimle process öldürür                  |
 | `killall` | İsimle tüm eşleşen process'leri öldürür |
-| `nice` | Düşük öncelikle başlatır |
-| `renice` | Çalışan process önceliğini değiştirir |
-| `nohup` | Terminale bağımsız çalıştırır |
-| `bg` | Arka planda devam ettirir |
-| `fg` | Ön plana alır |
-| `jobs` | Arka plan işlerini listeler |
-| `timeout` | Komut süresini sınırlar |
+| `nice`    | Düşük öncelikle başlatır                |
+| `renice`  | Çalışan process önceliğini değiştirir   |
+| `nohup`   | Terminale bağımsız çalıştırır           |
+| `bg`      | Arka planda devam ettirir               |
+| `fg`      | Ön plana alır                           |
+| `jobs`    | Arka plan işlerini listeler             |
+| `timeout` | Komut süresini sınırlar                 |
 
 ```bash
 # ps
@@ -287,18 +287,18 @@ timeout 5m ./uzun_betik.sh || echo "Zaman aşıldı!"
 
 ## Disk ve Dosya Sistemi
 
-| Komut | Açıklama |
-|-------|---------|
-| `df` | Bağlı dosya sistemleri disk kullanımı |
-| `du` | Dizin/dosya disk kullanımı |
-| `lsblk` | Blok cihazların ağaç görünümü |
-| `blkid` | Blok cihaz UUID ve tip |
-| `mount` / `umount` | Dosya sistemi bağla / ayır |
-| `findmnt` | Mount noktalarını ağaç yapısında gösterir |
-| `fdisk` | Disk bölüm yönetimi |
-| `mkfs` | Dosya sistemi oluşturur |
-| `fsck` | Dosya sistemi kontrolü ve onarımı |
-| `dd` | Düşük seviye blok kopyalama |
+| Komut              | Açıklama                                  |
+| ------------------ | ----------------------------------------- |
+| `df`               | Bağlı dosya sistemleri disk kullanımı     |
+| `du`               | Dizin/dosya disk kullanımı                |
+| `lsblk`            | Blok cihazların ağaç görünümü             |
+| `blkid`            | Blok cihaz UUID ve tip                    |
+| `mount` / `umount` | Dosya sistemi bağla / ayır                |
+| `findmnt`          | Mount noktalarını ağaç yapısında gösterir |
+| `fdisk`            | Disk bölüm yönetimi                       |
+| `mkfs`             | Dosya sistemi oluşturur                   |
+| `fsck`             | Dosya sistemi kontrolü ve onarımı         |
+| `dd`               | Düşük seviye blok kopyalama               |
 
 ```bash
 # df

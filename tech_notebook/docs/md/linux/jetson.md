@@ -19,12 +19,12 @@ flowchart LR
     MOD <--> CARRIER
 ```
 
-| Modül | CPU | GPU | RAM | L4T Desteği |
-|-------|-----|-----|-----|-------------|
-| Nano | 4× Cortex-A57 | 128 CUDA | 4 GB | R32.x (JetPack 4.x) |
-| Xavier NX | 6× Carmel ARMv8.2 | 384 CUDA + 48 Tensor | 8/16 GB | R32.x, R35.x |
-| AGX Xavier | 8× Carmel ARMv8.2 | 512 CUDA + 64 Tensor | 32 GB | R32.x, R35.x |
-| AGX Orin | 12× Cortex-A78AE | 2048 CUDA + 64 Tensor | 32/64 GB | R35.x (JetPack 5.x) |
+| Modül      | CPU               | GPU                   | RAM      | L4T Desteği         |
+| ---------- | ----------------- | --------------------- | -------- | ------------------- |
+| Nano       | 4× Cortex-A57     | 128 CUDA              | 4 GB     | R32.x (JetPack 4.x) |
+| Xavier NX  | 6× Carmel ARMv8.2 | 384 CUDA + 48 Tensor  | 8/16 GB  | R32.x, R35.x        |
+| AGX Xavier | 8× Carmel ARMv8.2 | 512 CUDA + 64 Tensor  | 32 GB    | R32.x, R35.x        |
+| AGX Orin   | 12× Cortex-A78AE  | 2048 CUDA + 64 Tensor | 32/64 GB | R35.x (JetPack 5.x) |
 
 ---
 
@@ -74,10 +74,10 @@ sudo nvpmodel -m 1         # 5W / 10W — düşük güç
 sudo nvpmodel -m 0
 ```
 
-| Jetson Nano | Mod | CPU | GPU |
-|:-----------:|:---:|:---:|:---:|
-| 0 | MAXN | 4 çekirdek @ 1.479 GHz | 128 core @ 921 MHz |
-| 1 | 5W | 2 çekirdek @ 918 MHz | 128 core @ 640 MHz |
+| Jetson Nano | Mod  |          CPU           |        GPU         |
+| :---------: | :--: | :--------------------: | :----------------: |
+|      0      | MAXN | 4 çekirdek @ 1.479 GHz | 128 core @ 921 MHz |
+|      1      |  5W  |  2 çekirdek @ 918 MHz  | 128 core @ 640 MHz |
 
 ```bash
 # Jetclocks — tüm saatleri maksimuma al (benchmark için)
@@ -821,10 +821,10 @@ sudo dmesg | grep "registered GPIO"
 # gpiochip1 (max77620-gpio) →  GPIO 504-511 : sysfs = chip_base + pin
 ```
 
-| Denetleyici | sysfs Aralığı | Formül |
-|-------------|:-------------:|--------|
-| `tegra-gpio` | 0–255 | `(PORT × 8) + offset` |
-| `max77620-gpio` | 504–511 | `504 + pin_index` |
+| Denetleyici     | sysfs Aralığı | Formül                |
+| --------------- | :-----------: | --------------------- |
+| `tegra-gpio`    |     0–255     | `(PORT × 8) + offset` |
+| `max77620-gpio` |    504–511    | `504 + pin_index`     |
 
 ### DTS'de GPIO Referansı
 

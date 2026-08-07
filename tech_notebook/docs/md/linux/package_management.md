@@ -77,13 +77,13 @@ apt install -f                  # Bozuk bağımlılıkları düzelt
 
 ### apt vs apt-get
 
-| Özellik | `apt` | `apt-get` |
-|---------|:-----:|:---------:|
-| Hedef kitle | Son kullanıcı | Script / otomasyon |
-| Progress bar | ✓ | ✗ |
-| Stabil API | Script için uygun değil | ✓ |
-| Renkli çıktı | ✓ | ✗ |
-| Önerilen tercih | İnteraktif terminal | Shell script |
+| Özellik         |          `apt`          |     `apt-get`      |
+| --------------- | :---------------------: | :----------------: |
+| Hedef kitle     |      Son kullanıcı      | Script / otomasyon |
+| Progress bar    |            ✓            |         ✗          |
+| Stabil API      | Script için uygun değil |         ✓          |
+| Renkli çıktı    |            ✓            |         ✗          |
+| Önerilen tercih |   İnteraktif terminal   |    Shell script    |
 
 !!! tip "Script'lerde apt-get Kullan"
     `apt` UI öğeleri ekleyebilir veya uyarı gösterebilir. Otomasyon script'lerinde `apt-get` daha tutarlıdır.
@@ -205,14 +205,14 @@ snap info <uygulama>             # Bilgi
 
 ## Paket Sistemi Karşılaştırması
 
-| Özellik | apt (deb) | snap | flatpak | pip |
-|---------|:---------:|:----:|:-------:|:---:|
-| Hedef | Sistem | Uygulama | Uygulama | Python |
-| İzolasyon | Yok | ✓ | ✓ | venv ile |
-| Otomatik güncelleme | ✗ | ✓ | ✗ | ✗ |
-| Boyut | Küçük | Büyük | Büyük | Küçük |
-| Hız | Hızlı | Yavaş | Yavaş | Hızlı |
-| Sandboxing | ✗ | AppArmor | Bubblewrap | ✗ |
+| Özellik             | apt (deb) |   snap   |  flatpak   |   pip    |
+| ------------------- | :-------: | :------: | :--------: | :------: |
+| Hedef               |   Sistem  | Uygulama |  Uygulama  |  Python  |
+| İzolasyon           |    Yok    |    ✓     |     ✓      | venv ile |
+| Otomatik güncelleme |     ✗     |    ✓     |     ✗      |    ✗     |
+| Boyut               |   Küçük   |  Büyük   |   Büyük    |  Küçük   |
+| Hız                 |   Hızlı   |  Yavaş   |   Yavaş    |  Hızlı   |
+| Sandboxing          |     ✗     | AppArmor | Bubblewrap |    ✗     |
 
 ---
 

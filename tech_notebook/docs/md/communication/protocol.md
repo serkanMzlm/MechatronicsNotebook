@@ -33,12 +33,12 @@ IDLE  START   D0   D1   D2   D3   D4   D5   D6   D7   PARITY  STOP
      ←————————————————— 1 tam çerçeve ————————————————————————→
 ```
 
-| Alan | Değer | Açıklama |
-|------|:-----:|---------|
-| Start bit | 0 | Çerçeve başladığını bildirir |
-| Veri bitleri | 5–9 bit | Genellikle 8 bit (1 byte) |
-| Parity bit | Opsiyonel | Hata tespiti: Odd/Even/None |
-| Stop bit | 1 veya 2 | Hat tekrar IDLE'a döner |
+| Alan         |   Değer   | Açıklama                     |
+| ------------ | :-------: | ---------------------------- |
+| Start bit    |     0     | Çerçeve başladığını bildirir |
+| Veri bitleri |  5–9 bit  | Genellikle 8 bit (1 byte)    |
+| Parity bit   | Opsiyonel | Hata tespiti: Odd/Even/None  |
+| Stop bit     |  1 veya 2 | Hat tekrar IDLE'a döner      |
 
 ### Baud Rate Hesaplama
 
@@ -46,13 +46,13 @@ Alıcı ve verici **aynı baud rate**'i kullanmalıdır. Tolerans ±2–3%'tir.
 
 $$\text{Baud} = \frac{f_{clock}}{16 \times \text{BRR}}$$
 
-| Baud Rate | Veri Hızı (8N1) | Yaygın Kullanım |
-|:---------:|:---------------:|-----------------|
-| 9600 | ~960 B/s | GPS, eski modüller |
-| 115200 | ~11.5 KB/s | Arduino, debug |
-| 460800 | ~46 KB/s | ESP32 flash |
-| 921600 | ~92 KB/s | Yüksek hızlı debug |
-| 4000000 | ~400 KB/s | STM32, FTDI FT4232 |
+| Baud Rate | Veri Hızı (8N1) | Yaygın Kullanım    |
+| :-------: | :-------------: | ------------------ |
+|    9600   |     ~960 B/s    | GPS, eski modüller |
+|   115200  |    ~11.5 KB/s   | Arduino, debug     |
+|   460800  |     ~46 KB/s    | ESP32 flash        |
+|   921600  |     ~92 KB/s    | Yüksek hızlı debug |
+|  4000000  |    ~400 KB/s    | STM32, FTDI FT4232 |
 
 ```c title="STM32 USART2 — Register Seviyesi"
 /* APB1 clock = 42 MHz, hedef: 115200 baud */
@@ -112,21 +112,21 @@ graph LR
     MCU -->|CS2 ▼| DEV2
 ```
 
-| Hat | Yön | Açıklama |
-|-----|:---:|---------|
-| SCLK | M→S | Saat sinyali; master üretir |
-| MOSI | M→S | Master Out Slave In |
-| MISO | S→M | Master In Slave Out |
-| CS/SS | M→S | Chip Select; aktif LOW |
+| Hat   | Yön | Açıklama                    |
+| ----- | :-: | --------------------------- |
+| SCLK  | M→S | Saat sinyali; master üretir |
+| MOSI  | M→S | Master Out Slave In         |
+| MISO  | S→M | Master In Slave Out         |
+| CS/SS | M→S | Chip Select; aktif LOW      |
 
 ### CPOL / CPHA Modları
 
-| Mod | CPOL | CPHA | Saat Boşta | Örnekleme |
-|:---:|:----:|:----:|:----------:|:---------:|
-| 0 | 0 | 0 | LOW | Yükselen kenar |
-| 1 | 0 | 1 | LOW | Düşen kenar |
-| 2 | 1 | 0 | HIGH | Düşen kenar |
-| 3 | 1 | 1 | HIGH | Yükselen kenar |
+| Mod | CPOL | CPHA | Saat Boşta |   Örnekleme    |
+| :-: | :--: | :--: | :--------: | :------------: |
+|  0  |  0   |  0   |    LOW     | Yükselen kenar |
+|  1  |  0   |  1   |    LOW     |  Düşen kenar   |
+|  2  |  1   |  0   |    HIGH    |  Düşen kenar   |
+|  3  |  1   |  1   |    HIGH    | Yükselen kenar |
 
 ```c title="STM32 SPI1 — Polling"
 /* Yapılandırma (APB2 = 84 MHz, SPI Clk = 84/16 = 5.25 MHz) */
@@ -176,14 +176,14 @@ I²C, iki hatlı (SDA/SCL) senkron yarı çift yönlü (half-duplex) çoklu mast
 
 ### Elektrik Özellikleri
 
-| Parametre | Değer |
-|-----------|:-----:|
-| Hız (Standard) | 100 kHz |
-| Hız (Fast) | 400 kHz |
-| Hız (Fast+) | 1 MHz |
-| Hız (High Speed) | 3.4 MHz |
-| Pull-up | Genellikle 4.7 kΩ (3.3V) |
-| Mantık düzeyi | Open-drain |
+| Parametre        |          Değer           |
+| ---------------- | :----------------------: |
+| Hız (Standard)   |         100 kHz          |
+| Hız (Fast)       |         400 kHz          |
+| Hız (Fast+)      |          1 MHz           |
+| Hız (High Speed) |         3.4 MHz          |
+| Pull-up          | Genellikle 4.7 kΩ (3.3V) |
+| Mantık düzeyi    |        Open-drain        |
 
 !!! warning "Pull-up Direnci"
     I²C hatları açık-drain çalışır; dışarıdan pull-up direnci **zorunludur**. Direnç değeri bus kapasitansına ve hıza göre seçilir. Düşük hız = yüksek direnç, yüksek hız = düşük direnç.
@@ -307,16 +307,16 @@ graph LR
 
 ### CAN Çerçeve Yapısı (Standard Frame)
 
-| Alan | Bit | Açıklama |
-|------|:---:|---------|
-| SOF | 1 | Start of Frame |
-| Arbitration ID | 11 | Mesaj kimliği; **düşük ID = yüksek öncelik** |
-| RTR | 1 | Remote Transmission Request |
-| Control | 6 | DLC (data length code: 0–8 byte) |
-| Data | 0–64 bit | Taşınan veri |
-| CRC | 15 | Cyclic Redundancy Check |
-| ACK | 2 | Alıcı onayı |
-| EOF | 7 | End of Frame |
+| Alan           |   Bit    | Açıklama                                     |
+| -------------- | :------: | -------------------------------------------- |
+| SOF            |    1     | Start of Frame                               |
+| Arbitration ID |    11    | Mesaj kimliği; **düşük ID = yüksek öncelik** |
+| RTR            |    1     | Remote Transmission Request                  |
+| Control        |    6     | DLC (data length code: 0–8 byte)             |
+| Data           | 0–64 bit | Taşınan veri                                 |
+| CRC            |    15    | Cyclic Redundancy Check                      |
+| ACK            |    2     | Alıcı onayı                                  |
+| EOF            |    7     | End of Frame                                 |
 
 ### Bit Arbitrasyon
 
@@ -337,13 +337,13 @@ sequenceDiagram
 ### Hız / Mesafe Tablosu
 
 | Bit Rate | Maks. Kablo Uzunluğu |
-|:--------:|:--------------------:|
-| 1 Mbps | 25 m |
-| 500 kbps | 100 m |
-| 250 kbps | 250 m |
-| 125 kbps | 500 m |
-| 50 kbps | 1000 m |
-| 10 kbps | 5000 m |
+| :------: | :------------------: |
+|  1 Mbps  |         25 m         |
+| 500 kbps |        100 m         |
+| 250 kbps |        250 m         |
+| 125 kbps |        500 m         |
+| 50 kbps  |        1000 m        |
+| 10 kbps  |        5000 m        |
 
 ### Hata Durumları
 
@@ -450,15 +450,15 @@ sequenceDiagram
 
 ### TCP vs UDP Karşılaştırması
 
-| Özellik | TCP | UDP |
-|---------|:---:|:---:|
-| Bağlantı | Bağlantılı | Bağlantısız |
-| Güvenilirlik | ✓ Garanti | ✗ Best-effort |
-| Sıralama | ✓ | ✗ |
-| Akış kontrolü | ✓ | ✗ |
-| Gecikme | Yüksek | **Düşük** |
-| Boyut | Değişken | Maks. 64 KB |
-| Kullanım | HTTP, SSH, FTP | DNS, DHCP, RTSP, Oyun |
+| Özellik       |      TCP       |          UDP          |
+| ------------- | :------------: | :-------------------: |
+| Bağlantı      |   Bağlantılı   |      Bağlantısız      |
+| Güvenilirlik  |   ✓ Garanti    |     ✗ Best-effort     |
+| Sıralama      |       ✓        |           ✗           |
+| Akış kontrolü |       ✓        |           ✗           |
+| Gecikme       |     Yüksek     |       **Düşük**       |
+| Boyut         |    Değişken    |      Maks. 64 KB      |
+| Kullanım      | HTTP, SSH, FTP | DNS, DHCP, RTSP, Oyun |
 
 ```c title="TCP Server (POSIX)"
 #include <sys/socket.h>
@@ -525,12 +525,12 @@ recvfrom(sock, buf, sizeof(buf), 0, (struct sockaddr *)&sender, &len);
 
 HTTP (HyperText Transfer Protocol), istemci-sunucu modelinde çalışan, metin tabanlı uygulama katmanı protokolüdür. HTTPS, TLS/SSL ile şifrelenmiş HTTP'dir.
 
-| Sürüm | Özellik |
-|:-----:|--------|
-| HTTP/1.0 | Her istek için yeni bağlantı |
-| HTTP/1.1 | Keep-Alive, Host header, chunked transfer |
-| HTTP/2 | İkili format, multiplexing, header sıkıştırma (HPACK) |
-| HTTP/3 | QUIC (UDP tabanlı), daha az gecikme |
+|  Sürüm   | Özellik                                               |
+| :------: | ----------------------------------------------------- |
+| HTTP/1.0 | Her istek için yeni bağlantı                          |
+| HTTP/1.1 | Keep-Alive, Host header, chunked transfer             |
+|  HTTP/2  | İkili format, multiplexing, header sıkıştırma (HPACK) |
+|  HTTP/3  | QUIC (UDP tabanlı), daha az gecikme                   |
 
 ### HTTP İstek Yapısı
 
@@ -546,13 +546,13 @@ Accept: application/json
 
 ### HTTP Yanıt Kodları
 
-| Kod | Kategori | Örnekler |
-|:---:|:--------:|---------|
-| 1xx | Bilgi | 100 Continue |
-| 2xx | Başarı | 200 OK, 201 Created, 204 No Content |
-| 3xx | Yönlendirme | 301 Moved, 302 Found, 304 Not Modified |
+| Kod |    Kategori    | Örnekler                                                        |
+| :-: | :------------: | --------------------------------------------------------------- |
+| 1xx |     Bilgi      | 100 Continue                                                    |
+| 2xx |     Başarı     | 200 OK, 201 Created, 204 No Content                             |
+| 3xx |  Yönlendirme   | 301 Moved, 302 Found, 304 Not Modified                          |
 | 4xx | İstemci Hatası | 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found |
-| 5xx | Sunucu Hatası | 500 Internal Error, 502 Bad Gateway, 503 Service Unavailable |
+| 5xx | Sunucu Hatası  | 500 Internal Error, 502 Bad Gateway, 503 Service Unavailable    |
 
 ```bash
 # curl ile HTTP test
@@ -617,11 +617,11 @@ graph LR
 
 ### QoS Seviyeleri
 
-| QoS | Anlam | Kullanım |
-|:---:|-------|---------|
-| 0 | At most once — teslim garantisi yok | Sensör akışı |
-| 1 | At least once — en az 1 teslim | Komutlar |
-| 2 | Exactly once — tam 1 teslim | Kritik veriler |
+| QoS | Anlam                               | Kullanım       |
+| :-: | ----------------------------------- | -------------- |
+|  0  | At most once — teslim garantisi yok | Sensör akışı   |
+|  1  | At least once — en az 1 teslim      | Komutlar       |
+|  2  | Exactly once — tam 1 teslim         | Kritik veriler |
 
 ```bash
 # Mosquitto broker kur ve başlat
@@ -672,15 +672,15 @@ graph TD
 
 ### Classic vs BLE Karşılaştırması
 
-| Özellik | Bluetooth Classic (BR/EDR) | Bluetooth Low Energy (BLE) |
-|---------|:--------------------------:|:--------------------------:|
-| Kullanım | Ses/Veri akışı | Kısa periyodik veri |
-| Frekans kanalları | 79 × 1 MHz | 40 × 2 MHz |
-| Veri hızı | 1–3 Mbps (EDR) | 125 Kbps – 2 Mbps |
-| Güç tüketimi | Yüksek | **Çok düşük** |
-| Bağlantı süresi | ~100 ms | < 3 ms |
-| Piconet | 1 Master + 7 Slave | Sınırsız (Mesh/Broadcast) |
-| Profil | A2DP, HFP, SPP | GATT (Generic Attribute) |
+| Özellik           | Bluetooth Classic (BR/EDR) | Bluetooth Low Energy (BLE) |
+| ----------------- | :------------------------: | :------------------------: |
+| Kullanım          |       Ses/Veri akışı       |    Kısa periyodik veri     |
+| Frekans kanalları |         79 × 1 MHz         |         40 × 2 MHz         |
+| Veri hızı         |       1–3 Mbps (EDR)       |     125 Kbps – 2 Mbps      |
+| Güç tüketimi      |           Yüksek           |       **Çok düşük**        |
+| Bağlantı süresi   |          ~100 ms           |           < 3 ms           |
+| Piconet           |     1 Master + 7 Slave     | Sınırsız (Mesh/Broadcast)  |
+| Profil            |       A2DP, HFP, SPP       |  GATT (Generic Attribute)  |
 
 ### BLE GATT Mimarisi
 
@@ -734,11 +734,11 @@ asyncio.run(main())
 
 ### Piconet ve Scatternet
 
-| Yapı | Açıklama |
-|------|---------|
-| **Piconet** | 1 Master + maks. 7 aktif Slave |
+| Yapı           | Açıklama                                                                 |
+| -------------- | ------------------------------------------------------------------------ |
+| **Piconet**    | 1 Master + maks. 7 aktif Slave                                           |
 | **Scatternet** | Birden fazla Piconet'in örtüşmesi; bir cihaz iki Piconet'te rol alabilir |
-| **FHSS** | 79 kanalda saniyede 1600 hop — parazit direnci |
+| **FHSS**       | 79 kanalda saniyede 1600 hop — parazit direnci                           |
 
 ---
 
@@ -767,11 +767,11 @@ sequenceDiagram
 
 RSA güvenliği, büyük sayıların asal çarpanlarına ayrılmasının hesaplama zorluğuna dayanır.
 
-| Kavram | Açıklama |
-|--------|---------|
-| **Public Key** | Herkesle paylaşılır; yalnızca şifreler |
-| **Private Key** | Gizli tutulur; şifreyi çözer ve imzalar |
-| **Anahtar uzunluğu** | Minimum 2048-bit (≥4096-bit önerilir) |
+| Kavram                 | Açıklama                                         |
+| ---------------------- | ------------------------------------------------ |
+| **Public Key**         | Herkesle paylaşılır; yalnızca şifreler           |
+| **Private Key**        | Gizli tutulur; şifreyi çözer ve imzalar          |
+| **Anahtar uzunluğu**   | Minimum 2048-bit (≥4096-bit önerilir)            |
 | **Matematiksel temel** | n = p × q (büyük asal sayılar); e·d ≡ 1 mod φ(n) |
 
 ```bash
@@ -792,11 +792,11 @@ openssl dgst -sha256 -verify public.pem -signature sig.bin data.txt
 
 SSH, OSI uygulama katmanında çalışan, **TCP 22** portunu kullanan şifreli uzaktan erişim protokolüdür.
 
-| Kimlik Doğrulama | Güvenlik | Avantaj |
-|:----------------:|:--------:|--------|
-| Parola | Orta | Kolay kurulum |
-| RSA/Ed25519 Anahtar | **Yüksek** | Şifresiz, brute-force'a dayanıklı |
-| FIDO2 / Hardware Key | En yüksek | Kimlik avına karşı dirençli |
+|   Kimlik Doğrulama   |  Güvenlik  | Avantaj                           |
+| :------------------: | :--------: | --------------------------------- |
+|        Parola        |    Orta    | Kolay kurulum                     |
+| RSA/Ed25519 Anahtar  | **Yüksek** | Şifresiz, brute-force'a dayanıklı |
+| FIDO2 / Hardware Key | En yüksek  | Kimlik avına karşı dirençli       |
 
 ```bash
 # Ed25519 anahtar çifti (RSA'dan daha küçük ve hızlı)
@@ -866,15 +866,15 @@ graph LR
 
 ### MAVLink v1 vs v2
 
-| Özellik | MAVLink v1 | MAVLink v2 |
-|---------|:----------:|:----------:|
-| Magic byte | `0xFE` | `0xFD` |
-| Maks. payload | 255 byte | 255 byte |
-| Message ID | 8 bit (0–255) | 24 bit (0–16M) |
-| İmzalama | ✗ | ✓ (13 byte imza) |
-| Boş alan atlama | ✗ | ✓ (trim) |
-| Component metadata | ✗ | ✓ |
-| Kullanım | Legacy | **Standart (önerilen)** |
+| Özellik            |   MAVLink v1  |        MAVLink v2       |
+| ------------------ | :-----------: | :---------------------: |
+| Magic byte         |     `0xFE`    |          `0xFD`         |
+| Maks. payload      |    255 byte   |         255 byte        |
+| Message ID         | 8 bit (0–255) |      24 bit (0–16M)     |
+| İmzalama           |       ✗       |     ✓ (13 byte imza)    |
+| Boş alan atlama    |       ✗       |         ✓ (trim)        |
+| Component metadata |       ✗       |            ✓            |
+| Kullanım           |     Legacy    | **Standart (önerilen)** |
 
 ### Paket Yapısı
 
@@ -898,34 +898,34 @@ graph LR
            └──────┴──────┴──────┴──────┴──────┴──────┴─────────┴──────────┴──────┴──────┴──────────────┘
     ```
 
-| Alan | Açıklama |
-|------|---------|
-| **STX** | Start of Frame sihirli byte |
-| **LEN** | Payload uzunluğu (byte) |
-| **SEQ** | Paket sıra numarası; kayıp tespiti için |
-| **SYS ID** | Sistemi tanımlar (1–255; GCS genellikle 255) |
+| Alan        | Açıklama                                         |
+| ----------- | ------------------------------------------------ |
+| **STX**     | Start of Frame sihirli byte                      |
+| **LEN**     | Payload uzunluğu (byte)                          |
+| **SEQ**     | Paket sıra numarası; kayıp tespiti için          |
+| **SYS ID**  | Sistemi tanımlar (1–255; GCS genellikle 255)     |
 | **COMP ID** | Bileşeni tanımlar (Autopilot=1, Camera=100, vb.) |
-| **MSG ID** | Mesaj tipi kimliği |
-| **CRC** | CRC-16/MCRF4XX + mesaj extra CRC |
+| **MSG ID**  | Mesaj tipi kimliği                               |
+| **CRC**     | CRC-16/MCRF4XX + mesaj extra CRC                 |
 
 ### Temel Mesaj Tipleri
 
-| MSG ID | İsim | Açıklama | Frekans |
-|:------:|------|---------|:-------:|
-| 0 | `HEARTBEAT` | Sistem tipi, mod, durum | 1 Hz |
-| 1 | `SYS_STATUS` | Batarya, CPU, sensör sağlığı | 1 Hz |
-| 24 | `GPS_RAW_INT` | Ham GPS (lat/lon/alt/fix) | 5 Hz |
-| 30 | `ATTITUDE` | Roll/Pitch/Yaw (radyan) | 10–50 Hz |
-| 32 | `LOCAL_POSITION_NED` | Yerel NED konum | 10 Hz |
-| 33 | `GLOBAL_POSITION_INT` | Global konum (cm, mm/s) | 10 Hz |
-| 74 | `VFR_HUD` | Airspeed, groundspeed, heading, throttle | 4 Hz |
-| 76 | `COMMAND_LONG` | Komut gönder (arm, takeoff, vb.) | — |
-| 77 | `COMMAND_ACK` | Komut yanıtı | — |
-| 83 | `ATTITUDE_TARGET` | İstenen attitude | — |
-| 105 | `HIGHRES_IMU` | Yüksek çözünürlüklü IMU | 50–200 Hz |
-| 147 | `BATTERY_STATUS` | Hücre gerilimleri | 1 Hz |
-| 242 | `HOME_POSITION` | Home noktası | — |
-| 253 | `STATUSTEXT` | İnsan okunabilir mesaj | Olay |
+| MSG ID | İsim                  | Açıklama                                 |  Frekans  |
+| :----: | --------------------- | ---------------------------------------- | :-------: |
+|   0    | `HEARTBEAT`           | Sistem tipi, mod, durum                  |    1 Hz   |
+|   1    | `SYS_STATUS`          | Batarya, CPU, sensör sağlığı             |    1 Hz   |
+|   24   | `GPS_RAW_INT`         | Ham GPS (lat/lon/alt/fix)                |    5 Hz   |
+|   30   | `ATTITUDE`            | Roll/Pitch/Yaw (radyan)                  |  10–50 Hz |
+|   32   | `LOCAL_POSITION_NED`  | Yerel NED konum                          |   10 Hz   |
+|   33   | `GLOBAL_POSITION_INT` | Global konum (cm, mm/s)                  |   10 Hz   |
+|   74   | `VFR_HUD`             | Airspeed, groundspeed, heading, throttle |    4 Hz   |
+|   76   | `COMMAND_LONG`        | Komut gönder (arm, takeoff, vb.)         |     —     |
+|   77   | `COMMAND_ACK`         | Komut yanıtı                             |     —     |
+|   83   | `ATTITUDE_TARGET`     | İstenen attitude                         |     —     |
+|  105   | `HIGHRES_IMU`         | Yüksek çözünürlüklü IMU                  | 50–200 Hz |
+|  147   | `BATTERY_STATUS`      | Hücre gerilimleri                        |    1 Hz   |
+|  242   | `HOME_POSITION`       | Home noktası                             |     —     |
+|  253   | `STATUSTEXT`          | İnsan okunabilir mesaj                   |    Olay   |
 
 ### Bağlantı Yöntemleri
 
@@ -945,41 +945,41 @@ graph LR
     SITL -->|UDP 14551| PY[pymavlink]
 ```
 
-| Bağlantı | Port | Açıklama |
-|----------|:----:|---------|
-| USB / Serial | — | Doğrudan bağlantı; debug ve flash |
-| UDP (GCS) | 14550 | Standart GCS portu |
-| UDP (ikinci) | 14551 | İkinci istemci (MAVROS, script) |
-| TCP | 5760 | SITL varsayılan TCP |
-| UART (telemetri) | — | SiK radio, RFD900 |
+| Bağlantı         |  Port | Açıklama                          |
+| ---------------- | :---: | --------------------------------- |
+| USB / Serial     |   —   | Doğrudan bağlantı; debug ve flash |
+| UDP (GCS)        | 14550 | Standart GCS portu                |
+| UDP (ikinci)     | 14551 | İkinci istemci (MAVROS, script)   |
+| TCP              |  5760 | SITL varsayılan TCP               |
+| UART (telemetri) |   —   | SiK radio, RFD900                 |
 
 ### Uçuş Modları
 
 === "ArduCopter"
 
-    | Mod | Açıklama |
-    |-----|---------|
+    | Mod       | Açıklama                                  |
+    | --------- | ----------------------------------------- |
     | STABILIZE | Manuel; throttle ham, attitude stabilized |
-    | ALT_HOLD | Yükseklik sabit, yatay manuel |
-    | LOITER | GPS tutma |
-    | AUTO | Görev planı izle |
-    | GUIDED | Harici komutla hedefe git |
-    | LAND | Otomatik iniş |
-    | RTL | Return to Launch |
-    | POSHOLD | GPS konum tutma |
+    | ALT_HOLD  | Yükseklik sabit, yatay manuel             |
+    | LOITER    | GPS tutma                                 |
+    | AUTO      | Görev planı izle                          |
+    | GUIDED    | Harici komutla hedefe git                 |
+    | LAND      | Otomatik iniş                             |
+    | RTL       | Return to Launch                          |
+    | POSHOLD   | GPS konum tutma                           |
 
 === "PX4 Multirotor"
 
-    | Mod | Açıklama |
-    |-----|---------|
-    | Manual | Ham RC girişi |
-    | Stabilized | Attitude stabilized |
-    | Altitude | Yükseklik sabit |
-    | Position | GPS konum tutma |
-    | Mission | Otomatik görev |
-    | Hold | Mevcut konumda bekle |
-    | Return | Home'a dön |
-    | Offboard | Harici bilgisayar kontrolü |
+    | Mod        | Açıklama                   |
+    | ---------- | -------------------------- |
+    | Manual     | Ham RC girişi              |
+    | Stabilized | Attitude stabilized        |
+    | Altitude   | Yükseklik sabit            |
+    | Position   | GPS konum tutma            |
+    | Mission    | Otomatik görev             |
+    | Hold       | Mevcut konumda bekle       |
+    | Return     | Home'a dön                 |
+    | Offboard   | Harici bilgisayar kontrolü |
 
 ### pymavlink — Python Örneği
 
@@ -1279,20 +1279,20 @@ EOF
 
 ## Protokol Seçim Rehberi
 
-| Senaryo | Önerilen Protokol |
-|---------|:-----------------:|
-| MCU ↔ Sensör (kısa mesafe, hızlı) | SPI |
-| MCU ↔ Çoklu sensör (bus paylaşımı) | I²C |
-| MCU ↔ PC debug / GPS / modem | UART |
-| Araç içi ECU ağı | CAN Bus |
-| Güvenilir ağ iletişimi | TCP/IP |
-| Düşük gecikme, kayıp tolere | UDP |
-| Web API | HTTP/HTTPS + REST |
-| Gerçek zamanlı iki yönlü web | WebSocket |
-| IoT sensör veri akışı | MQTT |
-| Kısa mesafe kablosuz, ses | Bluetooth Classic |
-| Pil ömrü kritik IoT | BLE |
-| Uzaktan terminal erişimi | SSH |
-| Yerel süreçler arası hızlı | Unix Domain Socket |
-| Kernel ↔ Userspace | Netlink / ioctl |
-| UAV / Drone iletişimi | MAVLink v2 |
+| Senaryo                            | Önerilen Protokol  |
+| ---------------------------------- | :----------------: |
+| MCU ↔ Sensör (kısa mesafe, hızlı)  |        SPI         |
+| MCU ↔ Çoklu sensör (bus paylaşımı) |        I²C         |
+| MCU ↔ PC debug / GPS / modem       |        UART        |
+| Araç içi ECU ağı                   |      CAN Bus       |
+| Güvenilir ağ iletişimi             |       TCP/IP       |
+| Düşük gecikme, kayıp tolere        |        UDP         |
+| Web API                            | HTTP/HTTPS + REST  |
+| Gerçek zamanlı iki yönlü web       |     WebSocket      |
+| IoT sensör veri akışı              |        MQTT        |
+| Kısa mesafe kablosuz, ses          | Bluetooth Classic  |
+| Pil ömrü kritik IoT                |        BLE         |
+| Uzaktan terminal erişimi           |        SSH         |
+| Yerel süreçler arası hızlı         | Unix Domain Socket |
+| Kernel ↔ Userspace                 |  Netlink / ioctl   |
+| UAV / Drone iletişimi              |     MAVLink v2     |

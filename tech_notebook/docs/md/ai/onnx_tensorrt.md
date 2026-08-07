@@ -417,13 +417,13 @@ graph TD
     G --> ORT[ONNX Runtime\n.onnx]
 ```
 
-| Format | Hız | Taşınabilirlik | Kurulum |
-|--------|:---:|:--------------:|:-------:|
-| PyTorch | ★☆☆ | ★★★ | Kolay |
-| ONNX Runtime | ★★☆ | ★★★ | Orta |
-| TensorRT FP16 | ★★★ | ★☆☆ (NVIDIA only) | Zor |
-| TensorRT INT8 | ★★★★ | ★☆☆ | Zor + kalibrasyon |
-| Hailo HEF | ★★★★ | ★☆☆ (Hailo only) | DFC gerekir |
+| Format        | Hız  |   Taşınabilirlik  |      Kurulum      |
+| ------------- | :--: | :---------------: | :---------------: |
+| PyTorch       | ★☆☆  |        ★★★        |       Kolay       |
+| ONNX Runtime  | ★★☆  |        ★★★        |        Orta       |
+| TensorRT FP16 | ★★★  | ★☆☆ (NVIDIA only) |        Zor        |
+| TensorRT INT8 | ★★★★ |        ★☆☆        | Zor + kalibrasyon |
+| Hailo HEF     | ★★★★ |  ★☆☆ (Hailo only) |    DFC gerekir    |
 
 ---
 

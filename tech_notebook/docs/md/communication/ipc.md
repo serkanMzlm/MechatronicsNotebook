@@ -138,12 +138,12 @@ int main(void) {
 }
 ```
 
-| Özellik | Anonim Pipe | Named Pipe (FIFO) |
-|---------|:-----------:|:-----------------:|
-| Dosya sistemi | Yok | `/tmp/fifo` gibi görünür |
-| Akraba olmayan süreçler | ✗ | ✓ |
-| Kalıcılık | Süreçle birlikte silinir | `unlink()` ile silinir |
-| Yön | Tek yönlü | Tek yönlü |
+| Özellik                 |       Anonim Pipe        |    Named Pipe (FIFO)     |
+| ----------------------- | :----------------------: | :----------------------: |
+| Dosya sistemi           |           Yok            | `/tmp/fifo` gibi görünür |
+| Akraba olmayan süreçler |            ✗             |            ✓             |
+| Kalıcılık               | Süreçle birlikte silinir |  `unlink()` ile silinir  |
+| Yön                     |        Tek yönlü         |        Tek yönlü         |
 
 ---
 
@@ -164,19 +164,19 @@ sequenceDiagram
 
 ### Önemli Sinyaller
 
-| Sinyal | Numara | Varsayılan Eylem | Açıklama |
-|--------|:------:|:----------------:|---------|
-| `SIGTERM` | 15 | Sonlandır | Nezaket isteği; yakalanabilir |
-| `SIGKILL` | 9 | Sonlandır | **Kesin; yakalanmaz ve engellenemez** |
-| `SIGINT` | 2 | Sonlandır | Ctrl+C |
-| `SIGQUIT` | 3 | Core dump | Ctrl+\ |
-| `SIGHUP` | 1 | Sonlandır | Terminal kapandı; daemon'lar yeniden yükle |
-| `SIGUSR1` | 10 | Sonlandır | Kullanıcı tanımlı 1 |
-| `SIGUSR2` | 12 | Sonlandır | Kullanıcı tanımlı 2 |
-| `SIGALRM` | 14 | Sonlandır | `alarm()` zamanlayıcısı |
-| `SIGCHLD` | 17 | Yoksay | Alt süreç durdu/sonlandı |
-| `SIGPIPE` | 13 | Sonlandır | Okuyucusuz pipe'a yazma |
-| `SIGSEGV` | 11 | Core dump | Geçersiz bellek erişimi |
+| Sinyal    | Numara | Varsayılan Eylem | Açıklama                                   |
+| --------- | :----: | :--------------: | ------------------------------------------ |
+| `SIGTERM` |   15   |    Sonlandır     | Nezaket isteği; yakalanabilir              |
+| `SIGKILL` |   9    |    Sonlandır     | **Kesin; yakalanmaz ve engellenemez**      |
+| `SIGINT`  |   2    |    Sonlandır     | Ctrl+C                                     |
+| `SIGQUIT` |   3    |    Core dump     | Ctrl+\                                     |
+| `SIGHUP`  |   1    |    Sonlandır     | Terminal kapandı; daemon'lar yeniden yükle |
+| `SIGUSR1` |   10   |    Sonlandır     | Kullanıcı tanımlı 1                        |
+| `SIGUSR2` |   12   |    Sonlandır     | Kullanıcı tanımlı 2                        |
+| `SIGALRM` |   14   |    Sonlandır     | `alarm()` zamanlayıcısı                    |
+| `SIGCHLD` |   17   |      Yoksay      | Alt süreç durdu/sonlandı                   |
+| `SIGPIPE` |   13   |    Sonlandır     | Okuyucusuz pipe'a yazma                    |
+| `SIGSEGV` |   11   |    Core dump     | Geçersiz bellek erişimi                    |
 
 ```c title="signal_handler.c"
 #include <stdio.h>
@@ -742,18 +742,18 @@ graph LR
 
 ## IPC Yöntemleri Karşılaştırması
 
-| Yöntem | Hız | Veri Kopyası | Yön | Süreç Sınırı | Kalıcılık |
-|--------|:---:|:------------:|:---:|:------------:|:---------:|
-| Anonymous Pipe | Orta | 1 kopya | Tek | Akraba | Process ömrü |
-| Named Pipe (FIFO) | Orta | 1 kopya | Tek | Herhangi | `unlink` ile |
-| Signal | Çok hızlı | Veri yok | Tek | Herhangi | Anlık |
-| Shared Memory | **En hızlı** | **0 kopya** | Çift | Herhangi | `shm_unlink` ile |
-| Message Queue | Hızlı | 1 kopya | Çift | Herhangi | `mq_unlink` ile |
-| Semaphore | — | Veri yok | — | Herhangi | `sem_unlink` ile |
-| Unix Domain Socket | Hızlı | 1–2 kopya | Çift | Aynı makine | `unlink` ile |
-| Netlink | Hızlı | 1 kopya | Çift | User/Kernel | — |
-| D-Bus | Yavaş | 2+ kopya | Çift | Herhangi | — |
-| mmap | **En hızlı** | **0 kopya** | Çift | Herhangi | Dosya tabanlı |
+| Yöntem             |     Hız      | Veri Kopyası | Yön  | Süreç Sınırı |    Kalıcılık     |
+| ------------------ | :----------: | :----------: | :--: | :----------: | :--------------: |
+| Anonymous Pipe     |     Orta     |   1 kopya    | Tek  |    Akraba    |   Process ömrü   |
+| Named Pipe (FIFO)  |     Orta     |   1 kopya    | Tek  |   Herhangi   |   `unlink` ile   |
+| Signal             |  Çok hızlı   |   Veri yok   | Tek  |   Herhangi   |      Anlık       |
+| Shared Memory      | **En hızlı** | **0 kopya**  | Çift |   Herhangi   | `shm_unlink` ile |
+| Message Queue      |    Hızlı     |   1 kopya    | Çift |   Herhangi   | `mq_unlink` ile  |
+| Semaphore          |      —       |   Veri yok   |  —   |   Herhangi   | `sem_unlink` ile |
+| Unix Domain Socket |    Hızlı     |  1–2 kopya   | Çift | Aynı makine  |   `unlink` ile   |
+| Netlink            |    Hızlı     |   1 kopya    | Çift | User/Kernel  |        —         |
+| D-Bus              |    Yavaş     |   2+ kopya   | Çift |   Herhangi   |        —         |
+| mmap               | **En hızlı** | **0 kopya**  | Çift |   Herhangi   |  Dosya tabanlı   |
 
 ```mermaid
 graph LR

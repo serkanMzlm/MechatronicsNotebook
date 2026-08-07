@@ -13,12 +13,12 @@ stateDiagram-v2
     Command --> Normal: Enter / Esc
 ```
 
-| Mod | Giriş | Açıklama |
-|-----|-------|---------|
-| **Normal** | `Esc` | Komut modu — gezinme, silme, kopyalama |
-| **Insert** | `i`, `a`, `o` | Metin yazma |
-| **Visual** | `v`, `V`, `Ctrl+v` | Blok seçme |
-| **Command** | `:` | Dosya işlemleri, ayarlar, arama-değiştirme |
+| Mod         | Giriş              | Açıklama                                   |
+| ----------- | ------------------ | ------------------------------------------ |
+| **Normal**  | `Esc`              | Komut modu — gezinme, silme, kopyalama     |
+| **Insert**  | `i`, `a`, `o`      | Metin yazma                                |
+| **Visual**  | `v`, `V`, `Ctrl+v` | Blok seçme                                 |
+| **Command** | `:`                | Dosya işlemleri, ayarlar, arama-değiştirme |
 
 ---
 
@@ -269,19 +269,19 @@ gt / gT             " Normal modda sekme değiştir
 
 ## Hızlı Başvuru Tablosu
 
-| Eylem | Komut |
-|-------|-------|
-| Kaydet | `:w` |
-| Çık | `:q` / `:wq` / `:q!` |
-| Tüm dosyada değiştir | `:%s/eski/yeni/g` |
-| Dosya başı / sonu | `gg` / `G` |
-| Kelime sil | `dw` |
-| Satır sil | `dd` |
-| Geri al | `u` |
-| Yeniden yap | `Ctrl+r` |
-| Ara | `/pattern` |
-| Son komutu tekrar et | `.` |
-| Makro kayıt | `q{harf}` |
-| Makro çalıştır | `@{harf}` |
-| Clipboard'dan yapıştır | `"+p` |
-| Clipboard'a kopyala | `"+y` |
+| Eylem                  | Komut                |
+| ---------------------- | -------------------- |
+| Kaydet                 | `:w`                 |
+| Çık                    | `:q` / `:wq` / `:q!` |
+| Tüm dosyada değiştir   | `:%s/eski/yeni/g`    |
+| Dosya başı / sonu      | `gg` / `G`           |
+| Kelime sil             | `dw`                 |
+| Satır sil              | `dd`                 |
+| Geri al                | `u`                  |
+| Yeniden yap            | `Ctrl+r`             |
+| Ara                    | `/pattern`           |
+| Son komutu tekrar et   | `.`                  |
+| Makro kayıt            | `q{harf}`            |
+| Makro çalıştır         | `@{harf}`            |
+| Clipboard'dan yapıştır | `"+p`                |
+| Clipboard'a kopyala    | `"+y`                |

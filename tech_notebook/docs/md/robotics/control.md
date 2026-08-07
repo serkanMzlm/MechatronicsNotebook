@@ -16,12 +16,12 @@ graph LR
     SENSOR -->|Ölçülen değer| SUM
 ```
 
-| Sembol | Anlam |
-|--------|-------|
-| `r(t)` | Referans / setpoint |
-| `e(t)` | Hata: `r(t) - y(t)` |
+| Sembol | Anlam                                |
+| ------ | ------------------------------------ |
+| `r(t)` | Referans / setpoint                  |
+| `e(t)` | Hata: `r(t) - y(t)`                  |
 | `u(t)` | Kontrolörün sisteme uyguladığı giriş |
-| `y(t)` | Sistemin ölçülen çıkışı |
+| `y(t)` | Sistemin ölçülen çıkışı              |
 
 ---
 
@@ -33,11 +33,11 @@ En yaygın kontrolör. Üç terimin toplamıdır:
 u(t) = Kp·e(t) + Ki·∫e(τ)dτ + Kd·de(t)/dt
 ```
 
-| Terim | İsim | Etkisi |
-|-------|------|--------|
-| `Kp·e(t)` | **Oransal** | Anlık hataya tepki; büyük Kp → hızlı ama titreşimli |
+| Terim      | İsim         | Etkisi                                                 |
+| ---------- | ------------ | ------------------------------------------------------ |
+| `Kp·e(t)`  | **Oransal**  | Anlık hataya tepki; büyük Kp → hızlı ama titreşimli    |
 | `Ki·∫e dt` | **İntegral** | Birikmiş hatayı sıfırlar; sabit durum hatasını giderir |
-| `Kd·de/dt` | **Türevsel** | Hızlanmayı frenler; aşımı (overshoot) azaltır |
+| `Kd·de/dt` | **Türevsel** | Hızlanmayı frenler; aşımı (overshoot) azaltır          |
 
 ### Ayrık Zamanlı PID (Yazılım Gerçeklemesi)
 
@@ -93,11 +93,11 @@ while (running) {
 2. Çıkış kararlı salınıma girdiğinde `Ku` (kritik kazanç) ve `Tu` (salınım periyodu) ölç
 3. Tablodan hesapla:
 
-| Kontrolör | Kp | Ki | Kd |
-|-----------|:--:|:--:|:--:|
-| P | 0.50·Ku | — | — |
-| PI | 0.45·Ku | 1.2·Kp/Tu | — |
-| PID | 0.60·Ku | 2·Kp/Tu | Kp·Tu/8 |
+| Kontrolör |    Kp   |     Ki    |    Kd   |
+| --------- | :-----: | :-------: | :-----: |
+| P         | 0.50·Ku |     —     |    —    |
+| PI        | 0.45·Ku | 1.2·Kp/Tu |    —    |
+| PID       | 0.60·Ku |  2·Kp/Tu  | Kp·Tu/8 |
 
 !!! warning "Anti-Windup Şart"
     Sistem doyuma girdiğinde (motor max hızda) integratör hata biriktirmeye devam eder. Çıkış sınıra ulaştığında integratörü durdurun veya geri sarın. Yukarıdaki kod `clamp` ile bunu yapar.
@@ -158,12 +158,12 @@ Optimal kontrol teorisi. Durum uzayı modelini kullanan ve maliyet matrisleriyle
 y = Cx + Du
 ```
 
-| Matris | Boyut | Anlam |
-|--------|:-----:|-------|
-| **A** | n×n | Sistem dinamiği (durum geçiş matrisi) |
-| **B** | n×m | Kontrol girişinin etkisi |
-| **u** | m×1 | Kontrol girişi |
-| **x** | n×1 | Durum vektörü |
+| Matris | Boyut | Anlam                                 |
+| ------ | :---: | ------------------------------------- |
+| **A**  |  n×n  | Sistem dinamiği (durum geçiş matrisi) |
+| **B**  |  n×m  | Kontrol girişinin etkisi              |
+| **u**  |  m×1  | Kontrol girişi                        |
+| **x**  |  n×1  | Durum vektörü                         |
 
 ### LQR Maliyet Fonksiyonu
 
@@ -175,10 +175,10 @@ K = R⁻¹BᵀP           (kazanç matrisi)
 P = ARE çözümü         (Algebraic Riccati Equation)
 ```
 
-| Matris | Etkisi |
-|--------|--------|
-| **Q** (n×n, pozitif yarı-tanımlı) | Durumların önemi; büyük Q → durumu hızlı düzelt |
-| **R** (m×m, pozitif tanımlı) | Kontrol enerjisi maliyeti; büyük R → yumuşak kontrol |
+| Matris                            | Etkisi                                               |
+| --------------------------------- | ---------------------------------------------------- |
+| **Q** (n×n, pozitif yarı-tanımlı) | Durumların önemi; büyük Q → durumu hızlı düzelt      |
+| **R** (m×m, pozitif tanımlı)      | Kontrol enerjisi maliyeti; büyük R → yumuşak kontrol |
 
 ### Python ile LQR
 
@@ -242,14 +242,14 @@ graph LR
 
 ### MPC vs PID vs LQR
 
-| Özellik | PID | LQR | MPC |
-|---------|:---:|:---:|:---:|
-| Model gereksinimi | Yok | Doğrusal | Doğrusal/Nonlineer |
-| Kısıtlama yönetimi | Manuel sınırlama | Zor | ✓ Yerleşik |
-| Çok giriş-çok çıkış | Zor | ✓ | ✓ |
-| Hesaplama maliyeti | Düşük | Düşük | **Yüksek** |
-| Referans izleme | İyi | İyi | **Mükemmel** |
-| Gecikme kompansasyonu | Zor | Orta | ✓ |
+| Özellik               |       PID        |   LQR    |        MPC         |
+| --------------------- | :--------------: | :------: | :----------------: |
+| Model gereksinimi     |       Yok        | Doğrusal | Doğrusal/Nonlineer |
+| Kısıtlama yönetimi    | Manuel sınırlama |   Zor    |     ✓ Yerleşik     |
+| Çok giriş-çok çıkış   |       Zor        |    ✓     |         ✓          |
+| Hesaplama maliyeti    |      Düşük       |  Düşük   |     **Yüksek**     |
+| Referans izleme       |       İyi        |   İyi    |    **Mükemmel**    |
+| Gecikme kompansasyonu |       Zor        |   Orta   |         ✓          |
 
 ### Python ile MPC (do_mpc)
 
@@ -345,11 +345,11 @@ graph TD
     PID --> CASC[Cascade PID\nÇok döngü gerekirse]
 ```
 
-| Senaryo | Önerilen |
-|---------|---------|
-| Basit motor hız kontrolü | PID |
-| Drone yükseklik + hız | Cascade PID |
-| Robot kolu açı (model mevcut) | LQR |
-| Otonom araç yol takibi | MPC |
-| Drone agresif manevra | NMPC |
-| Çok eksenli manipülatör | LQR veya MPC |
+| Senaryo                       | Önerilen     |
+| ----------------------------- | ------------ |
+| Basit motor hız kontrolü      | PID          |
+| Drone yükseklik + hız         | Cascade PID  |
+| Robot kolu açı (model mevcut) | LQR          |
+| Otonom araç yol takibi        | MPC          |
+| Drone agresif manevra         | NMPC         |
+| Çok eksenli manipülatör       | LQR veya MPC |

@@ -473,13 +473,13 @@ model.fit(X_train, y_train,
           callbacks=callbacks)
 ```
 
-| | XGBoost | LightGBM |
-|--|:-------:|:--------:|
-| **Büyüme Stratejisi** | Level-wise | **Leaf-wise (daha hızlı)** |
-| **Bellek** | Yüksek | Düşük |
-| **Hız** | Orta | **Çok hızlı** |
-| **Kategorik Destek** | Encoding gerekir | Doğrudan destekler |
-| **Küçük veri** | İyi | Overfitting riski daha yüksek |
+|                       |     XGBoost      |            LightGBM           |
+| --------------------- | :--------------: | :---------------------------: |
+| **Büyüme Stratejisi** |    Level-wise    |   **Leaf-wise (daha hızlı)**  |
+| **Bellek**            |      Yüksek      |             Düşük             |
+| **Hız**               |       Orta       |         **Çok hızlı**         |
+| **Kategorik Destek**  | Encoding gerekir |       Doğrudan destekler      |
+| **Küçük veri**        |       İyi        | Overfitting riski daha yüksek |
 
 ---
 
@@ -589,19 +589,19 @@ pip install -r requirements.txt
 
 ## Ekosistem Hızlı Başvuru
 
-| Kütüphane | Kategori | Güçlü Yön |
-|-----------|:--------:|----------|
-| **NumPy** | Sayısal | Hızlı dizi operasyonları, lineer cebir |
-| **Pandas** | Veri | Tablo veri analizi, CSV/Excel/SQL |
-| **Matplotlib** | Görsel | Tam kontrol, publication grafik |
-| **Seaborn** | Görsel | İstatistiksel, hızlı EDA |
-| **Scikit-Learn** | Klasik ML | Pipeline, CV, metrikler, 50+ algoritma |
-| **XGBoost** | Boosting | Tablo veri şampiyonu |
-| **LightGBM** | Boosting | XGBoost'tan hızlı, büyük veri |
-| **PyTorch** | DL | Araştırma, esneklik, debug |
-| **TensorFlow/Keras** | DL | Production, TFLite edge deploy |
-| **HuggingFace** | NLP/Vision | Önceden eğitilmiş model ekosistemi |
-| **OpenCV** | Görüntü | Gerçek zamanlı görüntü işleme |
-| **Ultralytics** | Nesne Tespiti | YOLOv8 — hızlı fine-tune |
-| **SHAP** | Açıklama | Model yorumlanabilirliği |
-| **Optuna** | Optimizasyon | Bayesian hiperparametre arama |
+| Kütüphane            |    Kategori   | Güçlü Yön                              |
+| -------------------- | :-----------: | -------------------------------------- |
+| **NumPy**            |    Sayısal    | Hızlı dizi operasyonları, lineer cebir |
+| **Pandas**           |      Veri     | Tablo veri analizi, CSV/Excel/SQL      |
+| **Matplotlib**       |     Görsel    | Tam kontrol, publication grafik        |
+| **Seaborn**          |     Görsel    | İstatistiksel, hızlı EDA               |
+| **Scikit-Learn**     |   Klasik ML   | Pipeline, CV, metrikler, 50+ algoritma |
+| **XGBoost**          |    Boosting   | Tablo veri şampiyonu                   |
+| **LightGBM**         |    Boosting   | XGBoost'tan hızlı, büyük veri          |
+| **PyTorch**          |       DL      | Araştırma, esneklik, debug             |
+| **TensorFlow/Keras** |       DL      | Production, TFLite edge deploy         |
+| **HuggingFace**      |   NLP/Vision  | Önceden eğitilmiş model ekosistemi     |
+| **OpenCV**           |    Görüntü    | Gerçek zamanlı görüntü işleme          |
+| **Ultralytics**      | Nesne Tespiti | YOLOv8 — hızlı fine-tune               |
+| **SHAP**             |    Açıklama   | Model yorumlanabilirliği               |
+| **Optuna**           |  Optimizasyon | Bayesian hiperparametre arama          |

@@ -77,16 +77,16 @@ graph LR
     D --> E[myclass.o]
 ```
 
-| Makro / Anahtar Kelime | Açıklama |
-|------------------------|---------|
-| `Q_OBJECT` | Sınıfın MOC tarafından işleneceğini bildirir; sinyal/slot şart |
-| `signals:` | Sinyal bildirimleri bölümü |
-| `slots:` (veya `public slots:`) | Slot bildirimleri bölümü |
-| `emit` | Sinyali tetikler |
-| `Q_PROPERTY(...)` | QML ve meta-system ile senkron özellik tanımı |
-| `Q_INVOKABLE` | Metodu QML ve `QMetaObject::invokeMethod` ile çağrılabilir yapar |
-| `Q_GADGET` | `QObject` mirası olmayan ancak meta-sistem kullanan sınıf |
-| `Q_DECLARE_METATYPE` | Tipi signal/slot ve `QVariant` için kaydeder |
+| Makro / Anahtar Kelime          | Açıklama                                                         |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `Q_OBJECT`                      | Sınıfın MOC tarafından işleneceğini bildirir; sinyal/slot şart   |
+| `signals:`                      | Sinyal bildirimleri bölümü                                       |
+| `slots:` (veya `public slots:`) | Slot bildirimleri bölümü                                         |
+| `emit`                          | Sinyali tetikler                                                 |
+| `Q_PROPERTY(...)`               | QML ve meta-system ile senkron özellik tanımı                    |
+| `Q_INVOKABLE`                   | Metodu QML ve `QMetaObject::invokeMethod` ile çağrılabilir yapar |
+| `Q_GADGET`                      | `QObject` mirası olmayan ancak meta-sistem kullanan sınıf        |
+| `Q_DECLARE_METATYPE`            | Tipi signal/slot ve `QVariant` için kaydeder                     |
 
 ```cpp
 class Sayac : public QObject {
@@ -157,11 +157,11 @@ int main(int argc, char *argv[]) {
 ```
 
 !!! tip "QCoreApplication vs QGuiApplication vs QApplication"
-    | Sınıf | Kullanım |
-    |-------|---------|
-    | `QCoreApplication` | GUI olmayan; terminal uygulamaları |
-    | `QGuiApplication` | Pencere sistemi var; Widget yok (QML) |
-    | `QApplication` | Tam Widget desteği |
+    | Sınıf              | Kullanım                              |
+    | ------------------ | ------------------------------------- |
+    | `QCoreApplication` | GUI olmayan; terminal uygulamaları    |
+    | `QGuiApplication`  | Pencere sistemi var; Widget yok (QML) |
+    | `QApplication`     | Tam Widget desteği                    |
 
 ---
 
@@ -230,21 +230,21 @@ sequenceDiagram
     // 'this' context olduğunda: this yok edilirse bağlantı otomatik kopar
     ```
 
-| connect() Parametresi | Açıklama |
-|-----------------------|---------|
-| `sender` | Sinyali gönderen nesne |
-| `signal` | `&SınıfAdı::sinyalAdı` |
-| `receiver` | Sinyali alacak nesne (lambda için context) |
-| `slot` | `&SınıfAdı::slotAdı` veya lambda |
-| `Qt::ConnectionType` | `DirectConnection`, `QueuedConnection`, `BlockingQueuedConnection` |
+| connect() Parametresi | Açıklama                                                           |
+| --------------------- | ------------------------------------------------------------------ |
+| `sender`              | Sinyali gönderen nesne                                             |
+| `signal`              | `&SınıfAdı::sinyalAdı`                                             |
+| `receiver`            | Sinyali alacak nesne (lambda için context)                         |
+| `slot`                | `&SınıfAdı::slotAdı` veya lambda                                   |
+| `Qt::ConnectionType`  | `DirectConnection`, `QueuedConnection`, `BlockingQueuedConnection` |
 
 !!! note "Bağlantı Türleri"
-    | Tür | Açıklama |
-    |-----|---------|
-    | `Qt::DirectConnection` | Sinyal ile aynı thread'de anında çağrılır |
-    | `Qt::QueuedConnection` | Slot, alıcının event loop'unda çağrılır (thread arası iletişim) |
-    | `Qt::AutoConnection` | Aynı thread → Direct; farklı thread → Queued (varsayılan) |
-    | `Qt::BlockingQueuedConnection` | QueuedConnection + gönderen thread alıcı bitene kadar bekler |
+    | Tür                            | Açıklama                                                        |
+    | ------------------------------ | --------------------------------------------------------------- |
+    | `Qt::DirectConnection`         | Sinyal ile aynı thread'de anında çağrılır                       |
+    | `Qt::QueuedConnection`         | Slot, alıcının event loop'unda çağrılır (thread arası iletişim) |
+    | `Qt::AutoConnection`           | Aynı thread → Direct; farklı thread → Queued (varsayılan)       |
+    | `Qt::BlockingQueuedConnection` | QueuedConnection + gönderen thread alıcı bitene kadar bekler    |
 
 ```cpp
 // disconnect — belirli bağlantıyı kes
@@ -293,12 +293,12 @@ QString r = QString("İsim: %1, Yaş: %2").arg("Ali").arg(30);
 // "İsim: Ali, Yaş: 30"
 ```
 
-| QString | std::string |
-|---------|------------|
-| UTF-16 Unicode | Locale/UTF-8 bağımlı |
-| Implicit sharing (COW) | Deep copy |
-| Qt API ile tam uyum | STL ile uyum |
-| `toStdString()` / `fromStdString()` | Dönüşüm |
+| QString                             | std::string          |
+| ----------------------------------- | -------------------- |
+| UTF-16 Unicode                      | Locale/UTF-8 bağımlı |
+| Implicit sharing (COW)              | Deep copy            |
+| Qt API ile tam uyum                 | STL ile uyum         |
+| `toStdString()` / `fromStdString()` | Dönüşüm              |
 
 ### QByteArray
 
@@ -401,12 +401,12 @@ QStringList parcalar = str.split(",");  // ["a","b","c"]
 
 ### QMap / QHash
 
-| | `QMap` | `QHash` |
-|--|:------:|:-------:|
-| Veri yapısı | Red-Black Tree | Hash Table |
-| Sıralama | Anahtar sırasına göre | Sırasız |
-| Arama | O(log N) | Ortalama O(1) |
-| Key şartı | `<` operatörü | `qHash()` + `==` |
+|             |         `QMap`        |     `QHash`      |
+| ----------- | :-------------------: | :--------------: |
+| Veri yapısı |     Red-Black Tree    |    Hash Table    |
+| Sıralama    | Anahtar sırasına göre |     Sırasız      |
+| Arama       |        O(log N)       |  Ortalama O(1)   |
+| Key şartı   |     `<` operatörü     | `qHash()` + `==` |
 
 ```cpp
 QMap<QString, int> yaslar;
@@ -442,12 +442,12 @@ kume.subtract(diger);   // {1}
 
 ### Akıllı İşaretçiler
 
-| Qt Pointer | C++ Karşılığı | Açıklama |
-|------------|:-------------:|---------|
+| Qt Pointer          |  C++ Karşılığı  | Açıklama                                 |
+| ------------------- | :-------------: | ---------------------------------------- |
 | `QScopedPointer<T>` | `unique_ptr<T>` | Scope bitince otomatik sil; kopyalanamaz |
-| `QSharedPointer<T>` | `shared_ptr<T>` | Ref-counted; paylaşımlı sahiplik |
-| `QWeakPointer<T>` | `weak_ptr<T>` | Döngüsel bağımlılığı kırar |
-| `QPointer<T>` | — | Nesne silinirse otomatik `nullptr` olur |
+| `QSharedPointer<T>` | `shared_ptr<T>` | Ref-counted; paylaşımlı sahiplik         |
+| `QWeakPointer<T>`   |  `weak_ptr<T>`  | Döngüsel bağımlılığı kırar               |
+| `QPointer<T>`       |        —        | Nesne silinirse otomatik `nullptr` olur  |
 
 !!! note "Parent-Child veya Smart Pointer?"
     Qt parent mekanizması varsa genellikle ham pointer yeterlidir — parent silinince child silinir. Parent yoksa `QScopedPointer` veya `QSharedPointer` tercih edilir.
@@ -575,22 +575,22 @@ grid->addWidget(input2, 1, 1, 1, 2);  // 1 satır, 2 sütun span
 
 ### Sık Kullanılan Widget'lar
 
-| Widget | Açıklama |
-|--------|---------|
-| `QPushButton` | Tıklanabilir buton; `clicked()` sinyali |
-| `QLabel` | Metin veya resim; HTML destekler |
-| `QLineEdit` | Tek satır metin girişi |
-| `QTextEdit` | Çok satır zengin metin |
-| `QComboBox` | Açılır liste |
-| `QCheckBox` | Onay kutusu |
-| `QRadioButton` | Seçim düğmesi |
-| `QSlider` / `QDial` | Değer kaydırıcı |
-| `QSpinBox` | Artış/azalış sayı girişi |
-| `QListView` / `QTreeView` | Model-View ile veri gösterimi |
-| `QTableWidget` | Basit tablo |
-| `QDialog` | Modal/modeless diyalog |
-| `QMessageBox` | Bilgi/uyarı/soru/hata mesaj kutusu |
-| `QTimer` | Zamanlayıcı; `timeout()` sinyali |
+| Widget                    | Açıklama                                |
+| ------------------------- | --------------------------------------- |
+| `QPushButton`             | Tıklanabilir buton; `clicked()` sinyali |
+| `QLabel`                  | Metin veya resim; HTML destekler        |
+| `QLineEdit`               | Tek satır metin girişi                  |
+| `QTextEdit`               | Çok satır zengin metin                  |
+| `QComboBox`               | Açılır liste                            |
+| `QCheckBox`               | Onay kutusu                             |
+| `QRadioButton`            | Seçim düğmesi                           |
+| `QSlider` / `QDial`       | Değer kaydırıcı                         |
+| `QSpinBox`                | Artış/azalış sayı girişi                |
+| `QListView` / `QTreeView` | Model-View ile veri gösterimi           |
+| `QTableWidget`            | Basit tablo                             |
+| `QDialog`                 | Modal/modeless diyalog                  |
+| `QMessageBox`             | Bilgi/uyarı/soru/hata mesaj kutusu      |
+| `QTimer`                  | Zamanlayıcı; `timeout()` sinyali        |
 
 ```cpp
 // QLabel — HTML destekli
@@ -744,13 +744,13 @@ watcher->setFuture(gorev);
 
 ### QML Kayıt Fonksiyonları
 
-| Fonksiyon | Açıklama |
-|-----------|---------|
-| `qmlRegisterType<T>(uri, major, minor, name)` | QML'de new ile oluşturulabilir tip |
-| `qmlRegisterSingletonInstance(uri, major, minor, name, ptr)` | Singleton — QML'de global erişim |
-| `qmlRegisterUncreatableType<T>(...)` | QML'de örneklenemez; yalnızca enum/property erişimi |
-| `qRegisterMetaType<T>()` | Signal/slot ve QVariant için tip kaydı |
-| `Q_DECLARE_METATYPE(T)` | `qRegisterMetaType` öncesi şablon özelleştirme |
+| Fonksiyon                                                    | Açıklama                                            |
+| ------------------------------------------------------------ | --------------------------------------------------- |
+| `qmlRegisterType<T>(uri, major, minor, name)`                | QML'de new ile oluşturulabilir tip                  |
+| `qmlRegisterSingletonInstance(uri, major, minor, name, ptr)` | Singleton — QML'de global erişim                    |
+| `qmlRegisterUncreatableType<T>(...)`                         | QML'de örneklenemez; yalnızca enum/property erişimi |
+| `qRegisterMetaType<T>()`                                     | Signal/slot ve QVariant için tip kaydı              |
+| `Q_DECLARE_METATYPE(T)`                                      | `qRegisterMetaType` öncesi şablon özelleştirme      |
 
 ### Q_INVOKABLE ve Sinyaller QML'den
 
@@ -869,18 +869,18 @@ find_package(Qt6 REQUIRED COMPONENTS
 )
 ```
 
-| Qt Modülü | İçerik |
-|-----------|--------|
-| `Qt6::Core` | QObject, QString, QList, QFile vb. |
-| `Qt6::Gui` | QFont, QColor, QPainter, QImage |
-| `Qt6::Widgets` | QPushButton, QDialog, QLayout |
-| `Qt6::Quick` | QML engine, QQuickView |
+| Qt Modülü             | İçerik                                    |
+| --------------------- | ----------------------------------------- |
+| `Qt6::Core`           | QObject, QString, QList, QFile vb.        |
+| `Qt6::Gui`            | QFont, QColor, QPainter, QImage           |
+| `Qt6::Widgets`        | QPushButton, QDialog, QLayout             |
+| `Qt6::Quick`          | QML engine, QQuickView                    |
 | `Qt6::QuickControls2` | Material, Fluent gibi QML bileşen setleri |
-| `Qt6::Network` | QNetworkAccessManager, QTcpSocket |
-| `Qt6::Sql` | QSqlDatabase, QSqlQuery |
-| `Qt6::SerialPort` | QSerialPort — gömülü/donanım haberleşmesi |
-| `Qt6::Concurrent` | QtConcurrent — paralel işleme |
-| `Qt6::Bluetooth` | QBluetoothSocket, LE |
+| `Qt6::Network`        | QNetworkAccessManager, QTcpSocket         |
+| `Qt6::Sql`            | QSqlDatabase, QSqlQuery                   |
+| `Qt6::SerialPort`     | QSerialPort — gömülü/donanım haberleşmesi |
+| `Qt6::Concurrent`     | QtConcurrent — paralel işleme             |
+| `Qt6::Bluetooth`      | QBluetoothSocket, LE                      |
 
 ---
 

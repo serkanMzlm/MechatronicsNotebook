@@ -192,13 +192,13 @@ while True:
 
 ### Sparse vs Dense Karşılaştırması
 
-| | Lucas-Kanade (Seyrek) | Farneback (Yoğun) |
-|--|:--------------------:|:-----------------:|
-| Çıktı | Seçili noktalarda vektör | Her piksel vektör alanı |
-| Hız | Hızlı (100+ FPS) | Yavaş (10-30 FPS) |
-| Kullanım | VIO, nesne takibi | Segmentasyon, arka plan çıkarma |
-| Büyük hareket | Piramit ile çözülür | Zayıf |
-| Gürültü | İyi (pencere ortalama) | Orta |
+|               |  Lucas-Kanade (Seyrek)   |        Farneback (Yoğun)        |
+| ------------- | :----------------------: | :-----------------------------: |
+| Çıktı         | Seçili noktalarda vektör |     Her piksel vektör alanı     |
+| Hız           |     Hızlı (100+ FPS)     |        Yavaş (10-30 FPS)        |
+| Kullanım      |    VIO, nesne takibi     | Segmentasyon, arka plan çıkarma |
+| Büyük hareket |   Piramit ile çözülür    |              Zayıf              |
+| Gürültü       |  İyi (pencere ortalama)  |               Orta              |
 
 ---
 
@@ -208,13 +208,13 @@ while True:
 
 Sadece kamera (VO) ile robotun nerede olduğunu hesaplamak mümkün ama zor. IMU ekleyince sistem çok daha sağlam hale gelir.
 
-| Sorun | Sadece VO | VO + IMU (VIO) |
-|-------|:---------:|:--------------:|
-| Mono kamerada ölçek belirsizliği | ✗ Bilinmez | ✓ IMU kurtarır |
-| Hızlı hareket / bulanıklık | ✗ Takip bozulur | ✓ IMU köprü kurar |
-| Karanlık / doku yok | ✗ Özellik bulunamaz | ✓ IMU kısa süre devralır |
-| Uzun vadeli drift | ✗ Hata birikir | Kısmen: IMU bias tahmin edilir |
-| Başlangıç oryantasyonu | Belirsiz | ✓ Yerçekimi vektörü |
+| Sorun                            |      Sadece VO      |         VO + IMU (VIO)         |
+| -------------------------------- | :-----------------: | :----------------------------: |
+| Mono kamerada ölçek belirsizliği |      ✗ Bilinmez     |         ✓ IMU kurtarır         |
+| Hızlı hareket / bulanıklık       |   ✗ Takip bozulur   |       ✓ IMU köprü kurar        |
+| Karanlık / doku yok              | ✗ Özellik bulunamaz |    ✓ IMU kısa süre devralır    |
+| Uzun vadeli drift                |    ✗ Hata birikir   | Kısmen: IMU bias tahmin edilir |
+| Başlangıç oryantasyonu           |       Belirsiz      |      ✓ Yerçekimi vektörü       |
 
 **IMU'nun kendi sorunu:** Bias (sürüklenme) ve gürültü. Statik dururken bile ivmeölçer ve jiroskop sıfır göstermez — hafif sürüklenme (bias) var. Uzun süre entegre edilince büyük hata birikir. VIO bu bias'ı da tahmin eder.
 
@@ -326,13 +326,13 @@ Yeni KF₆ gelince:
 
 ### Stereo Kamera: VIO'da Avantajları
 
-| Özellik | Mono | Mono+IMU | Stereo | Stereo+IMU |
-|---------|:----:|:--------:|:------:|:----------:|
-| Ölçek | ✗ | ✓ (başlatma sonrası) | ✓ | ✓ |
-| Derinlik | ✗ | Kısmi | ✓ | ✓ |
-| Başlatma kolaylığı | Düşük | Orta | **Kolay** | Kolay |
-| Hesaplama | Az | Orta | Çok | **En çok** |
-| Sağlamlık | Düşük | Orta | İyi | **En iyi** |
+| Özellik            |  Mono |       Mono+IMU       |   Stereo  | Stereo+IMU |
+| ------------------ | :---: | :------------------: | :-------: | :--------: |
+| Ölçek              |   ✗   | ✓ (başlatma sonrası) |     ✓     |     ✓      |
+| Derinlik           |   ✗   |        Kısmi         |     ✓     |     ✓      |
+| Başlatma kolaylığı | Düşük |         Orta         | **Kolay** |   Kolay    |
+| Hesaplama          |   Az  |         Orta         |    Çok    | **En çok** |
+| Sağlamlık          | Düşük |         Orta         |    İyi    | **En iyi** |
 
 !!! tip "Pratik Öneri"
     - Küçük drone, ağırlık kritik → **Mono + IMU** (OpenVINS mono)
@@ -507,11 +507,11 @@ Kalibr ile neler yapılır?
 
 Kalibr üç farklı kalibrasyon hedefi destekler:
 
-| Hedef | Avantaj | Dezavantaj |
-|-------|---------|------------|
-| **Satranç tahtası** | Ucuz, kolay yazdır | Kenar noktaları az → az kısıt |
-| **AprilGrid** (önerilen) | Her kare benzersiz tanımlı → eksik görüşte çalışır | Daha zor baskı |
-| **CircleGrid** | Daha fazla merkez noktası | Perspektifle özellik kayması |
+| Hedef                    | Avantaj                                            | Dezavantaj                    |
+| ------------------------ | -------------------------------------------------- | ----------------------------- |
+| **Satranç tahtası**      | Ucuz, kolay yazdır                                 | Kenar noktaları az → az kısıt |
+| **AprilGrid** (önerilen) | Her kare benzersiz tanımlı → eksik görüşte çalışır | Daha zor baskı                |
+| **CircleGrid**           | Daha fazla merkez noktası                          | Perspektifle özellik kayması  |
 
 ```python title="april_grid_olustur.py"
 # AprilGrid PDF oluştur (Kalibr ile birlikte gelir)

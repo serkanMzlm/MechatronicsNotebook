@@ -19,6 +19,7 @@ json title="tasks.json" linenums="1" hl_lines="9-16"
 ### Bilgilendirme Kutuları (Admonitions)
 
 ```
+!!! abstract ""
 
 !!! tip "Info" 
     ...
@@ -60,9 +61,9 @@ graph LR
 ### Tablolar
 
 ```
-| A1 | A2 | 
-|----|----| 
-| B1 | B2 |
+| A1  | A2  |
+| --- | --- |
+| B1  | B2  |
 ```
 
 ### Kod Açıklamaları (Annotations)

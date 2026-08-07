@@ -52,26 +52,26 @@ graph LR
 
 ### Mutability (Değişebilirlik)
 
-| Immutable (Değiştirilemez) | Mutable (Değiştirilebilir) |
-|:-------------------------:|:-------------------------:|
-| `int`, `float`, `complex` | `list`, `dict`, `set`, `bytearray` |
-| `str`, `bytes`, `bool` | Kullanıcı tanımlı nesneler (genellikle) |
-| `tuple`, `frozenset` | |
+| Immutable (Değiştirilemez) |        Mutable (Değiştirilebilir)       |
+| :------------------------: | :-------------------------------------: |
+| `int`, `float`, `complex`  |    `list`, `dict`, `set`, `bytearray`   |
+|   `str`, `bytes`, `bool`   | Kullanıcı tanımlı nesneler (genellikle) |
+|    `tuple`, `frozenset`    |                                         |
 
 !!! note "Neden Önemli?"
     Immutable nesneler dict key ve set eleman olabilir; hash değerleri değişmez. Mutable nesneyi default parametre yapmak klasik bir tuzaktır (bkz. Mutable Default Argument).
 
 ### Temel Operatörler
 
-| Operatör | Açıklama | Örnek |
-|----------|---------|-------|
-| `**` | Üst alma | `2 ** 10 = 1024` |
-| `//` | Tam bölme (floor division) | `7 // 2 = 3` |
-| `%` | Modulo | `7 % 2 = 1` |
-| `@` | Matris çarpımı (PEP 465) | `A @ B` |
-| `:=` | Walrus (atama + kullanma, 3.8+) | `if (n := len(a)) > 10:` |
-| `is` | Kimlik (aynı nesne mi?) | `a is None` |
-| `in` | Üyelik | `'a' in 'python'` |
+| Operatör | Açıklama                        | Örnek                    |
+| -------- | ------------------------------- | ------------------------ |
+| `**`     | Üst alma                        | `2 ** 10 = 1024`         |
+| `//`     | Tam bölme (floor division)      | `7 // 2 = 3`             |
+| `%`      | Modulo                          | `7 % 2 = 1`              |
+| `@`      | Matris çarpımı (PEP 465)        | `A @ B`                  |
+| `:=`     | Walrus (atama + kullanma, 3.8+) | `if (n := len(a)) > 10:` |
+| `is`     | Kimlik (aynı nesne mi?)         | `a is None`              |
+| `in`     | Üyelik                          | `'a' in 'python'`        |
 
 !!! tip "Sayı Gösterimleri"
     ```python
@@ -116,12 +116,12 @@ else:
     print("bulunamadı")  # sadece break tetiklenmediyse
 ```
 
-| Deyim | Etki |
-|-------|------|
-| `break` | Döngüyü sonlandırır |
-| `continue` | Bir sonraki iterasyona geçer |
-| `pass` | İşlem yapmaz; sözdizimi için yer tutar |
-| `return` | Fonksiyondan çıkar; `return None` varsayılan |
+| Deyim      | Etki                                         |
+| ---------- | -------------------------------------------- |
+| `break`    | Döngüyü sonlandırır                          |
+| `continue` | Bir sonraki iterasyona geçer                 |
+| `pass`     | İşlem yapmaz; sözdizimi için yer tutar       |
+| `return`   | Fonksiyondan çıkar; `return None` varsayılan |
 
 ---
 
@@ -140,34 +140,34 @@ kelime[::2]     # 'pto'
 kelime * 3      # 'pythonpythonpython'
 ```
 
-| String Metodu | Açıklama |
-|---------------|---------|
-| `s.upper()` / `s.lower()` | Büyük / küçük harfe çevirir |
-| `s.capitalize()` | Yalnızca ilk harfi büyük yapar |
-| `s.title()` | Her kelimenin ilk harfini büyük yapar |
-| `s.casefold()` | Dil bağımsız, agresif küçültme (karşılaştırmalar için) |
-| `s.strip()` / `lstrip()` / `rstrip()` | Baştaki/sondaki boşlukları siler |
-| `s.split(sep)` / `s.rsplit(sep)` | Böler; `rsplit` sağdan başlar |
-| `s.join(iterable)` | Elemanları `s` ile birleştirir |
-| `s.find(sub)` / `s.rfind(sub)` | İndeks döner; bulunamazsa -1 |
-| `s.index(sub)` | İndeks döner; bulunamazsa `ValueError` |
-| `s.count(sub)` | Alt string tekrar sayısı |
-| `s.replace(old, new)` | Tüm eşleşmeleri değiştirir |
-| `s.startswith(p)` / `s.endswith(p)` | Ön/son ek kontrolü |
-| `s.partition(sep)` | `(önce, sep, sonra)` üçlüsü döner |
-| `s.encode(enc)` | `bytes` nesnesine çevirir |
-| `s.zfill(w)` | Sola `'0'` doldurur |
-| `s.isalpha()` / `s.isdigit()` | Yalnızca harf / rakam mı? |
-| `s.isalnum()` | Harf veya rakam mı? |
-| `s.isspace()` | Yalnızca boşluk karakterleri mi? |
+| String Metodu                         | Açıklama                                               |
+| ------------------------------------- | ------------------------------------------------------ |
+| `s.upper()` / `s.lower()`             | Büyük / küçük harfe çevirir                            |
+| `s.capitalize()`                      | Yalnızca ilk harfi büyük yapar                         |
+| `s.title()`                           | Her kelimenin ilk harfini büyük yapar                  |
+| `s.casefold()`                        | Dil bağımsız, agresif küçültme (karşılaştırmalar için) |
+| `s.strip()` / `lstrip()` / `rstrip()` | Baştaki/sondaki boşlukları siler                       |
+| `s.split(sep)` / `s.rsplit(sep)`      | Böler; `rsplit` sağdan başlar                          |
+| `s.join(iterable)`                    | Elemanları `s` ile birleştirir                         |
+| `s.find(sub)` / `s.rfind(sub)`        | İndeks döner; bulunamazsa -1                           |
+| `s.index(sub)`                        | İndeks döner; bulunamazsa `ValueError`                 |
+| `s.count(sub)`                        | Alt string tekrar sayısı                               |
+| `s.replace(old, new)`                 | Tüm eşleşmeleri değiştirir                             |
+| `s.startswith(p)` / `s.endswith(p)`   | Ön/son ek kontrolü                                     |
+| `s.partition(sep)`                    | `(önce, sep, sonra)` üçlüsü döner                      |
+| `s.encode(enc)`                       | `bytes` nesnesine çevirir                              |
+| `s.zfill(w)`                          | Sola `'0'` doldurur                                    |
+| `s.isalpha()` / `s.isdigit()`         | Yalnızca harf / rakam mı?                              |
+| `s.isalnum()`                         | Harf veya rakam mı?                                    |
+| `s.isspace()`                         | Yalnızca boşluk karakterleri mi?                       |
 
 #### String Biçimlendirme
 
-| Yöntem | Sözdizimi | Not |
-|--------|-----------|-----|
-| `%` (printf tarzı) | `"%s %d" % (isim, n)` | Eski; hâlâ geçerli |
-| `str.format()` | `"{} {}".format(a, b)` | Esnek; Python 2.6+ |
-| **f-string** | `f"{isim!r:>10}"` | En hızlı; Python 3.6+ |
+| Yöntem             | Sözdizimi              | Not                   |
+| ------------------ | ---------------------- | --------------------- |
+| `%` (printf tarzı) | `"%s %d" % (isim, n)`  | Eski; hâlâ geçerli    |
+| `str.format()`     | `"{} {}".format(a, b)` | Esnek; Python 2.6+    |
+| **f-string**       | `f"{isim!r:>10}"`      | En hızlı; Python 3.6+ |
 
 ```python
 isim, yas = "Serkan", 30
@@ -306,14 +306,14 @@ a.isdisjoint(b)  # Ortak eleman yok mu?
 
 ### Parametre Türleri
 
-| Parametre Türü | Sözdizimi | Açıklama |
-|----------------|-----------|---------|
-| Pozisyonel zorunlu | `a` | Sırayla verilmesi şart |
-| Varsayılan | `a=10` | Verilmezse varsayılan kullanılır |
-| Variadic positional | `*args` | Ek pozisyonel argümanları tuple yapar |
-| Keyword-only | `*, k` | `*` sonrasındaki; yalnızca isimle verilir |
-| Variadic keyword | `**kwargs` | Ek keyword argümanlarını dict yapar |
-| Positional-only | `/` öncesi | `/` öncesi yalnızca pozisyonel geçilebilir (3.8+) |
+| Parametre Türü      | Sözdizimi  | Açıklama                                          |
+| ------------------- | ---------- | ------------------------------------------------- |
+| Pozisyonel zorunlu  | `a`        | Sırayla verilmesi şart                            |
+| Varsayılan          | `a=10`     | Verilmezse varsayılan kullanılır                  |
+| Variadic positional | `*args`    | Ek pozisyonel argümanları tuple yapar             |
+| Keyword-only        | `*, k`     | `*` sonrasındaki; yalnızca isimle verilir         |
+| Variadic keyword    | `**kwargs` | Ek keyword argümanlarını dict yapar               |
+| Positional-only     | `/` öncesi | `/` öncesi yalnızca pozisyonel geçilebilir (3.8+) |
 
 ```python
 def f(a, b=10, *args, anahtar_only=False, **kwargs):
@@ -415,12 +415,12 @@ gen = fibonacci()
 [next(gen) for _ in range(8)]  # [0, 1, 1, 2, 3, 5, 8, 13]
 ```
 
-| | Liste | Generator |
-|--|:-----:|:---------:|
-| Bellek | Tüm veri | Sadece anlık eleman |
-| Sözdizimi | `[expr for ...]` | `(expr for ...)` |
-| Tekrar edilebilir | Evet | Hayır (tükenir) |
-| `len()` | ✓ | ✗ |
+|                   |      Liste       |      Generator      |
+| ----------------- | :--------------: | :-----------------: |
+| Bellek            |     Tüm veri     | Sadece anlık eleman |
+| Sözdizimi         | `[expr for ...]` |   `(expr for ...)`  |
+| Tekrar edilebilir |       Evet       |   Hayır (tükenir)   |
+| `len()`           |        ✓         |          ✗          |
 
 !!! note "yield from"
     ```python
@@ -520,11 +520,11 @@ class Sekil:
         self.renk = yeni
 ```
 
-| Nitelik Türü | Erişim | Açıklama |
-|-------------|--------|---------|
-| `isim` | Her yerden | Public |
-| `_isim` | Kural gereği yalnızca içeriden | Protected (gelenek) |
-| `__isim` | Yalnızca içeriden | Private — name mangling: `_SinifAdi__isim` |
+| Nitelik Türü | Erişim                         | Açıklama                                   |
+| ------------ | ------------------------------ | ------------------------------------------ |
+| `isim`       | Her yerden                     | Public                                     |
+| `_isim`      | Kural gereği yalnızca içeriden | Protected (gelenek)                        |
+| `__isim`     | Yalnızca içeriden              | Private — name mangling: `_SinifAdi__isim` |
 
 ```python
 class Sayac:
@@ -542,25 +542,25 @@ print(a._Sayac__gizli)       # 42 (name mangling ile erişim)
 
 ### Dunder (Magic) Metotlar
 
-| Dunder | Tetikleyen | Açıklama |
-|--------|-----------|---------|
-| `__init__` | `Sinif()` | Constructor |
-| `__del__` | GC / `del obj` | Destructor |
-| `__repr__` | `repr(obj)` / REPL | Resmi, parse edilebilir gösterim |
-| `__str__` | `str(obj)` / `print` | Kullanıcı dostu gösterim |
-| `__len__` | `len(obj)` | Uzunluk |
-| `__getitem__` | `obj[key]` | İndeksleme |
-| `__setitem__` | `obj[key] = v` | Atama |
-| `__delitem__` | `del obj[key]` | Silme |
-| `__contains__` | `x in obj` | Üyelik kontrolü |
-| `__iter__` | `iter(obj)` | Iterator başlatma |
-| `__next__` | `next(obj)` | Sonraki eleman |
-| `__add__` | `a + b` | Toplama |
-| `__eq__` | `a == b` | Eşitlik |
-| `__lt__` | `a < b` | Küçüklük |
-| `__hash__` | `hash(obj)` | Dict key / set eleman için |
-| `__call__` | `obj()` | Nesneyi çağrılabilir yapar |
-| `__enter__` / `__exit__` | `with obj:` | Context manager protokolü |
+| Dunder                   | Tetikleyen           | Açıklama                         |
+| ------------------------ | -------------------- | -------------------------------- |
+| `__init__`               | `Sinif()`            | Constructor                      |
+| `__del__`                | GC / `del obj`       | Destructor                       |
+| `__repr__`               | `repr(obj)` / REPL   | Resmi, parse edilebilir gösterim |
+| `__str__`                | `str(obj)` / `print` | Kullanıcı dostu gösterim         |
+| `__len__`                | `len(obj)`           | Uzunluk                          |
+| `__getitem__`            | `obj[key]`           | İndeksleme                       |
+| `__setitem__`            | `obj[key] = v`       | Atama                            |
+| `__delitem__`            | `del obj[key]`       | Silme                            |
+| `__contains__`           | `x in obj`           | Üyelik kontrolü                  |
+| `__iter__`               | `iter(obj)`          | Iterator başlatma                |
+| `__next__`               | `next(obj)`          | Sonraki eleman                   |
+| `__add__`                | `a + b`              | Toplama                          |
+| `__eq__`                 | `a == b`             | Eşitlik                          |
+| `__lt__`                 | `a < b`              | Küçüklük                         |
+| `__hash__`               | `hash(obj)`          | Dict key / set eleman için       |
+| `__call__`               | `obj()`              | Nesneyi çağrılabilir yapar       |
+| `__enter__` / `__exit__` | `with obj:`          | Context manager protokolü        |
 
 ```python
 class Nokta:
@@ -731,17 +731,17 @@ finally:
     print("Her zaman çalışır")
 ```
 
-| İstisna | Nedeni |
-|---------|--------|
-| `ValueError` | Tip doğru ama değer geçersiz |
-| `TypeError` | Yanlış tip |
-| `KeyError` | Dict'te olmayan anahtar |
-| `IndexError` | Liste sınırı dışı |
-| `AttributeError` | Nesne özniteliği yok |
-| `FileNotFoundError` | Dosya bulunamadı |
-| `ZeroDivisionError` | Sıfıra bölme |
-| `StopIteration` | Generator tükendi |
-| `RecursionError` | Özyineleme limiti aşıldı |
+| İstisna             | Nedeni                       |
+| ------------------- | ---------------------------- |
+| `ValueError`        | Tip doğru ama değer geçersiz |
+| `TypeError`         | Yanlış tip                   |
+| `KeyError`          | Dict'te olmayan anahtar      |
+| `IndexError`        | Liste sınırı dışı            |
+| `AttributeError`    | Nesne özniteliği yok         |
+| `FileNotFoundError` | Dosya bulunamadı             |
+| `ZeroDivisionError` | Sıfıra bölme                 |
+| `StopIteration`     | Generator tükendi            |
+| `RecursionError`    | Özyineleme limiti aşıldı     |
 
 !!! tip "Exception Chaining"
     ```python
@@ -758,13 +758,13 @@ finally:
 
 ### Text ve Binary Mod
 
-| Mod | Açıklama |
-|-----|---------|
-| `'r'` | Okuma (varsayılan) |
-| `'w'` | Yazma (varsa üzerine yazar) |
-| `'a'` | Sonuna ekler |
-| `'x'` | Oluşturma; varsa `FileExistsError` |
-| `'b'` | Binary mod ekler: `'rb'`, `'wb'` |
+| Mod   | Açıklama                            |
+| ----- | ----------------------------------- |
+| `'r'` | Okuma (varsayılan)                  |
+| `'w'` | Yazma (varsa üzerine yazar)         |
+| `'a'` | Sonuna ekler                        |
+| `'x'` | Oluşturma; varsa `FileExistsError`  |
+| `'b'` | Binary mod ekler: `'rb'`, `'wb'`    |
 | `'+'` | Hem okuma hem yazma: `'r+'`, `'w+'` |
 
 ```python
@@ -811,13 +811,13 @@ icerik = log.read_text(encoding="utf-8")
 
 ### PDF İçin Magic Number ve Metadata
 
-| Dosya Türü | Magic Bytes | Hex |
-|-----------|-------------|-----|
-| PNG | `\x89PNG\r\n\x1a\n` | `89 50 4E 47 0D 0A 1A 0A` |
+| Dosya Türü  | Magic Bytes                              | Hex                             |
+| ----------- | ---------------------------------------- | ------------------------------- |
+| PNG         | `\x89PNG\r\n\x1a\n`                      | `89 50 4E 47 0D 0A 1A 0A`       |
 | JPEG (JFIF) | İlk 2 byte `\xFF\xD8`, offset 6-9 `JFIF` | `FF D8 FF E0 .. .. 4A 46 49 46` |
-| GIF | `GIF` | `47 49 46` |
-| BMP | `BM` | `42 4D` |
-| TIFF LE | `II` | `49 49` |
+| GIF         | `GIF`                                    | `47 49 46`                      |
+| BMP         | `BM`                                     | `42 4D`                         |
+| TIFF LE     | `II`                                     | `49 49`                         |
 
 ```python
 PDF_ETIKETI = {
@@ -927,19 +927,19 @@ p._replace(x=10)    # Yeni Nokta(10, 4) — immutable
 
 Lazy iterator kombinasyonları; bellek dostu ve sıfır kopyalama.
 
-| Fonksiyon | Açıklama |
-|-----------|---------|
-| `count(start, step)` | Sonsuz sayaç |
-| `cycle(seq)` | Sonsuz tekrar |
-| `repeat(obj, n)` | n kez tekrar |
-| `chain(*iters)` | Zincirleme — tek iterator |
-| `islice(it, n)` | Lazy dilimleme |
-| `product(*iters)` | Kartezyen çarpım |
-| `permutations(seq, r)` | Permütasyonlar |
-| `combinations(seq, r)` | Kombinasyonlar |
-| `groupby(seq, key)` | Gruplama (önce sort gerekli) |
-| `takewhile(pred, it)` | Koşul True olduğu sürece al |
-| `dropwhile(pred, it)` | Koşul False olana kadar atla |
+| Fonksiyon              | Açıklama                     |
+| ---------------------- | ---------------------------- |
+| `count(start, step)`   | Sonsuz sayaç                 |
+| `cycle(seq)`           | Sonsuz tekrar                |
+| `repeat(obj, n)`       | n kez tekrar                 |
+| `chain(*iters)`        | Zincirleme — tek iterator    |
+| `islice(it, n)`        | Lazy dilimleme               |
+| `product(*iters)`      | Kartezyen çarpım             |
+| `permutations(seq, r)` | Permütasyonlar               |
+| `combinations(seq, r)` | Kombinasyonlar               |
+| `groupby(seq, key)`    | Gruplama (önce sort gerekli) |
+| `takewhile(pred, it)`  | Koşul True olduğu sürece al  |
+| `dropwhile(pred, it)`  | Koşul False olana kadar atla |
 
 ```python
 from itertools import chain, groupby, product, islice
@@ -983,28 +983,28 @@ toplam = reduce(lambda a, b: a + b, range(1, 6))  # 15
 
 ### re (Regular Expressions)
 
-| Fonksiyon | Açıklama |
-|-----------|---------|
-| `re.match(p, s)` | Yalnızca string başından eşleşir |
-| `re.search(p, s)` | İlk eşleşmeyi bulur |
-| `re.findall(p, s)` | Tüm eşleşmeleri liste döner |
-| `re.finditer(p, s)` | Tüm eşleşmeleri iterator döner |
-| `re.sub(p, r, s)` | Eşleşmeleri değiştirir |
-| `re.split(p, s)` | Desene göre böler |
-| `re.compile(p)` | Tekrar kullanım için desen derler |
+| Fonksiyon           | Açıklama                          |
+| ------------------- | --------------------------------- |
+| `re.match(p, s)`    | Yalnızca string başından eşleşir  |
+| `re.search(p, s)`   | İlk eşleşmeyi bulur               |
+| `re.findall(p, s)`  | Tüm eşleşmeleri liste döner       |
+| `re.finditer(p, s)` | Tüm eşleşmeleri iterator döner    |
+| `re.sub(p, r, s)`   | Eşleşmeleri değiştirir            |
+| `re.split(p, s)`    | Desene göre böler                 |
+| `re.compile(p)`     | Tekrar kullanım için desen derler |
 
-| Özel Karakter | Anlam |
-|---------------|-------|
-| `.` | Yeni satır hariç her karakter |
-| `^` / `$` | Satır başı / sonu |
-| `\d` / `\D` | Rakam / rakam değil |
-| `\w` / `\W` | `[A-Za-z0-9_]` / değil |
-| `\s` / `\S` | Boşluk / boşluk değil |
-| `*` / `+` / `?` | 0+, 1+, 0-1 tekrar |
-| `{m,n}` | m-n arası tekrar |
-| `(...)` | Yakalama grubu |
-| `(?:...)` | Yakalamayan grup |
-| `(?P<isim>...)` | İsimli yakalama grubu |
+| Özel Karakter   | Anlam                         |
+| --------------- | ----------------------------- |
+| `.`             | Yeni satır hariç her karakter |
+| `^` / `$`       | Satır başı / sonu             |
+| `\d` / `\D`     | Rakam / rakam değil           |
+| `\w` / `\W`     | `[A-Za-z0-9_]` / değil        |
+| `\s` / `\S`     | Boşluk / boşluk değil         |
+| `*` / `+` / `?` | 0+, 1+, 0-1 tekrar            |
+| `{m,n}`         | m-n arası tekrar              |
+| `(...)`         | Yakalama grubu                |
+| `(?:...)`       | Yakalamayan grup              |
+| `(?P<isim>...)` | İsimli yakalama grubu         |
 
 ```python
 import re
@@ -1048,13 +1048,13 @@ log.error("Bağlantı başarısız")
 log.critical("Sistem çöküyor")
 ```
 
-| Seviye | Değer | Kullanım |
-|--------|:-----:|---------|
-| `DEBUG` | 10 | Geliştirme sürecinde ayrıntılı bilgi |
-| `INFO` | 20 | Normal operasyonel olaylar |
-| `WARNING` | 30 | Beklenmedik ama ölümcül olmayan durum |
-| `ERROR` | 40 | Bir işlemin başarısız olması |
-| `CRITICAL` | 50 | Sistemin çökmesi |
+| Seviye     | Değer | Kullanım                              |
+| ---------- | :---: | ------------------------------------- |
+| `DEBUG`    |   10  | Geliştirme sürecinde ayrıntılı bilgi  |
+| `INFO`     |   20  | Normal operasyonel olaylar            |
+| `WARNING`  |   30  | Beklenmedik ama ölümcül olmayan durum |
+| `ERROR`    |   40  | Bir işlemin başarısız olması          |
+| `CRITICAL` |   50  | Sistemin çökmesi                      |
 
 !!! tip "Handler'lar ile Çoklu Hedef"
     ```python
@@ -1083,10 +1083,10 @@ graph LR
 
 CPython'da aynı anda yalnızca bir thread Python bytecode çalıştırabilir.
 
-| Senaryo | Çözüm | Açıklama |
-|---------|-------|---------|
-| I/O-bound (ağ, disk) | `threading` veya `asyncio` | GIL, I/O bekleme sırasında serbest bırakılır |
-| CPU-bound (hesaplama) | `multiprocessing` | Her process kendi GIL'ine sahip |
+| Senaryo               | Çözüm                      | Açıklama                                     |
+| --------------------- | -------------------------- | -------------------------------------------- |
+| I/O-bound (ağ, disk)  | `threading` veya `asyncio` | GIL, I/O bekleme sırasında serbest bırakılır |
+| CPU-bound (hesaplama) | `multiprocessing`          | Her process kendi GIL'ine sahip              |
 
 ### threading
 
@@ -1150,12 +1150,12 @@ asyncio.run(ana())
     - `await` yalnızca `async def` içinde kullanılabilir.
     - `asyncio.run()` event loop'u başlatır ve coroutine tamamlanana kadar bekler.
 
-| | `threading` | `multiprocessing` | `asyncio` |
-|--|:-----------:|:-----------------:|:---------:|
-| GIL kısıtı | Evet | Hayır | N/A |
-| I/O-bound | İyi | Gereksiz overhead | En iyi |
-| CPU-bound | Yetersiz | En iyi | Yetersiz |
-| Bellek | Paylaşılan | İzole | Paylaşılan |
+|            | `threading` | `multiprocessing` | `asyncio`  |
+| ---------- | :---------: | :---------------: | :--------: |
+| GIL kısıtı |     Evet    |       Hayır       |    N/A     |
+| I/O-bound  |     İyi     | Gereksiz overhead |   En iyi   |
+| CPU-bound  |   Yetersiz  |       En iyi      |  Yetersiz  |
+| Bellek     |  Paylaşılan |       İzole       | Paylaşılan |
 
 ---
 
@@ -1193,39 +1193,39 @@ pip install -r requirements.txt      # Ortamı içe aktar
 
 ## Built-in Fonksiyon Referansı
 
-| Fonksiyon | Açıklama |
-|-----------|---------|
-| `len(x)` | Uzunluk |
-| `range(start, stop, step)` | Sayı dizisi üreteci |
-| `enumerate(it, start=0)` | `(index, value)` çiftleri |
-| `zip(*iters)` | Paralel iterasyon |
-| `map(f, it)` | Her elemana `f` uygular; lazy |
-| `filter(f, it)` | `f(x)` True olanları geçirir; lazy |
-| `sorted(it, key, reverse)` | Yeni sıralı liste |
-| `reversed(seq)` | Ters iterator |
-| `all(it)` / `any(it)` | Tümü / en az biri True |
-| `sum(it, start=0)` | Toplam |
-| `max()` / `min()` | En büyük / küçük; `key` parametresi alır |
-| `abs(x)` | Mutlak değer |
-| `round(x, n)` | n ondalığa yuvarlama |
-| `divmod(a, b)` | `(a//b, a%b)` çifti |
-| `isinstance(obj, type)` | Tür denetimi; tuple ile birden fazla tip |
-| `issubclass(cls, base)` | Alt sınıf sorgusu |
-| `type(obj)` | Nesne türü |
-| `id(obj)` | Bellek kimliği (CPython'da adres) |
-| `hash(obj)` | Hash değeri; immutable için |
-| `dir(obj)` | Öznitelik ve metod listesi |
-| `vars(obj)` | `__dict__` döner |
-| `callable(obj)` | Çağrılabilir mi? |
-| `repr(obj)` | Resmi string gösterimi |
-| `eval(expr)` | String'i değerlendirir (güvenli ortamda kullanın) |
-| `exec(code)` | String'i çalıştırır (güvenli ortamda kullanın) |
-| `ord(c)` / `chr(n)` | Karakter ↔ Unicode kod noktası |
-| `bin(x)` / `oct(x)` / `hex(x)` | Taban dönüşümleri |
-| `bytes(x)` / `bytearray(x)` | Byte nesneleri |
-| `open(path, mode, encoding)` | Dosya açma |
-| `print(*objs, sep, end, file, flush)` | Çıktı |
-| `input(prompt)` | Kullanıcı girişi — her zaman `str` döner |
+| Fonksiyon                             | Açıklama                                          |
+| ------------------------------------- | ------------------------------------------------- |
+| `len(x)`                              | Uzunluk                                           |
+| `range(start, stop, step)`            | Sayı dizisi üreteci                               |
+| `enumerate(it, start=0)`              | `(index, value)` çiftleri                         |
+| `zip(*iters)`                         | Paralel iterasyon                                 |
+| `map(f, it)`                          | Her elemana `f` uygular; lazy                     |
+| `filter(f, it)`                       | `f(x)` True olanları geçirir; lazy                |
+| `sorted(it, key, reverse)`            | Yeni sıralı liste                                 |
+| `reversed(seq)`                       | Ters iterator                                     |
+| `all(it)` / `any(it)`                 | Tümü / en az biri True                            |
+| `sum(it, start=0)`                    | Toplam                                            |
+| `max()` / `min()`                     | En büyük / küçük; `key` parametresi alır          |
+| `abs(x)`                              | Mutlak değer                                      |
+| `round(x, n)`                         | n ondalığa yuvarlama                              |
+| `divmod(a, b)`                        | `(a//b, a%b)` çifti                               |
+| `isinstance(obj, type)`               | Tür denetimi; tuple ile birden fazla tip          |
+| `issubclass(cls, base)`               | Alt sınıf sorgusu                                 |
+| `type(obj)`                           | Nesne türü                                        |
+| `id(obj)`                             | Bellek kimliği (CPython'da adres)                 |
+| `hash(obj)`                           | Hash değeri; immutable için                       |
+| `dir(obj)`                            | Öznitelik ve metod listesi                        |
+| `vars(obj)`                           | `__dict__` döner                                  |
+| `callable(obj)`                       | Çağrılabilir mi?                                  |
+| `repr(obj)`                           | Resmi string gösterimi                            |
+| `eval(expr)`                          | String'i değerlendirir (güvenli ortamda kullanın) |
+| `exec(code)`                          | String'i çalıştırır (güvenli ortamda kullanın)    |
+| `ord(c)` / `chr(n)`                   | Karakter ↔ Unicode kod noktası                    |
+| `bin(x)` / `oct(x)` / `hex(x)`        | Taban dönüşümleri                                 |
+| `bytes(x)` / `bytearray(x)`           | Byte nesneleri                                    |
+| `open(path, mode, encoding)`          | Dosya açma                                        |
+| `print(*objs, sep, end, file, flush)` | Çıktı                                             |
+| `input(prompt)`                       | Kullanıcı girişi — her zaman `str` döner          |
 
 ---
 
@@ -1351,11 +1351,11 @@ with ProcessPoolExecutor() as ex:
     sonuclar = list(ex.map(agir_hesap, veri_listesi))
 ```
 
-| | `threading` | `concurrent.futures` |
-|--|:-----------:|:--------------------:|
-| Seviye | Düşük — manuel join | Yüksek — otomatik |
-| İstisna yayılımı | Manuel | `f.result()` fırlatır |
-| `map` desteği | ✗ | ✓ |
+|                  |     `threading`     |  `concurrent.futures` |
+| ---------------- | :-----------------: | :-------------------: |
+| Seviye           | Düşük — manuel join |   Yüksek — otomatik   |
+| İstisna yayılımı |        Manuel       | `f.result()` fırlatır |
+| `map` desteği    |          ✗          |           ✓           |
 
 ### subprocess
 

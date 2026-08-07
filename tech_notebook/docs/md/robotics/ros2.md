@@ -23,13 +23,13 @@ graph TD
     style TRANS fill:#FBE9E7
 ```
 
-| Katman | Sorumluluk | Değiştirilebilir mi? |
-|--------|-----------|:--------------------:|
-| **rclcpp/rclpy** | C++/Python API, callback, executor | Dil ile |
-| **rcl** | Dil bağımsız çekirdek C API | — |
-| **rmw** | DDS bağımsızlık katmanı | ✓ (RMW_IMPLEMENTATION) |
-| **DDS** | RTPS, QoS, keşif (discovery) | ✓ |
-| **Transport** | UDP / TCP / SHM | DDS yapılandırması ile |
+| Katman           | Sorumluluk                         |  Değiştirilebilir mi?  |
+| ---------------- | ---------------------------------- | :--------------------: |
+| **rclcpp/rclpy** | C++/Python API, callback, executor |        Dil ile         |
+| **rcl**          | Dil bağımsız çekirdek C API        |           —            |
+| **rmw**          | DDS bağımsızlık katmanı            | ✓ (RMW_IMPLEMENTATION) |
+| **DDS**          | RTPS, QoS, keşif (discovery)       |           ✓            |
+| **Transport**    | UDP / TCP / SHM                    | DDS yapılandırması ile |
 
 ---
 
@@ -57,13 +57,13 @@ graph LR
 
 TCP'nin `ACK` / yeniden iletim mekanizmasının eşdeğerini RTPS **uygulama katmanında** kendisi sağlar:
 
-| Mekanizma | TCP | RTPS (DDS üzerinde) |
-|-----------|:---:|:-------------------:|
-| Güvenilir teslimat | ✓ Kernel | ✓ Uygulama (RTPS ACKNACK) |
-| Sıralı teslimat | ✓ | QoS `HISTORY` ile |
-| Çoklu alıcı (multicast) | ✗ | ✓ UDP multicast |
-| Gecikme önceliği | ✗ | ✓ (güvenilirlik kapatılabilir) |
-| Bant genişliği akış kontrolü | Kernel'de | DDS'de |
+| Mekanizma                    |    TCP    |      RTPS (DDS üzerinde)       |
+| ---------------------------- | :-------: | :----------------------------: |
+| Güvenilir teslimat           |  ✓ Kernel |   ✓ Uygulama (RTPS ACKNACK)    |
+| Sıralı teslimat              |     ✓     |       QoS `HISTORY` ile        |
+| Çoklu alıcı (multicast)      |     ✗     |        ✓ UDP multicast         |
+| Gecikme önceliği             |     ✗     | ✓ (güvenilirlik kapatılabilir) |
+| Bant genişliği akış kontrolü | Kernel'de |             DDS'de             |
 
 **Best-effort topic'ler** (sensör akışı, lidar, kamera) için UDP'nin `RELIABLE` mekanizması kullanılmaz — paketin kaybı tolere edilir, düşük gecikme önceliklenir.  
 **Güvenilir topic'ler** (hedef gönder, durum güncelleme) için RTPS `ACKNACK` döngüsü paketi yeniden iletir — TCP benzeri garanti, ama multicast desteğiyle.
@@ -106,14 +106,14 @@ ip maddr show
 
 ### DDS Uygulamaları Karşılaştırması
 
-| | **FastDDS** (eProsima) | **CycloneDDS** (Eclipse) | **Connext** (RTI) |
-|--|:--------------------:|:---------------------:|:----------------:|
-| Lisans | Apache 2.0 | Eclipse/Apache | Ticari |
-| ROS 2 varsayılan | Humble+ | Seçenek | Seçenek |
-| Shared Memory | ✓ (FastDDS SHM) | ✓ (iox) | ✓ |
-| Performans | Yüksek | **En yüksek** | Yüksek |
-| Güvenlik (DDS-Sec) | ✓ | ✓ | ✓ |
-| WAN desteği | Sınırlı | Sınırlı | ✓ |
+|                    | **FastDDS** (eProsima) | **CycloneDDS** (Eclipse) | **Connext** (RTI) |
+| ------------------ | :--------------------: | :----------------------: | :---------------: |
+| Lisans             |       Apache 2.0       |      Eclipse/Apache      |       Ticari      |
+| ROS 2 varsayılan   |        Humble+         |         Seçenek          |      Seçenek      |
+| Shared Memory      |    ✓ (FastDDS SHM)     |         ✓ (iox)          |         ✓         |
+| Performans         |         Yüksek         |      **En yüksek**       |       Yüksek      |
+| Güvenlik (DDS-Sec) |           ✓            |            ✓             |         ✓         |
+| WAN desteği        |        Sınırlı         |         Sınırlı          |         ✓         |
 
 ```bash
 # DDS uygulamasını değiştir
@@ -158,10 +158,10 @@ graph LR
 
 === "Reliability"
 
-    | Değer | Açıklama | Ne zaman |
-    |-------|---------|:--------:|
-    | `RELIABLE` | Kayıp paket yeniden iletilir (RTPS ACKNACK) | Komutlar, servisler |
-    | `BEST_EFFORT` | Kayıp tolere edilir, gecikme öncelikli | Sensör akışı, video |
+    | Değer         | Açıklama                                    |       Ne zaman      |
+    | ------------- | ------------------------------------------- | :-----------------: |
+    | `RELIABLE`    | Kayıp paket yeniden iletilir (RTPS ACKNACK) | Komutlar, servisler |
+    | `BEST_EFFORT` | Kayıp tolere edilir, gecikme öncelikli      | Sensör akışı, video |
 
     !!! warning "Uyumluluk Kuralı"
         Publisher `BEST_EFFORT` → Subscriber sadece `BEST_EFFORT` bağlanabilir.  
@@ -169,19 +169,19 @@ graph LR
 
 === "Durability"
 
-    | Değer | Açıklama | Ne zaman |
-    |-------|---------|:--------:|
-    | `VOLATILE` | Geç bağlanan subscriber önceki mesajları almaz | Default |
+    | Değer             | Açıklama                                                    |           Ne zaman          |
+    | ----------------- | ----------------------------------------------------------- | :-------------------------: |
+    | `VOLATILE`        | Geç bağlanan subscriber önceki mesajları almaz              |           Default           |
     | `TRANSIENT_LOCAL` | Publisher önceki N mesajı önbelleğe alır; geç bağlanan alır | Harita, statik parametreler |
 
     `TRANSIENT_LOCAL` + `HISTORY KEEP_LAST 1` = "en son değer her zaman mevcut" kalıbı — `/map`, `/robot_description` gibi topic'lerde standart kullanım.
 
 === "History"
 
-    | Değer | Açıklama |
-    |-------|---------|
+    | Değer          | Açıklama                                                     |
+    | -------------- | ------------------------------------------------------------ |
     | `KEEP_LAST(N)` | Son N mesajı tampona al; publisher de subscriber de belirtir |
-    | `KEEP_ALL` | Tüm mesajları tut (bellek sınırsız) |
+    | `KEEP_ALL`     | Tüm mesajları tut (bellek sınırsız)                          |
 
 === "Deadline"
 
@@ -196,9 +196,9 @@ graph LR
 
     Node'un hâlâ "canlı" olduğunu beyan eder. Yazılımsal watchdog gibi çalışır.
 
-    | Değer | Açıklama |
-    |-------|---------|
-    | `AUTOMATIC` | DDS altyapısı yönetir |
+    | Değer             | Açıklama                                 |
+    | ----------------- | ---------------------------------------- |
+    | `AUTOMATIC`       | DDS altyapısı yönetir                    |
     | `MANUAL_BY_TOPIC` | Uygulama `assert_liveliness()` çağırmalı |
 
 === "Lifespan"
@@ -1076,19 +1076,19 @@ export CYCLONEDDS_URI=file:///path/to/cyclonedds.xml
 
 ## ROS 1 vs ROS 2 — Temel Farklar
 
-| Konu | ROS 1 | ROS 2 |
-|------|:-----:|:-----:|
-| **Mimari** | Merkezi (rosmaster zorunlu) | Merkeziyetsiz (DDS discovery) |
-| **Haberleşme** | XMLRPC (keşif) + TCPROS/UDPROS | DDS / RTPS |
-| **Tek hata noktası** | rosmaster çökerse sistem durur | Yok |
-| **QoS** | Yok | DDS QoS politikaları |
-| **Güvenlik** | Yok | DDS-Security (SROS2) |
-| **Gerçek Zaman** | Sınırlı | Destekli (real-time exec) |
-| **Windows** | Resmi değil | ✓ |
-| **Intra-process** | Yok | ✓ Sıfır kopya |
-| **Lifecycle Node** | Yok | ✓ |
-| **Component** | Nodelet | ✓ Component |
-| **Dil** | C++03/11, Python 2 | C++14/17, Python 3 |
+| Konu                 |             ROS 1              |             ROS 2             |
+| -------------------- | :----------------------------: | :---------------------------: |
+| **Mimari**           |  Merkezi (rosmaster zorunlu)   | Merkeziyetsiz (DDS discovery) |
+| **Haberleşme**       | XMLRPC (keşif) + TCPROS/UDPROS |           DDS / RTPS          |
+| **Tek hata noktası** | rosmaster çökerse sistem durur |              Yok              |
+| **QoS**              |              Yok               |      DDS QoS politikaları     |
+| **Güvenlik**         |              Yok               |      DDS-Security (SROS2)     |
+| **Gerçek Zaman**     |            Sınırlı             |   Destekli (real-time exec)   |
+| **Windows**          |          Resmi değil           |               ✓               |
+| **Intra-process**    |              Yok               |         ✓ Sıfır kopya         |
+| **Lifecycle Node**   |              Yok               |               ✓               |
+| **Component**        |            Nodelet             |          ✓ Component          |
+| **Dil**              |       C++03/11, Python 2       |       C++14/17, Python 3      |
 
 ---
 
@@ -1195,13 +1195,13 @@ ros2 run my_pkg my_node
 
 ### SHM Performans Karşılaştırması
 
-| Yöntem | Kopyalama | Serileştirme | Kapsam | Gecikme |
-|--------|:---------:|:------------:|--------|:-------:|
-| Intra-Process | ✗ | ✗ | Aynı süreç | ~100 ns |
-| Loaned Msg (FastDDS) | ✗ | ✗ | Aynı host | ~1 µs |
-| iceoryx SHM | ✗ | ✗ | Aynı host | ~1 µs |
-| UDP Loopback | ✓ | ✓ | Aynı host | ~50 µs |
-| UDP Network | ✓ | ✓ | Ağ üzeri | >1 ms |
+| Yöntem               | Kopyalama | Serileştirme | Kapsam     | Gecikme |
+| -------------------- | :-------: | :----------: | ---------- | :-----: |
+| Intra-Process        |     ✗     |      ✗       | Aynı süreç | ~100 ns |
+| Loaned Msg (FastDDS) |     ✗     |      ✗       | Aynı host  |  ~1 µs  |
+| iceoryx SHM          |     ✗     |      ✗       | Aynı host  |  ~1 µs  |
+| UDP Loopback         |     ✓     |      ✓       | Aynı host  |  ~50 µs |
+| UDP Network          |     ✓     |      ✓       | Ağ üzeri   |  >1 ms  |
 
 ```bash
 # SHM segmentlerini izle
@@ -1229,13 +1229,13 @@ graph TD
     BASE --> FR[front_right_wheel]
 ```
 
-| Çerçeve | Açıklama |
-|---------|---------|
-| `map` | Küresel sabit referans; SLAM/lokalizasyon yayınlar |
-| `odom` | Odometrik sürekli (atlama olmaz); encoder/IMU yayınlar |
-| `base_link` | Robot gövde merkezi |
-| `base_footprint` | Zemin projeksiyonu; navigasyon için kullanılır |
-| `sensor_frame` | Sensörün optik merkezi veya fiziksel merkezi |
+| Çerçeve          | Açıklama                                               |
+| ---------------- | ------------------------------------------------------ |
+| `map`            | Küresel sabit referans; SLAM/lokalizasyon yayınlar     |
+| `odom`           | Odometrik sürekli (atlama olmaz); encoder/IMU yayınlar |
+| `base_link`      | Robot gövde merkezi                                    |
+| `base_footprint` | Zemin projeksiyonu; navigasyon için kullanılır         |
+| `sensor_frame`   | Sensörün optik merkezi veya fiziksel merkezi           |
 
 ### Transform Yayınlama
 

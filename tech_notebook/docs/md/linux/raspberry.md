@@ -274,13 +274,13 @@ vcgencmd get_throttled
 
 ### Throttle Bit Anlamları
 
-| Bit | Anlam |
-|:---:|-------|
-| 0 | Şu an düşük voltaj |
-| 1 | Şu an ARM frekansı sınırlandı |
-| 2 | Şu an throttled |
-| 16 | Başlangıçtan bu yana düşük voltaj yaşandı |
-| 18 | Başlangıçtan bu yana throttling yaşandı |
+| Bit | Anlam                                     |
+| :-: | ----------------------------------------- |
+|  0  | Şu an düşük voltaj                        |
+|  1  | Şu an ARM frekansı sınırlandı             |
+|  2  | Şu an throttled                           |
+|  16 | Başlangıçtan bu yana düşük voltaj yaşandı |
+|  18 | Başlangıçtan bu yana throttling yaşandı   |
 
 !!! danger "Güç Kaynağı Seçimi"
     Pi 4: 5V / 3A (15W). Pi 5: 5V / 5A (27W). Yetersiz güç kaynağı throttling ve veri bozulmasına yol açar. Resmi Raspberry Pi güç adaptörü kullanın.

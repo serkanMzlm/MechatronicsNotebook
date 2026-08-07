@@ -32,12 +32,12 @@ graph TD
 
 Ziyaret sırası: A → B → C → D → E → F (seviye seviye)
 
-| Özellik | Değer |
-|---------|-------|
-| Zaman Karmaşıklığı | O(V + E) |
-| Alan Karmaşıklığı | O(V) — kuyruktaki düğümler |
-| En kısa yol (ağırlıksız) | ✓ Garanti |
-| Döngü tespiti | ✓ |
+| Özellik                  | Değer                      |
+| ------------------------ | -------------------------- |
+| Zaman Karmaşıklığı       | O(V + E)                   |
+| Alan Karmaşıklığı        | O(V) — kuyruktaki düğümler |
+| En kısa yol (ağırlıksız) | ✓ Garanti                  |
+| Döngü tespiti            | ✓                          |
 
 **Ne zaman kullanılır?**
 - Ağırlıksız grafta iki düğüm arasındaki en kısa yol
@@ -61,12 +61,12 @@ graph TD
 
 Ziyaret sırası: A → B → D → E → C → F (dala gir, bitince geri dön)
 
-| Özellik | Değer |
-|---------|-------|
-| Zaman Karmaşıklığı | O(V + E) |
-| Alan Karmaşıklığı | O(V) — özyineleme yığını |
-| En kısa yol | ✗ Garanti etmez |
-| Döngü tespiti | ✓ (geri kenar tespiti) |
+| Özellik            | Değer                    |
+| ------------------ | ------------------------ |
+| Zaman Karmaşıklığı | O(V + E)                 |
+| Alan Karmaşıklığı  | O(V) — özyineleme yığını |
+| En kısa yol        | ✗ Garanti etmez          |
+| Döngü tespiti      | ✓ (geri kenar tespiti)   |
 
 **Ne zaman kullanılır?**
 - Topolojik sıralama (bağımlılık çözümü — paket yöneticileri)
@@ -102,11 +102,11 @@ A'dan D'ye en kısa yol: A→C→B→D (1+2+5=8), A→C→D değil (1+8=9)
 4. Heap'e tekrar ekle
 5. Tüm düğümler işlenene kadar devam et
 
-| Özellik | Değer |
-|---------|-------|
+| Özellik            | Değer                           |
+| ------------------ | ------------------------------- |
 | Zaman Karmaşıklığı | O((V + E) log V) — min-heap ile |
-| Negatif kenar | ✗ Desteklemez |
-| Negatif döngü | ✗ Tespit edemez |
+| Negatif kenar      | ✗ Desteklemez                   |
+| Negatif döngü      | ✗ Tespit edemez                 |
 
 **Ne zaman kullanılır?**
 - GPS yol bulma (haritalar)
@@ -124,11 +124,11 @@ A'dan D'ye en kısa yol: A→C→B→D (1+2+5=8), A→C→D değil (1+8=9)
 2. Tüm kenarlar üzerinden V-1 kez geçerek mesafeleri güncelle
 3. V. geçişte hâlâ güncelleme olursa → negatif döngü var
 
-| Özellik | Değer |
-|---------|-------|
-| Zaman Karmaşıklığı | O(V · E) |
-| Negatif kenar | ✓ |
-| Negatif döngü tespiti | ✓ |
+| Özellik                | Değer             |
+| ---------------------- | ----------------- |
+| Zaman Karmaşıklığı     | O(V · E)          |
+| Negatif kenar          | ✓                 |
+| Negatif döngü tespiti  | ✓                 |
 | Dijkstra'dan yavaş mı? | Evet (genellikle) |
 
 **Ne zaman kullanılır?**
@@ -148,13 +148,13 @@ A'dan D'ye en kısa yol: A→C→B→D (1+2+5=8), A→C→D değil (1+8=9)
 dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
 ```
 
-| Özellik | Değer |
-|---------|-------|
-| Zaman Karmaşıklığı | O(V³) |
-| Alan Karmaşıklığı | O(V²) — matris |
-| Negatif kenar | ✓ |
+| Özellik               | Değer                   |
+| --------------------- | ----------------------- |
+| Zaman Karmaşıklığı    | O(V³)                   |
+| Alan Karmaşıklığı     | O(V²) — matris          |
+| Negatif kenar         | ✓                       |
 | Negatif döngü tespiti | ✓ (köşegen eksi olursa) |
-| Tek kaynak mı? | ✗ Tüm çiftler |
+| Tek kaynak mı?        | ✗ Tüm çiftler           |
 
 **Ne zaman kullanılır?**
 - Graf küçük ve tüm çiftler arası mesafe gerekiyorsa
@@ -186,12 +186,12 @@ graph LR
 - **Kabul edilebilir (admissible):** Gerçek maliyeti hiçbir zaman aşmaz → A* optimal çözüm garantisi verir
 - Yaygın heuristikler: Manhattan mesafesi (ızgara), Öklid mesafesi (açık alan)
 
-| Özellik | Dijkstra | A* |
-|---------|:--------:|:--:|
-| Optimal | ✓ | ✓ (kabul edilebilir h ile) |
-| Hız | Orta | Daha hızlı (hedef yönlü) |
-| Heuristik | ✗ | ✓ |
-| Kullanım | Genel graf | Uzamsal yol bulma |
+| Özellik   |  Dijkstra  |             A*             |
+| --------- | :--------: | :------------------------: |
+| Optimal   |     ✓      | ✓ (kabul edilebilir h ile) |
+| Hız       |    Orta    |  Daha hızlı (hedef yönlü)  |
+| Heuristik |     ✗      |             ✓              |
+| Kullanım  | Genel graf |     Uzamsal yol bulma      |
 
 **Ne zaman kullanılır?**
 - Robot navigasyonu (ROS Nav2 / costmap)
@@ -199,13 +199,13 @@ graph LR
 - GPS navigasyonu (coğrafi heuristik ile)
 
 !!! tip "Kısa Karşılaştırma"
-    | Algoritma | Negatif Kenar | Tüm Çiftler | Heuristik | Karmaşıklık |
-    |-----------|:-------------:|:-----------:|:---------:|:-----------:|
-    | BFS | ✗ (ağırlıksız) | ✗ | ✗ | O(V+E) |
-    | Dijkstra | ✗ | ✗ | ✗ | O((V+E)logV) |
-    | Bellman-Ford | ✓ | ✗ | ✗ | O(VE) |
-    | Floyd-Warshall | ✓ | ✓ | ✗ | O(V³) |
-    | A* | ✗ | ✗ | ✓ | O(E log V) |
+    | Algoritma      | Negatif Kenar  | Tüm Çiftler | Heuristik | Karmaşıklık  |
+    | -------------- | :------------: | :---------: | :-------: | :----------: |
+    | BFS            | ✗ (ağırlıksız) |      ✗      |     ✗     |    O(V+E)    |
+    | Dijkstra       |       ✗        |      ✗      |     ✗     | O((V+E)logV) |
+    | Bellman-Ford   |       ✓        |      ✗      |     ✗     |    O(VE)     |
+    | Floyd-Warshall |       ✓        |      ✓      |     ✗     |    O(V³)     |
+    | A*             |       ✗        |      ✗      |     ✓     |  O(E log V)  |
 
 ---
 
@@ -219,12 +219,12 @@ graph LR
 [5, 3, 8, 1] → [3, 5, 1, 8] → [3, 1, 5, 8] → [1, 3, 5, 8]
 ```
 
-| | Değer |
-|--|-------|
-| En iyi | O(n) — zaten sıralıysa (erken çıkış ile) |
-| Ortalama / En kötü | O(n²) |
-| Bellek | O(1) — yerinde |
-| Kararlı (Stable) | ✓ |
+|                    | Değer                                    |
+| ------------------ | ---------------------------------------- |
+| En iyi             | O(n) — zaten sıralıysa (erken çıkış ile) |
+| Ortalama / En kötü | O(n²)                                    |
+| Bellek             | O(1) — yerinde                           |
+| Kararlı (Stable)   | ✓                                        |
 
 **Kullanım:** Eğitim amaçlı. Gerçek sistemlerde kullanılmaz.
 
@@ -238,11 +238,11 @@ graph LR
 [5, 3, 8, 1] → min=1 → [1, 3, 8, 5] → min=3 → [1, 3, 8, 5] → ...
 ```
 
-| | Değer |
-|--|-------|
+|             | Değer                   |
+| ----------- | ----------------------- |
 | Her durumda | O(n²) — erken çıkış yok |
-| Bellek | O(1) |
-| Kararlı | ✗ |
+| Bellek      | O(1)                    |
+| Kararlı     | ✗                       |
 
 **Kullanım:** Bellek yazma işlemi pahalıysa (flash bellek gibi) — swap sayısı minimumdur.
 
@@ -259,13 +259,13 @@ graph LR
 → [1, 3, 5, 8]   (1'i en başa ekle)
 ```
 
-| | Değer |
-|--|-------|
-| En iyi | O(n) — neredeyse sıralıysa |
-| En kötü | O(n²) |
-| Bellek | O(1) |
-| Kararlı | ✓ |
-| Online | ✓ Veri geldikçe sıralayabilir |
+|         | Değer                         |
+| ------- | ----------------------------- |
+| En iyi  | O(n) — neredeyse sıralıysa    |
+| En kötü | O(n²)                         |
+| Bellek  | O(1)                          |
+| Kararlı | ✓                             |
+| Online  | ✓ Veri geldikçe sıralayabilir |
 
 **Kullanım:** Küçük veri (n < 20) veya neredeyse sıralı veri için pratik. Birçok hibrit algoritma (TimSort) küçük parçalarda insertion sort kullanır.
 
@@ -288,11 +288,11 @@ graph TD
     H & I --> J["[1, 3, 5, 8]"]
 ```
 
-| | Değer |
-|--|-------|
-| Her durumda | O(n log n) |
-| Bellek | O(n) — ek dizi gerektirir |
-| Kararlı | ✓ |
+|             | Değer                     |
+| ----------- | ------------------------- |
+| Her durumda | O(n log n)                |
+| Bellek      | O(n) — ek dizi gerektirir |
+| Kararlı     | ✓                         |
 
 **Kullanım:** Bağlı listeler için ideal (eleman kopyalamadan birleştirilir). Büyük veri kümelerinde garantili O(n log n). Dış sıralama (disk üzerindeki veriler).
 
@@ -309,12 +309,12 @@ graph TD
 → [1, 3, 5, 8]
 ```
 
-| | Değer |
-|--|-------|
-| Ortalama | O(n log n) |
-| En kötü | O(n²) — pivot her seferinde min/max seçilirse |
-| Bellek | O(log n) — özyineleme yığını |
-| Kararlı | ✗ |
+|          | Değer                                         |
+| -------- | --------------------------------------------- |
+| Ortalama | O(n log n)                                    |
+| En kötü  | O(n²) — pivot her seferinde min/max seçilirse |
+| Bellek   | O(log n) — özyineleme yığını                  |
+| Kararlı  | ✗                                             |
 
 **Neden hızlı?** Bellek erişim örüntüsü cache'e dosttur (in-place, yerel erişim). Merge sort'un aksine ek bellek gerektirmez.
 
@@ -336,11 +336,11 @@ Max çıkar: [8, 5] → [1, 3] → [3, 1]
 Sonuç: [1, 3, 5, 8]
 ```
 
-| | Değer |
-|--|-------|
-| Her durumda | O(n log n) |
-| Bellek | O(1) — yerinde |
-| Kararlı | ✗ |
+|             | Değer          |
+| ----------- | -------------- |
+| Her durumda | O(n log n)     |
+| Bellek      | O(1) — yerinde |
+| Kararlı     | ✗              |
 
 **Quicksort ile farkı:** En kötü durumda bile O(n log n) garantisi verir, yerinde çalışır. Ancak cache performansı quicksort'tan zayıf (heap erişimi sıçramalı).
 
@@ -350,14 +350,14 @@ Sonuç: [1, 3, 5, 8]
 
 ### Karşılaştırma Tablosu
 
-| Algoritma | En İyi | Ortalama | En Kötü | Bellek | Kararlı |
-|-----------|:------:|:--------:|:-------:|:------:|:-------:|
-| Bubble Sort | O(n) | O(n²) | O(n²) | O(1) | ✓ |
-| Selection Sort | O(n²) | O(n²) | O(n²) | O(1) | ✗ |
-| Insertion Sort | **O(n)** | O(n²) | O(n²) | O(1) | ✓ |
-| Merge Sort | O(n log n) | O(n log n) | O(n log n) | O(n) | ✓ |
-| Quick Sort | O(n log n) | **O(n log n)** | O(n²) | O(log n) | ✗ |
-| Heap Sort | O(n log n) | O(n log n) | O(n log n) | **O(1)** | ✗ |
+| Algoritma      |   En İyi   |    Ortalama    |  En Kötü   |  Bellek  | Kararlı |
+| -------------- | :--------: | :------------: | :--------: | :------: | :-----: |
+| Bubble Sort    |    O(n)    |     O(n²)      |   O(n²)    |   O(1)   |    ✓    |
+| Selection Sort |   O(n²)    |     O(n²)      |   O(n²)    |   O(1)   |    ✗    |
+| Insertion Sort |  **O(n)**  |     O(n²)      |   O(n²)    |   O(1)   |    ✓    |
+| Merge Sort     | O(n log n) |   O(n log n)   | O(n log n) |   O(n)   |    ✓    |
+| Quick Sort     | O(n log n) | **O(n log n)** |   O(n²)    | O(log n) |    ✗    |
+| Heap Sort      | O(n log n) |   O(n log n)   | O(n log n) | **O(1)** |    ✗    |
 
 !!! tip "Pratikte Ne Kullanılır?"
     - Küçük veri (n < 20) → **Insertion Sort**
@@ -374,11 +374,11 @@ Sonuç: [1, 3, 5, 8]
 
 **Mantık:** Dizinin başından sonuna kadar teker teker her elemana bakılır. Bulunan ilk eşleşmede durur.
 
-| Özellik | Değer |
-|---------|-------|
-| Zaman Karmaşıklığı | O(n) |
-| Sıralanmış gerekir mi? | ✗ |
-| Kullanım | Küçük / sırasız listeler |
+| Özellik                | Değer                    |
+| ---------------------- | ------------------------ |
+| Zaman Karmaşıklığı     | O(n)                     |
+| Sıralanmış gerekir mi? | ✗                        |
+| Kullanım               | Küçük / sırasız listeler |
 
 **Ne zaman?** Veri küçükse, sıralanmamışsa veya yalnızca bir kez aranacaksa. Sıralama maliyeti aramanın faydası aştığında tercih edilir.
 
@@ -396,11 +396,11 @@ Adım 2: mid=17 → 12 < 17, sola bak →  [12]
 Adım 3: mid=12 → Bulundu!
 ```
 
-| Özellik | Değer |
-|---------|-------|
-| Zaman Karmaşıklığı | O(log n) |
-| Sıralanmış gerekir mi? | ✓ Şart |
-| Kullanım | Büyük sıralı diziler |
+| Özellik                | Değer                |
+| ---------------------- | -------------------- |
+| Zaman Karmaşıklığı     | O(log n)             |
+| Sıralanmış gerekir mi? | ✓ Şart               |
+| Kullanım               | Büyük sıralı diziler |
 
 **Kritik nokta:** Sıralama maliyeti O(n log n), arama O(log n). Eğer veri nadiren değişiyor ve sık aranıyorsa sıralama maliyeti amortize edilir.
 

@@ -16,14 +16,14 @@ graph LR
 
 ## RTOS vs Bare-Metal
 
-| Özellik | Bare-Metal | RTOS |
-|---------|:----------:|:----:|
-| Zamanlama | Manuel (super-loop) | Kernel scheduler |
-| Eşzamanlılık | Zor (ISR + flags) | Task + IPC primitifleri |
-| Deterministm | Değişken | Garanti (hard/soft RT) |
-| Karmaşıklık | Düşük | Orta |
-| RAM/Flash | Çok az | Fazla (çekirdek için) |
-| Debug | Basit | Stack overflow, deadlock riski |
+| Özellik      |      Bare-Metal     |              RTOS              |
+| ------------ | :-----------------: | :----------------------------: |
+| Zamanlama    | Manuel (super-loop) |        Kernel scheduler        |
+| Eşzamanlılık |  Zor (ISR + flags)  |    Task + IPC primitifleri     |
+| Deterministm |       Değişken      |     Garanti (hard/soft RT)     |
+| Karmaşıklık  |        Düşük        |              Orta              |
+| RAM/Flash    |        Çok az       |     Fazla (çekirdek için)      |
+| Debug        |        Basit        | Stack overflow, deadlock riski |
 
 !!! tip "Ne Zaman RTOS?"
     Birden fazla bağımsız görevi aynı anda yürütmek, zamanlama, kaynak paylaşımı ve öncelik yönetimi gerektiğinde RTOS kullanın. Tek görev, düşük gecikme yeterliyse bare-metal tercih edilebilir.
@@ -65,12 +65,12 @@ stateDiagram-v2
     Running --> [*] : vTaskDelete()
 ```
 
-| Durum | Açıklama |
-|-------|---------|
-| **Ready** | CPU'ya atanmayı bekliyor |
-| **Running** | Aktif olarak CPU'da çalışıyor |
-| **Blocked** | Event, kuyruk mesajı veya delay bekliyor |
-| **Suspended** | Dış çağrıyla askıya alındı |
+| Durum         | Açıklama                                 |
+| ------------- | ---------------------------------------- |
+| **Ready**     | CPU'ya atanmayı bekliyor                 |
+| **Running**   | Aktif olarak CPU'da çalışıyor            |
+| **Blocked**   | Event, kuyruk mesajı veya delay bekliyor |
+| **Suspended** | Dış çağrıyla askıya alındı               |
 
 ---
 
@@ -126,13 +126,13 @@ int main(void) {
 !!! note "Öncelik Seçimi"
     FreeRTOS'ta sayı **büyüdükçe** öncelik **artar** (Linux'un tersine). `configMAX_PRIORITIES` (FreeRTOSConfig.h) üst sınırı belirler; varsayılan 5'tir. ISR ile etkileşen task'lar, ISR önceliğinden düşük tutulmalı.
 
-| Öncelik | Kullanım |
-|:-------:|---------|
-| 0 | Idle Task (FreeRTOS dahili) |
-| 1 | Arka plan görevleri (log, telemetri) |
-| 2 | Genel uygulama görevleri |
-| 3 | Zamana duyarlı görevler |
-| 4 | Kritik görevler (motor, güvenlik) |
+| Öncelik | Kullanım                             |
+| :-----: | ------------------------------------ |
+|    0    | Idle Task (FreeRTOS dahili)          |
+|    1    | Arka plan görevleri (log, telemetri) |
+|    2    | Genel uygulama görevleri             |
+|    3    | Zamana duyarlı görevler              |
+|    4    | Kritik görevler (motor, güvenlik)    |
 
 ---
 
@@ -262,12 +262,12 @@ void vTask1(void *pv) {
 
 ### Binary Semaphore vs Mutex
 
-| Özellik | Binary Semaphore | Mutex |
-|---------|:----------------:|:-----:|
-| Kullanım | Task-Task / ISR-Task sinyal | Kritik bölge koruması |
-| Priority Inheritance | ✗ | ✓ |
-| ISR'dan verilebilir | ✓ | ✗ |
-| Sahiplik | Yok | Alan task sahibi |
+| Özellik              |       Binary Semaphore      |         Mutex         |
+| -------------------- | :-------------------------: | :-------------------: |
+| Kullanım             | Task-Task / ISR-Task sinyal | Kritik bölge koruması |
+| Priority Inheritance |              ✗              |           ✓           |
+| ISR'dan verilebilir  |              ✓              |           ✗           |
+| Sahiplik             |             Yok             |    Alan task sahibi   |
 
 ---
 
@@ -405,13 +405,13 @@ void vApplicationMallocFailedHook(void) {
 
 FreeRTOS beş heap implementasyonu sunar:
 
-| Heap | Açıklama | Kullanım |
-|:----:|---------|---------|
-| **heap_1** | `malloc` yok, sadece tahsis | Statik, hiçbir şey silinmez |
-| **heap_2** | `free` var, birleştirme yok | Sabit boyut nesneler |
-| **heap_3** | Standart `malloc/free` wrapper | Genel, thread-safe wrapper |
-| **heap_4** | Bitişik blok birleştirme | **Önerilen genel amaçlı** |
-| **heap_5** | Birden fazla heap bölgesi | Çok-bölge bellek haritası |
+|    Heap    | Açıklama                       | Kullanım                    |
+| :--------: | ------------------------------ | --------------------------- |
+| **heap_1** | `malloc` yok, sadece tahsis    | Statik, hiçbir şey silinmez |
+| **heap_2** | `free` var, birleştirme yok    | Sabit boyut nesneler        |
+| **heap_3** | Standart `malloc/free` wrapper | Genel, thread-safe wrapper  |
+| **heap_4** | Bitişik blok birleştirme       | **Önerilen genel amaçlı**   |
+| **heap_5** | Birden fazla heap bölgesi      | Çok-bölge bellek haritası   |
 
 !!! tip "Önerilen: heap_4"
     Parçalanmayı `heap_2`'den iyi yönetir, birden fazla bölge gerektirmez. Çoğu STM32 projesinde varsayılan tercih.
@@ -462,11 +462,11 @@ xTaskResumeAll();
 
 ## Gerçek Zamanlılık — Hard vs Soft RT
 
-| Tür | Tanım | Örnekler |
-|-----|-------|---------|
-| **Hard RT** | Deadline aşımı = sistem arızası | Airbag, pacemaker, ABS |
-| **Soft RT** | Deadline aşımı = performans düşüşü | Video stream, ses işleme |
-| **Firm RT** | Deadline aşımı = sonuç geçersiz, ama güvensiz değil | Borsa sistemleri |
+| Tür         | Tanım                                               | Örnekler                 |
+| ----------- | --------------------------------------------------- | ------------------------ |
+| **Hard RT** | Deadline aşımı = sistem arızası                     | Airbag, pacemaker, ABS   |
+| **Soft RT** | Deadline aşımı = performans düşüşü                  | Video stream, ses işleme |
+| **Firm RT** | Deadline aşımı = sonuç geçersiz, ama güvensiz değil | Borsa sistemleri         |
 
 !!! note "FreeRTOS ve Hard RT"
     FreeRTOS bir soft/firm RTOS'tur. Kritik hard-RT sistemler için AUTOSAR veya DO-178C sertifikalı RTOS (SafeRTOS, QNX, INTEGRITY) tercih edilir.
@@ -475,21 +475,21 @@ xTaskResumeAll();
 
 ## FreeRTOS API Özet
 
-| Kategori | Fonksiyon | Açıklama |
-|----------|-----------|---------|
-| **Task** | `xTaskCreate` | Task oluştur |
-| | `vTaskDelete` | Task sil |
-| | `vTaskDelay` | ms cinsinden bloklayan gecikme |
-| | `vTaskDelayUntil` | Periyodik görev için |
-| | `uxTaskGetStackHighWaterMark` | Stack kullanım istatistiği |
-| **Queue** | `xQueueCreate` | Kuyruk oluştur |
-| | `xQueueSend` / `FromISR` | Kuyruğa veri gönder |
-| | `xQueueReceive` | Kuyruktan veri al |
-| **Semaphore** | `xSemaphoreCreateBinary` | Binary semaphore |
-| | `xSemaphoreCreateMutex` | Mutex |
-| | `xSemaphoreTake` / `Give` | Al / ver |
-| **Timer** | `xTimerCreate` | Software timer oluştur |
-| | `xTimerStart` / `Stop` | Başlat / durdur |
-| **Event** | `xEventGroupCreate` | Event group |
-| | `xEventGroupWaitBits` | Bit(ler) için bekle |
-| | `xEventGroupSetBits` | Bit(ler) set et |
+| Kategori      | Fonksiyon                     | Açıklama                       |
+| ------------- | ----------------------------- | ------------------------------ |
+| **Task**      | `xTaskCreate`                 | Task oluştur                   |
+|               | `vTaskDelete`                 | Task sil                       |
+|               | `vTaskDelay`                  | ms cinsinden bloklayan gecikme |
+|               | `vTaskDelayUntil`             | Periyodik görev için           |
+|               | `uxTaskGetStackHighWaterMark` | Stack kullanım istatistiği     |
+| **Queue**     | `xQueueCreate`                | Kuyruk oluştur                 |
+|               | `xQueueSend` / `FromISR`      | Kuyruğa veri gönder            |
+|               | `xQueueReceive`               | Kuyruktan veri al              |
+| **Semaphore** | `xSemaphoreCreateBinary`      | Binary semaphore               |
+|               | `xSemaphoreCreateMutex`       | Mutex                          |
+|               | `xSemaphoreTake` / `Give`     | Al / ver                       |
+| **Timer**     | `xTimerCreate`                | Software timer oluştur         |
+|               | `xTimerStart` / `Stop`        | Başlat / durdur                |
+| **Event**     | `xEventGroupCreate`           | Event group                    |
+|               | `xEventGroupWaitBits`         | Bit(ler) için bekle            |
+|               | `xEventGroupSetBits`          | Bit(ler) set et                |

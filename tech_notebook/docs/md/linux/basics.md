@@ -19,17 +19,17 @@ graph TD
 
 ## Temel Kavramlar
 
-| Kavram | Açıklama |
-|--------|----------|
-| `#` | Terminalde **root** kullanıcısını simgeler. Shell betiklerinde yorum satırıdır. |
-| `$` | Terminalde standart kullanıcıyı simgeler. |
-| **Soft Link** | Hedef dosyanın yoluna referans; asıl dosya silinirse işlevsiz kalır. |
-| **Hard Link** | Dosyanın inode'una doğrudan bağlanır; asıl dosya silinse de veri korunur. |
-| **inode** | Dosyanın veri bloklarını ve meta bilgilerini (izin, boyut, tarih) tutan benzersiz yapı. |
-| **Daemon** | Sistem başlangıcında başlayan, arka planda çalışan uzun ömürlü servisler. |
-| **Process** | Bellekte yürütülen, belirli bir yaşam döngüsüne sahip aktif program örneği. |
-| **Scheduler** | CPU zamanını process'ler arasında paylaştıran kernel alt sistemi. |
-| **Polling** | CPU'nun bir donanımın durumunu belirli aralıklarla aktif olarak kontrol etmesi. |
+| Kavram        | Açıklama                                                                                |
+| ------------- | --------------------------------------------------------------------------------------- |
+| `#`           | Terminalde **root** kullanıcısını simgeler. Shell betiklerinde yorum satırıdır.         |
+| `$`           | Terminalde standart kullanıcıyı simgeler.                                               |
+| **Soft Link** | Hedef dosyanın yoluna referans; asıl dosya silinirse işlevsiz kalır.                    |
+| **Hard Link** | Dosyanın inode'una doğrudan bağlanır; asıl dosya silinse de veri korunur.               |
+| **inode**     | Dosyanın veri bloklarını ve meta bilgilerini (izin, boyut, tarih) tutan benzersiz yapı. |
+| **Daemon**    | Sistem başlangıcında başlayan, arka planda çalışan uzun ömürlü servisler.               |
+| **Process**   | Bellekte yürütülen, belirli bir yaşam döngüsüne sahip aktif program örneği.             |
+| **Scheduler** | CPU zamanını process'ler arasında paylaştıran kernel alt sistemi.                       |
+| **Polling**   | CPU'nun bir donanımın durumunu belirli aralıklarla aktif olarak kontrol etmesi.         |
 
 !!! tip "Büyük/Küçük Harf Duyarlılığı"
     Linux **büyük/küçük harf duyarlıdır.** `File.txt` ile `file.txt` farklı dosyalardır. `README.md` ≠ `readme.md`
@@ -60,29 +60,29 @@ graph LR
     style PROC fill:#DCEDC8
 ```
 
-| Dizin | Açıklama |
-|-------|----------|
-| `/` | Tüm dosya sisteminin kökü. |
-| `/bin`, `/sbin` | Kritik sistem komutları. Modern distro'larda `/usr/bin`'e symlink. |
-| `/etc` | Statik sistem yapılandırma dosyaları (ağ, kullanıcı, güvenlik). |
-| `/usr` | Paylaşılan kullanıcı programları ve kütüphaneler (salt okunur). |
-| `/lib`, `/lib64` | Dinamik kütüphaneler ve kernel modülleri (`/lib/modules/<versiyon>/`). |
-| `/dev` | Donanım aygıt düğümleri — UART, I2C, SPI, disk vb. kernel'in userspace arayüzü. |
-| `/proc` | Kernel runtime durumunun sanal görünümü (procfs). |
-| `/sys` | Kernel nesne modelinin userspace arayüzü (sysfs). |
-| `/var` | Çalışma zamanında değişen kalıcı veriler — loglar, state. |
-| `/tmp` | Geçici dosyalar; genellikle RAM'de (tmpfs). Yeniden başlatmada silinir. |
-| `/boot` | Kernel image, DTB, initramfs gibi önyükleme dosyaları. |
+| Dizin            | Açıklama                                                                        |
+| ---------------- | ------------------------------------------------------------------------------- |
+| `/`              | Tüm dosya sisteminin kökü.                                                      |
+| `/bin`, `/sbin`  | Kritik sistem komutları. Modern distro'larda `/usr/bin`'e symlink.              |
+| `/etc`           | Statik sistem yapılandırma dosyaları (ağ, kullanıcı, güvenlik).                 |
+| `/usr`           | Paylaşılan kullanıcı programları ve kütüphaneler (salt okunur).                 |
+| `/lib`, `/lib64` | Dinamik kütüphaneler ve kernel modülleri (`/lib/modules/<versiyon>/`).          |
+| `/dev`           | Donanım aygıt düğümleri — UART, I2C, SPI, disk vb. kernel'in userspace arayüzü. |
+| `/proc`          | Kernel runtime durumunun sanal görünümü (procfs).                               |
+| `/sys`           | Kernel nesne modelinin userspace arayüzü (sysfs).                               |
+| `/var`           | Çalışma zamanında değişen kalıcı veriler — loglar, state.                       |
+| `/tmp`           | Geçici dosyalar; genellikle RAM'de (tmpfs). Yeniden başlatmada silinir.         |
+| `/boot`          | Kernel image, DTB, initramfs gibi önyükleme dosyaları.                          |
 
 !!! info "/proc — Debug İçin Kullanışlı Dosyalar"
-    | Dosya | İçerik |
-    |-------|--------|
-    | `/proc/cmdline` | Kernel başlatma parametreleri |
-    | `/proc/meminfo` | Bellek kullanım bilgisi |
-    | `/proc/cpuinfo` | İşlemci bilgisi |
-    | `/proc/<pid>/` | Belirli bir process'in detayları |
-    | `/proc/<pid>/maps` | Process bellek haritası |
-    | `/proc/<pid>/fd/` | Açık dosya tanımlayıcıları |
+    | Dosya              | İçerik                           |
+    | ------------------ | -------------------------------- |
+    | `/proc/cmdline`    | Kernel başlatma parametreleri    |
+    | `/proc/meminfo`    | Bellek kullanım bilgisi          |
+    | `/proc/cpuinfo`    | İşlemci bilgisi                  |
+    | `/proc/<pid>/`     | Belirli bir process'in detayları |
+    | `/proc/<pid>/maps` | Process bellek haritası          |
+    | `/proc/<pid>/fd/`  | Açık dosya tanımlayıcıları       |
 
 ---
 
@@ -92,15 +92,15 @@ graph LR
 
 `ls -l` çıktısında baştaki karakter dosya türünü belirtir:
 
-| Karakter | Tür |
-|:--------:|-----|
-| `-` | Düzenli dosya (Regular File) |
-| `d` | Dizin (Directory) |
-| `l` | Sembolik Link |
-| `c` | Karakter Aygıtı (terminal, seri port) |
-| `b` | Blok Aygıtı (disk, USB) |
-| `s` | Soket (Socket) |
-| `p` | Adlandırılmış Boru Hattı (Named Pipe / FIFO) |
+| Karakter | Tür                                          |
+| :------: | -------------------------------------------- |
+|   `-`    | Düzenli dosya (Regular File)                 |
+|   `d`    | Dizin (Directory)                            |
+|   `l`    | Sembolik Link                                |
+|   `c`    | Karakter Aygıtı (terminal, seri port)        |
+|   `b`    | Blok Aygıtı (disk, USB)                      |
+|   `s`    | Soket (Socket)                               |
+|   `p`    | Adlandırılmış Boru Hattı (Named Pipe / FIFO) |
 
 !!! tip "Gizli Dosyalar"
     Adı `.` ile başlayan dosyalar gizlidir; `ls -a` ile görüntülenebilir. `.bashrc`, `.gitconfig`, `.ssh/` gibi yapılandırma dosyaları bu gruptadır.
@@ -133,19 +133,19 @@ chgrp arge dizin              # Sadece grup
 
 ## G/Ç Yönlendirme Operatörleri
 
-| Operatör | Açıklama |
-|----------|----------|
-| `>` | Stdout'u dosyaya yazar; dosya varsa **üzerine yazar**. |
-| `>>` | Stdout'u dosyanın **sonuna ekler**; mevcut veriyi korur. |
-| `<` | Stdin'i klavye yerine **dosyadan alır**. |
-| `2>` | Yalnızca **stderr** (hata mesajları) dosyaya yönlendirir. |
-| `&>` | Hem stdout hem stderr'ı aynı dosyaya yönlendirir. |
-| `tee` | Çıktıyı hem terminale basar hem dosyaya yazar. `-a` ile ekler. |
-| `;` | Komutları sırayla çalıştırır; başarı durumu gözetilmez. |
-| `&&` | Sol komut başarılıysa sağdakini çalıştırır. |
-| `\|\|` | Sol komut başarısızsa sağdakini çalıştırır. |
-| `&` | Komutu **arka planda** çalıştırır; terminal serbest kalır. |
-| `\|` | Bir komutun çıktısını bir sonrakinin girdisine bağlar. |
+| Operatör | Açıklama                                                       |
+| -------- | -------------------------------------------------------------- |
+| `>`      | Stdout'u dosyaya yazar; dosya varsa **üzerine yazar**.         |
+| `>>`     | Stdout'u dosyanın **sonuna ekler**; mevcut veriyi korur.       |
+| `<`      | Stdin'i klavye yerine **dosyadan alır**.                       |
+| `2>`     | Yalnızca **stderr** (hata mesajları) dosyaya yönlendirir.      |
+| `&>`     | Hem stdout hem stderr'ı aynı dosyaya yönlendirir.              |
+| `tee`    | Çıktıyı hem terminale basar hem dosyaya yazar. `-a` ile ekler. |
+| `;`      | Komutları sırayla çalıştırır; başarı durumu gözetilmez.        |
+| `&&`     | Sol komut başarılıysa sağdakini çalıştırır.                    |
+| `\|\|`   | Sol komut başarısızsa sağdakini çalıştırır.                    |
+| `&`      | Komutu **arka planda** çalıştırır; terminal serbest kalır.     |
+| `\|`     | Bir komutun çıktısını bir sonrakinin girdisine bağlar.         |
 
 ```bash
 echo "merhaba" > dosya.txt          # Dosyaya yaz (üzerine yazar)
@@ -166,33 +166,33 @@ sleep 10 &                           # Arka planda çalıştır
 
 === "Temel Karakterler"
 
-    | Karakter | Anlamı | Örnek | Eşleşen |
-    |----------|--------|-------|---------|
-    | `.` | Herhangi bir karakter | `a.c` | `abc`, `axc`, `a1c` |
-    | `*` | Öncekinden 0 veya daha fazla | `ab*c` | `ac`, `abc`, `abbc` |
-    | `+` | Öncekinden 1 veya daha fazla (ERE) | `ab+c` | `abc`, `abbc` |
-    | `?` | Önceki opsiyonel (ERE) | `colou?r` | `color`, `colour` |
-    | `^` | Satır başı | `^Hata` | "Hata" ile başlayan satırlar |
-    | `$` | Satır sonu | `Hata$` | "Hata" ile biten satırlar |
-    | `[]` | Karakter sınıfı | `[abc]` | `a`, `b` veya `c` |
-    | `[^]` | Hariç tutma | `[^0-9]` | Rakam olmayan her karakter |
-    | `{n,m}` | n ile m arası tekrar | `a{2,4}` | `aa`, `aaa`, `aaaa` |
-    | `()` | Gruplama | `(ab)+` | `ab`, `abab`, `ababab` |
-    | `\|` | Alternatif (veya) | `kedi\|köpek` | `kedi` veya `köpek` |
-    | `\d` | Rakam | `\d{3}` | `123` |
-    | `\w` | Kelime karakteri | `\w+` | `merhaba_123` |
-    | `\s` | Boşluk karakteri | `\s+` | boşluk, tab |
+    | Karakter | Anlamı                             | Örnek         | Eşleşen                      |
+    | -------- | ---------------------------------- | ------------- | ---------------------------- |
+    | `.`      | Herhangi bir karakter              | `a.c`         | `abc`, `axc`, `a1c`          |
+    | `*`      | Öncekinden 0 veya daha fazla       | `ab*c`        | `ac`, `abc`, `abbc`          |
+    | `+`      | Öncekinden 1 veya daha fazla (ERE) | `ab+c`        | `abc`, `abbc`                |
+    | `?`      | Önceki opsiyonel (ERE)             | `colou?r`     | `color`, `colour`            |
+    | `^`      | Satır başı                         | `^Hata`       | "Hata" ile başlayan satırlar |
+    | `$`      | Satır sonu                         | `Hata$`       | "Hata" ile biten satırlar    |
+    | `[]`     | Karakter sınıfı                    | `[abc]`       | `a`, `b` veya `c`            |
+    | `[^]`    | Hariç tutma                        | `[^0-9]`      | Rakam olmayan her karakter   |
+    | `{n,m}`  | n ile m arası tekrar               | `a{2,4}`      | `aa`, `aaa`, `aaaa`          |
+    | `()`     | Gruplama                           | `(ab)+`       | `ab`, `abab`, `ababab`       |
+    | `\|`     | Alternatif (veya)                  | `kedi\|köpek` | `kedi` veya `köpek`          |
+    | `\d`     | Rakam                              | `\d{3}`       | `123`                        |
+    | `\w`     | Kelime karakteri                   | `\w+`         | `merhaba_123`                |
+    | `\s`     | Boşluk karakteri                   | `\s+`         | boşluk, tab                  |
 
 === "POSIX Sınıfları"
 
-    | Sınıf | Anlamı |
-    |-------|--------|
-    | `[[:digit:]]` | Rakamlar (0–9) |
-    | `[[:alpha:]]` | Harfler |
-    | `[[:alnum:]]` | Harf ve rakamlar |
-    | `[[:space:]]` | Boşluk karakterleri |
-    | `[[:upper:]]` | Büyük harfler |
-    | `[[:lower:]]` | Küçük harfler |
+    | Sınıf         | Anlamı               |
+    | ------------- | -------------------- |
+    | `[[:digit:]]` | Rakamlar (0–9)       |
+    | `[[:alpha:]]` | Harfler              |
+    | `[[:alnum:]]` | Harf ve rakamlar     |
+    | `[[:space:]]` | Boşluk karakterleri  |
+    | `[[:upper:]]` | Büyük harfler        |
+    | `[[:lower:]]` | Küçük harfler        |
     | `[[:punct:]]` | Noktalama işaretleri |
 
 === "grep Örnekleri"
@@ -237,15 +237,15 @@ sleep 10 &                           # Arka planda çalıştır
 
 ## Sistem Günlükleri
 
-| Kaynak | Açıklama |
-|--------|----------|
-| `/var/log/boot.log` | Önyükleme mesajları |
-| `/var/log/auth.log` | Kimlik doğrulama ve güvenlik olayları |
-| `/var/log/syslog` | Genel sistem mesajları (Debian/Ubuntu) |
-| `/var/log/messages` | Genel sistem mesajları (RHEL/CentOS) |
-| `/var/log/kern.log` | Kernel detaylı kayıtları |
-| `dmesg` | Kernel ring buffer çıktısı |
-| `journalctl` | systemd journal kayıtları |
+| Kaynak              | Açıklama                               |
+| ------------------- | -------------------------------------- |
+| `/var/log/boot.log` | Önyükleme mesajları                    |
+| `/var/log/auth.log` | Kimlik doğrulama ve güvenlik olayları  |
+| `/var/log/syslog`   | Genel sistem mesajları (Debian/Ubuntu) |
+| `/var/log/messages` | Genel sistem mesajları (RHEL/CentOS)   |
+| `/var/log/kern.log` | Kernel detaylı kayıtları               |
+| `dmesg`             | Kernel ring buffer çıktısı             |
+| `journalctl`        | systemd journal kayıtları              |
 
 ```bash
 journalctl -b                     # Son önyüklemeden itibaren tüm loglar
@@ -271,13 +271,13 @@ graph LR
     SVC --> LOGIN[Login Prompt / GUI]
 ```
 
-| Run Level | Anlamı | systemd Target |
-|:---------:|--------|----------------|
-| 0 | Kapatma | `poweroff.target` |
-| 1 | Tek kullanıcı (bakım) | `rescue.target` |
-| 3 | Çoklu kullanıcı + ağ | `multi-user.target` |
-| 5 | Grafik arayüz + ağ | `graphical.target` |
-| 6 | Yeniden başlatma | `reboot.target` |
+| Run Level | Anlamı                | systemd Target      |
+| :-------: | --------------------- | ------------------- |
+|     0     | Kapatma               | `poweroff.target`   |
+|     1     | Tek kullanıcı (bakım) | `rescue.target`     |
+|     3     | Çoklu kullanıcı + ağ  | `multi-user.target` |
+|     5     | Grafik arayüz + ağ    | `graphical.target`  |
+|     6     | Yeniden başlatma      | `reboot.target`     |
 
 ```bash
 systemctl isolate multi-user.target    # Target geçişi
@@ -298,12 +298,12 @@ graph LR
     DRV --> SYSFS[/sys/bus/...\nSysfs arayüzü]
 ```
 
-| Komut | Açıklama |
-|-------|----------|
-| `lsmod` | Yüklü kernel modüllerini listeler |
-| `modprobe <modül>` | Modül yükler (bağımlılıkları da yükler) |
-| `rmmod <modül>` | Modülü kaldırır |
-| `modinfo <modül>` | Modül meta bilgisini gösterir |
+| Komut               | Açıklama                                                |
+| ------------------- | ------------------------------------------------------- |
+| `lsmod`             | Yüklü kernel modüllerini listeler                       |
+| `modprobe <modül>`  | Modül yükler (bağımlılıkları da yükler)                 |
+| `rmmod <modül>`     | Modülü kaldırır                                         |
+| `modinfo <modül>`   | Modül meta bilgisini gösterir                           |
 | `insmod <dosya.ko>` | Belirtilen `.ko` dosyasını yükler (bağımlılık yönetmez) |
 
 ```bash
@@ -326,14 +326,14 @@ graph LR
     APP <--> PROC
 ```
 
-| Mekanizma | Açıklama |
-|-----------|---------|
-| **System Call** | Kullanıcı modunun kernel hizmetlerine erişmesi: `open()`, `read()`, `write()`, `ioctl()` |
-| **ioctl** | Sürücülere özel kontrol komutları; cihaz özelliklerine göre farklı anlam taşır |
-| **Netlink Socket** | Kernel ↔ Userspace mesajlaşma; `AF_NETLINK` ailesi; network config için yaygın |
-| **Device File** | `/dev` altındaki düğümler; blok ve karakter aygıtlara okuma/yazma arayüzü |
-| **sysfs** | `/sys` üzerinden sürücü ve donanım parametrelerine R/W erişim |
-| **procfs** | `/proc` üzerinden kernel runtime state'ini okuma |
+| Mekanizma          | Açıklama                                                                                 |
+| ------------------ | ---------------------------------------------------------------------------------------- |
+| **System Call**    | Kullanıcı modunun kernel hizmetlerine erişmesi: `open()`, `read()`, `write()`, `ioctl()` |
+| **ioctl**          | Sürücülere özel kontrol komutları; cihaz özelliklerine göre farklı anlam taşır           |
+| **Netlink Socket** | Kernel ↔ Userspace mesajlaşma; `AF_NETLINK` ailesi; network config için yaygın           |
+| **Device File**    | `/dev` altındaki düğümler; blok ve karakter aygıtlara okuma/yazma arayüzü                |
+| **sysfs**          | `/sys` üzerinden sürücü ve donanım parametrelerine R/W erişim                            |
+| **procfs**         | `/proc` üzerinden kernel runtime state'ini okuma                                         |
 
 ---
 
@@ -350,20 +350,20 @@ graph LR
     HANDLER --> C["SIG_IGN\n(Yoksay)"]
 ```
 
-| Sinyal | No | Varsayılan | Açıklama |
-|--------|----|-----------|---------|
-| `SIGHUP` | 1 | Terminate | Terminal kapandı / daemon yeniden yükle |
-| `SIGINT` | 2 | Terminate | `Ctrl+C` — kullanıcı kesme |
-| `SIGQUIT` | 3 | Core Dump | `Ctrl+\` — core dump ile çıkış |
-| `SIGKILL` | 9 | Terminate | **Yakalanamaz/engellenemez** — zorla öldür |
-| `SIGSEGV` | 11 | Core Dump | Geçersiz bellek erişimi |
-| `SIGPIPE` | 13 | Terminate | Okuyucusu olmayan pipe'a yazma |
-| `SIGALRM` | 14 | Terminate | `alarm()` zamanlayıcı |
-| `SIGTERM` | 15 | Terminate | Nazik sonlandırma isteği (yakalanabilir) |
-| `SIGCHLD` | 17 | Ignore | Alt process durdu / sonlandı |
-| `SIGSTOP` | 19 | Stop | **Yakalanamaz** — process'i durdur |
-| `SIGCONT` | 18 | Continue | Durdurulan process'i devam ettir |
-| `SIGUSR1/2` | 10/12 | Terminate | Uygulama tanımlı kullanım |
+| Sinyal      | No    | Varsayılan | Açıklama                                   |
+| ----------- | ----- | ---------- | ------------------------------------------ |
+| `SIGHUP`    | 1     | Terminate  | Terminal kapandı / daemon yeniden yükle    |
+| `SIGINT`    | 2     | Terminate  | `Ctrl+C` — kullanıcı kesme                 |
+| `SIGQUIT`   | 3     | Core Dump  | `Ctrl+\` — core dump ile çıkış             |
+| `SIGKILL`   | 9     | Terminate  | **Yakalanamaz/engellenemez** — zorla öldür |
+| `SIGSEGV`   | 11    | Core Dump  | Geçersiz bellek erişimi                    |
+| `SIGPIPE`   | 13    | Terminate  | Okuyucusu olmayan pipe'a yazma             |
+| `SIGALRM`   | 14    | Terminate  | `alarm()` zamanlayıcı                      |
+| `SIGTERM`   | 15    | Terminate  | Nazik sonlandırma isteği (yakalanabilir)   |
+| `SIGCHLD`   | 17    | Ignore     | Alt process durdu / sonlandı               |
+| `SIGSTOP`   | 19    | Stop       | **Yakalanamaz** — process'i durdur         |
+| `SIGCONT`   | 18    | Continue   | Durdurulan process'i devam ettir           |
+| `SIGUSR1/2` | 10/12 | Terminate  | Uygulama tanımlı kullanım                  |
 
 ```bash
 # Sinyal gönderme
@@ -415,11 +415,11 @@ int main(void) {
 
 Donanım kaynaklarını (bellek, kesmeler, saatler, GPIO) yazılımdan bağımsız biçimde tanımlayan hiyerarşik veri yapısıdır. Bootloader, DTB'yi RAM'e yükleyerek kernel'e hangi donanımın mevcut olduğunu bildirir.
 
-| Format | Açıklama |
-|--------|----------|
-| `.dts` | Device Tree Source — insan tarafından okunabilir metin |
-| `.dtb` | Device Tree Blob — derlenmiş ikili format |
-| `.dtso` | Overlay — temel DTB üzerine eklenti |
+| Format  | Açıklama                                               |
+| ------- | ------------------------------------------------------ |
+| `.dts`  | Device Tree Source — insan tarafından okunabilir metin |
+| `.dtb`  | Device Tree Blob — derlenmiş ikili format              |
+| `.dtso` | Overlay — temel DTB üzerine eklenti                    |
 
 ```bash
 dtc -I dts -O dtb -o output.dtb input.dts   # .dts → .dtb derleme
@@ -436,15 +436,15 @@ cat /proc/device-tree/compatible            # Uyumluluk listesi
 
 ## Terminal Kısayolları
 
-| Kısayol | İşlev |
-|---------|-------|
-| `Ctrl + C` | Çalışan komutu sonlandırır |
+| Kısayol    | İşlev                                       |
+| ---------- | ------------------------------------------- |
+| `Ctrl + C` | Çalışan komutu sonlandırır                  |
 | `Ctrl + Z` | Çalışan komutu duraklatır (arka plana alır) |
-| `Ctrl + R` | Komut geçmişinde arama |
-| `Ctrl + U` | İmlecin solundaki her şeyi siler |
-| `Ctrl + A` | Satır başına git |
-| `Ctrl + E` | Satır sonuna git |
-| `Ctrl + L` | Terminali temizler (`clear` gibi) |
-| `Ctrl + S` | Terminal çıktı akışını durdurur |
-| `Ctrl + Q` | Durdurulan akışı sürdürür |
-| `Alt + F2` | Komut çalıştırma penceresi (grafik ortam) |
+| `Ctrl + R` | Komut geçmişinde arama                      |
+| `Ctrl + U` | İmlecin solundaki her şeyi siler            |
+| `Ctrl + A` | Satır başına git                            |
+| `Ctrl + E` | Satır sonuna git                            |
+| `Ctrl + L` | Terminali temizler (`clear` gibi)           |
+| `Ctrl + S` | Terminal çıktı akışını durdurur             |
+| `Ctrl + Q` | Durdurulan akışı sürdürür                   |
+| `Alt + F2` | Komut çalıştırma penceresi (grafik ortam)   |

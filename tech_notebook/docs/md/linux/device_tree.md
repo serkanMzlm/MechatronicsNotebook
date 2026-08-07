@@ -164,13 +164,13 @@ sensor@48 {
 };
 ```
 
-| Tetikleme Türü | Değer | Açıklama |
-|----------------|:-----:|---------|
-| `IRQ_TYPE_EDGE_RISING` | 1 | Yükselen kenar |
-| `IRQ_TYPE_EDGE_FALLING` | 2 | Düşen kenar |
-| `IRQ_TYPE_EDGE_BOTH` | 3 | Her iki kenar |
-| `IRQ_TYPE_LEVEL_HIGH` | 4 | Seviye yüksek |
-| `IRQ_TYPE_LEVEL_LOW` | 8 | Seviye düşük |
+| Tetikleme Türü          | Değer | Açıklama       |
+| ----------------------- | :---: | -------------- |
+| `IRQ_TYPE_EDGE_RISING`  |   1   | Yükselen kenar |
+| `IRQ_TYPE_EDGE_FALLING` |   2   | Düşen kenar    |
+| `IRQ_TYPE_EDGE_BOTH`    |   3   | Her iki kenar  |
+| `IRQ_TYPE_LEVEL_HIGH`   |   4   | Seviye yüksek  |
+| `IRQ_TYPE_LEVEL_LOW`    |   8   | Seviye düşük   |
 
 ### clocks — Saat Kaynağı
 
@@ -239,12 +239,12 @@ i2c1: i2c@7e804000 {
 };
 ```
 
-| Değer | Anlam |
-|-------|-------|
-| `"okay"` | Etkin, sürücü probe edilecek |
-| `"disabled"` | Devre dışı, sürücü yüklenmez |
+| Değer        | Anlam                                 |
+| ------------ | ------------------------------------- |
+| `"okay"`     | Etkin, sürücü probe edilecek          |
+| `"disabled"` | Devre dışı, sürücü yüklenmez          |
 | `"reserved"` | Başka bir işlemci/firmware kullanıyor |
-| `"fail"` | Cihaz arızalı (runtime tespiti) |
+| `"fail"`     | Cihaz arızalı (runtime tespiti)       |
 
 ---
 
@@ -696,12 +696,12 @@ status = "okay";    // DOĞRU
 
 ## Sık Kullanılan Referanslar
 
-| Başlık Dosyası | Açıklama | Yer |
-|----------------|---------|-----|
-| `dt-bindings/gpio/gpio.h` | `GPIO_ACTIVE_HIGH`, `GPIO_ACTIVE_LOW` | kernel/include |
-| `dt-bindings/interrupt-controller/irq.h` | `IRQ_TYPE_*` sabitleri | kernel/include |
-| `dt-bindings/interrupt-controller/arm-gic.h` | `GIC_SPI`, `GIC_PPI` | kernel/include |
-| `dt-bindings/clock/bcm2835.h` | BCM2835 saat ID'leri | kernel/include |
+| Başlık Dosyası                               | Açıklama                              | Yer            |
+| -------------------------------------------- | ------------------------------------- | -------------- |
+| `dt-bindings/gpio/gpio.h`                    | `GPIO_ACTIVE_HIGH`, `GPIO_ACTIVE_LOW` | kernel/include |
+| `dt-bindings/interrupt-controller/irq.h`     | `IRQ_TYPE_*` sabitleri                | kernel/include |
+| `dt-bindings/interrupt-controller/arm-gic.h` | `GIC_SPI`, `GIC_PPI`                  | kernel/include |
+| `dt-bindings/clock/bcm2835.h`                | BCM2835 saat ID'leri                  | kernel/include |
 
 ```bash
 # Mevcut binding belgelerini incele

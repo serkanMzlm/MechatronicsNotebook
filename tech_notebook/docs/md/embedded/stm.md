@@ -7,13 +7,13 @@
 
 ## Gerekli Dökümanlar
 
-| Döküman | Kapsam | Kullanım |
-|---------|--------|---------|
-| **Datasheet** | Pin haritası, elektriksel özellikler, bellek haritası | Donanım tasarımı |
-| **Reference Manual** | Peripheral register'ları, RCC, GPIO, Timer, DMA | Yazılım geliştirme |
-| **Cortex-M4 Generic User Guide** | CPU register'ları, komut seti, NVIC, SysTick | Bare-metal / assembly |
-| **Cortex-M4 Technical Reference Manual** | Çekirdek donanımının "nasıl çalışır" detayları | Derin optimizasyon |
-| **Errata Sheet** | Çip silikon hataları ve geçici çözümler | Üretim kalitesi |
+| Döküman                                  | Kapsam                                                | Kullanım              |
+| ---------------------------------------- | ----------------------------------------------------- | --------------------- |
+| **Datasheet**                            | Pin haritası, elektriksel özellikler, bellek haritası | Donanım tasarımı      |
+| **Reference Manual**                     | Peripheral register'ları, RCC, GPIO, Timer, DMA       | Yazılım geliştirme    |
+| **Cortex-M4 Generic User Guide**         | CPU register'ları, komut seti, NVIC, SysTick          | Bare-metal / assembly |
+| **Cortex-M4 Technical Reference Manual** | Çekirdek donanımının "nasıl çalışır" detayları        | Derin optimizasyon    |
+| **Errata Sheet**                         | Çip silikon hataları ve geçici çözümler               | Üretim kalitesi       |
 
 !!! tip "Hangi Dökümanı Ne Zaman?"
     - GPIO/UART/SPI/I2C → **Reference Manual**'daki ilgili peripheral bölümü
@@ -37,10 +37,10 @@ graph LR
     APB2 --> UART1[UART1\nSPI1, ADC, TIM1]
 ```
 
-| Bus | İçerik | Not |
-|-----|--------|-----|
-| **I-Bus** | Flash → Komut fetch | Her clock'ta aktif |
-| **D-Bus** | RAM + peripheral veri | LDR/STR, push/pop |
+| Bus       | İçerik                        | Not                 |
+| --------- | ----------------------------- | ------------------- |
+| **I-Bus** | Flash → Komut fetch           | Her clock'ta aktif  |
+| **D-Bus** | RAM + peripheral veri         | LDR/STR, push/pop   |
 | **S-Bus** | DMA, debug, sistem peripheral | AHB matrisine bağlı |
 
 !!! note "const ve Bus İlişkisi"
@@ -103,15 +103,15 @@ graph LR
     end
 ```
 
-| Register | Görev | Koruyan |
-|----------|-------|:-------:|
-| R0–R3 | Parametre + dönüş; kesme'de otomatik stack'e alınır | Caller |
-| R4–R11 | Kalıcı değerler; callee korur | Callee |
-| R12 (IP) | Derleyici ara değeri | Caller |
-| SP (R13) | Stack tepe adresi; MSP veya PSP | Otomatik |
-| LR (R14) | Geri dönüş adresi; ISR'da EXC_RETURN | Caller |
-| PC (R15) | Sonraki komut adresi | Otomatik |
-| xPSR | APSR (bayraklar) + IPSR (kesme no) + EPSR (Thumb T-bit) | Otomatik |
+| Register | Görev                                                   | Koruyan  |
+| -------- | ------------------------------------------------------- | :------: |
+| R0–R3    | Parametre + dönüş; kesme'de otomatik stack'e alınır     |  Caller  |
+| R4–R11   | Kalıcı değerler; callee korur                           |  Callee  |
+| R12 (IP) | Derleyici ara değeri                                    |  Caller  |
+| SP (R13) | Stack tepe adresi; MSP veya PSP                         | Otomatik |
+| LR (R14) | Geri dönüş adresi; ISR'da EXC_RETURN                    |  Caller  |
+| PC (R15) | Sonraki komut adresi                                    | Otomatik |
+| xPSR     | APSR (bayraklar) + IPSR (kesme no) + EPSR (Thumb T-bit) | Otomatik |
 
 ---
 
@@ -133,13 +133,13 @@ __Vectors:
     .word  EXTI0_IRQHandler  /* Harici kesme 0                       */
 ```
 
-| Öncelik | Exception | Açıklama |
-|:-------:|-----------|---------|
-| -3 | **Reset** | İşlemci ilk çalıştığında |
-| -2 | **NMI** | Non-maskable; sönmez |
-| -1 | **HardFault** | Tüm hataların son noktası |
-| Ayarlı | SysTick | RTOS tick kaynağı |
-| Ayarlı | IRQ 0–239 | Peripheral kesmeler (EXTI, UART vb.) |
+| Öncelik | Exception     | Açıklama                             |
+| :-----: | ------------- | ------------------------------------ |
+|    -3   | **Reset**     | İşlemci ilk çalıştığında             |
+|    -2   | **NMI**       | Non-maskable; sönmez                 |
+|    -1   | **HardFault** | Tüm hataların son noktası            |
+|  Ayarlı | SysTick       | RTOS tick kaynağı                    |
+|  Ayarlı | IRQ 0–239     | Peripheral kesmeler (EXTI, UART vb.) |
 
 ---
 
@@ -147,15 +147,15 @@ __Vectors:
 
 ### Register'lar
 
-| Register | Bit Genişliği | Açıklama |
-|----------|:------------:|---------|
-| `MODER` | 2 bit/pin | 00=Giriş, 01=Çıkış, 10=AF, 11=Analog |
-| `OTYPER` | 1 bit/pin | 0=Push-Pull, 1=Open-Drain |
-| `OSPEEDR` | 2 bit/pin | 00=Düşük, 01=Orta, 10=Hızlı, 11=Çok Hızlı |
-| `PUPDR` | 2 bit/pin | 00=Yok, 01=Pull-Up, 10=Pull-Down |
-| `ODR` | 1 bit/pin | Çıkış veri register'ı |
-| `IDR` | 1 bit/pin | Giriş veri register'ı |
-| `BSRR` | 32 bit | [15:0]=Set, [31:16]=Reset; atomik |
+| Register  | Bit Genişliği | Açıklama                                  |
+| --------- | :-----------: | ----------------------------------------- |
+| `MODER`   |   2 bit/pin   | 00=Giriş, 01=Çıkış, 10=AF, 11=Analog      |
+| `OTYPER`  |   1 bit/pin   | 0=Push-Pull, 1=Open-Drain                 |
+| `OSPEEDR` |   2 bit/pin   | 00=Düşük, 01=Orta, 10=Hızlı, 11=Çok Hızlı |
+| `PUPDR`   |   2 bit/pin   | 00=Yok, 01=Pull-Up, 10=Pull-Down          |
+| `ODR`     |   1 bit/pin   | Çıkış veri register'ı                     |
+| `IDR`     |   1 bit/pin   | Giriş veri register'ı                     |
+| `BSRR`    |     32 bit    | [15:0]=Set, [31:16]=Reset; atomik         |
 
 ```c
 /* Tam GPIO başlatma — PA5 çıkış */
@@ -191,15 +191,15 @@ __asm volatile (
 );
 ```
 
-| Komut | Açıklama |
-|-------|---------|
-| `MOV Rd, Rn` | Rn değerini Rd'ye kopyala |
-| `LDR Rd, [Rn]` | Rn adresindeki bellekten Rd'ye yükle |
-| `STR Rn, [Rd]` | Rn'yi Rd adresine yaz |
-| `ADD Rd, Rn, Rm` | Rd = Rn + Rm |
-| `DSB` | Data Synchronization Barrier |
-| `ISB` | Instruction Synchronization Barrier |
-| `NOP` | İşlem yok (zamanlama için) |
+| Komut            | Açıklama                             |
+| ---------------- | ------------------------------------ |
+| `MOV Rd, Rn`     | Rn değerini Rd'ye kopyala            |
+| `LDR Rd, [Rn]`   | Rn adresindeki bellekten Rd'ye yükle |
+| `STR Rn, [Rd]`   | Rn'yi Rd adresine yaz                |
+| `ADD Rd, Rn, Rm` | Rd = Rn + Rm                         |
+| `DSB`            | Data Synchronization Barrier         |
+| `ISB`            | Instruction Synchronization Barrier  |
+| `NOP`            | İşlem yok (zamanlama için)           |
 
 ```c
 volatile uint32_t val;
@@ -255,22 +255,22 @@ __attribute__((weak)) int _write(int file, char *ptr, int len) {
 
 ## STM32CubeIDE — Debug Görünümleri
 
-| Görünüm | Açıklama |
-|---------|---------|
-| **Variables** | Geçerli scope'taki yerel/global/static değişkenler |
-| **Expressions** | Kullanıcı tanımlı ifade ve değişken izleme |
-| **Registers** | CPU register'ları (R0–R15, xPSR, MSP, PSP) |
-| **SFR Window** | Peripheral register'ları; clock açık olmazsa sıfır gösterir |
-| **Memory** | Belirli bir adresten ham bellek içeriği |
-| **Disassembly** | C kodu ↔ Assembly görünümü |
-| **Live Expressions** | Halt etmeden çalışırken değişken izleme |
+| Görünüm              | Açıklama                                                    |
+| -------------------- | ----------------------------------------------------------- |
+| **Variables**        | Geçerli scope'taki yerel/global/static değişkenler          |
+| **Expressions**      | Kullanıcı tanımlı ifade ve değişken izleme                  |
+| **Registers**        | CPU register'ları (R0–R15, xPSR, MSP, PSP)                  |
+| **SFR Window**       | Peripheral register'ları; clock açık olmazsa sıfır gösterir |
+| **Memory**           | Belirli bir adresten ham bellek içeriği                     |
+| **Disassembly**      | C kodu ↔ Assembly görünümü                                  |
+| **Live Expressions** | Halt etmeden çalışırken değişken izleme                     |
 
-| Debug Komutu | Kısayol | Açıklama |
-|-------------|:-------:|---------|
-| Step Into | F5 | Fonksiyon içine girer |
-| Step Over | F6 | Fonksiyonu tek adımda geçer |
-| Step Return | F7 | Mevcut fonksiyondan çıkar |
-| Resume | F8 | Bir sonraki breakpoint'e kadar çalıştır |
+| Debug Komutu | Kısayol | Açıklama                                |
+| ------------ | :-----: | --------------------------------------- |
+| Step Into    |    F5   | Fonksiyon içine girer                   |
+| Step Over    |    F6   | Fonksiyonu tek adımda geçer             |
+| Step Return  |    F7   | Mevcut fonksiyondan çıkar               |
+| Resume       |    F8   | Bir sonraki breakpoint'e kadar çalıştır |
 
 !!! tip "Watchpoint Kullanımı"
     Değişken değiştiğinde programı durdur: **Expressions** görünümünde değişkene sağ tıkla → **Add Watchpoint**. Bellek bozulma ve beklenmedik değişim sorunlarında çok değerlidir.
@@ -310,15 +310,15 @@ typedef struct __attribute__((packed)) {
 
 ## STM32CubeIDE Kısayolları
 
-| Kısayol | Açıklama |
-|---------|---------|
-| `Ctrl + Space` | Kod tamamlama |
-| `Ctrl + O` | Açık dosyada fonksiyon/sembol listesi |
-| `Ctrl + Shift + F` | Kod biçimlendirme |
-| `F3` | Tanıma git |
-| `Alt + ←` | Önceki konuma geri dön |
-| `Ctrl + F` | Dosyada ara |
-| `Ctrl + H` | Proje genelinde ara |
+| Kısayol            | Açıklama                              |
+| ------------------ | ------------------------------------- |
+| `Ctrl + Space`     | Kod tamamlama                         |
+| `Ctrl + O`         | Açık dosyada fonksiyon/sembol listesi |
+| `Ctrl + Shift + F` | Kod biçimlendirme                     |
+| `F3`               | Tanıma git                            |
+| `Alt + ←`          | Önceki konuma geri dön                |
+| `Ctrl + F`         | Dosyada ara                           |
+| `Ctrl + H`         | Proje genelinde ara                   |
 
 !!! danger "Optimizasyon ve Debug"
     Yüksek optimizasyon (`-O2`, `-O3`) değişkenleri optimize edip kaldırabilir; debug'da değerler yanlış görünür veya breakpoint'ler çalışmaz. Debug yapılarında `-O0` veya `-Og` (debug-friendly) kullanın.

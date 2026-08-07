@@ -43,12 +43,12 @@ sequenceDiagram
 
 ### Çerçeve Yapısı
 
-| Alan | Genişlik | Açıklama |
-|------|:--------:|---------|
-| Start Bit | 1 bit | LOW — frame başlangıcı |
-| Veri | 5–9 bit | LSB önce; genellikle 8-bit |
-| Parity | 0–1 bit | None / Even / Odd |
-| Stop Bit | 1–2 bit | HIGH — frame sonu |
+| Alan      | Genişlik | Açıklama                   |
+| --------- | :------: | -------------------------- |
+| Start Bit |  1 bit   | LOW — frame başlangıcı     |
+| Veri      | 5–9 bit  | LSB önce; genellikle 8-bit |
+| Parity    | 0–1 bit  | None / Even / Odd          |
+| Stop Bit  | 1–2 bit  | HIGH — frame sonu          |
 
 ### Baud Rate Hesabı
 
@@ -90,14 +90,14 @@ uint8_t usart2_recv(void) {
 }
 ```
 
-| Özellik | Değer |
-|---------|-------|
-| Topoloji | Point-to-Point |
-| Kablo | TX→RX, RX→TX (çapraz) |
-| Clock | Ortak referans yok — sadece baud rate eşleşmeli |
-| Hız | 115.2 kbps (tipik) → 10+ Mbps (bazı USART) |
-| Mesafe | ~15 m (RS-232 seviye dönüştürücüyle) |
-| Veri yönü | Full-duplex (TX + RX eş zamanlı) |
+| Özellik   | Değer                                           |
+| --------- | ----------------------------------------------- |
+| Topoloji  | Point-to-Point                                  |
+| Kablo     | TX→RX, RX→TX (çapraz)                           |
+| Clock     | Ortak referans yok — sadece baud rate eşleşmeli |
+| Hız       | 115.2 kbps (tipik) → 10+ Mbps (bazı USART)      |
+| Mesafe    | ~15 m (RS-232 seviye dönüştürücüyle)            |
+| Veri yönü | Full-duplex (TX + RX eş zamanlı)                |
 
 ---
 
@@ -139,21 +139,21 @@ graph LR
 
 ### Sinyal Açıklamaları
 
-| Pin | Yön | Açıklama |
-|-----|:---:|---------|
-| **MOSI** | Master→Slave | Master Out Slave In |
-| **MISO** | Slave→Master | Master In Slave Out |
-| **SCK** (SCLK) | Master→Slave | Clock — master üretir |
+| Pin              |     Yön      | Açıklama                |
+| ---------------- | :----------: | ----------------------- |
+| **MOSI**         | Master→Slave | Master Out Slave In     |
+| **MISO**         | Slave→Master | Master In Slave Out     |
+| **SCK** (SCLK)   | Master→Slave | Clock — master üretir   |
 | **CS** (SS, NSS) | Master→Slave | Chip Select — LOW=aktif |
 
 ### SPI Modları (CPOL ve CPHA)
 
 | Mod | CPOL | CPHA | Clock Boşta | Örnekleme Kenarı |
-|:---:|:----:|:----:|:----------:|:----------------:|
-| 0 | 0 | 0 | LOW | Yükselen |
-| 1 | 0 | 1 | LOW | Düşen |
-| 2 | 1 | 0 | HIGH | Düşen |
-| 3 | 1 | 1 | HIGH | Yükselen |
+| :-: | :--: | :--: | :---------: | :--------------: |
+|  0  |  0   |  0   |     LOW     |     Yükselen     |
+|  1  |  0   |  1   |     LOW     |      Düşen       |
+|  2  |  1   |  0   |     HIGH    |      Düşen       |
+|  3  |  1   |  1   |     HIGH    |     Yükselen     |
 
 !!! tip "Mod Seçimi"
     Slave cihazın datasheet'inde CPOL/CPHA veya SPI Mode 0–3 belirtilir. En yaygın kullanılan Mod 0 ve Mod 3'tür.
@@ -192,13 +192,13 @@ uint8_t cevap = spi_transfer(0x9F); /* ID oku */
 GPIOA->BSRR = (1 << 4);           /* CS HIGH */
 ```
 
-| Özellik | Değer |
-|---------|-------|
-| Topoloji | Master + N Slave (ayrı CS hattı her birine) |
-| Hız | 10–100 Mbps |
-| Veri yönü | Full-duplex (eş zamanlı MOSI+MISO) |
-| Pin sayısı | 3 + N (N = slave sayısı, CS başına 1) |
-| Hata tespiti | Yok (uygulama katmanında yapılmalı) |
+| Özellik      | Değer                                       |
+| ------------ | ------------------------------------------- |
+| Topoloji     | Master + N Slave (ayrı CS hattı her birine) |
+| Hız          | 10–100 Mbps                                 |
+| Veri yönü    | Full-duplex (eş zamanlı MOSI+MISO)          |
+| Pin sayısı   | 3 + N (N = slave sayısı, CS başına 1)       |
+| Hata tespiti | Yok (uygulama katmanında yapılmalı)         |
 
 ---
 
@@ -228,22 +228,22 @@ sequenceDiagram
 
 ### Bus Durumları
 
-| Durum | SDA | SCL | Açıklama |
-|-------|:---:|:---:|---------|
-| Idle | HIGH | HIGH | Açık (open-drain pull-up) |
-| **START** | HIGH → LOW | HIGH | Yeni transfer başlıyor |
-| Veri | Geçerli bit | ↑ pulse | SCL HIGH iken SDA sabit |
-| **STOP** | LOW → HIGH | HIGH | Transfer sonu |
-| **R-START** | HIGH → LOW | HIGH | STOP olmadan yeni transfer |
+| Durum       |     SDA     |   SCL   | Açıklama                   |
+| ----------- | :---------: | :-----: | -------------------------- |
+| Idle        |     HIGH    |   HIGH  | Açık (open-drain pull-up)  |
+| **START**   |  HIGH → LOW |   HIGH  | Yeni transfer başlıyor     |
+| Veri        | Geçerli bit | ↑ pulse | SCL HIGH iken SDA sabit    |
+| **STOP**    |  LOW → HIGH |   HIGH  | Transfer sonu              |
+| **R-START** |  HIGH → LOW |   HIGH  | STOP olmadan yeni transfer |
 
 ### Hız Modları
 
-| Mod | Hız | Kullanım |
-|-----|:---:|---------|
-| Standard | 100 kHz | Genel amaçlı |
-| Fast | 400 kHz | Yaygın sensörler |
-| Fast Plus | 1 MHz | Yüksek hızlı sensörler |
-| High-Speed | 3.4 MHz | Özel donanım |
+| Mod        |   Hız   | Kullanım               |
+| ---------- | :-----: | ---------------------- |
+| Standard   | 100 kHz | Genel amaçlı           |
+| Fast       | 400 kHz | Yaygın sensörler       |
+| Fast Plus  |  1 MHz  | Yüksek hızlı sensörler |
+| High-Speed | 3.4 MHz | Özel donanım           |
 
 ### STM32 I²C Örneği
 
@@ -301,28 +301,28 @@ void i2c1_write(uint8_t addr, uint8_t reg, uint8_t val) {
     }
     ```
 
-| Özellik | Değer |
-|---------|-------|
-| Topoloji | Multi-master, multi-slave |
-| Kablo | SDA + SCL (2 tel + GND + VCC) |
-| Adres | 7-bit (128 cihaz) veya 10-bit |
-| Hız | 100 kHz – 3.4 MHz |
-| Hata tespiti | ACK/NACK mekanizması |
+| Özellik      | Değer                         |
+| ------------ | ----------------------------- |
+| Topoloji     | Multi-master, multi-slave     |
+| Kablo        | SDA + SCL (2 tel + GND + VCC) |
+| Adres        | 7-bit (128 cihaz) veya 10-bit |
+| Hız          | 100 kHz – 3.4 MHz             |
+| Hata tespiti | ACK/NACK mekanizması          |
 
 ---
 
 ## SPI vs I²C Karşılaştırması
 
-| Özellik | SPI | I²C |
-|---------|:---:|:---:|
-| Tel sayısı | 4+ | 2 |
-| Hız | ≥10 Mbps | ≤3.4 Mbps |
-| Mesafe | Kısa (PCB içi) | Kısa (PCB içi) |
-| Multi-slave | CS başına 1 pin | Adres sistemi |
-| Full-duplex | ✓ | ✗ (half-duplex) |
-| Donanım karmaşıklığı | Düşük | Orta (pull-up, arbitration) |
-| Hata tespiti | Yok | ACK/NACK |
-| Tipik cihazlar | Flash, Display, DAC, ADC | Sensörler, EEPROM, RTC |
+| Özellik              |           SPI            |             I²C             |
+| -------------------- | :----------------------: | :-------------------------: |
+| Tel sayısı           |            4+            |              2              |
+| Hız                  |         ≥10 Mbps         |          ≤3.4 Mbps          |
+| Mesafe               |      Kısa (PCB içi)      |        Kısa (PCB içi)       |
+| Multi-slave          |     CS başına 1 pin      |        Adres sistemi        |
+| Full-duplex          |            ✓             |       ✗ (half-duplex)       |
+| Donanım karmaşıklığı |          Düşük           | Orta (pull-up, arbitration) |
+| Hata tespiti         |           Yok            |           ACK/NACK          |
+| Tipik cihazlar       | Flash, Display, DAC, ADC |    Sensörler, EEPROM, RTC   |
 
 ---
 
@@ -346,16 +346,16 @@ graph LR
 | SOF | ID[10:0] | RTR | IDE | r0 | DLC[3:0] | Data[0:7 bytes] | CRC | ACK | EOF |
 ```
 
-| Alan | Bit | Açıklama |
-|------|:---:|---------|
-| SOF | 1 | Start of Frame — dominant (0) |
-| Identifier (ID) | 11 (veya 29) | Mesaj kimliği **ve önceliği** |
-| RTR | 1 | Remote Transmission Request |
-| DLC | 4 | Data Length Code (0–8 byte) |
-| Data | 0–64 bit | Veri |
-| CRC | 15+1 | Hata tespiti |
-| ACK | 2 | Herhangi bir alıcı dominant çeker |
-| EOF | 7 | End of Frame |
+| Alan            |     Bit      | Açıklama                          |
+| --------------- | :----------: | --------------------------------- |
+| SOF             |      1       | Start of Frame — dominant (0)     |
+| Identifier (ID) | 11 (veya 29) | Mesaj kimliği **ve önceliği**     |
+| RTR             |      1       | Remote Transmission Request       |
+| DLC             |      4       | Data Length Code (0–8 byte)       |
+| Data            |   0–64 bit   | Veri                              |
+| CRC             |     15+1     | Hata tespiti                      |
+| ACK             |      2       | Herhangi bir alıcı dominant çeker |
+| EOF             |      7       | End of Frame                      |
 
 !!! note "ID = Öncelik"
     CAN'da ID hem mesajı tanımlar hem de bus arbitrasyonunda önceliği belirler. **Düşük ID → Yüksek öncelik.** ID=0 en yüksek önceliklidir.
@@ -378,13 +378,13 @@ sequenceDiagram
 
 ### CAN Hız ve Mesafe
 
-| Hız | Maksimum Mesafe |
-|:---:|:---------------:|
-| 1 Mbps | 40 m |
-| 500 kbps | 100 m |
-| 250 kbps | 250 m |
-| 125 kbps | 500 m |
-| 10 kbps | 6000 m |
+|   Hız    | Maksimum Mesafe |
+| :------: | :-------------: |
+|  1 Mbps  |       40 m      |
+| 500 kbps |      100 m      |
+| 250 kbps |      250 m      |
+| 125 kbps |      500 m      |
+| 10 kbps  |      6000 m     |
 
 ### STM32 CAN Örneği
 
@@ -416,13 +416,13 @@ HAL_CAN_ConfigFilter(&hcan1, &filtre);
 
 ### CAN Hata Yönetimi
 
-| Hata | Açıklama |
-|------|---------|
-| Bit Error | Gönderilen bit != okunan bit |
+| Hata        | Açıklama                                    |
+| ----------- | ------------------------------------------- |
+| Bit Error   | Gönderilen bit != okunan bit                |
 | Stuff Error | 5 ardışık aynı bit → Stuffing kuralı ihlali |
-| CRC Error | CRC uyuşmazlığı |
-| Form Error | Sabit alanlar yanlış (EOF, ACK) |
-| ACK Error | Hiç kimse ACK çekmedi |
+| CRC Error   | CRC uyuşmazlığı                             |
+| Form Error  | Sabit alanlar yanlış (EOF, ACK)             |
+| ACK Error   | Hiç kimse ACK çekmedi                       |
 
 ```mermaid
 stateDiagram-v2
@@ -441,19 +441,19 @@ stateDiagram-v2
 
 USB, PC ve gömülü cihazlar arasında yüksek hızlı, hot-pluggable haberleşme sağlar.
 
-| Standart | Hız | Kullanım |
-|----------|:---:|---------|
-| USB 1.1 FS | 12 Mbps | HID (klavye, fare) |
-| USB 2.0 HS | 480 Mbps | Mass Storage, CDC |
-| USB 3.0 | 5 Gbps | Kamera, yüksek bant genişliği |
+| Standart   |   Hız    | Kullanım                      |
+| ---------- | :------: | ----------------------------- |
+| USB 1.1 FS | 12 Mbps  | HID (klavye, fare)            |
+| USB 2.0 HS | 480 Mbps | Mass Storage, CDC             |
+| USB 3.0    |  5 Gbps  | Kamera, yüksek bant genişliği |
 
-| Cihaz Sınıfı | Kısaltma | Örnek |
-|-------------|:--------:|-------|
-| Communication Device | CDC | Virtual COM Port |
-| Human Interface Device | HID | Klavye, fare, gamepad |
-| Mass Storage | MSC | USB bellek |
-| Device Firmware Upgrade | DFU | Bootloader |
-| Vendor Specific | — | Özel protokoller |
+| Cihaz Sınıfı            | Kısaltma | Örnek                 |
+| ----------------------- | :------: | --------------------- |
+| Communication Device    |   CDC    | Virtual COM Port      |
+| Human Interface Device  |   HID    | Klavye, fare, gamepad |
+| Mass Storage            |   MSC    | USB bellek            |
+| Device Firmware Upgrade |   DFU    | Bootloader            |
+| Vendor Specific         |    —     | Özel protokoller      |
 
 !!! tip "STM32 USB CDC — Virtual COM Port"
     STM32CubeMX'te USB_OTG_FS → Device → CDC seçilir; otomatik üretilen `usbd_cdc_if.c` içindeki `CDC_Transmit_FS()` ile veri gönderilebilir. PC'de sürücü gerekmez — standart COM port olarak görünür.
@@ -462,11 +462,11 @@ USB, PC ve gömülü cihazlar arasında yüksek hızlı, hot-pluggable haberleş
 
 ## Protokol Seçim Rehberi
 
-| Gereksinim | Önerilen Protokol |
-|-----------|:-----------------:|
-| Tek cihaz, yüksek hız, tam-çift | SPI |
-| Çok cihaz, az pin, düşük-orta hız | I²C |
-| Basit seri debug / PC haberleşmesi | UART |
-| Araç içi ağ, yüksek güvenilirlik | CAN |
-| PC bağlantısı, plug-and-play | USB |
-| 10 Mbps+ endüstriyel Ethernet | Ethernet |
+| Gereksinim                         | Önerilen Protokol |
+| ---------------------------------- | :---------------: |
+| Tek cihaz, yüksek hız, tam-çift    |        SPI        |
+| Çok cihaz, az pin, düşük-orta hız  |        I²C        |
+| Basit seri debug / PC haberleşmesi |        UART       |
+| Araç içi ağ, yüksek güvenilirlik   |        CAN        |
+| PC bağlantısı, plug-and-play       |        USB        |
+| 10 Mbps+ endüstriyel Ethernet      |      Ethernet     |

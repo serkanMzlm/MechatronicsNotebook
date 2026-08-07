@@ -28,15 +28,15 @@ Bu adım, model yazmaktan önce gelir ve çoğu zaman en kritik adımdır. Yanl�
 
 **Cevaplanması gereken sorular:**
 
-| Soru | Neden Önemli |
-|------|-------------|
-| Çıktı sürekli mi, kategorik mi? | Regresyon mu, sınıflandırma mı? |
-| Kaç sınıf var? İkili mi, çok sınıflı mı? | Loss fonksiyonu ve metrik seçimi |
-| Sınıflar dengeli mi? | Dengesiz veri stratejisi gerekebilir |
-| Hangi hata daha maliyetli? FP mi FN mi? | Threshold ve optimizasyon hedefi |
-| Gerçek zamanlı inferans gerekiyor mu? | Model boyutu ve gecikme kısıtı |
-| Yorumlanabilirlik zorunlu mu? | Kara kutu vs. şeffaf model |
-| Başarı kriteri nedir? | Üretimde hangi metriği optimize edeceksiniz? |
+| Soru                                     | Neden Önemli                                 |
+| ---------------------------------------- | -------------------------------------------- |
+| Çıktı sürekli mi, kategorik mi?          | Regresyon mu, sınıflandırma mı?              |
+| Kaç sınıf var? İkili mi, çok sınıflı mı? | Loss fonksiyonu ve metrik seçimi             |
+| Sınıflar dengeli mi?                     | Dengesiz veri stratejisi gerekebilir         |
+| Hangi hata daha maliyetli? FP mi FN mi?  | Threshold ve optimizasyon hedefi             |
+| Gerçek zamanlı inferans gerekiyor mu?    | Model boyutu ve gecikme kısıtı               |
+| Yorumlanabilirlik zorunlu mu?            | Kara kutu vs. şeffaf model                   |
+| Başarı kriteri nedir?                    | Üretimde hangi metriği optimize edeceksiniz? |
 
 **Problem türü nasıl belirlenir?**
 
@@ -90,14 +90,14 @@ Model kurmadan önce verinizi tanıyın. EDA, varsayımları doğrular, sorunlar
 
 **Görsel araçlar:**
 
-| Araç | Ne Gösterir |
-|------|------------|
-| Histogram | Tek değişken dağılımı |
-| Box plot | Medyan, IQR, aykırı değerler |
-| Scatter plot | İki değişken arasındaki ilişki |
+| Araç                | Ne Gösterir                                 |
+| ------------------- | ------------------------------------------- |
+| Histogram           | Tek değişken dağılımı                       |
+| Box plot            | Medyan, IQR, aykırı değerler                |
+| Scatter plot        | İki değişken arasındaki ilişki              |
 | Correlation heatmap | Tüm değişken çiftleri arasındaki korelasyon |
-| Pairplot | Her değişken çiftini beraber çizer |
-| Bar/Count plot | Kategorik değişken frekansları |
+| Pairplot            | Her değişken çiftini beraber çizer          |
+| Bar/Count plot      | Kategorik değişken frekansları              |
 
 !!! tip "EDA'nın Gücü"
     EDA sırasında bulunan içgörüler sizi doğru modele yönlendirir. "Sınıf dengesizliği %95/%5 oranında" → özel strateji gerekir. "X özelliği Y ile neredeyse mükemmel korelasyonda" → veri sızıntısı riski. "Belirli bir tarihten sonra dağılım değişiyor" → veri setini böl.
@@ -116,14 +116,14 @@ Eksik veri **neden** eksik? Bu soruyu yanıtlamak stratejiyi belirler.
 - **MAR (Missing at Random):** Başka bir değişkene bağlı eksik. Diğer veriden tahmin edilebilir.
 - **MNAR (Missing Not at Random):** Eksikliğin kendisi bilgi taşır. Dikkatli yaklaşım gerekir.
 
-| Strateji | Ne Zaman | Nasıl |
-|----------|:--------:|-------|
-| **Satırı sil** | Eksik < %5, MCAR ise | `dropna()` |
-| **Medyan ile doldur** | Sayısal, outlier var | Outlier'a dayanıklı |
-| **Ortalama ile doldur** | Sayısal, normal dağılım | Basit ve hızlı |
-| **Mod ile doldur** | Kategorik | En sık görülen değeri ata |
-| **Model ile tahmin** | Yüksek eksik oran, MAR | KNN Imputer, Iterative Imputer |
-| **Eksik bayrağı ekle** | MNAR olabilir | Yeni binary özellik: "bu_eksik_mi" |
+| Strateji                |         Ne Zaman        | Nasıl                              |
+| ----------------------- | :---------------------: | ---------------------------------- |
+| **Satırı sil**          |   Eksik < %5, MCAR ise  | `dropna()`                         |
+| **Medyan ile doldur**   |   Sayısal, outlier var  | Outlier'a dayanıklı                |
+| **Ortalama ile doldur** | Sayısal, normal dağılım | Basit ve hızlı                     |
+| **Mod ile doldur**      |        Kategorik        | En sık görülen değeri ata          |
+| **Model ile tahmin**    |  Yüksek eksik oran, MAR | KNN Imputer, Iterative Imputer     |
+| **Eksik bayrağı ekle**  |      MNAR olabilir      | Yeni binary özellik: "bu_eksik_mi" |
 
 !!! warning "Veri Sızıntısı (Data Leakage)"
     Test verisinin istatistiklerini (ortalama, medyan) kullanarak eğitim verisini doldurursanız, model gerçek dünyada göremeyeceği bilgiye erişmiş olur. Tüm doldurma işlemleri **sadece eğitim verisine** fit edilmeli, test verisine uygulanmalıdır.
@@ -236,12 +236,12 @@ Her ML projesine basit bir baseline ile başlayın. Karmaşık model eklemeden �
 
 ### Model Seçim Rehberi
 
-| Veri Türü | Küçük Veri (< 1 K) | Orta Veri (1 K – 100 K) | Büyük Veri (> 100 K) |
-|-----------|:-----------------:|:----------------------:|:-------------------:|
-| **Tablo** | Lojistik Reg., Ridge | Random Forest, XGBoost | XGBoost, LightGBM, NN |
-| **Görüntü** | Transfer Learning (dondur) | Transfer Learning (fine-tune) | CNN sıfırdan veya büyük fine-tune |
-| **Metin** | TF-IDF + LojistikReg | BERT (son katman) | BERT fine-tune |
-| **Zaman Serisi** | ARIMA, basit baseline | LSTM, Prophet | Temporal Fusion, LSTM |
+| Veri Türü        |     Küçük Veri (< 1 K)     |    Orta Veri (1 K – 100 K)    |        Büyük Veri (> 100 K)       |
+| ---------------- | :------------------------: | :---------------------------: | :-------------------------------: |
+| **Tablo**        |    Lojistik Reg., Ridge    |     Random Forest, XGBoost    |       XGBoost, LightGBM, NN       |
+| **Görüntü**      | Transfer Learning (dondur) | Transfer Learning (fine-tune) | CNN sıfırdan veya büyük fine-tune |
+| **Metin**        |    TF-IDF + LojistikReg    |       BERT (son katman)       |           BERT fine-tune          |
+| **Zaman Serisi** |   ARIMA, basit baseline    |         LSTM, Prophet         |       Temporal Fusion, LSTM       |
 
 ### Eğitim Süreci
 
@@ -283,13 +283,13 @@ graph LR
 
 **k değeri seçimi:** k=5 veya k=10 yaygındır. k büyüdükçe tahmin daha doğru ama hesaplama yavaşlar.
 
-| CV Yöntemi | Açıklama | Ne Zaman |
-|------------|---------|:--------:|
-| **k-Fold** | k parçaya böl, her biri bir kez test | Genel amaç |
-| **Stratified k-Fold** | Sınıf oranını her parçada koru | **Sınıflandırma (zorunlu)** |
-| **Leave-One-Out** | N=k, her örnek bir kez test | Çok küçük veri |
-| **Time Series Split** | Zaman sırasını korur: geçmişle eğit, geleceği test et | Zaman serisi |
-| **Group k-Fold** | Aynı gruba ait örnekler aynı katta | Hasta ID, kullanıcı ID — sızıntı önleme |
+| CV Yöntemi            | Açıklama                                              |                 Ne Zaman                |
+| --------------------- | ----------------------------------------------------- | :-------------------------------------: |
+| **k-Fold**            | k parçaya böl, her biri bir kez test                  |                Genel amaç               |
+| **Stratified k-Fold** | Sınıf oranını her parçada koru                        |       **Sınıflandırma (zorunlu)**       |
+| **Leave-One-Out**     | N=k, her örnek bir kez test                           |              Çok küçük veri             |
+| **Time Series Split** | Zaman sırasını korur: geçmişle eğit, geleceği test et |               Zaman serisi              |
+| **Group k-Fold**      | Aynı gruba ait örnekler aynı katta                    | Hasta ID, kullanıcı ID — sızıntı önleme |
 
 **CV nasıl yorumlanır?** `F1: 0.847 ± 0.023` → ortalama F1 0.847, standart sapma 0.023. Düşük std: model kararlı. Yüksek std: modelin performansı veriye çok bağımlı, daha fazla veri veya daha güçlü regularizasyon gerekebilir.
 
@@ -318,11 +318,11 @@ Model "%95 pozitif dedi" örneklerin gerçekten %95'i pozitif mi? Kötü kalibre
 
 Bazı durumlarda metrikler çakışır:
 
-| Durum | Sorun | Çözüm |
-|-------|-------|-------|
-| Yüksek Accuracy, düşük Recall | Dengesiz sınıf — çoğunluğu her zaman doğru söylüyor | F1, ROC-AUC kullan; class weight ekle |
-| Yüksek eğitim F1, düşük test F1 | Overfitting | Regularizasyon, daha fazla veri |
-| CV F1 iyi, production F1 kötü | Distribution shift | Production verisiyle CV yap |
+| Durum                           | Sorun                                               | Çözüm                                 |
+| ------------------------------- | --------------------------------------------------- | ------------------------------------- |
+| Yüksek Accuracy, düşük Recall   | Dengesiz sınıf — çoğunluğu her zaman doğru söylüyor | F1, ROC-AUC kullan; class weight ekle |
+| Yüksek eğitim F1, düşük test F1 | Overfitting                                         | Regularizasyon, daha fazla veri       |
+| CV F1 iyi, production F1 kötü   | Distribution shift                                  | Production verisiyle CV yap           |
 
 ---
 
@@ -360,13 +360,13 @@ Belirlenen aralıktan rastgele kombinasyonlar dener.
 
 Her model için kritik hiperparametreler farklıdır:
 
-| Model | En Kritik Hiperparametreler |
-|-------|:--------------------------:|
-| **Random Forest** | n_estimators, max_depth, min_samples_leaf |
-| **XGBoost** | learning_rate, n_estimators, max_depth, subsample |
-| **Sinir Ağı** | learning_rate, batch_size, architecture, dropout |
-| **SVM** | C, kernel, gamma |
-| **Ridge/Lasso** | alpha (λ) |
+| Model             |            En Kritik Hiperparametreler            |
+| ----------------- | :-----------------------------------------------: |
+| **Random Forest** |     n_estimators, max_depth, min_samples_leaf     |
+| **XGBoost**       | learning_rate, n_estimators, max_depth, subsample |
+| **Sinir Ağı**     |  learning_rate, batch_size, architecture, dropout |
+| **SVM**           |                  C, kernel, gamma                 |
+| **Ridge/Lasso**   |                     alpha (λ)                     |
 
 ---
 
@@ -442,26 +442,26 @@ Oyun teorisinden türeyen SHAP, her özelliğin her tahmine katkısını hesapla
 
 **Bağımlılık grafikleri (Dependence Plot):** Bir özellik değiştiğinde SHAP değeri nasıl değişiyor. Etkileşim var mı?
 
-| SHAP Avantajı | Alternatifler |
-|:-------------:|:-------------:|
-| Model agnostik (her model için) | Feature Importance (sadece ağaç) |
-| Yerel + global açıklama | Permutation Importance (sadece global) |
-| Matematiksel garanti (Shapley değerleri tutarlı) | LIME (yaklaşık, tutarsız olabilir) |
-| Etkileşim tespiti | Partial Dependence Plot (tek özellik) |
+|                  SHAP Avantajı                   |             Alternatifler              |
+| :----------------------------------------------: | :------------------------------------: |
+|         Model agnostik (her model için)          |    Feature Importance (sadece ağaç)    |
+|             Yerel + global açıklama              | Permutation Importance (sadece global) |
+| Matematiksel garanti (Shapley değerleri tutarlı) |   LIME (yaklaşık, tutarsız olabilir)   |
+|                Etkileşim tespiti                 | Partial Dependence Plot (tek özellik)  |
 
 ---
 
 ## Hızlı Başvuru — Algoritma Seçim Tablosu
 
-| Problem | Veri | Başlangıç | Gelişmiş |
-|---------|------|:---------:|:--------:|
-| Binary Sınıflandırma | Tablo | Logistic Regression | XGBoost, LightGBM |
-| Çok Sınıflı | Tablo | Random Forest | XGBoost + One-vs-Rest |
-| Regresyon | Tablo | Ridge Regression | XGBoost, LightGBM |
-| Kümeleme | Tablo | K-Means | DBSCAN, HDBSCAN |
-| Görüntü Sınıflandırma | Görüntü | ResNet-50 transfer | EfficientNet, ViT |
-| Nesne Tespiti | Görüntü | YOLOv8 | DINO, DETR |
-| Metin Sınıflandırma | Metin | TF-IDF + LR | BERT fine-tune |
-| Metin Üretimi | Metin | GPT-2 | GPT-4, Llama |
-| Zaman Serisi | Dizi | ARIMA | LSTM, Temporal Fusion |
-| Anomali Tespiti | Tablo | Isolation Forest | Autoencoder |
+| Problem               | Veri    |      Başlangıç      |        Gelişmiş       |
+| --------------------- | ------- | :-----------------: | :-------------------: |
+| Binary Sınıflandırma  | Tablo   | Logistic Regression |   XGBoost, LightGBM   |
+| Çok Sınıflı           | Tablo   |    Random Forest    | XGBoost + One-vs-Rest |
+| Regresyon             | Tablo   |   Ridge Regression  |   XGBoost, LightGBM   |
+| Kümeleme              | Tablo   |       K-Means       |    DBSCAN, HDBSCAN    |
+| Görüntü Sınıflandırma | Görüntü |  ResNet-50 transfer |   EfficientNet, ViT   |
+| Nesne Tespiti         | Görüntü |        YOLOv8       |       DINO, DETR      |
+| Metin Sınıflandırma   | Metin   |     TF-IDF + LR     |     BERT fine-tune    |
+| Metin Üretimi         | Metin   |        GPT-2        |      GPT-4, Llama     |
+| Zaman Serisi          | Dizi    |        ARIMA        | LSTM, Temporal Fusion |
+| Anomali Tespiti       | Tablo   |   Isolation Forest  |      Autoencoder      |

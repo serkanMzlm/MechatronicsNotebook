@@ -398,15 +398,15 @@ docker run hello-world  # sudo ile test
 
 ## Hızlı Başvuru Tablosu
 
-| Sorun | İlk Bakılacak Yer |
-|-------|------------------|
-| Servis başlamıyor | `journalctl -u servis_adı -n 50` |
-| Port açılmıyor | `ss -tlnp \| grep PORT` ve `ufw status` |
-| Disk doldu | `df -h` ve `du -sh /*` |
-| SSH bağlanamıyor | `systemctl status sshd` ve firewall |
-| Yüksek CPU | `ps aux --sort=-%cpu \| head` |
-| Yavaş sistem | `top`, `iotop`, `vmstat 1` |
-| Paket kurulamıyor | `apt install -f` ve `dpkg --configure -a` |
-| Cihaz görünmüyor | `dmesg \| tail -20` ve `lsusb / lspci` |
-| İzin hatası | `ls -la` ve `groups` |
-| DNS çalışmıyor | `dig @8.8.8.8 example.com` ve `cat /etc/resolv.conf` |
+| Sorun             | İlk Bakılacak Yer                                    |
+| ----------------- | ---------------------------------------------------- |
+| Servis başlamıyor | `journalctl -u servis_adı -n 50`                     |
+| Port açılmıyor    | `ss -tlnp \| grep PORT` ve `ufw status`              |
+| Disk doldu        | `df -h` ve `du -sh /*`                               |
+| SSH bağlanamıyor  | `systemctl status sshd` ve firewall                  |
+| Yüksek CPU        | `ps aux --sort=-%cpu \| head`                        |
+| Yavaş sistem      | `top`, `iotop`, `vmstat 1`                           |
+| Paket kurulamıyor | `apt install -f` ve `dpkg --configure -a`            |
+| Cihaz görünmüyor  | `dmesg \| tail -20` ve `lsusb / lspci`               |
+| İzin hatası       | `ls -la` ve `groups`                                 |
+| DNS çalışmıyor    | `dig @8.8.8.8 example.com` ve `cat /etc/resolv.conf` |

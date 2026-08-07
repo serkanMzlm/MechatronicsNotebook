@@ -13,16 +13,16 @@ graph LR
 
 ## Temel Kavramlar
 
-| Kavram | Açıklama |
-|--------|---------|
-| **Pipeline** | Element zinciri; veri kaynaktan sink'e akar |
-| **Element** | Tek bir iş yapan bileşen (kaynak, codec, dönüştürücü, sink) |
-| **Pad** | Elementler arası veri bağlantı noktası |
-| **Source Pad** | Elementten dışarı veri gönderir |
-| **Sink Pad** | Elemente veri alır |
-| **Caps** | Capabilities — pad'lerin kabul ettiği format (video/x-raw, format=BGR, width=1280, ...) |
-| **Bus** | Pipeline'dan uygulama katmanına mesaj iletir (hata, EOS, durum) |
-| **Bin** | Birden fazla elementi saran konteyner |
+| Kavram         | Açıklama                                                                                |
+| -------------- | --------------------------------------------------------------------------------------- |
+| **Pipeline**   | Element zinciri; veri kaynaktan sink'e akar                                             |
+| **Element**    | Tek bir iş yapan bileşen (kaynak, codec, dönüştürücü, sink)                             |
+| **Pad**        | Elementler arası veri bağlantı noktası                                                  |
+| **Source Pad** | Elementten dışarı veri gönderir                                                         |
+| **Sink Pad**   | Elemente veri alır                                                                      |
+| **Caps**       | Capabilities — pad'lerin kabul ettiği format (video/x-raw, format=BGR, width=1280, ...) |
+| **Bus**        | Pipeline'dan uygulama katmanına mesaj iletir (hata, EOS, durum)                         |
+| **Bin**        | Birden fazla elementi saran konteyner                                                   |
 
 ---
 
@@ -307,33 +307,33 @@ export DISPLAY=:0
 
 ## Codec ve Format Referansı
 
-| Codec | Encoder | Decoder | Kullanım |
-|-------|:-------:|:-------:|---------|
-| H.264 | `x264enc` / `nvv4l2h264enc` | `avdec_h264` | Genel amaç, RTSP |
-| H.265 | `x265enc` / `nvv4l2h265enc` | `avdec_h265` | Yüksek sıkıştırma |
-| MJPEG | `jpegenc` | `jpegdec` | USB kamera donanım çıkışı |
-| VP8 | `vp8enc` | `vp8dec` | WebRTC |
-| AV1 | `av1enc` | `av1dec` | Modern, açık kaynak |
+| Codec |           Encoder           |   Decoder    | Kullanım                  |
+| ----- | :-------------------------: | :----------: | ------------------------- |
+| H.264 | `x264enc` / `nvv4l2h264enc` | `avdec_h264` | Genel amaç, RTSP          |
+| H.265 | `x265enc` / `nvv4l2h265enc` | `avdec_h265` | Yüksek sıkıştırma         |
+| MJPEG |          `jpegenc`          |  `jpegdec`   | USB kamera donanım çıkışı |
+| VP8   |           `vp8enc`          |   `vp8dec`   | WebRTC                    |
+| AV1   |           `av1enc`          |   `av1dec`   | Modern, açık kaynak       |
 
-| Format | Açıklama | Kullanım |
-|--------|---------|---------|
-| `BGR` | OpenCV varsayılanı | cv2.imread çıkışı |
-| `RGB` | Standart | PIL, TF |
-| `NV12` | YUV 4:2:0 planar | Donanım codec girişi |
-| `I420` | YUV planar | FFmpeg, encode |
-| `BGRA` | Alpha kanallı BGR | GUI uygulamaları |
+| Format | Açıklama           | Kullanım             |
+| ------ | ------------------ | -------------------- |
+| `BGR`  | OpenCV varsayılanı | cv2.imread çıkışı    |
+| `RGB`  | Standart           | PIL, TF              |
+| `NV12` | YUV 4:2:0 planar   | Donanım codec girişi |
+| `I420` | YUV planar         | FFmpeg, encode       |
+| `BGRA` | Alpha kanallı BGR  | GUI uygulamaları     |
 
 ---
 
 ## Hızlı Başvuru
 
-| Görev | Pipeline Özeti |
-|-------|---------------|
-| USB Kamera → Ekran | `v4l2src ! videoconvert ! autovideosink` |
-| Kamera → Dosya (H264) | `v4l2src ! videoconvert ! x264enc ! mp4mux ! filesink` |
-| Kamera → UDP RTP | `v4l2src ! x264enc ! rtph264pay ! udpsink` |
-| UDP RTP → Ekran | `udpsrc ! rtph264depay ! avdec_h264 ! autovideosink` |
-| RTSP → Ekran | `rtspsrc ! decodebin ! videoconvert ! autovideosink sync=false` |
-| Dosya Oynat | `playbin uri=file:///path/to/file` |
-| Jetson CSI → BGR | `nvarguscamerasrc ! nvvidconv ! videoconvert ! appsink` |
-| Kamera → OpenCV | Pipeline sonuna `appsink` ekle, `CAP_GSTREAMER` ile aç |
+| Görev                 | Pipeline Özeti                                                  |
+| --------------------- | --------------------------------------------------------------- |
+| USB Kamera → Ekran    | `v4l2src ! videoconvert ! autovideosink`                        |
+| Kamera → Dosya (H264) | `v4l2src ! videoconvert ! x264enc ! mp4mux ! filesink`          |
+| Kamera → UDP RTP      | `v4l2src ! x264enc ! rtph264pay ! udpsink`                      |
+| UDP RTP → Ekran       | `udpsrc ! rtph264depay ! avdec_h264 ! autovideosink`            |
+| RTSP → Ekran          | `rtspsrc ! decodebin ! videoconvert ! autovideosink sync=false` |
+| Dosya Oynat           | `playbin uri=file:///path/to/file`                              |
+| Jetson CSI → BGR      | `nvarguscamerasrc ! nvvidconv ! videoconvert ! appsink`         |
+| Kamera → OpenCV       | Pipeline sonuna `appsink` ekle, `CAP_GSTREAMER` ile aç          |

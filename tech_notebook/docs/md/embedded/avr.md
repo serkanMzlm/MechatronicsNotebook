@@ -11,11 +11,11 @@
 
 AVR'de her port üç register ile kontrol edilir:
 
-| Register | İşlevi |
-|----------|--------|
-| `DDRx` | Data Direction Register — 0: Giriş, 1: Çıkış |
-| `PORTx` | Output Register — çıkış seviyesi veya pull-up kontrolü |
-| `PINx` | Input Register — pinin anlık dijital seviyesini okur |
+| Register | İşlevi                                                 |
+| -------- | ------------------------------------------------------ |
+| `DDRx`   | Data Direction Register — 0: Giriş, 1: Çıkış           |
+| `PORTx`  | Output Register — çıkış seviyesi veya pull-up kontrolü |
+| `PINx`   | Input Register — pinin anlık dijital seviyesini okur   |
 
 ```mermaid
 graph LR
@@ -136,20 +136,20 @@ ISR(INT0_vect) {
 }
 ```
 
-| Register | İşlevi |
-|----------|--------|
-| `SREG (I-bit)` | Global interrupt enable; `sei()` / `cli()` |
-| `EIMSK` | External Interrupt Mask (INT0, INT1 etkinleştir) |
-| `EICRA` | INT0/INT1 tetikleme kenarı (yükselen/düşen/değişim) |
-| `EIFR` | External Interrupt Flag (bayrağı temizle) |
-| `MCUCR` | MCU Control (PUD — pull-up disable) |
+| Register       | İşlevi                                              |
+| -------------- | --------------------------------------------------- |
+| `SREG (I-bit)` | Global interrupt enable; `sei()` / `cli()`          |
+| `EIMSK`        | External Interrupt Mask (INT0, INT1 etkinleştir)    |
+| `EICRA`        | INT0/INT1 tetikleme kenarı (yükselen/düşen/değişim) |
+| `EIFR`         | External Interrupt Flag (bayrağı temizle)           |
+| `MCUCR`        | MCU Control (PUD — pull-up disable)                 |
 
-| EICRA Değeri | INT0 Tetiklenme |
-|:------------:|:---------------:|
-| ISC01=0, ISC00=0 | Düşük seviye |
+|   EICRA Değeri   | INT0 Tetiklenme  |
+| :--------------: | :--------------: |
+| ISC01=0, ISC00=0 |   Düşük seviye   |
 | ISC01=0, ISC00=1 | Herhangi değişim |
-| ISC01=1, ISC00=0 | Düşen kenar |
-| ISC01=1, ISC00=1 | Yükselen kenar |
+| ISC01=1, ISC00=0 |   Düşen kenar    |
+| ISC01=1, ISC00=1 |  Yükselen kenar  |
 
 ### Pin Change Interrupt (PCINT)
 
@@ -171,20 +171,20 @@ ISR(PCINT0_vect) {
 
 ### Timer Tipleri
 
-| Timer | Bit | Maksimum | Özellikler |
-|-------|:---:|:--------:|-----------|
-| Timer0 | 8-bit | 255 | PWM, millis(), delay() için kullanılır |
-| Timer1 | 16-bit | 65535 | Yüksek çözünürlüklü zamanlama, servo |
-| Timer2 | 8-bit | 255 | Asenkron (32.768 kHz) RTC için |
+| Timer  |  Bit   | Maksimum | Özellikler                             |
+| ------ | :----: | :------: | -------------------------------------- |
+| Timer0 | 8-bit  |   255    | PWM, millis(), delay() için kullanılır |
+| Timer1 | 16-bit |  65535   | Yüksek çözünürlüklü zamanlama, servo   |
+| Timer2 | 8-bit  |   255    | Asenkron (32.768 kHz) RTC için         |
 
 ### Çalışma Modları
 
-| Mod | WGM Bitleri | Açıklama |
-|-----|:-----------:|---------|
-| Normal | 0 | 0 → MAX → 0 sayar; TOP = 0xFF/0xFFFF |
-| CTC | 2 | OCR değerinde sıfırlanır (frekans üretimi) |
-| Fast PWM | 3 | Hızlı tek-eğim PWM |
-| Phase Correct PWM | 1 | Çift-eğim; daha düzgün PWM |
+| Mod               | WGM Bitleri | Açıklama                                   |
+| ----------------- | :---------: | ------------------------------------------ |
+| Normal            |      0      | 0 → MAX → 0 sayar; TOP = 0xFF/0xFFFF       |
+| CTC               |      2      | OCR değerinde sıfırlanır (frekans üretimi) |
+| Fast PWM          |      3      | Hızlı tek-eğim PWM                         |
+| Phase Correct PWM |      1      | Çift-eğim; daha düzgün PWM                 |
 
 ### CTC Modu — Frekans Hesabı
 
@@ -226,13 +226,13 @@ int main(void) {
 
 ### Prescaler Seçimi
 
-| CS12 | CS11 | CS10 | Prescaler | Timer0/1 |
-|:----:|:----:|:----:|:---------:|:--------:|
-| 0 | 0 | 1 | 1 | Clock/1 |
-| 0 | 1 | 0 | 8 | Clock/8 |
-| 0 | 1 | 1 | 64 | Clock/64 |
-| 1 | 0 | 0 | 256 | Clock/256 |
-| 1 | 0 | 1 | 1024 | Clock/1024 |
+| CS12 | CS11 | CS10 | Prescaler |  Timer0/1  |
+| :--: | :--: | :--: | :-------: | :--------: |
+|  0   |  0   |  1   |     1     |  Clock/1   |
+|  0   |  1   |  0   |     8     |  Clock/8   |
+|  0   |  1   |  1   |     64    |  Clock/64  |
+|  1   |  0   |  0   |    256    | Clock/256  |
+|  1   |  0   |  1   |    1024   | Clock/1024 |
 
 ### PWM
 
@@ -317,12 +317,12 @@ int main(void) {
 
 ## Güç Yönetimi
 
-| Uyku Modu | CPU | I/O Clk | Timer | ADC | Uyandıran |
-|-----------|:---:|:--------:|:-----:|:---:|---------|
-| Idle | ✗ | ✓ | ✓ | ✓ | Her kesme |
-| ADC Noise Reduction | ✗ | ✗ | ✗ | ✓ | ADC tamamlama |
-| Power-Save | ✗ | ✗ | Timer2 | ✗ | Async Timer2, TWINT |
-| Power-Down | ✗ | ✗ | ✗ | ✗ | Sadece INT, Watchdog, TWI addr |
+| Uyku Modu           | CPU | I/O Clk | Timer  | ADC | Uyandıran                      |
+| ------------------- | :-: | :-----: | :----: | :-: | ------------------------------ |
+| Idle                |  ✗  |    ✓    |   ✓    |  ✓  | Her kesme                      |
+| ADC Noise Reduction |  ✗  |    ✗    |   ✗    |  ✓  | ADC tamamlama                  |
+| Power-Save          |  ✗  |    ✗    | Timer2 |  ✗  | Async Timer2, TWINT            |
+| Power-Down          |  ✗  |    ✗    |   ✗    |  ✗  | Sadece INT, Watchdog, TWI addr |
 
 ```c
 #include <avr/sleep.h>

@@ -88,11 +88,11 @@ gz service -s /gui/move_to/pose \
            --req 'name: "box", pose: {position: {x:1, y:23, z:5}, orientation: {x:0, y:0, z:0, w:1}}, projection_type: "orbit"'
 ```
 
-| Format |	Açıklama |
-|---------|----------|
-| STL | Sadece geometri (triangül mesh) tanımlar; renk, doku içermez. |
-| OBJ | Geometri + yüzey normalleri + doku koordinatları destekler. |
-| DAE | COLLADA; sahne, geometri, ışık, animasyon ve malzeme bilgisi içerir. |
+| Format | Açıklama                                                             |
+| ------ | -------------------------------------------------------------------- |
+| STL    | Sadece geometri (triangül mesh) tanımlar; renk, doku içermez.        |
+| OBJ    | Geometri + yüzey normalleri + doku koordinatları destekler.          |
+| DAE    | COLLADA; sahne, geometri, ışık, animasyon ve malzeme bilgisi içerir. |
 
 
 ### ros_gz_bridge (Gazebo ↔ ROS 2)
@@ -197,15 +197,15 @@ ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.ms
 - `<joint>` İki link arasında hareketi sağlar.
     - type özelliği ile farklı eklem mekanizmaları seçilir:
 
-| Tür	| Açıklama | 
-|----------|----------|
-| `fixed`	 | Hiç hareket etmez. | 
-| `revolute`	| Tek eksende sınırlı dönme. | 
-| `continuous`	| Tek eksende sınırsız dönme. | 
-| `prismatic`	| Tek eksende sınırsız öteleme. | 
-| `ball`	| Üç eksende serbest dönme (küresel). | 
-| `universal`	| İki eksende serbest dönme. | 
-| `screw`	| Eşzamanlı öteleme ve dönme (vida hareketi). | 
+| Tür          | Açıklama                                    |
+| ------------ | ------------------------------------------- |
+| `fixed`      | Hiç hareket etmez.                          |
+| `revolute`   | Tek eksende sınırlı dönme.                  |
+| `continuous` | Tek eksende sınırsız dönme.                 |
+| `prismatic`  | Tek eksende sınırsız öteleme.               |
+| `ball`       | Üç eksende serbest dönme (küresel).         |
+| `universal`  | İki eksende serbest dönme.                  |
+| `screw`      | Eşzamanlı öteleme ve dönme (vida hareketi). |
 
 ```xml
 <joint name="joint1" type="revolute">

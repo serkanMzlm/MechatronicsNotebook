@@ -13,13 +13,13 @@ graph LR
     NET[Network] -.->|bağlı| CTR
 ```
 
-| Kavram | Açıklama |
-|--------|---------|
-| **Image** | Katmanlı, salt okunur dosya sistemi şablonu |
-| **Container** | Image'ın çalışan örneği (namespace + cgroup ile izole) |
-| **Volume** | Container yaşam döngüsünden bağımsız kalıcı veri |
-| **Registry** | Image'ların depolandığı sunucu (Docker Hub, GHCR, ECR) |
-| **Layer** | Her Dockerfile talimatı yeni bir katman oluşturur; katmanlar önbelleğe alınır |
+| Kavram        | Açıklama                                                                      |
+| ------------- | ----------------------------------------------------------------------------- |
+| **Image**     | Katmanlı, salt okunur dosya sistemi şablonu                                   |
+| **Container** | Image'ın çalışan örneği (namespace + cgroup ile izole)                        |
+| **Volume**    | Container yaşam döngüsünden bağımsız kalıcı veri                              |
+| **Registry**  | Image'ların depolandığı sunucu (Docker Hub, GHCR, ECR)                        |
+| **Layer**     | Her Dockerfile talimatı yeni bir katman oluşturur; katmanlar önbelleğe alınır |
 
 ---
 
@@ -46,19 +46,19 @@ docker inspect <IMAGE>           # Detaylı metadata
 docker run [OPTIONS] IMAGE [COMMAND]
 ```
 
-| Bayrak | Açıklama |
-|--------|---------|
-| `-d` | Detached (arka plan) |
-| `-it` | İnteraktif terminal |
-| `--name <isim>` | Konteyner adı |
-| `-p <host>:<container>` | Port yönlendirme |
-| `-v <host>:<container>` | Volume mount |
-| `-e KEY=VALUE` | Ortam değişkeni |
-| `--network <ağ>` | Ağ bağlantısı |
-| `--rm` | Durduğunda otomatik sil |
-| `--restart always` | Her zaman yeniden başlat |
-| `--memory 512m` | Bellek sınırı |
-| `--cpus 1.5` | CPU sınırı |
+| Bayrak                  | Açıklama                 |
+| ----------------------- | ------------------------ |
+| `-d`                    | Detached (arka plan)     |
+| `-it`                   | İnteraktif terminal      |
+| `--name <isim>`         | Konteyner adı            |
+| `-p <host>:<container>` | Port yönlendirme         |
+| `-v <host>:<container>` | Volume mount             |
+| `-e KEY=VALUE`          | Ortam değişkeni          |
+| `--network <ağ>`        | Ağ bağlantısı            |
+| `--rm`                  | Durduğunda otomatik sil  |
+| `--restart always`      | Her zaman yeniden başlat |
+| `--memory 512m`         | Bellek sınırı            |
+| `--cpus 1.5`            | CPU sınırı               |
 
 ```bash
 # Örnek: MongoDB çalıştır
@@ -94,10 +94,10 @@ docker cp mongo:/etc/mongod.conf ./  # Dosya kopyala
 
 ### Restart Policy
 
-| Politika | Davranış |
-|----------|---------|
-| `no` (default) | Asla yeniden başlatma |
-| `always` | Her durumda yeniden başlat |
+| Politika         | Davranış                                |
+| ---------------- | --------------------------------------- |
+| `no` (default)   | Asla yeniden başlatma                   |
+| `always`         | Her durumda yeniden başlat              |
 | `unless-stopped` | Manuel durdurulana kadar yeniden başlat |
 | `on-failure[:N]` | Hata kodunda yeniden başlat (max N kez) |
 
@@ -107,20 +107,20 @@ docker cp mongo:/etc/mongod.conf ./  # Dosya kopyala
 
 ### Komut Referansı
 
-| Komut | Açıklama |
-|-------|---------|
-| `FROM` | Temel imaj |
-| `RUN` | İmaj oluştururken çalıştır (yeni katman) |
-| `COPY` | Host'tan imaja dosya kopyala |
-| `ADD` | COPY + URL indirme + tar çıkarma |
-| `WORKDIR` | Çalışma dizini ayarla |
-| `ENV` | Ortam değişkeni (build + runtime) |
-| `ARG` | Sadece build zamanı değişkeni |
-| `EXPOSE` | Port belirtimi (bilgilendirme amaçlı) |
-| `ENTRYPOINT` | Sabit başlangıç komutu |
-| `CMD` | Varsayılan argümanlar (override edilebilir) |
-| `HEALTHCHECK` | Sağlık kontrolü |
-| `USER` | Kullanıcı bağlamı |
+| Komut         | Açıklama                                    |
+| ------------- | ------------------------------------------- |
+| `FROM`        | Temel imaj                                  |
+| `RUN`         | İmaj oluştururken çalıştır (yeni katman)    |
+| `COPY`        | Host'tan imaja dosya kopyala                |
+| `ADD`         | COPY + URL indirme + tar çıkarma            |
+| `WORKDIR`     | Çalışma dizini ayarla                       |
+| `ENV`         | Ortam değişkeni (build + runtime)           |
+| `ARG`         | Sadece build zamanı değişkeni               |
+| `EXPOSE`      | Port belirtimi (bilgilendirme amaçlı)       |
+| `ENTRYPOINT`  | Sabit başlangıç komutu                      |
+| `CMD`         | Varsayılan argümanlar (override edilebilir) |
+| `HEALTHCHECK` | Sağlık kontrolü                             |
+| `USER`        | Kullanıcı bağlamı                           |
 
 ```dockerfile title="Temel Örnek — Node.js"
 FROM node:20-slim
@@ -239,12 +239,12 @@ graph TD
     end
 ```
 
-| Ağ Türü | Açıklama | Ne Zaman |
-|---------|---------|---------|
-| `bridge` | Varsayılan; izole köprü | Tekil container, basit test |
-| `custom bridge` | Konteyner DNS ile isimle erişim | Docker Compose, çoklu servis |
-| `host` | Host ağ yığınını paylaşır | Yüksek performans, port forward gerekmez |
-| `none` | Ağ yok, tam izole | Güvenlik gerektiren durumlar |
+| Ağ Türü         | Açıklama                        | Ne Zaman                                 |
+| --------------- | ------------------------------- | ---------------------------------------- |
+| `bridge`        | Varsayılan; izole köprü         | Tekil container, basit test              |
+| `custom bridge` | Konteyner DNS ile isimle erişim | Docker Compose, çoklu servis             |
+| `host`          | Host ağ yığınını paylaşır       | Yüksek performans, port forward gerekmez |
+| `none`          | Ağ yok, tam izole               | Güvenlik gerektiren durumlar             |
 
 ```bash
 docker network ls
@@ -279,11 +279,11 @@ docker run -v /host/path:/data nginx         # Bind mount (host dizin)
 docker run --mount type=tmpfs,target=/tmp nginx  # Tmpfs (sadece bellekte)
 ```
 
-| Mount Tipi | Veri Yönetimi | Paylaşım | Performans |
-|-----------|:------------:|:--------:|:---------:|
-| Named Volume | Docker | Konteynerler arası | İyi |
-| Bind Mount | Host | Host + container | En iyi |
-| Tmpfs | Bellek | Hayır | Çok hızlı |
+| Mount Tipi   | Veri Yönetimi |      Paylaşım      | Performans |
+| ------------ | :-----------: | :----------------: | :--------: |
+| Named Volume |     Docker    | Konteynerler arası |    İyi     |
+| Bind Mount   |      Host     |  Host + container  |   En iyi   |
+| Tmpfs        |     Bellek    |       Hayır        | Çok hızlı  |
 
 ---
 

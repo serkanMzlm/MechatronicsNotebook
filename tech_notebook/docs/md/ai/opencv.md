@@ -78,12 +78,12 @@ cv2.destroyAllWindows()
 
 Rengi ifade etmenin birden fazla yolu var. Her birinin farklı kullanım alanı var:
 
-| Uzay | Ne İçin | Örnek Kullanım |
-|------|---------|----------------|
-| **BGR** | OpenCV varsayılanı | Ham kamera görüntüsü |
-| **Grayscale** | Tek kanal, sadece parlaklık | Kenar tespiti, eşikleme |
-| **HSV** | Ton (Hue), Doygunluk, Değer | Renge göre nesne takibi |
-| **LAB** | İnsan gözüne yakın renk algısı | Renk karşılaştırma |
+| Uzay          | Ne İçin                        | Örnek Kullanım          |
+| ------------- | ------------------------------ | ----------------------- |
+| **BGR**       | OpenCV varsayılanı             | Ham kamera görüntüsü    |
+| **Grayscale** | Tek kanal, sadece parlaklık    | Kenar tespiti, eşikleme |
+| **HSV**       | Ton (Hue), Doygunluk, Değer    | Renge göre nesne takibi |
+| **LAB**       | İnsan gözüne yakın renk algısı | Renk karşılaştırma      |
 
 ```python title="renk_uzaylari.py"
 img = cv2.imread("foto.jpg")

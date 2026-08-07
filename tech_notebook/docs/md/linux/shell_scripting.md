@@ -145,15 +145,15 @@ if [[ "$ad" == ser* ]]; then echo "ser ile başlıyor"; fi  # [[ ]] glob destekl
 
 ### Karşılaştırma Operatörleri
 
-| Operatör | Sayısal | String | Dosya |
-|----------|:-------:|:------:|:-----:|
-| Eşit | `-eq` | `=` veya `==` | — |
-| Eşit değil | `-ne` | `!=` | — |
-| Küçük | `-lt` | — | — |
-| Büyük | `-gt` | — | — |
-| Küçük eşit | `-le` | — | — |
-| Büyük eşit | `-ge` | — | — |
-| Var mı | — | `-z` (boş), `-n` (dolu) | `-e` (dosya/dir), `-f` (dosya), `-d` (dir) |
+| Operatör   | Sayısal |          String         |                   Dosya                    |
+| ---------- | :-----: | :---------------------: | :----------------------------------------: |
+| Eşit       |  `-eq`  |      `=` veya `==`      |                     —                      |
+| Eşit değil |  `-ne`  |           `!=`          |                     —                      |
+| Küçük      |  `-lt`  |            —            |                     —                      |
+| Büyük      |  `-gt`  |            —            |                     —                      |
+| Küçük eşit |  `-le`  |            —            |                     —                      |
+| Büyük eşit |  `-ge`  |            —            |                     —                      |
+| Var mı     |    —    | `-z` (boş), `-n` (dolu) | `-e` (dosya/dir), `-f` (dosya), `-d` (dir) |
 
 ### case
 

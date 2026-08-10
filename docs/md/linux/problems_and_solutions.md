@@ -238,11 +238,11 @@ sudo mount -o remount,rw /
 sudo apt install extundelete
 sudo extundelete /dev/sda1 --restore-all
 
-# testdisk — partition ve dosya kurtarma
+# testdisk - partition ve dosya kurtarma
 sudo apt install testdisk
 sudo testdisk /dev/sda
 
-# photorec — medya dosyası kurtarma
+# photorec - medya dosyası kurtarma
 sudo photorec /dev/sda
 ```
 
@@ -290,7 +290,7 @@ ulimit -n
 # Geçici artırma
 ulimit -n 65536
 
-# Kalıcı — /etc/security/limits.conf
+# Kalıcı - /etc/security/limits.conf
 echo "* soft nofile 65536" | sudo tee -a /etc/security/limits.conf
 echo "* hard nofile 65536" | sudo tee -a /etc/security/limits.conf
 

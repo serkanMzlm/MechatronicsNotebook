@@ -7,7 +7,7 @@
 graph LR
     APP[Uygulama\ncurl · ssh · nginx] --> SOCKET[Socket API\nAF_INET · AF_INET6]
     SOCKET --> TCP_UDP[TCP / UDP]
-    TCP_UDP --> IP[IP — Routing]
+    TCP_UDP --> IP[IP - Routing]
     IP --> NIC[NIC / Ağ Arayüzü\neth0 · wlan0 · lo]
     NIC --> PHY[Fiziksel Ağ\nEthernet · Wi-Fi]
 ```
@@ -29,7 +29,7 @@ graph LR
 |                 Özel Adres                 | Anlamı                          |
 | :----------------------------------------: | ------------------------------- |
 |                `127.0.0.1`                 | Loopback (kendi cihaz)          |
-|               `169.254.x.x`                | Link-local (APIPA — DHCP yoksa) |
+|               `169.254.x.x`                | Link-local (APIPA - DHCP yoksa) |
 | `10.x.x.x`, `172.16-31.x.x`, `192.168.x.x` | Özel (Private) ağlar            |
 |                 `0.0.0.0`                  | Tüm arayüzleri dinle            |
 |             `255.255.255.255`              | Broadcast                       |
@@ -71,7 +71,7 @@ sudo ip link set dev eth0 up
 
 ---
 
-## `ip` Komutu — Modern Ağ Yönetimi
+## `ip` Komutu - Modern Ağ Yönetimi
 
 `ip`, `ifconfig`, `route`, `arp` gibi eski araçların yerini alan modern Linux ağ yapılandırma komutudur.
 
@@ -119,7 +119,7 @@ nmcli device status            # Arayüz bazlı durum
 nmcli connection show          # Tüm profiller
 nmcli connection show --active # Aktif profiller
 
-# Ethernet — statik IP
+# Ethernet - statik IP
 nmcli con mod "Wired connection 1" \
     ipv4.method manual \
     ipv4.addresses 192.168.1.50/24 \
@@ -127,7 +127,7 @@ nmcli con mod "Wired connection 1" \
     ipv4.dns "8.8.8.8 1.1.1.1"
 nmcli con up "Wired connection 1"
 
-# Ethernet — DHCP
+# Ethernet - DHCP
 sudo nmcli connection add \
     type ethernet ifname eth0 \
     con-name eth0 \
@@ -187,7 +187,7 @@ sudo hostnamectl set-hostname yeni-ad
 ## Port ve Bağlantı İzleme
 
 ```bash
-# ss — modern netstat alternatifi
+# ss - modern netstat alternatifi
 ss -lntp     # Dinleyen TCP portları + process
 ss -lunp     # Dinleyen UDP portları + process
 ss -nt       # Tüm aktif TCP bağlantıları
@@ -343,13 +343,13 @@ sudo sshd -t                     # Yapılandırmayı doğrula
     sftp> get uzak_dosya.txt ./
     sftp> put yerel_dosya.txt /remote/
 
-    # FTP (şifresiz — güvensiz, production'da kullanmayın)
+    # FTP (şifresiz - güvensiz, production'da kullanmayın)
     ftp ftp.example.com
     ```
 
 ---
 
-## Firewall — ufw ve iptables
+## Firewall - ufw ve iptables
 
 === "ufw (Uncomplicated Firewall)"
 
@@ -435,13 +435,13 @@ sudo systemctl enable --now xrdp
 ## Ağ Dosya Paylaşımı
 
 ```bash
-# NFS — Dosya sistemi paylaşımı
+# NFS - Dosya sistemi paylaşımı
 # /etc/exports dosyasına ekle:
 # /data 192.168.1.0/24(rw,sync,no_subtree_check)
 sudo exportfs -ra               # Export'ları yenile
 sudo mount -t nfs host:/data /mnt/nfs
 
-# Samba — Windows ile dosya paylaşımı
+# Samba - Windows ile dosya paylaşımı
 sudo apt install samba
 # /etc/samba/smb.conf düzenle
 sudo smbpasswd -a kullanici
@@ -450,7 +450,7 @@ sudo systemctl restart smbd
 
 ---
 
-## tcpdump — Paket Yakalama
+## tcpdump - Paket Yakalama
 
 `tcpdump`, ağ arayüzünden geçen paketleri yakalar ve filtreler. Ağ debug'lamanın temel aracıdır.
 
@@ -519,7 +519,7 @@ ssh user@host "sudo tcpdump -i eth0 -w - 2>/dev/null" | wireshark -k -i -
 
 ---
 
-## ethtool — NIC Teşhisi
+## ethtool - NIC Teşhisi
 
 Ethernet arayüzünün fiziksel katman ayarlarını sorgular ve değiştirir.
 

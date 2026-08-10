@@ -1,5 +1,5 @@
 /*
- * io.c — Giriş/Çıkış İşlemleri
+ * io.c - Giriş/Çıkış İşlemleri
  *
  * Kapsanan konular:
  *   printf        → format specifier'lar, padding, precision
@@ -25,7 +25,7 @@
 #define BIN_FILE   "io_test.bin"
 
 /* ===========================================================================
- * BÖLÜM 1 — printf format specifier'lar
+ * BÖLÜM 1 - printf format specifier'lar
  *
  * Genel format: %[flags][width][.precision][length]type
  *
@@ -87,7 +87,7 @@ static void demo_printf(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 2 — scanf ve buffer temizleme
+ * BÖLÜM 2 - scanf ve buffer temizleme
  *
  * scanf return değeri: başarıyla okunan eleman sayısı.
  *   0   → hiç okuyamadı
@@ -142,7 +142,7 @@ static void demo_scanf(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 3 — sprintf ve snprintf
+ * BÖLÜM 3 - sprintf ve snprintf
  *
  * sprintf:  buffer boyutu kontrolü yapmaz → overflow riski
  * snprintf: maksimum n-1 karakter yazar, null terminator garantiler
@@ -156,11 +156,11 @@ static void demo_sprintf(void)
     char   small[10];
     int    n;
 
-    /* sprintf — boyut kontrolü yok, küçük örnek için kabul edilebilir */
+    /* sprintf - boyut kontrolü yok, küçük örnek için kabul edilebilir */
     sprintf(buf, "DeviceID=%d Temp=%.2f", 42, 36.5f);
     printf("sprintf: %s\n", buf);
 
-    /* snprintf — güvenli versiyon */
+    /* snprintf - güvenli versiyon */
     n = snprintf(buf, sizeof(buf), "Version=%d.%d.%d", 1, 0, 0);
     printf("snprintf: %s (wrote %d chars)\n", buf, n);
 
@@ -173,7 +173,7 @@ static void demo_sprintf(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 4 — sscanf
+ * BÖLÜM 4 - sscanf
  *
  * String içinden formatlı veri parse eder.
  * scanf ile aynı format specifier'ları kullanır.
@@ -196,7 +196,7 @@ static void demo_sscanf(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 5 — getchar / putchar
+ * BÖLÜM 5 - getchar / putchar
  *
  * getchar: stdin'den tek byte okur, int döner (EOF = -1 kontrol için)
  * putchar: stdout'a tek byte yazar
@@ -220,9 +220,9 @@ static void demo_getchar(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 6 — fgets / fputs
+ * BÖLÜM 6 - fgets / fputs
  *
- * fgets: satır bazlı güvenli okuma — n-1 karakter veya newline'a kadar okur
+ * fgets: satır bazlı güvenli okuma - n-1 karakter veya newline'a kadar okur
  *   - '\n' karakterini buffer'a dahil eder
  *   - gets() ASLA kullanılmamalı (buffer overflow, standarttan kaldırıldı)
  *
@@ -241,7 +241,7 @@ static void demo_fgets(void)
         return;
     }
 
-    /* fgets '\n' dahil eder — temizle */
+    /* fgets '\n' dahil eder - temizle */
     size_t len = strlen(line);
     if (len > 0 && line[len - 1] == '\n')
         line[len - 1] = '\0';
@@ -252,7 +252,7 @@ static void demo_fgets(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 7 — fopen / fclose ve text dosya I/O
+ * BÖLÜM 7 - fopen / fclose ve text dosya I/O
  *
  * Açma modları:
  *   "r"  → okuma (dosya yoksa NULL)
@@ -262,7 +262,7 @@ static void demo_fgets(void)
  *   "w+" → okuma+yazma (dosyayı sıfırlar)
  *   "b"  → binary mod (rb, wb, ab ...)
  *
- * fopen NULL dönebilir — her zaman kontrol et.
+ * fopen NULL dönebilir - her zaman kontrol et.
  * fclose dönüş değeri: flush hatalarını yakalar.
  * ===========================================================================*/
 static void demo_text_file(void)
@@ -304,7 +304,7 @@ static void demo_text_file(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 8 — fread / fwrite (binary I/O)
+ * BÖLÜM 8 - fread / fwrite (binary I/O)
  *
  * fwrite(ptr, size, count, fp) → count adet size-byte blok yazar
  *   return: yazılan blok sayısı (count'tan azsa hata var)
@@ -371,7 +371,7 @@ static void demo_binary_file(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 9 — fseek / ftell / rewind
+ * BÖLÜM 9 - fseek / ftell / rewind
  *
  * fseek(fp, offset, whence):
  *   SEEK_SET → dosya başından
@@ -416,7 +416,7 @@ static void demo_fseek(void)
 int main(void)
 {
     printf(LINE);
-    LOG_INFO("io.c — starting demos");
+    LOG_INFO("io.c - starting demos");
     printf(LINE);
 
     demo_printf();    printf(LINE);
@@ -434,6 +434,6 @@ int main(void)
     /* demo_getchar(); */
     /* demo_fgets();   */
 
-    LOG_INFO("io.c — all demos complete");
+    LOG_INFO("io.c - all demos complete");
     return 0;
 }

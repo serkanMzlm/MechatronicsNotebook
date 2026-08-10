@@ -1,5 +1,5 @@
 /*
- * strings.c — String ve Bellek İşlemleri
+ * strings.c - String ve Bellek İşlemleri
  *
  * Kapsanan konular:
  *   char array vs pointer → stack kopya vs read-only literal
@@ -22,7 +22,7 @@
 #include "common.h"
 
 /* ===========================================================================
- * BÖLÜM 1 — char array vs string pointer
+ * BÖLÜM 1 - char array vs string pointer
  *
  * char arr[] = "hello"  → stack'te null-terminated kopya, değiştirilebilir
  * char *ptr  = "hello"  → read-only segment, değiştirilemez (UB)
@@ -36,8 +36,8 @@
  * ===========================================================================*/
 static void demo_char_array_vs_ptr(void)
 {
-    char        arr[] = "hello";   /* stack kopya — değiştirilebilir */
-    const char *ptr   = "hello";   /* read-only — const ile koruma */
+    char        arr[] = "hello";   /* stack kopya - değiştirilebilir */
+    const char *ptr   = "hello";   /* read-only - const ile koruma */
 
     printf("arr = %s | sizeof=%zu | strlen=%zu\n",
            arr, sizeof(arr), strlen(arr));
@@ -48,7 +48,7 @@ static void demo_char_array_vs_ptr(void)
     arr[0] = 'H';
     printf("arr after modify: %s\n", arr);
 
-    /* ptr[0] = 'H'; → undefined behavior — const ile önlenir */
+    /* ptr[0] = 'H'; → undefined behavior - const ile önlenir */
 
     /* Null terminator gösterimi */
     char buf[] = {'A', 'B', 'C', '\0'};   /* elle null */
@@ -56,7 +56,7 @@ static void demo_char_array_vs_ptr(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 2 — strlen, strcpy, strncpy, strcat, strncat
+ * BÖLÜM 2 - strlen, strcpy, strncpy, strcat, strncat
  *
  * Güvensiz versiyonlar (buffer overflow riski):
  *   strcpy  → hedef yeterliyse sorun yok, değilse taşar
@@ -74,33 +74,33 @@ static void demo_copy_concat(void)
     char dst[16];
     const char *src = "Hello";
 
-    /* strcpy — yeterli alan varsa güvenli */
+    /* strcpy - yeterli alan varsa güvenli */
     strcpy(dst, src);
     printf("strcpy: %s\n", dst);
 
-    /* strncpy — n karakter kopyalar, null garanti etmez */
+    /* strncpy - n karakter kopyalar, null garanti etmez */
     char safe[8] = {0};                     /* sıfırla başlat */
     strncpy(safe, "TooLong!!", sizeof(safe) - 1);
-    /* safe[sizeof(safe)-1] zaten 0 — sıfırlama sayesinde güvenli */
+    /* safe[sizeof(safe)-1] zaten 0 - sıfırlama sayesinde güvenli */
     printf("strncpy: %s\n", safe);
 
-    /* strcat — hedefte yeterli alan olmalı */
+    /* strcat - hedefte yeterli alan olmalı */
     char result[32] = "Hello";
     strcat(result, ", World");
     printf("strcat: %s\n", result);
 
-    /* strncat — n karakter ekler, null garantiler */
+    /* strncat - n karakter ekler, null garantiler */
     strncat(result, "!!!", sizeof(result) - strlen(result) - 1);
     printf("strncat: %s\n", result);
 
-    /* snprintf — en güvenli string birleştirme */
+    /* snprintf - en güvenli string birleştirme */
     char final[32];
     snprintf(final, sizeof(final), "%s %s", "Hello", "CMake");
     printf("snprintf concat: %s\n", final);
 }
 
 /* ===========================================================================
- * BÖLÜM 3 — strcmp, strncmp
+ * BÖLÜM 3 - strcmp, strncmp
  *
  * strcmp return değeri:
  *   < 0 → s1 < s2 (alfabetik sıralamada s1 önce)
@@ -122,9 +122,9 @@ static void demo_compare(void)
 
     /* strncmp: prefix karşılaştırma */
     printf("strncmp(\"abcdef\",\"abcxyz\",3) = %d\n",
-           strncmp("abcdef", "abcxyz", 3));   /* 0 — ilk 3 eşit */
+           strncmp("abcdef", "abcxyz", 3));   /* 0 - ilk 3 eşit */
 
-    /* String sıralama — qsort + strcmp callback */
+    /* String sıralama - qsort + strcmp callback */
     const char *words[] = {"cherry", "apple", "banana", "apricot"};
     int n = (int)(sizeof(words) / sizeof(words[0]));
 
@@ -141,7 +141,7 @@ static void demo_compare(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 4 — strchr, strrchr, strstr
+ * BÖLÜM 4 - strchr, strrchr, strstr
  *
  * strchr(s, c)    → ilk c karakterinin pointer'ı (NULL: bulunamadı)
  * strrchr(s, c)   → son c karakterinin pointer'ı
@@ -153,17 +153,17 @@ static void demo_search(void)
 {
     const char *text = "hello world hello";
 
-    /* strchr — ilk 'o' */
+    /* strchr - ilk 'o' */
     char *first = strchr(text, 'o');
     if (first)
         printf("first 'o' at index %td: ...%s\n", first - text, first);
 
-    /* strrchr — son 'o' */
+    /* strrchr - son 'o' */
     char *last = strrchr(text, 'o');
     if (last)
         printf("last  'o' at index %td: ...%s\n", last - text, last);
 
-    /* strstr — substring arama */
+    /* strstr - substring arama */
     char *found = strstr(text, "world");
     if (found)
         printf("'world' at index %td\n", found - text);
@@ -181,7 +181,7 @@ static void demo_search(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 5 — strtok ve strtok_r
+ * BÖLÜM 5 - strtok ve strtok_r
  *
  * strtok: delimiter'a göre string'i parçalar.
  *   - Orijinal string'i MODIFIYE eder (delimiter yerine \0 koyar)
@@ -202,7 +202,7 @@ static void demo_strtok(void)
 
     printf("CSV parse:\n");
 
-    /* strtok_r — thread-safe, rest saveptr */
+    /* strtok_r - thread-safe, rest saveptr */
     while ((token = strtok_r(rest, ",", &rest)) != NULL)
     {
         printf("  %s = %s\n", labels[field++], token);
@@ -221,7 +221,7 @@ static void demo_strtok(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 6 — strtol, strtod (güvenli string → sayı dönüşümü)
+ * BÖLÜM 6 - strtol, strtod (güvenli string → sayı dönüşümü)
  *
  * atoi/atof: hata durumunda belirsiz davranış (0 döner, hata tespiti yok)
  * strtol/strtod: hatalı karakterin pointer'ını döner, errno set eder
@@ -249,14 +249,14 @@ static void demo_string_to_number(void)
             printf("'%s' → %ld (clean)\n", inputs[i], val);
     }
 
-    /* strtod — ondalık sayı */
+    /* strtod - ondalık sayı */
     char  *end;
     double d = strtod("3.14159xyz", &end);
     printf("strtod: %.5f (stopped at '%s')\n", d, end);
 }
 
 /* ===========================================================================
- * BÖLÜM 7 — memcpy, memmove, memset, memchr, memcmp
+ * BÖLÜM 7 - memcpy, memmove, memset, memchr, memcmp
  *
  * memcpy(dst, src, n)  → n byte kopyalar, ÖRTÜŞME OLMAMALI
  * memmove(dst, src, n) → n byte kopyalar, örtüşme güvenli
@@ -266,7 +266,7 @@ static void demo_string_to_number(void)
  * ===========================================================================*/
 static void demo_memory_ops(void)
 {
-    /* memset — başlatma */
+    /* memset - başlatma */
     uint8_t buf[8];
     memset(buf, 0xAB, sizeof(buf));
     printf("memset 0xAB: ");
@@ -275,7 +275,7 @@ static void demo_memory_ops(void)
 
     memset(buf, 0, sizeof(buf));   /* sıfırlama */
 
-    /* memcpy — örtüşme yok */
+    /* memcpy - örtüşme yok */
     uint8_t src[] = {1, 2, 3, 4, 5};
     uint8_t dst[5];
     memcpy(dst, src, sizeof(src));
@@ -283,27 +283,27 @@ static void demo_memory_ops(void)
     for (int i = 0; i < 5; i++) printf("%d ", dst[i]);
     printf("\n");
 
-    /* memmove — örtüşen bölge güvenli kopyalama */
+    /* memmove - örtüşen bölge güvenli kopyalama */
     uint8_t data[] = {1, 2, 3, 4, 5, 6, 7, 8};
     memmove(data + 2, data, 5);   /* 2 byte sağa kaydır */
     printf("memmove shift: ");
     for (int i = 0; i < 8; i++) printf("%d ", data[i]);
     printf("\n");
 
-    /* memchr — byte arama */
+    /* memchr - byte arama */
     uint8_t haystack[] = {0x10, 0x20, 0x30, 0x40, 0x50};
     uint8_t *found = memchr(haystack, 0x30, sizeof(haystack));
     if (found)
         printf("memchr 0x30 at index %td\n", found - haystack);
 
-    /* memcmp — binary karşılaştırma */
+    /* memcmp - binary karşılaştırma */
     uint8_t a[] = {1, 2, 3};
     uint8_t b[] = {1, 2, 4};
     printf("memcmp: %d\n", memcmp(a, b, sizeof(a)));   /* < 0 */
 }
 
 /* ===========================================================================
- * BÖLÜM 8 — ctype.h karakter sınıflandırma ve dönüşüm
+ * BÖLÜM 8 - ctype.h karakter sınıflandırma ve dönüşüm
  *
  * isalpha, isdigit, isalnum, isspace, isupper, islower
  * toupper, tolower
@@ -347,7 +347,7 @@ static void demo_ctype(void)
 int main(void)
 {
     printf(LINE);
-    LOG_INFO("strings.c — starting demos");
+    LOG_INFO("strings.c - starting demos");
     printf(LINE);
 
     demo_char_array_vs_ptr(); printf(LINE);
@@ -359,6 +359,6 @@ int main(void)
     demo_memory_ops();        printf(LINE);
     demo_ctype();             printf(LINE);
 
-    LOG_INFO("strings.c — all demos complete");
+    LOG_INFO("strings.c - all demos complete");
     return 0;
 }

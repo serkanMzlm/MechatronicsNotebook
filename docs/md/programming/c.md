@@ -32,10 +32,10 @@
 | `extern`          | Program      | Global | Değişkenin/fonksiyonun başka bir dosyada tanımlı olduğunu bildirir |
 | `volatile`        | Block        | Local  | Derleyici optimizasyonunu engeller; doğrudan bellekten okur        |
 
-!!! tip "static — Global Seviye"
+!!! tip "static - Global Seviye"
     Bir global değişken veya fonksiyonun başına `static` koyulursa, o sembol yalnızca tanımlandığı `.c` dosyasına özel (private) hale gelir. Başka bir dosya onu `extern` ile bile çağıramaz. İsim çakışmalarını önlemek için etkili bir yöntemdir.
 
-!!! tip "volatile — Donanım Programcısının Dostu"
+!!! tip "volatile - Donanım Programcısının Dostu"
     Donanım register'ları, ISR içinde değiştirilen değişkenler veya paylaşılan bellek alanları `volatile` ile işaretlenmelidir. Aksi hâlde derleyici optimizasyon aşamasında bu değişkene yapılan erişimleri kaldırabilir.
 
 ### Temel Operatörler
@@ -110,12 +110,12 @@ while (printf("Hello World"))  // ";" kullanılmadan çıktı oluşturur (sonsuz
     C dilinde çok boyutlu diziler bellekte **satır satır (Row-Major Order)** saklanır. Döngülerin sırası performansı ciddi ölçüde etkiler.
 
     ```c
-    // DOĞRU: Cache Friendly — yan yana bellek hücrelerine sıralı erişim
+    // DOĞRU: Cache Friendly - yan yana bellek hücrelerine sıralı erişim
     for (int i = 0; i < 1000; i++)
         for (int j = 0; j < 1000; j++)
             matris[i][j] = 0;
 
-    // YANLIŞ: Cache Miss — bellekte sürekli uzak adreslere atlanır
+    // YANLIŞ: Cache Miss - bellekte sürekli uzak adreslere atlanır
     for (int j = 0; j < 1000; j++)
         for (int i = 0; i < 1000; i++)
             matris[i][j] = 0;
@@ -133,7 +133,7 @@ while (printf("Hello World"))  // ";" kullanılmadan çıktı oluşturur (sonsuz
 | `int`    | 2 veya 4 byte | Tam sayı (mimariye bağlı)                               |
 | `float`  | 4 byte        | Tek hassasiyetli ondalık                                |
 | `double` | 8 byte        | Çift hassasiyetli ondalık                               |
-| `void`   | —             | Tip yok; fonksiyon dönüş tipi veya generic pointer için |
+| `void`   | -             | Tip yok; fonksiyon dönüş tipi veya generic pointer için |
 | `enum`   | `int` boyutu  | Numaralandırma; varsayılan olarak `0`'dan başlar        |
 
 !!! note "Sabit Boyutlu Tipler"
@@ -191,9 +191,9 @@ struct Register {
 };
 
 struct AracKontrol {
-    uint8_t led_durumu : 1;  // Açık/Kapalı — 1 bit
-    uint8_t far_modu   : 2;  // 00, 01, 10, 11 — 2 bit
-    uint8_t sicaklik   : 7;  // 0-120 derece — 7 bit
+    uint8_t led_durumu : 1;  // Açık/Kapalı - 1 bit
+    uint8_t far_modu   : 2;  // 00, 01, 10, 11 - 2 bit
+    uint8_t sicaklik   : 7;  // 0-120 derece - 7 bit
 };
 // sizeof(AracKontrol) = 2 byte
 // led_durumu + far_modu = 3 bit → ilk byte'a sığar
@@ -262,7 +262,7 @@ Bilgisayarlar negatif sayıları **Two's Complement** yöntemiyle saklar. Bu say
     2. Bitleri ters çevir (One's Complement): `11111010`
     3. 1 ekle (Two's Complement): `11111011` → `0xFB`
 
-    Doğrulama — `5 + (-5)`:
+    Doğrulama - `5 + (-5)`:
     ```
       00000101  (+5)
     + 11111011  (-5)
@@ -299,14 +299,14 @@ graph LR
 ```
 
 ```c
-// Kötü Tasarım — 12 byte
+// Kötü Tasarım - 12 byte
 struct Data1 {
     char a;    // 1 byte + 3 byte padding
     int  b;    // 4 byte
     char c;    // 1 byte + 3 byte padding
 };
 
-// İyi Tasarım — 8 byte (büyükten küçüğe sırala)
+// İyi Tasarım - 8 byte (büyükten küçüğe sırala)
 struct Data2 {
     int  b;    // 4 byte
     char a;    // 1 byte
@@ -329,7 +329,7 @@ graph TD
         C["Heap\n(Dinamik bellek)"]
         D["BSS Segment\n(Sıfırlanan global/static)"]
         E["Data Segment\n(İlk değer verilen global/static)"]
-        F["Text Segment\n(Program kodu — Read-Only)"]
+        F["Text Segment\n(Program kodu - Read-Only)"]
     end
     A --> B --> C --> D --> E --> F
 ```
@@ -353,7 +353,7 @@ graph TD
 | `malloc(n)`           |  Garbage (çöp)   | `n` byte ayırır; içeriği sıfırlamaz                |
 | `calloc(count, size)` |       `0`        | `count * size` byte ayırır; tüm byte'ları sıfırlar |
 | `realloc(ptr, n)`     |     Korunur      | Mevcut bloğu `n` byte'a yeniden boyutlandırır      |
-| `free(ptr)`           |        —         | Ayrılan belleği işletim sistemine iade eder        |
+| `free(ptr)`           |        -         | Ayrılan belleği işletim sistemine iade eder        |
 
 ```c
 int n = 10;
@@ -413,7 +413,7 @@ graph LR
 
 ### Queue (Kuyruk)
 
-- **Çalışma Mantığı:** FIFO (First In, First Out — İlk giren ilk çıkar).
+- **Çalışma Mantığı:** FIFO (First In, First Out - İlk giren ilk çıkar).
 - **Operasyonlar:** Eleman ekleme kuyruğun **arkasından (Rear/Enqueue)**, çıkarma ise **önünden (Front/Dequeue)** yapılır.
 
 ---
@@ -495,15 +495,15 @@ C'de yerleşik string tipi yoktur. Metinler `char` dizileri olarak tutulur ve so
 
 !!! danger "Stack vs Read-Only Data"
     ```c
-    char  str1[] = "Hello";   // Stack — değiştirilebilir
-    char *str2   = "Hello";   // Read-Only Data Segment — değiştirilemez!
+    char  str1[] = "Hello";   // Stack - değiştirilebilir
+    char *str2   = "Hello";   // Read-Only Data Segment - değiştirilemez!
     ```
     `str2[0] = 'M';` → **Segmentation Fault**. String literal pointer'ı için mutlaka `const char *str2` kullanılmalıdır.
 
 | Fonksiyon               | Açıklama                                                     |
 | ----------------------- | ------------------------------------------------------------ |
-| `strcpy(dest, src)`     | `src`'yi `dest`'e kopyalar; sınır kontrolü yapmaz — güvensiz |
-| `strncpy(dest, src, n)` | En fazla `n` byte kopyalar — güvenli                         |
+| `strcpy(dest, src)`     | `src`'yi `dest`'e kopyalar; sınır kontrolü yapmaz - güvensiz |
+| `strncpy(dest, src, n)` | En fazla `n` byte kopyalar - güvenli                         |
 | `strlen(s)`             | `\0` görene kadar karakterleri sayar (runtime)               |
 | `memset(ptr, val, n)`   | `n` byte'ı `val` ile doldurur                                |
 | `memcpy(dst, src, n)`   | `n` byte'ı kaynaktan hedefe kopyalar (overlap'te UB)         |
@@ -511,8 +511,8 @@ C'de yerleşik string tipi yoktur. Metinler `char` dizileri olarak tutulur ve so
 
 ```c
 char text[100] = "C Language";
-printf("%zu\n", sizeof(text));  // 100 — bellekte ayrılan alan
-printf("%zu\n", strlen(text));  // 10  — görünen karakter sayısı
+printf("%zu\n", sizeof(text));  // 100 - bellekte ayrılan alan
+printf("%zu\n", strlen(text));  // 10  - görünen karakter sayısı
 ```
 
 ### Generic Pointer (`void*`)
@@ -541,11 +541,11 @@ printf("%d", *(int *)vptr);    // DOĞRU: önce int*'a cast et
     const int *p  = &x;
     int *const p1 = &x;
 
-    // *p  = 15;  // HATA  — değer sabittir
-    p  = &y;      // GEÇERLI — pointer başka adrese bakabilir
+    // *p  = 15;  // HATA  - değer sabittir
+    p  = &y;      // GEÇERLI - pointer başka adrese bakabilir
 
-    *p1 = 15;     // GEÇERLI — değer değiştirilebilir
-    // p1 = &y;   // HATA  — pointer sabittir
+    *p1 = 15;     // GEÇERLI - değer değiştirilebilir
+    // p1 = &y;   // HATA  - pointer sabittir
     ```
 
 ### Pointer to Pointer
@@ -579,11 +579,11 @@ int main(void) {
     int (*fp)(int, int) = topla;  // İmza: (int, int) → int
 
     printf("%d\n", fp(5, 3));        // 8
-    printf("%d\n", (*fp)(10, 20));   // 30 — iki yöntem de geçerli
+    printf("%d\n", (*fp)(10, 20));   // 30 - iki yöntem de geçerli
 
-    // Fonksiyon tablosu — switch-case gerektirmez
+    // Fonksiyon tablosu - switch-case gerektirmez
     IslemPtr tablo[3] = {topla, cikar, carp};
-    printf("%d\n", tablo[2](10, 5)); // 50 — carp
+    printf("%d\n", tablo[2](10, 5)); // 50 - carp
 
     printf("%d\n", compute(topla, 5, 3));
     printf("%d\n", compute(cikar, 5, 3));
@@ -625,7 +625,7 @@ int main(void) {
 // veya direkt:
 // #pragma once
 
-#define __MUTLAK_SONUC__   // boş define — belge amacıyla kullanılır
+#define __MUTLAK_SONUC__   // boş define - belge amacıyla kullanılır
 
 #define PRINT_DEBUG(var) \
     printf(#var " = %d\n", var)

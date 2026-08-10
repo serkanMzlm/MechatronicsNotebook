@@ -67,14 +67,14 @@ graph LR
 | `/etc`           | Statik sistem yapılandırma dosyaları (ağ, kullanıcı, güvenlik).                 |
 | `/usr`           | Paylaşılan kullanıcı programları ve kütüphaneler (salt okunur).                 |
 | `/lib`, `/lib64` | Dinamik kütüphaneler ve kernel modülleri (`/lib/modules/<versiyon>/`).          |
-| `/dev`           | Donanım aygıt düğümleri — UART, I2C, SPI, disk vb. kernel'in userspace arayüzü. |
+| `/dev`           | Donanım aygıt düğümleri - UART, I2C, SPI, disk vb. kernel'in userspace arayüzü. |
 | `/proc`          | Kernel runtime durumunun sanal görünümü (procfs).                               |
 | `/sys`           | Kernel nesne modelinin userspace arayüzü (sysfs).                               |
-| `/var`           | Çalışma zamanında değişen kalıcı veriler — loglar, state.                       |
+| `/var`           | Çalışma zamanında değişen kalıcı veriler - loglar, state.                       |
 | `/tmp`           | Geçici dosyalar; genellikle RAM'de (tmpfs). Yeniden başlatmada silinir.         |
 | `/boot`          | Kernel image, DTB, initramfs gibi önyükleme dosyaları.                          |
 
-!!! info "/proc — Debug İçin Kullanışlı Dosyalar"
+!!! info "/proc - Debug İçin Kullanışlı Dosyalar"
     | Dosya              | İçerik                           |
     | ------------------ | -------------------------------- |
     | `/proc/cmdline`    | Kernel başlatma parametreleri    |
@@ -353,22 +353,22 @@ graph LR
 | Sinyal      | No    | Varsayılan | Açıklama                                   |
 | ----------- | ----- | ---------- | ------------------------------------------ |
 | `SIGHUP`    | 1     | Terminate  | Terminal kapandı / daemon yeniden yükle    |
-| `SIGINT`    | 2     | Terminate  | `Ctrl+C` — kullanıcı kesme                 |
-| `SIGQUIT`   | 3     | Core Dump  | `Ctrl+\` — core dump ile çıkış             |
-| `SIGKILL`   | 9     | Terminate  | **Yakalanamaz/engellenemez** — zorla öldür |
+| `SIGINT`    | 2     | Terminate  | `Ctrl+C` - kullanıcı kesme                 |
+| `SIGQUIT`   | 3     | Core Dump  | `Ctrl+\` - core dump ile çıkış             |
+| `SIGKILL`   | 9     | Terminate  | **Yakalanamaz/engellenemez** - zorla öldür |
 | `SIGSEGV`   | 11    | Core Dump  | Geçersiz bellek erişimi                    |
 | `SIGPIPE`   | 13    | Terminate  | Okuyucusu olmayan pipe'a yazma             |
 | `SIGALRM`   | 14    | Terminate  | `alarm()` zamanlayıcı                      |
 | `SIGTERM`   | 15    | Terminate  | Nazik sonlandırma isteği (yakalanabilir)   |
 | `SIGCHLD`   | 17    | Ignore     | Alt process durdu / sonlandı               |
-| `SIGSTOP`   | 19    | Stop       | **Yakalanamaz** — process'i durdur         |
+| `SIGSTOP`   | 19    | Stop       | **Yakalanamaz** - process'i durdur         |
 | `SIGCONT`   | 18    | Continue   | Durdurulan process'i devam ettir           |
 | `SIGUSR1/2` | 10/12 | Terminate  | Uygulama tanımlı kullanım                  |
 
 ```bash
 # Sinyal gönderme
 kill -SIGTERM 1234          # PID'e nazikçe sonlandırma
-kill -9 1234                # SIGKILL — zorla
+kill -9 1234                # SIGKILL - zorla
 kill -SIGHUP $(pgrep nginx) # nginx'e yeniden yükleme sinyali
 pkill -USR1 gunicorn        # İsme göre SIGUSR1 gönder
 killall -TERM myapp         # Aynı isimli tüm process'lere
@@ -381,7 +381,7 @@ kill -l                     # Tüm sinyalleri listele
 ```
 
 ```c
-// C — sinyal yakalama (sigaction)
+// C - sinyal yakalama (sigaction)
 #include <signal.h>
 
 static volatile sig_atomic_t running = 1;
@@ -407,7 +407,7 @@ int main(void) {
 ```
 
 !!! warning "Async-Signal-Safe"
-    Sinyal işleyici içinde `printf`, `malloc`, `free` gibi fonksiyonlar çağrılmamalıdır — bu fonksiyonlar async-signal-safe değildir ve kilitlenmeye (deadlock) yol açabilir. İşleyici içinde yalnızca `write()`, `_exit()` veya `sig_atomic_t` işlemleri güvenlidir.
+    Sinyal işleyici içinde `printf`, `malloc`, `free` gibi fonksiyonlar çağrılmamalıdır - bu fonksiyonlar async-signal-safe değildir ve kilitlenmeye (deadlock) yol açabilir. İşleyici içinde yalnızca `write()`, `_exit()` veya `sig_atomic_t` işlemleri güvenlidir.
 
 ---
 
@@ -417,9 +417,9 @@ Donanım kaynaklarını (bellek, kesmeler, saatler, GPIO) yazılımdan bağıms�
 
 | Format  | Açıklama                                               |
 | ------- | ------------------------------------------------------ |
-| `.dts`  | Device Tree Source — insan tarafından okunabilir metin |
-| `.dtb`  | Device Tree Blob — derlenmiş ikili format              |
-| `.dtso` | Overlay — temel DTB üzerine eklenti                    |
+| `.dts`  | Device Tree Source - insan tarafından okunabilir metin |
+| `.dtb`  | Device Tree Blob - derlenmiş ikili format              |
+| `.dtso` | Overlay - temel DTB üzerine eklenti                    |
 
 ```bash
 dtc -I dts -O dtb -o output.dtb input.dts   # .dts → .dtb derleme

@@ -40,7 +40,7 @@ graph TD
 | -------------------------- | --------------------------------- | :-----: |
 | `/etc/systemd/system/`     | Sistem geneli (admin değişikliği) |  Yüksek |
 | `/usr/lib/systemd/system/` | Dağıtım paketleri                 |   Orta  |
-| `~/.config/systemd/user/`  | Kullanıcı bazlı                   |    —    |
+| `~/.config/systemd/user/`  | Kullanıcı bazlı                   |    -    |
 
 ---
 
@@ -225,7 +225,7 @@ sudo systemctl rescue                  # Kurtarma moduna geç
 
 ---
 
-## journalctl — Log Yönetimi
+## journalctl - Log Yönetimi
 
 ```mermaid
 graph LR

@@ -20,7 +20,7 @@ graph LR
 | **Pad**        | Elementler arası veri bağlantı noktası                                                  |
 | **Source Pad** | Elementten dışarı veri gönderir                                                         |
 | **Sink Pad**   | Elemente veri alır                                                                      |
-| **Caps**       | Capabilities — pad'lerin kabul ettiği format (video/x-raw, format=BGR, width=1280, ...) |
+| **Caps**       | Capabilities - pad'lerin kabul ettiği format (video/x-raw, format=BGR, width=1280, ...) |
 | **Bus**        | Pipeline'dan uygulama katmanına mesaj iletir (hata, EOS, durum)                         |
 | **Bin**        | Birden fazla elementi saran konteyner                                                   |
 
@@ -240,7 +240,7 @@ cap.release()
 cv2.destroyAllWindows()
 ```
 
-```python title="Jetson CSI Kamera — OpenCV GStreamer"
+```python title="Jetson CSI Kamera - OpenCV GStreamer"
 def jetson_pipeline(sensor_id=0, width=1920, height=1080, fps=30):
     return (
         f"nvarguscamerasrc sensor-id={sensor_id} "

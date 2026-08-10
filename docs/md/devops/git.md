@@ -143,7 +143,7 @@ graph LR
 
 ---
 
-## Stash — Değişiklikleri Geçici Sakla
+## Stash - Değişiklikleri Geçici Sakla
 
 ```bash
 git stash                   # Değişiklikleri sakla
@@ -158,7 +158,7 @@ git stash branch yeni-dal   # Stash'ten yeni branch oluştur
 
 ---
 
-## Cherry-pick — Tek Commit Taşı
+## Cherry-pick - Tek Commit Taşı
 
 ```bash
 git cherry-pick <commit-hash>        # Tek commit'i al
@@ -215,7 +215,7 @@ git blame <file>                    # Satır bazlı yazar bilgisi
 
 ---
 
-## Bisect — Hatayı İkili Aramayla Bul
+## Bisect - Hatayı İkili Aramayla Bul
 
 ```bash
 git bisect start

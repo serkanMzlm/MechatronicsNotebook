@@ -13,9 +13,9 @@ AVR'de her port üç register ile kontrol edilir:
 
 | Register | İşlevi                                                 |
 | -------- | ------------------------------------------------------ |
-| `DDRx`   | Data Direction Register — 0: Giriş, 1: Çıkış           |
-| `PORTx`  | Output Register — çıkış seviyesi veya pull-up kontrolü |
-| `PINx`   | Input Register — pinin anlık dijital seviyesini okur   |
+| `DDRx`   | Data Direction Register - 0: Giriş, 1: Çıkış           |
+| `PORTx`  | Output Register - çıkış seviyesi veya pull-up kontrolü |
+| `PINx`   | Input Register - pinin anlık dijital seviyesini okur   |
 
 ```mermaid
 graph LR
@@ -92,7 +92,7 @@ int main(void) {
 ### Buton Debounce
 
 ```c
-/* Yazılımsal debouncing — titreşim giderme */
+/* Yazılımsal debouncing - titreşim giderme */
 if (!(PINB & (1 << PB0))) {    /* Aktif-LOW buton basıldı mı? */
     _delay_ms(50);              /* Titreşim bekle */
     if (!(PINB & (1 << PB0))) { /* Hala basılı mı? */
@@ -106,7 +106,7 @@ if (!(PINB & (1 << PB0))) {    /* Aktif-LOW buton basıldı mı? */
 
 ---
 
-## ISR — Interrupt Service Routine
+## ISR - Interrupt Service Routine
 
 ```mermaid
 graph LR
@@ -142,7 +142,7 @@ ISR(INT0_vect) {
 | `EIMSK`        | External Interrupt Mask (INT0, INT1 etkinleştir)    |
 | `EICRA`        | INT0/INT1 tetikleme kenarı (yükselen/düşen/değişim) |
 | `EIFR`         | External Interrupt Flag (bayrağı temizle)           |
-| `MCUCR`        | MCU Control (PUD — pull-up disable)                 |
+| `MCUCR`        | MCU Control (PUD - pull-up disable)                 |
 
 |   EICRA Değeri   | INT0 Tetiklenme  |
 | :--------------: | :--------------: |
@@ -153,7 +153,7 @@ ISR(INT0_vect) {
 
 ### Pin Change Interrupt (PCINT)
 
-Herhangi bir pine bağlı değişimi yakalamak için; INT0/INT1'den farklı olarak kenar seçimi yoktur — her değişimde tetiklenir.
+Herhangi bir pine bağlı değişimi yakalamak için; INT0/INT1'den farklı olarak kenar seçimi yoktur - her değişimde tetiklenir.
 
 ```c
 PCICR  |= (1 << PCIE0);   /* PCINT[7:0] → Port B izle */
@@ -161,7 +161,7 @@ PCMSK0 |= (1 << PCINT0);  /* PB0'ı izle */
 sei();
 
 ISR(PCINT0_vect) {
-    /* PB0 değişti — hangi kenar olduğunu IDR ile tespit et */
+    /* PB0 değişti - hangi kenar olduğunu IDR ile tespit et */
 }
 ```
 
@@ -186,7 +186,7 @@ ISR(PCINT0_vect) {
 | Fast PWM          |      3      | Hızlı tek-eğim PWM                         |
 | Phase Correct PWM |      1      | Çift-eğim; daha düzgün PWM                 |
 
-### CTC Modu — Frekans Hesabı
+### CTC Modu - Frekans Hesabı
 
 ```
 F_OUT = F_CPU / (2 × Prescaler × (OCRnA + 1))
@@ -195,7 +195,7 @@ F_OUT = F_CPU / (2 × Prescaler × (OCRnA + 1))
 OCRnA = (16_000_000 / (64 × 1000)) - 1 = 249
 ```
 
-```c title="Timer1 CTC — 1 ms Kesme" linenums="1"
+```c title="Timer1 CTC - 1 ms Kesme" linenums="1"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
@@ -237,7 +237,7 @@ int main(void) {
 ### PWM
 
 ```c
-/* Timer0 Fast PWM — PD6 (OC0A) */
+/* Timer0 Fast PWM - PD6 (OC0A) */
 DDRD  |= (1 << PD6);           /* OC0A pini çıkış */
 TCCR0A = (1 << COM0A1)         /* Non-inverting */
        | (1 << WGM01) | (1 << WGM00); /* Fast PWM */
@@ -269,7 +269,7 @@ uint16_t adc_read(uint8_t kanal) {
 
 int main(void) {
     adc_init();
-    uint16_t deger = adc_read(0);   /* ADC0 (PC0) — 0..1023 */
+    uint16_t deger = adc_read(0);   /* ADC0 (PC0) - 0..1023 */
     /* Gerilim = deger * (5.0 / 1024) */
 }
 ```

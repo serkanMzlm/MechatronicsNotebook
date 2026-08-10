@@ -1,5 +1,5 @@
 /*
- * memory.c — Dinamik Bellek Yönetimi
+ * memory.c - Dinamik Bellek Yönetimi
  *
  * Kapsanan konular:
  *   malloc/calloc/realloc/free → temel kullanım ve farklar
@@ -20,7 +20,7 @@
 #include "common.h"
 
 /* ===========================================================================
- * BÖLÜM 1 — malloc, calloc, realloc, free farkları
+ * BÖLÜM 1 - malloc, calloc, realloc, free farkları
  *
  * malloc(size)          → size byte ayırır, içerik başlatılmaz (garbage)
  * calloc(count, size)   → count*size byte ayırır, sıfırlar
@@ -35,7 +35,7 @@
  * ===========================================================================*/
 static void demo_alloc_basics(void)
 {
-    /* malloc — içerik başlatılmaz */
+    /* malloc - içerik başlatılmaz */
     int *a = malloc(5 * sizeof(int));
     if (!a) { LOG_ERROR("malloc failed"); return; }
 
@@ -45,7 +45,7 @@ static void demo_alloc_basics(void)
     printf("\n");
     free(a);
 
-    /* calloc — sıfırlanmış bellek */
+    /* calloc - sıfırlanmış bellek */
     int *b = calloc(5, sizeof(int));
     if (!b) { LOG_ERROR("calloc failed"); return; }
 
@@ -54,14 +54,14 @@ static void demo_alloc_basics(void)
     printf("\n");
     free(b);
 
-    /* realloc — büyüyen dizi */
+    /* realloc - büyüyen dizi */
     int *c = malloc(3 * sizeof(int));
     if (!c) { LOG_ERROR("malloc failed"); return; }
 
     c[0] = 10; c[1] = 20; c[2] = 30;
 
     /* Kritik: realloc başarısız olursa NULL döner, orijinal ptr kaybolur.
-     * Bu yüzden doğrudan c = realloc(c, ...) YANLIŞ — geçici pointer kullan */
+     * Bu yüzden doğrudan c = realloc(c, ...) YANLIŞ - geçici pointer kullan */
     int *tmp = realloc(c, 6 * sizeof(int));
     if (!tmp) { LOG_ERROR("realloc failed"); free(c); return; }
     c = tmp;
@@ -74,7 +74,7 @@ static void demo_alloc_basics(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 2 — Safe wrapper'lar
+ * BÖLÜM 2 - Safe wrapper'lar
  *
  * Production kodunda malloc/calloc/realloc her çağrısında NULL kontrolü
  * yazmak yerine wrapper fonksiyonlar kullanılır.
@@ -132,7 +132,7 @@ static void demo_safe_wrappers(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 3 — Dangling pointer ve double free
+ * BÖLÜM 3 - Dangling pointer ve double free
  *
  * Dangling pointer: free edilen belleğe işaret eden pointer.
  *   - Dereference → undefined behavior (crash veya sessiz veri bozulması)
@@ -158,7 +158,7 @@ static void demo_dangling_double_free(void)
     }
     else
     {
-        printf("ptr is NULL — safe\n");
+        printf("ptr is NULL - safe\n");
     }
 
     /* double free önlemi: NULL'ı free etmek güvenli (no-op) */
@@ -168,7 +168,7 @@ static void demo_dangling_double_free(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 4 — Memory leak
+ * BÖLÜM 4 - Memory leak
  *
  * Ayrılan bellek free edilmezse leak oluşur.
  * Uzun süre çalışan programlarda bellek tükenir.
@@ -193,13 +193,13 @@ static char *load_string(const char *src)
 
 static void demo_memory_leak(void)
 {
-    /* Doğru kullanım — free ile temizleme */
+    /* Doğru kullanım - free ile temizleme */
     char *s1 = load_string("hello");
     char *s2 = load_string("world");
 
     printf("loaded: %s %s\n", s1, s2);
 
-    /* Erken return simülasyonu — her iki pointer'ı da free et */
+    /* Erken return simülasyonu - her iki pointer'ı da free et */
     free(s1); s1 = NULL;
     free(s2); s2 = NULL;
 
@@ -212,7 +212,7 @@ static void demo_memory_leak(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 5 — Linked list (dinamik struct allocation)
+ * BÖLÜM 5 - Linked list (dinamik struct allocation)
  *
  * Her node heap'te ayrı ayrı tahsis edilir.
  * Serbest bırakma: liste başından sonuna, her node ayrı free edilmeli.
@@ -275,7 +275,7 @@ static void demo_linked_list(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 6 — Dynamic array (realloc ile büyüyen dizi)
+ * BÖLÜM 6 - Dynamic array (realloc ile büyüyen dizi)
  *
  * C++'daki vector<int>'e benzer pattern.
  * Kapasite dolunca 2 katına çıkar (amortized O(1) insert).
@@ -326,7 +326,7 @@ static void demo_dynamic_array(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 7 — Arena allocator
+ * BÖLÜM 7 - Arena allocator
  *
  * Tek büyük blok tahsis edilir, içinden sırayla küçük bloklar verilir.
  * reset() ile tek seferde tamamı serbest bırakılır.
@@ -374,7 +374,7 @@ static void *arena_alloc(Arena_t *a, size_t size)
 
 static void arena_reset(Arena_t *a)
 {
-    a->offset = 0;   /* offset sıfırla — bellek yeniden kullanılabilir */
+    a->offset = 0;   /* offset sıfırla - bellek yeniden kullanılabilir */
 }
 
 static void arena_free(Arena_t *a)
@@ -402,7 +402,7 @@ static void demo_arena(void)
         printf("arena used: %zu / %zu bytes\n", arena.offset, arena.size);
     }
 
-    /* Reset — ayrılan bloklara erişim geçersiz hale gelir */
+    /* Reset - ayrılan bloklara erişim geçersiz hale gelir */
     arena_reset(&arena);
     printf("arena reset: offset=%zu\n", arena.offset);
 
@@ -415,7 +415,7 @@ static void demo_arena(void)
 int main(void)
 {
     printf(LINE);
-    LOG_INFO("memory.c — starting demos");
+    LOG_INFO("memory.c - starting demos");
     printf(LINE);
 
     demo_alloc_basics();       printf(LINE);
@@ -426,6 +426,6 @@ int main(void)
     demo_dynamic_array();      printf(LINE);
     demo_arena();              printf(LINE);
 
-    LOG_INFO("memory.c — all demos complete");
+    LOG_INFO("memory.c - all demos complete");
     return 0;
 }

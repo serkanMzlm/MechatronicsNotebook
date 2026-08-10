@@ -1,5 +1,5 @@
 /*
- * functions.c — Fonksiyon Kavramları
+ * functions.c - Fonksiyon Kavramları
  *
  * Kapsanan konular:
  *   Parametre geçirme → by value, by reference, by pointer
@@ -21,13 +21,13 @@
 #include "common.h"
 
 /* ===========================================================================
- * BÖLÜM 1 — Parametre geçirme
+ * BÖLÜM 1 - Parametre geçirme
  *
- * By value:     kopya geçilir — orijinal değişmez
- * By pointer:   adres geçilir — orijinal değiştirilebilir
- * By const ptr: adres geçilir — okuma amaçlı, değiştirilemez (güvenli)
+ * By value:     kopya geçilir - orijinal değişmez
+ * By pointer:   adres geçilir - orijinal değiştirilebilir
+ * By const ptr: adres geçilir - okuma amaçlı, değiştirilemez (güvenli)
  *
- * C'de "by reference" yoktur — pointer ile simüle edilir.
+ * C'de "by reference" yoktur - pointer ile simüle edilir.
  * Büyük struct'lar değer olarak geçilirse kopyalama maliyeti artar;
  * const pointer tercih edilmeli.
  * ===========================================================================*/
@@ -44,7 +44,7 @@ static void by_pointer(int *x)
 
 static void by_const_ptr(const People_t *p)
 {
-    /* p->age = 0; */ /* derleme hatası — const koruma */
+    /* p->age = 0; */ /* derleme hatası - const koruma */
     printf("read-only: %s age=%d\n", p->name, p->age);
 }
 
@@ -63,10 +63,10 @@ static void demo_parameter_passing(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 2 — inline
+ * BÖLÜM 2 - inline
  *
  * inline: derleyiciye "bu fonksiyonu çağrı yerine satır içine al" önerisi.
- * Garanti değil — derleyici reddedebilir (örn. özyinelemeli fonksiyonlar).
+ * Garanti değil - derleyici reddedebilir (örn. özyinelemeli fonksiyonlar).
  *
  * static inline: her translation unit'te görünür, bağlantı sorunu olmaz.
  *   En yaygın ve güvenli kullanım biçimi.
@@ -95,17 +95,17 @@ static void demo_inline(void)
     printf("fast_abs(-7)    = %d\n", fast_abs(-7));
     printf("fast_max(3, 8)  = %d\n", fast_max(3, 8));
 
-    /* Makro ile karşılaştırma — yan etki farkı */
+    /* Makro ile karşılaştırma - yan etki farkı */
     int i = 3;
     printf("SQUARE(i++)     = %d (i=%d) ← makro tehlikeli\n",
-           SQUARE(i++), i);   /* (3++)*(3++) — UB */
+           SQUARE(i++), i);   /* (3++)*(3++) - UB */
 
     i = 3;
     printf("fast_abs ile  i = %d\n", fast_abs(i++));  /* güvenli */
 }
 
 /* ===========================================================================
- * BÖLÜM 3 — Variadic fonksiyon
+ * BÖLÜM 3 - Variadic fonksiyon
  *
  * Değişken sayıda argüman alan fonksiyon.
  * En az bir sabit parametre zorunlu (va_start için referans).
@@ -118,7 +118,7 @@ static void demo_inline(void)
  * Tip güvensizdir: yanlış type geçilirse undefined behavior.
  * ===========================================================================*/
 
-/* Tamsayı toplamı — count: argüman sayısı */
+/* Tamsayı toplamı - count: argüman sayısı */
 static int sum_variadic(int count, ...)
 {
     va_list ap;
@@ -132,7 +132,7 @@ static int sum_variadic(int count, ...)
     return total;
 }
 
-/* Maksimum değer — vprintf tarzı: format string ile tip belirleme */
+/* Maksimum değer - vprintf tarzı: format string ile tip belirleme */
 static double max_of(int count, ...)
 {
     va_list ap;
@@ -179,34 +179,34 @@ static void demo_variadic(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 4 — Recursive fonksiyon
+ * BÖLÜM 4 - Recursive fonksiyon
  *
  * Her özyinelemeli çağrı stack frame kullanır.
  * Çok derin özyineleme → stack overflow.
  *
  * Kuyruk özyinelemesi (tail recursion):
- *   Özyinelemeli çağrı fonksiyonun son işlemi — bazı derleyiciler
+ *   Özyinelemeli çağrı fonksiyonun son işlemi - bazı derleyiciler
  *   bunu iteratif koda dönüştürür (TCO: Tail Call Optimization).
  *   GCC/Clang -O2 ile TCO uygular.
  *
  * Genel kural: n > ~10.000 için iteratif tercih edilmeli.
  * ===========================================================================*/
 
-/* Klasik özyineleme — O(n) stack */
+/* Klasik özyineleme - O(n) stack */
 static int factorial(int n)
 {
     if (n <= 1) return 1;
     return n * factorial(n - 1);
 }
 
-/* Kuyruk özyinelemesi — TCO uygulanabilir */
+/* Kuyruk özyinelemesi - TCO uygulanabilir */
 static int factorial_tail(int n, int acc)
 {
     if (n <= 1) return acc;
     return factorial_tail(n - 1, n * acc);   /* son işlem: özyinelemeli çağrı */
 }
 
-/* Binary search — özyinelemeli, O(log n) stack */
+/* Binary search - özyinelemeli, O(log n) stack */
 static int binary_search(const int *arr, int left, int right, int target)
 {
     if (left > right) return -1;
@@ -233,7 +233,7 @@ static void demo_recursive(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 5 — Callback
+ * BÖLÜM 5 - Callback
  *
  * Fonksiyon pointer parametre olarak geçilir.
  * Çağıran kod hangi işlemin yapılacağını belirlemiş olur.
@@ -273,15 +273,15 @@ static void demo_callback(void)
     for (int i = 0; i < n; i++) printf("%d ", arr[i]);
     printf("\n");
 
-    /* NULL callback güvenli geçilebilir — apply içinde kontrol var */
+    /* NULL callback güvenli geçilebilir - apply içinde kontrol var */
     apply(arr, n, NULL);
 }
 
 /* ===========================================================================
- * BÖLÜM 6 — Array parametre
+ * BÖLÜM 6 - Array parametre
  *
  * Fonksiyona dizi geçildiğinde pointer'a decay olur.
- * Boyut bilgisi kaybolur — ayrıca geçirilmeli.
+ * Boyut bilgisi kaybolur - ayrıca geçirilmeli.
  *
  * Yöntemler:
  *   1. Boyutu ayrı parametre geçir (en yaygın)
@@ -326,7 +326,7 @@ static void demo_array_param(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 7 — Struct döndürme ve error handling
+ * BÖLÜM 7 - Struct döndürme ve error handling
  *
  * Return struct (C99+): küçük struct'lar register üzerinden döner (RVO).
  * Compound literal: geçici struct oluşturma.
@@ -342,7 +342,7 @@ typedef struct
     char  message[64];
 } Result_t;
 
-/* Struct döndürme — compound literal ile */
+/* Struct döndürme - compound literal ile */
 static Result_t make_result(int code, const char *msg)
 {
     Result_t r = { .code = code };
@@ -390,7 +390,7 @@ static void demo_return_and_error(void)
 int main(void)
 {
     printf(LINE);
-    LOG_INFO("functions.c — starting demos");
+    LOG_INFO("functions.c - starting demos");
     printf(LINE);
 
     demo_parameter_passing(); printf(LINE);
@@ -401,6 +401,6 @@ int main(void)
     demo_array_param();       printf(LINE);
     demo_return_and_error();  printf(LINE);
 
-    LOG_INFO("functions.c — all demos complete");
+    LOG_INFO("functions.c - all demos complete");
     return 0;
 }

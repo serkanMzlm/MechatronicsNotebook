@@ -116,7 +116,7 @@ C++'ın dört özel cast operatörü, C'nin tek formatlı `(tip)deger` dönüş�
     void *raw = &tam;
     int  *ptr = static_cast<int*>(raw);  // Geçerli
 
-    // char* ptr2 = static_cast<char*>(ptr); // HATA — ilişkisiz tipler
+    // char* ptr2 = static_cast<char*>(ptr); // HATA - ilişkisiz tipler
     ```
 
 === "dynamic_cast"
@@ -169,7 +169,7 @@ Mantıksal olarak ilişkili kod bloklarını, sınıfları ve fonksiyonları bel
     ```cpp
     #pragma once    // Include Guard
 
-    namespace A::B {    // C++17 — iç içe yazım
+    namespace A::B {    // C++17 - iç içe yazım
         void foo();
     }
 
@@ -213,7 +213,7 @@ Mantıksal olarak ilişkili kod bloklarını, sınıfları ve fonksiyonları bel
     ```
     C'deki dosya-seviyesi `static`'in modern C++ karşılığıdır. Başka hiçbir dosya `extern` ile bile erişemez.
 
-!!! tip "Inline Namespace — Sürüm Yönetimi"
+!!! tip "Inline Namespace - Sürüm Yönetimi"
     ```cpp
     namespace Lib {
         inline namespace V2 { void hesapla(int x) {} }   // Güncel sürüm
@@ -231,8 +231,8 @@ Mantıksal olarak ilişkili kod bloklarını, sınıfları ve fonksiyonları bel
 | ----------- | ----------------------------------------------------------------- |
 | `std::cout` | Tamponlu; buffer dolduğunda veya flush olduğunda yazar            |
 | `std::cerr` | Tamponsuz; hata anında anında yazar (çökme senaryolarında kritik) |
-| `<<`        | Insertion — veriyi akışa gönderir                                 |
-| `>>`        | Extraction — akıştan veri çeker; boşluk/tab/newline'da durur      |
+| `<<`        | Insertion - veriyi akışa gönderir                                 |
+| `>>`        | Extraction - akıştan veri çeker; boşluk/tab/newline'da durur      |
 
 !!! tip "std::endl vs '\\n'"
     `std::endl` yeni satır ekler **ve** buffer'ı flush eder. Performans kritik sistemlerde bu flush bottleneck yaratabilir. Sadece yeni satır için `'\n'` kullanın; flush gerektiğinde `std::flush` çağırın.
@@ -257,7 +257,7 @@ std::cout << std::setw(10) << "test";                       // "      test"
 
 C++ derleyicisi, aşırı yüklenmiş fonksiyonları birbirinden ayırmak için arka planda benzersiz isimler üretir; buna **Name Mangling** denir.
 
-!!! note "extern \"C\" — C Kütüphane Entegrasyonu"
+!!! note "extern \"C\" - C Kütüphane Entegrasyonu"
     ```cpp
     extern "C" {
         void c_func(int x);  // Name mangling uygulanmaz; saf C sembolü kalır
@@ -306,7 +306,7 @@ auto topla = [](int a, int b) -> int { return a + b; };
 |                       |        `NULL`       |    `nullptr`     |
 | --------------------- | :-----------------: | :--------------: |
 | Tür                   |    `0` (tam sayı)   | `std::nullptr_t` |
-| Overloading güvenliği | ✗ — `0` ile karışır |        ✓         |
+| Overloading güvenliği | ✗ - `0` ile karışır |        ✓         |
 | C++ versiyonu         |     C'den miras     |      C++11       |
 
 !!! note "C++ Güvenlik Notu"
@@ -555,7 +555,7 @@ graph LR
         virtual double area() = 0;   // Pure virtual → Abstract class
         virtual ~Shape() = default;  // Virtual destructor zorunlu
     };
-    // Shape s;  // HATA — doğrudan nesne oluşturulamaz
+    // Shape s;  // HATA - doğrudan nesne oluşturulamaz
     ```
 
 !!! note "override Anahtar Kelimesi"
@@ -641,7 +641,7 @@ Dinamik boyutlu, bellekte **ardışık** dizi; en sık kullanılan konteyner.
     vec.erase(std::remove(vec.begin(), vec.end(), deger), vec.end()); // O(N)
     ```
 
-!!! note "vector\\<bool\\> — Özel Durum"
+!!! note "vector\\<bool\\> - Özel Durum"
     Standart, her `bool` için 1 bit ayırarak space optimize eder. Sonuç: adres (`&`) alınamaz, thread-safe değildir. Gerçek `bool` vektörü için `std::vector<char>` veya `std::bitset` tercih edin.
 
 ```cpp
@@ -683,12 +683,12 @@ Her düğüm bağımsız Node; bellekte ardışık değil.
 | `size()`             |        ✓        | ✗ (O(N) saymak gerekir) |
 | Bellek per eleman    |     +16 byte    |         +8 byte         |
 
-!!! note "forward_list — C Felsefesi"
+!!! note "forward_list - C Felsefesi"
     Ham C tek yönlü bağlı listesinden daha fazla bellek kaplamasın ve yavaş olmasın ilkesiyle tasarlanmıştır. `push_back` yoktur (sona gitmek O(N)); `insert_after`/`erase_after` kullanılır.
 
 ```cpp
 // list'e özgü algoritmalar
-list.sort();               // O(N log N) — sadece pointer bağlarını günceller
+list.sort();               // O(N log N) - sadece pointer bağlarını günceller
 list.reverse();            // O(N)
 list.unique();             // Ardışık tekrarları siler (önce sort() tavsiye edilir)
 list.splice(iter, other);  // Kopyasız O(1) aktarım
@@ -795,7 +795,7 @@ std::array<int, 5> kopya = arr;  // Ham C dizisinin aksine doğrudan kopyalanabi
 
 Modern C++ bellek güvenliğinin temel felsefesidir: **Bir kaynak edinildiğinde (constructor), onun serbest bırakılması (destructor) garanti altına alınır.**
 
-C++'ta fonksiyon sonlandığında (normal veya exception ile), kapsamdaki tüm yerel nesnelerin destructor'ları otomatik çağrılır — **Stack Unwinding**. RAII bu garantiyi kullanarak kaynak yönetimini otomatize eder.
+C++'ta fonksiyon sonlandığında (normal veya exception ile), kapsamdaki tüm yerel nesnelerin destructor'ları otomatik çağrılır - **Stack Unwinding**. RAII bu garantiyi kullanarak kaynak yönetimini otomatize eder.
 
 | Kaynak Türü  | RAII Sınıfı                           |
 | ------------ | ------------------------------------- |
@@ -846,7 +846,7 @@ int         counter = 0;
 
 void increment() {
     for (int i = 0; i < 100'000; i++) {
-        std::lock_guard<std::mutex> lk(mtx);  // RAII — scope bitince açılır
+        std::lock_guard<std::mutex> lk(mtx);  // RAII - scope bitince açılır
         ++counter;
     }
 }
@@ -909,7 +909,7 @@ void consumer() {
 | Dönüş değeri       |  `std::future<T>` | `future` ile `promise`'i çiftle |
 
 ```cpp
-// std::async — arka planda çalıştır, sonucu future ile al
+// std::async - arka planda çalıştır, sonucu future ile al
 std::future<int> f = std::async(std::launch::async, []() {
     return 42;
 });
@@ -926,7 +926,7 @@ Rvalue referansı (`&&`) geçici ya da "artık kullanılmayacak" nesnelere bağl
 
 ```cpp
 std::string a = "uzun bir metin";
-std::string b = std::move(a);  // a'nın tamponu b'ye aktarıldı — kopya yok
+std::string b = std::move(a);  // a'nın tamponu b'ye aktarıldı - kopya yok
 // a artık geçerli ama boş; kullanılmamalı
 ```
 
@@ -959,7 +959,7 @@ void wrapper(T&& arg) {
 ```
 
 !!! note "std::move vs std::forward"
-    `std::move` — koşulsuz rvalue'ya çevirir. `std::forward` — orijinal kategoriyi korur; yalnızca şablon kodda kullanılır.
+    `std::move` - koşulsuz rvalue'ya çevirir. `std::forward` - orijinal kategoriyi korur; yalnızca şablon kodda kullanılır.
 
 ---
 
@@ -1004,7 +1004,7 @@ std::vector<int> v   = {1, 2, 3};
 int              arr[] = {4, 5, 6};
 
 process(v);    // vector geçerli
-process(arr);  // ham dizi de geçerli — pointer + boyut çifti yazmak gerekmez
+process(arr);  // ham dizi de geçerli - pointer + boyut çifti yazmak gerekmez
 ```
 
 !!! tip "std::span ne zaman kullanılır?"

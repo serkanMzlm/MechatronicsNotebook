@@ -1,5 +1,5 @@
 # ==============================================================================
-# SystemCheck.cmake — Sistem Ortamı Kontrolleri ve CMake Komut Örnekleri
+# SystemCheck.cmake - Sistem Ortamı Kontrolleri ve CMake Komut Örnekleri
 #
 # Kapsanan komutlar:
 #   include(Check*)               → CheckIncludeFile, CheckFunctionExists,
@@ -38,7 +38,7 @@ function(run_system_checks)
     # CACHE: yapılandırma arayüzünde görünür, bir kez yazılır sonra korunur
     set(SYSTEM_CHECK_STRICT OFF CACHE BOOL "Treat check failures as fatal errors")
 
-    # ENV: ortam değişkeni okuma — yoksa boş string döner
+    # ENV: ortam değişkeni okuma - yoksa boş string döner
     set(HOST_CC_ENV "$ENV{CC}")
 
     # unset: geçici değişkeni siler

@@ -1,4 +1,4 @@
-# ONNX ve TensorRT — Model Optimizasyonu
+# ONNX ve TensorRT - Model Optimizasyonu
 
 !!! note "Bu Sayfa Ne Anlatıyor?"
     ONNX ve TensorRT'yi hiç duymamış biri için sıfırdan açıklar. "Modelim eğitildi, şimdi ne yapayım?" sorusuna cevap verir. Neden optimize etmek gerektiğini, nasıl yapıldığını ve ne kadar hızlanma bekleneceğini anlatır.
@@ -7,7 +7,7 @@
 
 ## Neden Optimize Etmek Gerekiyor?
 
-PyTorch ile eğittiğin bir modeli doğrudan çalıştırırsın — çalışır, ama yavaş. Çünkü PyTorch araştırma için tasarlandı: esnek, kolay hata ayıklama, ama üretim için değil.
+PyTorch ile eğittiğin bir modeli doğrudan çalıştırırsın - çalışır, ama yavaş. Çünkü PyTorch araştırma için tasarlandı: esnek, kolay hata ayıklama, ama üretim için değil.
 
 ```
 Aynı model, farklı ortamlar:
@@ -23,11 +23,11 @@ Platform: NVIDIA RTX 3070, YOLOv8n, 640×640
 
 ---
 
-## ONNX — Evrensel Model Formatı
+## ONNX - Evrensel Model Formatı
 
 **ONNX = Open Neural Network Exchange**
 
-ONNX, farklı derin öğrenme çerçevelerinin birbirleriyle konuşabilmesi için ortak bir format. PyTorch, TensorFlow, scikit-learn — hepsi ONNX'e export edebilir.
+ONNX, farklı derin öğrenme çerçevelerinin birbirleriyle konuşabilmesi için ortak bir format. PyTorch, TensorFlow, scikit-learn - hepsi ONNX'e export edebilir.
 
 ```mermaid
 graph LR
@@ -105,7 +105,7 @@ import time
 # ──────────────────────────────────────────
 # Session oluştur (hangi donanım kullanılacak)
 # ──────────────────────────────────────────
-# Providers öncelik sırasına göre — ilk bulunanı kullan
+# Providers öncelik sırasına göre - ilk bulunanı kullan
 providers = [
     "CUDAExecutionProvider",    # NVIDIA GPU (en hızlı)
     "CPUExecutionProvider"      # CPU (yedek)
@@ -134,7 +134,7 @@ donusum = transforms.Compose([
 resim = Image.open("kopek.jpg").convert("RGB")
 tensor = donusum(resim).unsqueeze(0).numpy()   # (1, 3, 224, 224) float32
 
-# Çıkarım — {girdi_adı: numpy_dizi}
+# Çıkarım - {girdi_adı: numpy_dizi}
 cikis = session.run(["output"], {"images": tensor})
 tahmin = np.argmax(cikis[0])
 print(f"Tahmin sınıf: {tahmin}")
@@ -174,18 +174,18 @@ sonuc = model_onnx("foto.jpg")
 
 ---
 
-## TensorRT — NVIDIA Hız Optimizasyonu
+## TensorRT - NVIDIA Hız Optimizasyonu
 
 **TensorRT** NVIDIA'nın çıkarım (inference) motorudur. Bir modeli alır ve:
 
-1. **Katmanları birleştirir** — birden fazla operasyonu tek çağrıya indirir
-2. **Hassasiyeti düşürür** — FP32 → FP16 veya INT8 (yarı doğruluk, 2× hız)
-3. **GPU çekirdeğini seçer** — hangi GPU kernel'inin hızlı olduğunu profil ederek seçer
+1. **Katmanları birleştirir** - birden fazla operasyonu tek çağrıya indirir
+2. **Hassasiyeti düşürür** - FP32 → FP16 veya INT8 (yarı doğruluk, 2× hız)
+3. **GPU çekirdeğini seçer** - hangi GPU kernel'inin hızlı olduğunu profil ederek seçer
 
 ```
-FP32:  1.000000000000 (32 bit — tam hassasiyet, yavaş)
-FP16:  1.000         (16 bit — yarı hassasiyet, 2× hızlı)
-INT8:  1             (8 bit  — çeyrek hassasiyet, 4× hızlı, kalibrasyon gerekir)
+FP32:  1.000000000000 (32 bit - tam hassasiyet, yavaş)
+FP16:  1.000         (16 bit - yarı hassasiyet, 2× hızlı)
+INT8:  1             (8 bit  - çeyrek hassasiyet, 4× hızlı, kalibrasyon gerekir)
 ```
 
 ### TensorRT Kurulum
@@ -217,7 +217,7 @@ model_trt = torch2trt(model, [x], fp16_mode=True)
 # Kaydet
 torch.save(model_trt.state_dict(), "resnet50_trt.pth")
 
-# Çıkarım — aynı arayüz
+# Çıkarım - aynı arayüz
 with torch.no_grad():
     cikis = model_trt(x)
 ```
@@ -230,10 +230,10 @@ En yaygın ve güvenilir yol: ONNX'ten TensorRT engine'e dönüştür.
 # FP32 (tam hassasiyet)
 trtexec --onnx=yolov8n.onnx --saveEngine=yolov8n_fp32.trt
 
-# FP16 (yarı hassasiyet — 2× hızlı, %1-2 doğruluk kaybı)
+# FP16 (yarı hassasiyet - 2× hızlı, %1-2 doğruluk kaybı)
 trtexec --onnx=yolov8n.onnx --saveEngine=yolov8n_fp16.trt --fp16
 
-# INT8 (çeyrek hassasiyet — kalibrasyon gerekir)
+# INT8 (çeyrek hassasiyet - kalibrasyon gerekir)
 trtexec --onnx=yolov8n.onnx --saveEngine=yolov8n_int8.trt \
     --int8 --calib=calibration_data.bin
 
@@ -344,7 +344,7 @@ model.export(
 # ──────────────────────────────────────────
 model_trt = YOLO("yolov8n.engine")
 
-# Normal kullanım — aynı arayüz
+# Normal kullanım - aynı arayüz
 import cv2
 cap = cv2.VideoCapture(0)
 
@@ -427,7 +427,7 @@ graph TD
 
 ---
 
-## Onnxsim — ONNX Simplifier
+## Onnxsim - ONNX Simplifier
 
 ONNX export sonrası gereksiz operasyonlar kalabilir. `onnxsim` bunları temizler.
 
@@ -455,7 +455,7 @@ onnx.save(model_simplified, "model_simplified.onnx")
     /usr/src/tensorrt/bin/trtexec --onnx=yolov8n.onnx --fp16 --saveEngine=yolov8n.engine
     ```
     
-    Engine dosyaları **mimariye özel**dir — masaüstü GPU'da oluşturulan engine Jetson'da çalışmaz. Engine'i doğrudan hedef cihazda oluştur.
+    Engine dosyaları **mimariye özel**dir - masaüstü GPU'da oluşturulan engine Jetson'da çalışmaz. Engine'i doğrudan hedef cihazda oluştur.
 
 !!! warning "TensorRT Kısıtları"
     - Engine dosyası: aynı GPU + aynı TRT sürümü + aynı CUDA sürümü gerektirir

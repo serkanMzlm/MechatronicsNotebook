@@ -1,5 +1,5 @@
 # ==============================================================================
-# Kconfig — C Learning Project Build Configuration
+# Kconfig - C Learning Project Build Configuration
 #
 # Bu dosya iki amaca hizmet eder:
 #   1. Projenin hangi modüllerini derleyeceğini belirler
@@ -7,7 +7,7 @@
 #
 # Kconfig keyword referansı:
 #   bool      → y/n (etkin/devre dışı)
-#   tristate  → y/m/n (etkin/modül/devre dışı) — Linux kernel modül sistemi
+#   tristate  → y/m/n (etkin/modül/devre dışı) - Linux kernel modül sistemi
 #   int       → tam sayı değer
 #   hex       → onaltılık değer
 #   string    → metin değer
@@ -32,7 +32,7 @@ mainmenu "C Learning Project Configuration"
 
 menu "Build Configuration"
 
-    # string: serbest metin değer — çift tırnak içinde varsayılan verilir
+    # string: serbest metin değer - çift tırnak içinde varsayılan verilir
     config PROJECT_NAME
         string "Project Name"
         default "c_learning_project"
@@ -40,7 +40,7 @@ menu "Build Configuration"
             Sets the project identifier.
             This value can be exposed to C code via config.h as a string macro.
 
-    # string: versiyon etiketi — semantic versioning formatında
+    # string: versiyon etiketi - semantic versioning formatında
     config PROJECT_VERSION
         string "Project Version"
         default "1.0.0"
@@ -48,7 +48,7 @@ menu "Build Configuration"
             Project version in semantic versioning format.
             Example: 1.0.0, 2.1.3-beta
 
-    # bool: en temel Kconfig tipi — sadece y ya da n alır
+    # bool: en temel Kconfig tipi - sadece y ya da n alır
     config DEBUG
         bool "Enable Debug Mode"
         default n
@@ -65,19 +65,19 @@ endmenu
 #
 # tristate değerleri:
 #   y → doğrudan binary'e dahil edilir (built-in)
-#   m → ayrı nesne dosyası olarak derlenir (module) — gelecek kullanım için
+#   m → ayrı nesne dosyası olarak derlenir (module) - gelecek kullanım için
 #   n → derlenmez, build dışında kalır
 # ==============================================================================
 
 menu "Modules"
 
-    # comment: seçilemeyen bilgi/başlık satırı — menü içi gruplama için kullanılır
+    # comment: seçilemeyen bilgi/başlık satırı - menü içi gruplama için kullanılır
     comment "Core Modules"
 
-    # tristate: y/m/n sunar — select ile ters bağımlılık örneği
+    # tristate: y/m/n sunar - select ile ters bağımlılık örneği
     # select: bu sembol aktifleşince STDIO_COMMON otomatik olarak y yapılır
     config MODULE_STDIO
-        tristate "stdio_fundamentals — I/O, strings, pointers, bitwise"
+        tristate "stdio_fundamentals - I/O, strings, pointers, bitwise"
         default y
         select STDIO_COMMON
         help
@@ -96,14 +96,14 @@ menu "Modules"
             Cannot be changed directly by the user.
 
     config MODULE_ALGORITHM
-        tristate "algorithm_lab — search, sort, recursive algorithms"
+        tristate "algorithm_lab - search, sort, recursive algorithms"
         default y
         help
             Covers binary search, bubble sort, fibonacci, factorial,
             Armstrong number, palindrome check and swap variants.
 
     config MODULE_DYNAMIC_MEMORY
-        tristate "dynamic_memory — malloc / calloc / realloc / free"
+        tristate "dynamic_memory - malloc / calloc / realloc / free"
         default y
         help
             Covers heap allocation patterns, realloc scenarios,
@@ -112,7 +112,7 @@ menu "Modules"
     comment "Advanced Modules"
 
     config MODULE_FILE_OPS
-        tristate "file_operations — binary and text file I/O"
+        tristate "file_operations - binary and text file I/O"
         default m
         help
             Covers fopen/fclose/fread/fwrite, binary DB format,
@@ -128,12 +128,12 @@ menu "Modules"
             Only binary DB operations are compiled.
 
     config MODULE_NETWORK
-        tristate "system_network_ip_reader — popen / pipe / IP parsing"
+        tristate "system_network_ip_reader - popen / pipe / IP parsing"
         default m
         help
             Covers popen() system command execution,
             stdout pipe reading and IP address parsing.
-            Linux only — requires ifconfig in PATH.
+            Linux only - requires ifconfig in PATH.
 
     # depends on: üst sembol seçili değilse bu seçenek görünmez
     config NETWORK_VERBOSE
@@ -185,7 +185,7 @@ menu "Compiler Options"
 
     endchoice
 
-    # bool: sanitizer seçenekleri — depends on ile DEBUG'a bağlı
+    # bool: sanitizer seçenekleri - depends on ile DEBUG'a bağlı
     config ENABLE_ASAN
         bool "Enable AddressSanitizer (-fsanitize=address)"
         default n
@@ -202,7 +202,7 @@ menu "Compiler Options"
             Reports integer overflow, null pointer dereference
             and other undefined behavior at runtime.
 
-    # int: tam sayı değer — range ile geçerli sınırlar belirlenir
+    # int: tam sayı değer - range ile geçerli sınırlar belirlenir
     config MAX_STACK_SIZE_KB
         int "Max Stack Size (KB)"
         default 64
@@ -212,7 +212,7 @@ menu "Compiler Options"
             Used as a reference value to evaluate stack overflow risk
             in recursive functions.
 
-    # hex: onaltılık değer — adres, maske, flag gibi değerler için tercih edilir
+    # hex: onaltılık değer - adres, maske, flag gibi değerler için tercih edilir
     config MEMORY_BASE_ADDRESS
         hex "Memory Base Address"
         default 0x08000000
@@ -231,7 +231,7 @@ endmenu
 
 menu "Debug & Logging"
 
-    # bool: genel loglama anahtarı — kapalıysa tüm alt seçenekler gizlenir
+    # bool: genel loglama anahtarı - kapalıysa tüm alt seçenekler gizlenir
     config ENABLE_LOGGING
         bool "Enable Logging"
         default y
@@ -239,7 +239,7 @@ menu "Debug & Logging"
             When disabled, all log macros (ERROR, WARN, DEBUG, INFO)
             are excluded at compile time.
 
-    # choice: log seviyesi — depends on ile ENABLE_LOGGING'e bağlı
+    # choice: log seviyesi - depends on ile ENABLE_LOGGING'e bağlı
     # ENABLE_LOGGING kapalıysa bu choice bloğu menuconfig'de görünmez
     choice
         prompt "Log Level"
@@ -270,7 +270,7 @@ menu "Debug & Logging"
 
     endchoice
 
-    # hex: bit maskesi — her bit bir log kanalını temsil eder
+    # hex: bit maskesi - her bit bir log kanalını temsil eder
     # Bu pattern gömülü sistemlerde yaygın kullanılır
     config LOG_CHANNEL_MASK
         hex "Log Channel Mask"
@@ -327,7 +327,7 @@ menu "Platform Info"
     # if/endif: DEBUG aktifse ek geliştirici seçenekleri görünür
     if DEBUG
 
-        comment "Developer options — Debug build only"
+        comment "Developer options - Debug build only"
 
         config SHOW_BUILD_TIMESTAMP
             bool "Embed build timestamp into binary"

@@ -31,7 +31,7 @@ void Basics::runVariables() const {
 
     int    a = 10;    // copy initialization
     int    b(20);     // direct initialization
-    int    c{30};     // direct list initialization — narrowing engeller
+    int    c{30};     // direct list initialization - narrowing engeller
 
     char   ch   = 'A';
     bool   flag  = true;
@@ -101,7 +101,7 @@ void Basics::runIO() const {
     std::cout << "\n--- IO ---\n";
     // std::cout → stdout, tamponlanmış
     // std::cerr → stderr, tamponlanmamış, hata çıktısı
-    // "\n" tercih edilir — std::endl flush yaptığı için yavaştır
+    // "\n" tercih edilir - std::endl flush yaptığı için yavaştır
     std::cout << "stdout via cout\n";
     std::cerr << "stderr via cerr\n";
 }

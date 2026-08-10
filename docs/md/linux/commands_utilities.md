@@ -321,7 +321,7 @@ sudo mount -t ext4 /dev/sdb1 /mnt/disk
 sudo mount -o ro /dev/sdb1 /mnt/disk  # Salt okunur
 sudo umount /mnt/disk
 
-# dd — Disk imajı
+# dd - Disk imajı
 sudo dd if=/dev/sda of=/mnt/backup.img bs=64K conv=noerror,sync status=progress
 sudo dd if=/mnt/backup.img of=/dev/sdb bs=64K status=progress
 # Doğrula:
@@ -418,7 +418,7 @@ date +%Y%m%d                 # 20240115
 sudo timedatectl set-time '2024-01-15 14:30:00'
 sudo timedatectl set-ntp true   # NTP senkronizasyonu
 
-# watch — periyodik komut tekrar
+# watch - periyodik komut tekrar
 watch -n 2 df -h         # 2 saniyede bir
 watch -n 1 'ps aux --sort=-%cpu | head'
 
@@ -427,7 +427,7 @@ sleep 5                  # 5 saniye bekle
 sleep 1m                 # 1 dakika
 sleep 1h30m              # 1 saat 30 dakika
 
-# at — tek seferlik zamanlama
+# at - tek seferlik zamanlama
 at now + 30 minutes << 'EOF'
 /usr/local/bin/yedekle.sh
 EOF
@@ -487,7 +487,7 @@ notify-send "Yedekleme" "Tamamlandı!" --icon=dialog-information
 
 ## Sistem Debug Araçları
 
-### strace — Sistem Çağrısı İzleme
+### strace - Sistem Çağrısı İzleme
 
 Bir process'in kernel'e yaptığı tüm sistem çağrılarını (open, read, write, ioctl, mmap...) gösterir. Gömülü sistemlerde sürücü debug'lamanın temel aracıdır.
 
@@ -521,7 +521,7 @@ strace -e trace=open,ioctl,read,write ./sensor_app 2>&1 | grep /dev/
 strace -e trace=all ./app 2>&1 | grep " = -1"
 ```
 
-### ltrace — Kütüphane Çağrısı İzleme
+### ltrace - Kütüphane Çağrısı İzleme
 
 ```bash
 ltrace ./app              # Dinamik kütüphane çağrıları
@@ -533,39 +533,39 @@ ltrace -c ./app           # Özet istatistik
 ### Binary Analiz Araçları
 
 ```bash
-# ldd — dinamik bağımlılıklar
+# ldd - dinamik bağımlılıklar
 ldd /usr/bin/python3               # Hangi .so dosyalarını kullanıyor
 ldd -v /bin/ls                     # Detaylı versiyon bilgisi
 LD_TRACE_LOADED_OBJECTS=1 ./app   # ldd'nin yaptığı şey
 
-# readelf — ELF dosyası analizi
+# readelf - ELF dosyası analizi
 readelf -h /bin/ls                 # ELF başlığı (mimari, tip)
 readelf -S /bin/ls                 # Section listesi
 readelf -d ./app                   # Dinamik bölüm (NEEDED = bağımlılıklar)
 readelf -l /bin/ls                 # Program header (segment'ler)
 readelf --syms ./app               # Sembol tablosu
 
-# nm — sembol tablosu
+# nm - sembol tablosu
 nm ./app                           # Tüm semboller
 nm -D ./app                        # Dinamik semboller
 nm -u ./app                        # Tanımsız (dış bağımlılık) semboller
 nm --defined-only ./libmylib.so    # Sadece tanımlı semboller
 
-# objdump — disassemble
+# objdump - disassemble
 objdump -d ./app                   # Text section'ı decompile et
 objdump -S ./app                   # Kaynak+assembly (debug bilgisi varsa)
 objdump -j .data -s ./app         # .data section içeriği
 
-# file — dosya türü
+# file - dosya türü
 file /bin/ls                       # ELF 64-bit LSB executable, ARM aarch64...
 file ./firmware.bin                # Firmware analizi
 
-# strings — ikili içindeki ASCII dizeler
+# strings - ikili içindeki ASCII dizeler
 strings ./app | grep -i "error\|config\|version"
 strings -n 8 firmware.bin         # En az 8 karakterlik dizeler
 ```
 
-### perf — Performans Analizi
+### perf - Performans Analizi
 
 ```bash
 # Temel profil
@@ -586,7 +586,7 @@ sudo perf report --call-graph
 # Sistem geneli izleme
 sudo perf top -e cycles -p 1234       # Belirli process
 
-# Flamegraph (görsel profil — FlameGraph aracı gerekli)
+# Flamegraph (görsel profil - FlameGraph aracı gerekli)
 sudo perf record -g ./app
 sudo perf script | ./stackcollapse-perf.pl | ./flamegraph.pl > flame.svg
 ```

@@ -1,4 +1,4 @@
-# Yapay Zeka — Temel Kavramlar
+# Yapay Zeka - Temel Kavramlar
 
 !!! note "Genel Bakış"
     Yapay zekâ, bilgisayarların veriden öğrenerek karar vermesini, örüntü tanımasını ve tahmin yapmasını sağlayan disiplinler bütünüdür. Klasik yazılımda geliştirici kuralları elle yazar; AI'da ise geliştirici sisteme örnekler gösterir ve sistem kuralları kendisi öğrenir. Bu sayfa, yapay zekanın temel taşlarını sıfırdan açıklamaktadır.
@@ -25,7 +25,7 @@ graph TD
 
 ---
 
-## Yapay Zeka Nedir? — Sezgisel Açıklama
+## Yapay Zeka Nedir? - Sezgisel Açıklama
 
 Bir çocuğa "kedi" ile "köpeği" nasıl ayırt etmeyi öğretirsiniz? Yüzlerce farklı kedi ve köpek gösterirsiniz; bir süre sonra çocuk hiç görmediği hayvanları da doğru sınıflandırabilir hale gelir. İşte makine öğrenimi tam olarak budur: sisteme çok sayıda örnek göstererek genel bir kural çıkarmasını sağlamak.
 
@@ -42,7 +42,7 @@ Bir çocuğa "kedi" ile "köpeği" nasıl ayırt etmeyi öğretirsiniz? Yüzlerc
 
 ---
 
-## Öğrenme Nedir? — Matematiksel Sezgi
+## Öğrenme Nedir? - Matematiksel Sezgi
 
 Makine öğrenimi, en temel anlatımıyla bir **fonksiyon yaklaşım** problemidir. Elimizde bazı giriş verileri (**X**) ve bunlara karşılık gelen doğru cevaplar (**y**) var. Amacımız, X'i alıp y'yi üretebilecek en iyi fonksiyonu bulmak.
 
@@ -61,9 +61,9 @@ Bu formül "öyle bir θ bul ki, kayıp fonksiyonu en küçük olsun" demektir. 
 
 | Kavram                | Gerçek Hayat Karşılığı                                                      |
 | --------------------- | --------------------------------------------------------------------------- |
-| **Parametreler (θ)**  | Eğitim sırasında otomatik güncellenen değerler — modelin "öğrendiği" şeyler |
+| **Parametreler (θ)**  | Eğitim sırasında otomatik güncellenen değerler - modelin "öğrendiği" şeyler |
 | **Hiperparametreler** | Eğitim başlamadan siz belirliyorsunuz (kaç katman? ne hızla öğrensin?)      |
-| **Kayıp Fonksiyonu**  | Modelin karne notu — ne kadar düşük, o kadar iyi                            |
+| **Kayıp Fonksiyonu**  | Modelin karne notu - ne kadar düşük, o kadar iyi                            |
 | **Optimizer**         | Kayıp notunu düşürmek için parametreleri güncelleyen mekanizma              |
 | **Epoch**             | Tüm eğitim verisinin bir kez modelden geçirilmesi                           |
 | **Batch**             | Her güncelleme adımında kullanılan örnek sayısı                             |
@@ -74,7 +74,7 @@ Bu formül "öyle bir θ bul ki, kayıp fonksiyonu en küçük olsun" demektir. 
 
 Her girdi örneğinin bir etiketi (doğru cevabı) vardır. Model bu etiketlerden öğrenir.
 
-**Gerçek hayat analojisi:** Sınav sorularını cevap anahtarıyla birlikte çalışmak. Model cevap anahtarına bakarak kendi yanıtlarının ne kadar yanlış olduğunu görür ve kendini düzeltir. Cevap anahtarı yoksa — yani etiket yoksa — supervised learning mümkün değildir.
+**Gerçek hayat analojisi:** Sınav sorularını cevap anahtarıyla birlikte çalışmak. Model cevap anahtarına bakarak kendi yanıtlarının ne kadar yanlış olduğunu görür ve kendini düzeltir. Cevap anahtarı yoksa - yani etiket yoksa - supervised learning mümkün değildir.
 
 ```mermaid
 graph LR
@@ -91,19 +91,19 @@ graph LR
 
 Sınıflandırmada model, her kategori için bir olasılık hesaplar. En yüksek olasılıklı kategori tahmin olarak seçilir.
 
-**İkili sınıflandırma (Binary):** Sadece iki seçenek — spam/ham, hasta/sağlıklı, geçti/kaldı.
+**İkili sınıflandırma (Binary):** Sadece iki seçenek - spam/ham, hasta/sağlıklı, geçti/kaldı.
 
-**Çok sınıflı (Multiclass):** Birden fazla seçenek — hangi rakam (0–9), hangi hayvan, hangi dil.
+**Çok sınıflı (Multiclass):** Birden fazla seçenek - hangi rakam (0–9), hangi hayvan, hangi dil.
 
-**Çok etiketli (Multilabel):** Bir örnek birden fazla etikete sahip olabilir — bir haberin hem "ekonomi" hem "siyaset" olması gibi.
+**Çok etiketli (Multilabel):** Bir örnek birden fazla etikete sahip olabilir - bir haberin hem "ekonomi" hem "siyaset" olması gibi.
 
 **Önemli algoritmalar ve kullanım alanları:**
 
 | Algoritma                       |                Ne Zaman Seç               | Neden                                                           |
 | ------------------------------- | :---------------------------------------: | --------------------------------------------------------------- |
 | **Lojistik Regresyon**          | Hızlı başlangıç, açıklanabilirlik gerekli | Sonuçları yorumlamak kolay; sağlık/finans gibi regüle alanlarda |
-| **Karar Ağaçları**              |           Kurallar görünür olsun          | "Eğer şuysa, buysa" mantığı — insan gibi karar verir            |
-| **Random Forest**               |           Genel amaç, güvenilir           | Yüzlerce ağacın oylaması — tek ağacın hatalarını siler          |
+| **Karar Ağaçları**              |           Kurallar görünür olsun          | "Eğer şuysa, buysa" mantığı - insan gibi karar verir            |
+| **Random Forest**               |           Genel amaç, güvenilir           | Yüzlerce ağacın oylaması - tek ağacın hatalarını siler          |
 | **Gradient Boosting / XGBoost** |            Maksimum performans            | Hatalara odaklanarak kendini düzelten sistemli yaklaşım         |
 | **SVM**                         |       Yüksek boyutlu veri, az örnek       | Az örnekle dahi iyi çalışır; metin sınıflandırmada klasik       |
 | **Sinir Ağları**                |            Görüntü, ses, metin            | Ham veriden otomatik özellik çıkarımı; en esnek                 |
@@ -114,13 +114,13 @@ Sınıflandırmada model, her kategori için bir olasılık hesaplar. En yüksek
 
 Çıktı sürekli sayısal bir değer olduğunda regresyon kullanılır. "Bu evin fiyatı ne olur?", "Yarın kaç ürün satılır?", "Hasta kaç gün sonra iyileşir?"
 
-Regresyon aslında sınıflandırmanın sayısal versiyonudur: kategoriler yerine gerçek sayılar tahmin edilir. Kullanılan algoritmalar çoğunlukla aynı — çıktı katmanı ve kayıp fonksiyonu değişir.
+Regresyon aslında sınıflandırmanın sayısal versiyonudur: kategoriler yerine gerçek sayılar tahmin edilir. Kullanılan algoritmalar çoğunlukla aynı - çıktı katmanı ve kayıp fonksiyonu değişir.
 
 **Regresyon metrikleri:**
 
 | Metrik   | Ne Ölçer                                              |              Ne Zaman Önemli               |
 | -------- | ----------------------------------------------------- | :----------------------------------------: |
-| **MAE**  | Ortalama mutlak hata — sonuçla aynı birimde, sezgisel |    Her zaman iyi bir başlangıç metrigi     |
+| **MAE**  | Ortalama mutlak hata - sonuçla aynı birimde, sezgisel |    Her zaman iyi bir başlangıç metrigi     |
 | **RMSE** | Büyük hataları orantısız cezalandırır                 |       Büyük hatalar kabul edilemezse       |
 | **R²**   | Modelin varyansın ne kadarını açıkladığı (0–1)        |    Karşılaştırma ve genel iyilik ölçümü    |
 | **MAPE** | Yüzde cinsinden hata                                  | Farklı ölçekli değerler karşılaştırılırken |
@@ -161,7 +161,7 @@ Benzer örnekleri gruplara ayırır. Müşteri segmentasyonu, gen ekspresyon ana
 
 **K-Means'in sınırları:** Küre şeklinde olmayan kümeleri (ay şeklinde, sarmal gibi) bulamaz. Gürültü noktalarına duyarlıdır. K'yı önceden belirtmek gerekir.
 
-**DBSCAN farkı:** Yoğunluk tabanlı çalışır. K sayısı belirtmek gerekmez. Keyfi şekilli kümeler bulabilir. Gürültü noktaları "outlier" olarak işaretlenir — coğrafi kümelemede, anomali tespitinde güçlü.
+**DBSCAN farkı:** Yoğunluk tabanlı çalışır. K sayısı belirtmek gerekmez. Keyfi şekilli kümeler bulabilir. Gürültü noktaları "outlier" olarak işaretlenir - coğrafi kümelemede, anomali tespitinde güçlü.
 
 ### Boyut İndirgeme (Dimensionality Reduction)
 
@@ -169,13 +169,13 @@ Yüzlerce veya binlerce özelliği daha az sayıda boyuta indirerek veriyi anla�
 
 **PCA (Temel Bileşen Analizi):**
 
-Veriyi en fazla "bilgiyi" taşıyan yönlere yansıtır. Matematiksel olarak kovaryans matrisinin özvektörlerini bulur — bunlar verideki en yüksek varyansa sahip yönlerdir.
+Veriyi en fazla "bilgiyi" taşıyan yönlere yansıtır. Matematiksel olarak kovaryans matrisinin özvektörlerini bulur - bunlar verideki en yüksek varyansa sahip yönlerdir.
 
 Örnek: 50 finansal gösterge yerine 2 temel bileşen yeterli olabilir. Bu iki bileşen orijinal 50 değişkendeki bilginin %80'ini taşıyorsa kalan %20'yi atmak kabul edilebilir.
 
 **t-SNE ve UMAP:**
 
-PCA küresel yapıyı korurken yerel yapıyı kaybedebilir. t-SNE ve UMAP ise kümelerin iç yapısını koruyarak yüksek boyutlu veriyi 2D/3D'ye yansıtır — görselleştirme için idealdir.
+PCA küresel yapıyı korurken yerel yapıyı kaybedebilir. t-SNE ve UMAP ise kümelerin iç yapısını koruyarak yüksek boyutlu veriyi 2D/3D'ye yansıtır - görselleştirme için idealdir.
 
 t-SNE her çalıştırmada farklı sonuç verebilir (rastgele başlatma). UMAP daha hızlı ve tekrarlanabilirdir; büyük veri setleri için tercih edilir.
 
@@ -185,7 +185,7 @@ Normal olmayan örnekleri tespit eder: kredi kartı dolandırıcılığı, üret
 
 Temel fikir: "normal" veri üzerinde öğrenen bir model oluştur; modele uymayan örnekler anomalidir.
 
-**Isolation Forest:** Rastgele bölerek (random splitting) bir noktayı izole etmenin ne kadar kolay olduğunu ölçer. Anomaliler az olduğu için kalabalıktan uzak durur — daha az bölme ile izole edilir. Bu "kısa yol" anomali skorunu verir.
+**Isolation Forest:** Rastgele bölerek (random splitting) bir noktayı izole etmenin ne kadar kolay olduğunu ölçer. Anomaliler az olduğu için kalabalıktan uzak durur - daha az bölme ile izole edilir. Bu "kısa yol" anomali skorunu verir.
 
 ---
 
@@ -234,7 +234,7 @@ graph LR
 
 ### Underfitting (Yüksek Bias)
 
-Model çok basit — eğitim verisini bile iyi öğrenemez. Binlerce farklı konum ve büyüklükteki evin fiyatını tahmin etmek için tek bir düz çizgi yeterli değildir. Model gerçekliğin karmaşıklığını yakalayamaz.
+Model çok basit - eğitim verisini bile iyi öğrenemez. Binlerce farklı konum ve büyüklükteki evin fiyatını tahmin etmek için tek bir düz çizgi yeterli değildir. Model gerçekliğin karmaşıklığını yakalayamaz.
 
 **Belirtiler:** Hem eğitim hem test hatası yüksek.
 
@@ -242,7 +242,7 @@ Model çok basit — eğitim verisini bile iyi öğrenemez. Binlerce farklı kon
 
 ### Overfitting (Yüksek Variance)
 
-Model çok karmaşık — eğitim verisindeki gürültüyü bile ezberler, yeni veriye çıkarım yapamaz. Birkaç eğitim örneğini tamamen ezberlemiş bir öğrenci gibi; ezberin dışında bir soru gelince şaşırır.
+Model çok karmaşık - eğitim verisindeki gürültüyü bile ezberler, yeni veriye çıkarım yapamaz. Birkaç eğitim örneğini tamamen ezberlemiş bir öğrenci gibi; ezberin dışında bir soru gelince şaşırır.
 
 **Belirtiler:** Eğitim hatası çok düşük, test hatası yüksek. Bu iki değer arasındaki fark büyüdükçe overfitting derinleşir.
 
@@ -252,7 +252,7 @@ Model çok karmaşık — eğitim verisindeki gürültüyü bile ezberler, yeni 
 | ----------------- | :----------: | :---: | :-------------: |
 | **Eğitim Hatası** |    Yüksek    | Düşük |    Çok düşük    |
 | **Test Hatası**   |    Yüksek    | Düşük |      Yüksek     |
-| **Durum**         | Underfitting |   —   |   Overfitting   |
+| **Durum**         | Underfitting |   -   |   Overfitting   |
 
 ### Overfitting'i Önleme Yöntemleri
 
@@ -264,7 +264,7 @@ Model çok karmaşık — eğitim verisindeki gürültüyü bile ezberler, yeni 
 | **Dropout (Sinir Ağları)** | Eğitim sırasında rastgele nöronları devre dışı bırakır; her nörona körü körüne güvenilemez.    |
 | **Early Stopping**         | Doğrulama hatası artmaya başlayınca eğitimi durdur.                                            |
 | **Veri Artırma**           | Mevcut veriyi döndürerek, kırparak, renk değiştirerek çoğalt.                                  |
-| **Ensemble**               | Birden fazla modelin tahminlerini birleştir — hatalar kısmen birbirini siler.                  |
+| **Ensemble**               | Birden fazla modelin tahminlerini birleştir - hatalar kısmen birbirini siler.                  |
 
 ---
 
@@ -272,16 +272,16 @@ Model çok karmaşık — eğitim verisindeki gürültüyü bile ezberler, yeni 
 
 Kayıp fonksiyonu, modelin ne kadar yanlış tahmin ettiğini sayısal olarak ölçer. Eğitim bu değeri minimize etmeye çalışır.
 
-**Sezgi:** Kayıp fonksiyonu bir dağın yüksekliği gibidir. Eğitim, bu dağda aşağı yürümeye benzer — her adımda biraz daha alçağa iner. Hangi fonksiyonu kullandığınız, dağın şeklini belirler.
+**Sezgi:** Kayıp fonksiyonu bir dağın yüksekliği gibidir. Eğitim, bu dağda aşağı yürümeye benzer - her adımda biraz daha alçağa iner. Hangi fonksiyonu kullandığınız, dağın şeklini belirler.
 
 === "Regresyon Kayıpları"
 
     | Kayıp                          | Ne Ölçer                                                                |                 Ne Zaman Kullan                  |
     | ------------------------------ | ----------------------------------------------------------------------- | :----------------------------------------------: |
-    | **MSE** (Ortalama Kare Hata)   | Hataların karesinin ortalaması — büyük hatalar orantısız cezalandırılır |          Büyük hatalar kabul edilemezse          |
-    | **MAE** (Ortalama Mutlak Hata) | Hataların mutlak değerinin ortalaması — daha sağlam                     | Aykırı değerler varsa, dengeli ceza istiyorsanız |
+    | **MSE** (Ortalama Kare Hata)   | Hataların karesinin ortalaması - büyük hatalar orantısız cezalandırılır |          Büyük hatalar kabul edilemezse          |
+    | **MAE** (Ortalama Mutlak Hata) | Hataların mutlak değerinin ortalaması - daha sağlam                     | Aykırı değerler varsa, dengeli ceza istiyorsanız |
     | **Huber**                      | Küçük hatalarda MSE, büyük hatalarda MAE davranışı                      |          İkisinin dengesi istendiğinde           |
-    | **RMSE**                       | MSE'nin karekökü — veriyle aynı birimde, yorumlanabilir                 |        Yorumlanabilirlik önemli olduğunda        |
+    | **RMSE**                       | MSE'nin karekökü - veriyle aynı birimde, yorumlanabilir                 |        Yorumlanabilirlik önemli olduğunda        |
 
 === "Sınıflandırma Kayıpları"
 
@@ -296,7 +296,7 @@ Kayıp fonksiyonu, modelin ne kadar yanlış tahmin ettiğini sayısal olarak ö
 
 ## Model Değerlendirme Metrikleri
 
-### Sınıflandırma — Karmaşıklık Matrisi (Confusion Matrix)
+### Sınıflandırma - Karmaşıklık Matrisi (Confusion Matrix)
 
 Model her tahmininde ya doğru ya da yanlış yapar. Dört durum vardır:
 
@@ -308,8 +308,8 @@ Gerçek: Negatif  FP (Yanlış Alarm) TN (Doğru -)
 
 - **TP (True Positive):** Hasta olan, hasta dendi. ✓
 - **TN (True Negative):** Sağlıklı olan, sağlıklı dendi. ✓
-- **FP (False Positive — Tip I Hata):** Sağlıklı olan, hasta dendi. Gereksiz tedavi.
-- **FN (False Negative — Tip II Hata):** Hasta olan, sağlıklı dendi. Tehlikeli: hastalık atlandı.
+- **FP (False Positive - Tip I Hata):** Sağlıklı olan, hasta dendi. Gereksiz tedavi.
+- **FN (False Negative - Tip II Hata):** Hasta olan, sağlıklı dendi. Tehlikeli: hastalık atlandı.
 
 | Metrik          |      Formül      | Soru                                           |            Kritik Olduğu Yer            |
 | --------------- | :--------------: | ---------------------------------------------- | :-------------------------------------: |
@@ -331,16 +331,16 @@ Gerçek: Negatif  FP (Yanlış Alarm) TN (Doğru -)
 
 ROC (Receiver Operating Characteristic) eğrisi, farklı karar eşiklerinde modelin **Recall (TPR)** ile **Yanlış Pozitif Oranı (FPR)** arasındaki dengeyi gösterir.
 
-**Eşik (Threshold) nedir?** Model olasılık üretir — "bu e-posta %73 spam." Varsayılan olarak 0.5 eşiği kullanılır, ama bunu değiştirebilirsiniz. Eşiği düşürürseniz daha fazla spam yakalarsınız (Recall artar) ama meşru mailler de spam sayılabilir (FPR artar). ROC eğrisi tüm eşikler için bu dengeyi gösterir.
+**Eşik (Threshold) nedir?** Model olasılık üretir - "bu e-posta %73 spam." Varsayılan olarak 0.5 eşiği kullanılır, ama bunu değiştirebilirsiniz. Eşiği düşürürseniz daha fazla spam yakalarsınız (Recall artar) ama meşru mailler de spam sayılabilir (FPR artar). ROC eğrisi tüm eşikler için bu dengeyi gösterir.
 
 **AUC (Eğri Altı Alan):** Modelin rastgele seçimden ne kadar iyi olduğunun tek sayılık özeti.
 
 |  AUC Değeri  | Yorum                                                    |
 | :----------: | -------------------------------------------------------- |
-|   **1.0**    | Mükemmel sınıflandırıcı — gerçek dünyada şüphe uyandırır |
+|   **1.0**    | Mükemmel sınıflandırıcı - gerçek dünyada şüphe uyandırır |
 | **0.9–0.99** | Çok iyi                                                  |
 | **0.7–0.89** | Kullanılabilir, iyileştirme gerekli                      |
-|   **0.5**    | Rastgele tahmin — modelin hiçbir değeri yok              |
+|   **0.5**    | Rastgele tahmin - modelin hiçbir değeri yok              |
 |  **< 0.5**   | Etiketler ters çevrilmiş olabilir                        |
 
 ### Regresyon Metrikleri
@@ -362,7 +362,7 @@ $$\theta \leftarrow \theta - \alpha \cdot \nabla_\theta \mathcal{L}$$
 
 **Sezgi:** Sisli bir dağda gözleri kapalı aşağı inmek istiyorsunuz. Ayağınızın altındaki eğimi hissedip (gradyan), o eğimin tam ters yönüne bir adım atıyorsunuz. Yeterli adım sonunda en düşük noktaya (minimum kayıp) ulaşırsınız.
 
-- **α (Learning Rate):** Her adımın büyüklüğü. Çok büyük olursa minimum etrafında zıplar, yaklaşamaz. Çok küçük olursa milyonlarca adım atar — çok yavaş öğrenir.
+- **α (Learning Rate):** Her adımın büyüklüğü. Çok büyük olursa minimum etrafında zıplar, yaklaşamaz. Çok küçük olursa milyonlarca adım atar - çok yavaş öğrenir.
 - **∇L (Gradyan):** Kayıp fonksiyonunun her parametreye göre hangi yönde ne kadar değiştiği.
 
 | Varyant           |         Nasıl Çalışır          | Avantaj          |       Dezavantaj       |
@@ -386,13 +386,13 @@ $$\theta \leftarrow \theta - \alpha \cdot \nabla_\theta \mathcal{L}$$
 
 ## Regularizasyon
 
-Modelin gereğinden fazla karmaşıklaşmasını — dolayısıyla overfitting'i — önleyen tekniklerdir.
+Modelin gereğinden fazla karmaşıklaşmasını - dolayısıyla overfitting'i - önleyen tekniklerdir.
 
 ### L1 Regularizasyon (Lasso)
 
 $$\mathcal{L}_{L1} = \mathcal{L} + \lambda \sum |\theta_i|$$
 
-Ağırlıkların mutlak değerini kayıp fonksiyonuna ekler. Bu ceza nedeniyle birçok ağırlık tam olarak **sıfıra** iner — model doğal olarak özellik seçimi yapar. Sadece önemli özellikler hayatta kalır; geri kalanlar sıfırla susturulur.
+Ağırlıkların mutlak değerini kayıp fonksiyonuna ekler. Bu ceza nedeniyle birçok ağırlık tam olarak **sıfıra** iner - model doğal olarak özellik seçimi yapar. Sadece önemli özellikler hayatta kalır; geri kalanlar sıfırla susturulur.
 
 **Sezgi:** "Gereksiz şeyleri tut" yerine "gereksizleri at" der. Sparse (seyrek) model üretir.
 
@@ -402,7 +402,7 @@ Ağırlıkların mutlak değerini kayıp fonksiyonuna ekler. Bu ceza nedeniyle b
 
 $$\mathcal{L}_{L2} = \mathcal{L} + \lambda \sum \theta_i^2$$
 
-Ağırlıkların karesini ekler. Sonuç: tüm ağırlıklar küçülür ama hiçbiri tam sıfıra inmez. Modeli "mütevazı kalmaya" zorlar — hiçbir özelliğe aşırı güvenmez.
+Ağırlıkların karesini ekler. Sonuç: tüm ağırlıklar küçülür ama hiçbiri tam sıfıra inmez. Modeli "mütevazı kalmaya" zorlar - hiçbir özelliğe aşırı güvenmez.
 
 **Sezgi:** "Kimseye körü körüne güvenme, herkesi biraz hesaba kat" der.
 

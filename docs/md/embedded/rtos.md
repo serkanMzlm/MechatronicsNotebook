@@ -1,4 +1,4 @@
-# RTOS — Gerçek Zamanlı İşletim Sistemleri
+# RTOS - Gerçek Zamanlı İşletim Sistemleri
 
 !!! note "Genel Bakış"
     RTOS (Real-Time Operating System), deterministik zamanlama garantisi veren, gömülü sistemler için tasarlanmış işletim sistemidir. Klasik işletim sistemlerinden farkı, görevlerin **belirli bir süre içinde** tamamlanma garantisidir. Bu bölüm FreeRTOS temel alınarak yazılmıştır; kavramlar diğer RTOS (Zephyr, ThreadX, embOS) için de büyük ölçüde geçerlidir.
@@ -80,7 +80,7 @@ stateDiagram-v2
 #include "FreeRTOS.h"
 #include "task.h"
 
-/* Task fonksiyonu — sonsuz döngü içermeli */
+/* Task fonksiyonu - sonsuz döngü içermeli */
 void vLedTask(void *pvParameters) {
     (void)pvParameters;
     const TickType_t xDelay = pdMS_TO_TICKS(500);
@@ -116,7 +116,7 @@ int main(void) {
 
     xTaskCreate(vSensorTask, "Sensor", 256, NULL, 3, NULL);
 
-    vTaskStartScheduler();   /* Scheduler başlat — buradan dönmez */
+    vTaskStartScheduler();   /* Scheduler başlat - buradan dönmez */
     for (;;);                /* Teorik erişilmez */
 }
 ```
@@ -140,7 +140,7 @@ int main(void) {
 
 Task'lar arası veri iletiminin birincil yöntemi. Thread-safe, ISR'dan kullanılabilir.
 
-```c title="Queue Örneği — ADC → İşleyici"
+```c title="Queue Örneği - ADC → İşleyici"
 #include "queue.h"
 
 QueueHandle_t xAdcQueue;
@@ -195,9 +195,9 @@ void USART2_IRQHandler(void) {
 
 ### Binary Semaphore
 
-Sinyal vermek için kullanılır — bir task bekler, başkası (veya ISR) sinyaller.
+Sinyal vermek için kullanılır - bir task bekler, başkası (veya ISR) sinyaller.
 
-```c title="Binary Semaphore — ISR → Task"
+```c title="Binary Semaphore - ISR → Task"
 #include "semphr.h"
 
 SemaphoreHandle_t xButtonSem;
@@ -233,7 +233,7 @@ SemaphoreHandle_t xConnSem = xSemaphoreCreateCounting(5, 5);
 
 void vConnectTask(void *pv) {
     if (xSemaphoreTake(xConnSem, pdMS_TO_TICKS(100)) == pdTRUE) {
-        /* Bağlantı kur — slot rezerve edildi */
+        /* Bağlantı kur - slot rezerve edildi */
         /* ... işlem ... */
         xSemaphoreGive(xConnSem);  /* Slot serbest bırak */
     }
@@ -244,7 +244,7 @@ void vConnectTask(void *pv) {
 
 Paylaşılan kaynağa erişimi korur; **priority inheritance** mekanizmasıyla öncelik terslemesini (priority inversion) önler.
 
-```c title="Mutex — Paylaşılan UART"
+```c title="Mutex - Paylaşılan UART"
 SemaphoreHandle_t xUartMutex;
 
 void vTask1(void *pv) {
@@ -313,7 +313,7 @@ int main(void) {
 
 Birden fazla olayı tek bir handle üzerinden takip etmek için bit flag koleksiyonu.
 
-```c title="Event Group — Çoklu Olay Bekleme"
+```c title="Event Group - Çoklu Olay Bekleme"
 #include "event_groups.h"
 
 #define EVT_SENSOR_READY   (1 << 0)
@@ -334,16 +334,16 @@ void vMainTask(void *pv) {
         xEvents,
         EVT_SENSOR_READY | EVT_NETWORK_READY,
         pdTRUE,        /* Okuduktan sonra bit'leri temizle */
-        pdTRUE,        /* AND — ikisi de set olmalı */
+        pdTRUE,        /* AND - ikisi de set olmalı */
         portMAX_DELAY
     );
-    /* Her iki event geldi — başla */
+    /* Her iki event geldi - başla */
 }
 ```
 
 ---
 
-## FreeRTOSConfig.h — Önemli Ayarlar
+## FreeRTOSConfig.h - Önemli Ayarlar
 
 ```c title="FreeRTOSConfig.h (STM32 tipik)"
 #define configUSE_PREEMPTION          1       /* Öncelikli zamanlayıcı */
@@ -401,7 +401,7 @@ void vApplicationMallocFailedHook(void) {
 
 ---
 
-## Memory Yönetimi — Heap Seçimi
+## Memory Yönetimi - Heap Seçimi
 
 FreeRTOS beş heap implementasyonu sunar:
 
@@ -433,14 +433,14 @@ Yüksek öncelikli task hazır olduğunda düşük öncelikliyi anında keser.
 
 ### Cooperative (İşbirlikçi)
 
-Task kendi kendine çekilmediği sürece CPU'yu bırakmaz (`taskYIELD()` veya blocking çağrı). Her task iyi niyetli olmalı — tek kötü task tüm sistemi bloke eder.
+Task kendi kendine çekilmediği sürece CPU'yu bırakmaz (`taskYIELD()` veya blocking çağrı). Her task iyi niyetli olmalı - tek kötü task tüm sistemi bloke eder.
 
 ---
 
 ## Kritik Bölge ve Kesme Yönetimi
 
 ```c
-/* Task bağlamında — scheduler'ı askıya alır */
+/* Task bağlamında - scheduler'ı askıya alır */
 taskENTER_CRITICAL();
 /* Kesintisiz kritik kod */
 taskEXIT_CRITICAL();
@@ -456,11 +456,11 @@ xTaskResumeAll();
 ```
 
 !!! danger "Kritik Bölgede Gecikme Yasak"
-    `taskENTER_CRITICAL()` içinde `vTaskDelay()` çağrısı yapılamaz; deadlock oluşur. Kesmeleri en kısa sürede serbest bırakın — her fazladan microsecond gerçek zamanlılığı bozar.
+    `taskENTER_CRITICAL()` içinde `vTaskDelay()` çağrısı yapılamaz; deadlock oluşur. Kesmeleri en kısa sürede serbest bırakın - her fazladan microsecond gerçek zamanlılığı bozar.
 
 ---
 
-## Gerçek Zamanlılık — Hard vs Soft RT
+## Gerçek Zamanlılık - Hard vs Soft RT
 
 | Tür         | Tanım                                               | Örnekler                 |
 | ----------- | --------------------------------------------------- | ------------------------ |

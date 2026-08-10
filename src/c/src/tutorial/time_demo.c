@@ -1,5 +1,5 @@
 /*
- * time_demo.c — Zaman İşlemleri
+ * time_demo.c - Zaman İşlemleri
  *
  * Kapsanan konular:
  *   time()      → epoch saniyesi
@@ -19,7 +19,7 @@
 #include "common.h"
 
 /* ===========================================================================
- * BÖLÜM 1 — time_t ve struct tm
+ * BÖLÜM 1 - time_t ve struct tm
  *
  * time_t       → epoch'tan (1970-01-01 00:00:00 UTC) geçen saniye
  * struct tm    → insan okunabilir zaman bileşenleri
@@ -65,7 +65,7 @@ static void demo_time_types(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 2 — strftime
+ * BÖLÜM 2 - strftime
  *
  * printf benzeri zaman formatlama.
  *
@@ -103,7 +103,7 @@ static void demo_strftime(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 3 — difftime ve mktime
+ * BÖLÜM 3 - difftime ve mktime
  *
  * difftime(t2, t1) → t2 - t1 farkını double olarak döner (saniye)
  * mktime(tm)       → struct tm'yi time_t'ye çevirir
@@ -135,7 +135,7 @@ static void demo_difftime(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 4 — clock() ile CPU süresi ölçümü
+ * BÖLÜM 4 - clock() ile CPU süresi ölçümü
  *
  * clock()          → işlemci tik sayısı (CLOCKS_PER_SEC ile saniyeye çevir)
  * clock_t          → tik sayısı tipi
@@ -164,7 +164,7 @@ static void demo_clock(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 5 — timespec (C11 / POSIX)
+ * BÖLÜM 5 - timespec (C11 / POSIX)
  *
  * Nanosaniye hassasiyetinde zaman.
  * timespec_get(): C11 standart fonksiyon.

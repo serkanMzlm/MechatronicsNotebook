@@ -1,18 +1,18 @@
-# OpenCV — Görüntü İşleme
+# OpenCV - Görüntü İşleme
 
 !!! note "Bu Sayfa Ne Anlatıyor?"
     OpenCV'yi hiç kullanmamış biri için sıfırdan başlar. Görüntünün ne olduğunu açıklar, sonra kamera kalibrasyonu, stereo görüntüleme ve hareket takibini anlatır. Her bölüm "neden yapıyoruz?" sorusuna cevap verir.
 
 ---
 
-## Görüntü Nedir? — Temelden Başlamak
+## Görüntü Nedir? - Temelden Başlamak
 
 Bir fotoğrafa yaklaştığınızda, ızgara şeklinde küçük renkli kareler görürsünüz. Bu karelerin her birine **piksel** (pixel) denir. Bir 1920×1080 çözünürlüklü görüntü, 1920 sütun × 1080 satır = **2.073.600 piksel** içerir.
 
 Her piksel renk bilgisi tutar. Renk nasıl saklanır?
 
 ```
-Renkli görüntü (BGR formatı — OpenCV'nin tercihi):
+Renkli görüntü (BGR formatı - OpenCV'nin tercihi):
 ┌─────────────────────────────────────┐
 │ Her piksel = [Blue, Green, Red]     │
 │ Her kanal 0-255 arası bir sayı      │
@@ -74,7 +74,7 @@ cv2.destroyAllWindows()
 
 ---
 
-## Renk Uzayları — Aynı Rengi Farklı Dillerde Söylemek
+## Renk Uzayları - Aynı Rengi Farklı Dillerde Söylemek
 
 Rengi ifade etmenin birden fazla yolu var. Her birinin farklı kullanım alanı var:
 
@@ -106,7 +106,7 @@ sonuc = cv2.bitwise_and(img, img, mask=maske)
 
 ---
 
-## Temel Filtreler — Görüntüyü Yumuşatmak ve Keskinleştirmek
+## Temel Filtreler - Görüntüyü Yumuşatmak ve Keskinleştirmek
 
 Filtreler, her pikseli komşularıyla birleştirerek çalışır. Buna **konvolüsyon** denir.
 
@@ -122,14 +122,14 @@ Blur (yumuşatma) nasıl çalışır?
 ```python title="filtreler.py"
 img = cv2.imread("foto.jpg")
 
-# Gaussian blur — gürültüyü azaltır
+# Gaussian blur - gürültüyü azaltır
 blur = cv2.GaussianBlur(img, (5, 5), sigmaX=0)
-# (5, 5) = çekirdek boyutu — tek sayı olmalı
+# (5, 5) = çekirdek boyutu - tek sayı olmalı
 
-# Median blur — tuz-biber gürültüsüne karşı etkili
+# Median blur - tuz-biber gürültüsüne karşı etkili
 median = cv2.medianBlur(img, 5)
 
-# Bilateral filter — kenarları koruyarak yumuşatır (en kaliteli ama yavaş)
+# Bilateral filter - kenarları koruyarak yumuşatır (en kaliteli ama yavaş)
 bilateral = cv2.bilateralFilter(img, d=9, sigmaColor=75, sigmaSpace=75)
 
 # Keskinleştirme (sharpen)
@@ -139,7 +139,7 @@ kernel = np.array([[0, -1,  0],
 keskin = cv2.filter2D(img, -1, kernel)
 ```
 
-### Kenar Tespiti — Canny
+### Kenar Tespiti - Canny
 
 Kenar = piksel yoğunluğunun ani değiştiği yer. Canny, bu değişimi bulur.
 
@@ -154,7 +154,7 @@ kenarlar = cv2.Canny(blur, threshold1=50, threshold2=150)
 
 ---
 
-## Morfolojik İşlemler — Şekli Temizlemek
+## Morfolojik İşlemler - Şekli Temizlemek
 
 Maske veya ikili (siyah-beyaz) görüntülerde gürültüyü temizler, delikleri kapatır.
 
@@ -178,7 +178,7 @@ closing = cv2.morphologyEx(binary_img, cv2.MORPH_CLOSE, kernel)
 
 ---
 
-## Kontur Tespiti — Şekil Bulmak
+## Kontur Tespiti - Şekil Bulmak
 
 Kontur = bir şeklin dış sınırını izleyen eğri. Nesne sayma, boyut ölçme için kullanılır.
 
@@ -209,7 +209,7 @@ for k in konturlar:
 
 ---
 
-## CV Algoritmaları — SIFT, ORB, Homografi
+## CV Algoritmaları - SIFT, ORB, Homografi
 
 Bu algoritmalar "özellik noktaları" bulur. Özellik noktası = görüntüde belirgin, kolayca tanınabilir bir nokta (köşe, blob, vb.).
 
@@ -229,7 +229,7 @@ graph LR
     F --> G[Sonuç\nPanorama / 3D]
 ```
 
-### ORB — Hızlı ve Ücretsiz
+### ORB - Hızlı ve Ücretsiz
 
 ORB (Oriented FAST + Rotated BRIEF), SIFT'e göre çok daha hızlı ve patent ücreti yok.
 
@@ -264,7 +264,7 @@ cv2.imshow("Eşleşmeler", gorsel)
 cv2.waitKey(0)
 ```
 
-### SIFT — Daha Güvenilir Ama Yavaş
+### SIFT - Daha Güvenilir Ama Yavaş
 
 SIFT (Scale-Invariant Feature Transform), farklı ölçek ve dönüşlerde de aynı noktaları bulur.
 
@@ -290,7 +290,7 @@ for m, n in eslesmeler:
 print(f"İyi eşleşme sayısı: {len(iyi)}")
 ```
 
-### Homografi — Bir Görüntüyü Diğerine Dönüştürme
+### Homografi - Bir Görüntüyü Diğerine Dönüştürme
 
 Homografi, iki görüntü düzlemi arasındaki perspektif dönüşümü matrisidir (3×3). Şunu yapar: "Bu 4 nokta şuradaysa, bütün görüntüyü nasıl bükmem lazım?"
 
@@ -320,7 +320,7 @@ if len(iyi) >= 4:
 
 ---
 
-## Kamera Kalibrasyonu — Lensi Düzeltmek
+## Kamera Kalibrasyonu - Lensi Düzeltmek
 
 ### Problem: Lens Neden Bozuyor?
 
@@ -334,7 +334,7 @@ Radyal bozukluk (barrel distortion):
 └──────────┘     └──────────┘
 
 Teğetsel bozukluk (tangential):
-Lens tam merkezi değilse — görüntü eğrilir
+Lens tam merkezi değilse - görüntü eğrilir
 ```
 
 **Kalibrasyon amacı:** Bu bozuklukları ölçmek ve düzeltmek. 3D hesaplamalar (stereo, SfM, AR) için zorunlu.
@@ -345,8 +345,8 @@ Lens tam merkezi değilse — görüntü eğrilir
 import cv2
 import numpy as np
 
-SATIR = 6       # İç köşe sayısı — dikey
-SUTUN = 9       # İç köşe sayısı — yatay
+SATIR = 6       # İç köşe sayısı - dikey
+SUTUN = 9       # İç köşe sayısı - yatay
 KARE_BOY = 25   # mm cinsinden her karenin boyutu
 
 # 3D gerçek dünya koordinatları (z=0, düzlemde)
@@ -399,7 +399,7 @@ print(K)
 #       [0,  0,  1 ]]
 
 print("\nBozukluk Katsayıları (dist):")
-print(dist)   # [k1, k2, p1, p2, k3] — radyal ve teğetsel bozukluk
+print(dist)   # [k1, k2, p1, p2, k3] - radyal ve teğetsel bozukluk
 
 # Kalibrasyon hatasını değerlendir (reprojection error)
 ortalama_hata = 0
@@ -437,7 +437,7 @@ cv2.imwrite("duzeltilmis.jpg", duzeltilmis)
 
 ---
 
-## Stereo Görüntüleme — İki Kamerayla Derinlik Ölçümü
+## Stereo Görüntüleme - İki Kamerayla Derinlik Ölçümü
 
 ### Çalışma Prensibi
 
@@ -486,7 +486,7 @@ ret, K1, dist1, K2, dist2, R, T, E, F = cv2.stereoCalibrate(
 # T: Sağ kameranın sol kameraya göre öteleme vektörü (taban çizgisi)
 print(f"Taban çizgisi: {np.linalg.norm(T) * 100:.1f} cm")
 
-# Stereo rectification — iki görüntüyü aynı düzleme hizala
+# Stereo rectification - iki görüntüyü aynı düzleme hizala
 R1, R2, P1, P2, Q, roi1, roi2 = cv2.stereoRectify(
     K1, dist1, K2, dist2,
     gri.shape[::-1], R, T
@@ -520,7 +520,7 @@ rectR = cv2.remap(imgR, map1R, map2R, cv2.INTER_LINEAR)
 gL = cv2.cvtColor(rectL, cv2.COLOR_BGR2GRAY)
 gR = cv2.cvtColor(rectR, cv2.COLOR_BGR2GRAY)
 
-# SGBM (Semi-Global Block Matching) — kaliteli derinlik haritası
+# SGBM (Semi-Global Block Matching) - kaliteli derinlik haritası
 stereo = cv2.StereoSGBM_create(
     minDisparity=0,
     numDisparities=128,   # 16'nın katı olmalı
@@ -538,7 +538,7 @@ disparity = stereo.compute(gL, gR).astype(np.float32) / 16.0
 
 # Paralaks → gerçek derinlik (metre)
 nokta_bulutu = cv2.reprojectImageTo3D(disparity, Q)
-# nokta_bulutu[y, x] = [X, Y, Z] — gerçek 3D koordinat (metre)
+# nokta_bulutu[y, x] = [X, Y, Z] - gerçek 3D koordinat (metre)
 
 # Görselleştirme
 disparity_norm = cv2.normalize(disparity, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
@@ -558,11 +558,11 @@ print(f"Merkezdeki nesne {Z:.2f} metre uzakta")
 
 ---
 
-## Optical Flow — Hareketi Takip Etmek
+## Optical Flow - Hareketi Takip Etmek
 
 Optical flow, video karelerindeki **piksel hareketi** hesaplar. "Bu piksel bir sonraki karede nereye gitti?"
 
-### Lucas-Kanade — Seçili Noktaları Takip Et
+### Lucas-Kanade - Seçili Noktaları Takip Et
 
 ```python title="lucas_kanade.py"
 import cv2
@@ -618,7 +618,7 @@ while True:
     p0 = iyi_yeni.reshape(-1, 1, 2)
 ```
 
-### Farneback — Tüm Görüntüde Yoğun Akış
+### Farneback - Tüm Görüntüde Yoğun Akış
 
 Her piksel için hareket vektörü hesaplar. Daha yavaş ama kapsamlı.
 
@@ -640,7 +640,7 @@ while True:
         pyr_scale=0.5, levels=3, winsize=15,
         iterations=3, poly_n=5, poly_sigma=1.2, flags=0
     )
-    # flow.shape = (h, w, 2) — her piksel için (dx, dy)
+    # flow.shape = (h, w, 2) - her piksel için (dx, dy)
 
     # Polar koordinata çevir (büyüklük + açı)
     mag, ang = cv2.cartToPolar(flow[..., 0], flow[..., 1])
@@ -748,7 +748,7 @@ while True:
     gR = cv2.cvtColor(rectR, cv2.COLOR_BGR2GRAY)
     disparity = stereo.compute(gL, gR).astype(np.float32) / 16.0
 
-    # Nesne tespiti (örnek: sabit bbox — YOLO ile gelir normalde)
+    # Nesne tespiti (örnek: sabit bbox - YOLO ile gelir normalde)
     tespitler = [(100, 200, 80, 120)]   # [(x, y, w, h), ...]
 
     for bbox in tespitler:
@@ -774,7 +774,7 @@ while True:
     - `cv2.VideoWriter_fourcc` ile H264 kodlayıcı kullan, AVI yerine MP4 çıkar
 
 !!! warning "Sık Yapılan Hatalar"
-    - `cv2.imread()` başarısız olursa `None` döner — her zaman kontrol et
-    - Gri görüntüde `shape` 2 boyutlu — `(h, w)`. BGR'de 3 boyutlu — `(h, w, 3)`
+    - `cv2.imread()` başarısız olursa `None` döner - her zaman kontrol et
+    - Gri görüntüde `shape` 2 boyutlu - `(h, w)`. BGR'de 3 boyutlu - `(h, w, 3)`
     - `waitKey(0)` → sonsuza kadar bekler; `waitKey(1)` → 1ms bekler (video için)
     - Koordinatlar her zaman `(x, y)` sıralamasında ama array indexleme `[y, x]` sıralamasındadır

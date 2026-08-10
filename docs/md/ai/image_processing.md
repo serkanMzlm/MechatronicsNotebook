@@ -16,7 +16,7 @@ graph TD
 
 ## Dijital Görüntü Nedir?
 
-Bir dijital görüntü, sayısal değerler içeren iki boyutlu bir matristir. Her hücre bir **piksel** (pixel — picture element), her değer o pikselin renk ya da yoğunluk bilgisidir. Bilgisayar için görüntü, sadece sayılardan oluşan bir tablodur.
+Bir dijital görüntü, sayısal değerler içeren iki boyutlu bir matristir. Her hücre bir **piksel** (pixel - picture element), her değer o pikselin renk ya da yoğunluk bilgisidir. Bilgisayar için görüntü, sadece sayılardan oluşan bir tablodur.
 
 ### Piksel ve Matris Yapısı
 
@@ -32,14 +32,14 @@ graph LR
     end
 ```
 
-**Renkli görüntü:** 3 boyutlu bir matris — Yükseklik × Genişlik × 3 kanal (R, G, B). 1920×1080 Full HD görüntü için bu 1920 × 1080 × 3 = yaklaşık 6.2 milyon sayı demektir.
+**Renkli görüntü:** 3 boyutlu bir matris - Yükseklik × Genişlik × 3 kanal (R, G, B). 1920×1080 Full HD görüntü için bu 1920 × 1080 × 3 = yaklaşık 6.2 milyon sayı demektir.
 
-**Gri tonlamalı:** Her piksel tek bir değer — 0 (siyah) ile 255 (beyaz) arasında. Renk bilgisi yoktur, sadece parlaklık.
+**Gri tonlamalı:** Her piksel tek bir değer - 0 (siyah) ile 255 (beyaz) arasında. Renk bilgisi yoktur, sadece parlaklık.
 
 **Bit derinliği:** Piksel başına kullanılan bit sayısı.
 
 - **uint8 (8 bit):** 0–255 arası 256 değer. Standart fotoğraflar ve kamera görüntüleri.
-- **uint16 (16 bit):** 0–65535. Tıbbi görüntüler, astronomik veriler — çok daha ince parlaklık farkları.
+- **uint16 (16 bit):** 0–65535. Tıbbi görüntüler, astronomik veriler - çok daha ince parlaklık farkları.
 - **float32:** 0.0–1.0 veya herhangi bir aralık. Sinir ağı işlemlerinde kullanılır.
 
 ### Çözünürlük ve Boyut Kavramları
@@ -54,7 +54,7 @@ graph LR
 
 ---
 
-## Renk Uzayları — Görüntüyü Farklı Temsil Etmek
+## Renk Uzayları - Görüntüyü Farklı Temsil Etmek
 
 Aynı görüntü farklı renk uzaylarında farklı şekilde temsil edilebilir. Her renk uzayı belirli görevler için avantajlıdır. Doğru renk uzayını seçmek, sonraki adımları dramatik biçimde kolaylaştırır.
 
@@ -65,13 +65,13 @@ En doğal renk uzayı. Her piksel kırmızı (R), yeşil (G) ve mavi (B) bileşe
 !!! warning "OpenCV'nin BGR Formatı"
     OpenCV, görüntüleri RGB değil **BGR** sırasıyla okur. Bu tarihsel bir nedendir. Matplotlib ve PyTorch RGB bekler. Hatalı sıra görüntüyü kırmızı-mavi değişmiş gösterir. OpenCV'den gelen görüntüyü Matplotlib'de göstermeden önce BGR→RGB dönüşümü gerekir.
 
-### HSV — Renk Tespiti İçin
+### HSV - Renk Tespiti İçin
 
 RGB'de belirli bir rengi (örn. "sarı") bulmak zordur. Aynı sarı renk gölgede ve güneşte çok farklı RGB değerleri verir. HSV bu sorunu çözer:
 
-- **H (Hue — Ton):** Rengin kendisi. 0°–360° açı. 0° kırmızı → 60° sarı → 120° yeşil → 240° mavi → 360° kırmızı.
-- **S (Saturation — Doygunluk):** Rengin canlılığı. 0 = gri/renksiz, 255 = tam doygun renk.
-- **V (Value — Değer):** Parlaklık. 0 = siyah, 255 = tam parlak.
+- **H (Hue - Ton):** Rengin kendisi. 0°–360° açı. 0° kırmızı → 60° sarı → 120° yeşil → 240° mavi → 360° kırmızı.
+- **S (Saturation - Doygunluk):** Rengin canlılığı. 0 = gri/renksiz, 255 = tam doygun renk.
+- **V (Value - Değer):** Parlaklık. 0 = siyah, 255 = tam parlak.
 
 **Neden HSV kullanılır?** Sarı nesneyi bulmak için H: 20–30, S: 100–255, V: 100–255 aralığı yeterlidir. Bu aralık gölgeli sarı, parlak sarı, mat sarı hepsini kapsar. RGB'de bu kadar basit bir eşik mümkün değildir.
 
@@ -126,11 +126,11 @@ Piksel sayısını artırır veya azaltır. İki temel durum:
 
 **Döndürme:** Merkez nokta ve açı belirlenir. Görüntü o merkez etrafında döndürülür. Dikkat: döndürülen görüntü orijinal çerçeveyi aşabilir, köşeler kesilebilir.
 
-**Flip:** Yatay veya dikey aynalama. Veri artırmada en sık kullanılan işlem — simetrik nesneler için bilgi kaybı olmadan iki kat veri üretir.
+**Flip:** Yatay veya dikey aynalama. Veri artırmada en sık kullanılan işlem - simetrik nesneler için bilgi kaybı olmadan iki kat veri üretir.
 
 ### Perspektif Dönüşüm
 
-Afin dönüşümün ötesinde — bir düzlemi farklı bir bakış açısından görüntülemek gibi. Paralel çizgiler paralel kalmaz (bir yolun uzağa doğru "daraldığı" gibi). 3×3 homografi matrisiyle tanımlanır.
+Afin dönüşümün ötesinde - bir düzlemi farklı bir bakış açısından görüntülemek gibi. Paralel çizgiler paralel kalmaz (bir yolun uzağa doğru "daraldığı" gibi). 3×3 homografi matrisiyle tanımlanır.
 
 **Kullanım alanları:**
 - Belge tarama: Eğri çekilmiş belgeyi düz dikdörtgene dönüştür
@@ -139,7 +139,7 @@ Afin dönüşümün ötesinde — bir düzlemi farklı bir bakış açısından 
 
 ---
 
-## Filtreleme ve Konvolüsyon — Görüntü Düzeltme
+## Filtreleme ve Konvolüsyon - Görüntü Düzeltme
 
 Filtreler, her pikselin değerini komşuluğuna göre yeniden hesaplar. Matematiksel temeli **konvolüsyon**: küçük bir çekirdek (kernel) görüntü üzerinde kaydırılır.
 
@@ -170,7 +170,7 @@ Komşu piksellerin ağırlıklı ortalamasını alır. Ağırlıklar Gaussian (n
 
 Her piksel yerine komşuluğunun medyanını (ortancasını) yazar. Ortalama yerine medyan kullanmak, aşırı değerlere (outlier) karşı dayanıklı kılar.
 
-**Tuz-biber gürültüsü nedir?** Görüntüde rastgele tam beyaz (255) veya tam siyah (0) pikseller görünür. Bir pikselin değeri 0 veya 255 olduğunda, Gaussian filtreleme bu aşırılığı komşulara yayar. Median ise bu piksel azınlıkta kaldığı için onu atar — gürültüsüz sonuç.
+**Tuz-biber gürültüsü nedir?** Görüntüde rastgele tam beyaz (255) veya tam siyah (0) pikseller görünür. Bir pikselin değeri 0 veya 255 olduğunda, Gaussian filtreleme bu aşırılığı komşulara yayar. Median ise bu piksel azınlıkta kaldığı için onu atar - gürültüsüz sonuç.
 
 ### Bilateral Filtreleme
 
@@ -182,7 +182,7 @@ Hem konumdaki yakınlığı hem de piksel değerindeki benzerliği dikkate alır
 
 ---
 
-## Eşikleme (Thresholding) — İkili Görüntü Oluşturma
+## Eşikleme (Thresholding) - İkili Görüntü Oluşturma
 
 Gri tonlamalı görüntüyü siyah-beyaz (ikili) görüntüye dönüştürür. Her piksel, eşik değerinin altında mı üstünde mi olduğuna göre 0 veya 255 değerini alır.
 
@@ -215,7 +215,7 @@ Tek eşik tüm görüntü için uygun değilse (gölge, değişen aydınlatma, y
 
 ---
 
-## Morfolojik İşlemler — Şekil Manipülasyonu
+## Morfolojik İşlemler - Şekil Manipülasyonu
 
 İkili görüntülerdeki şekilleri yapısal bir eleman (kernel) kullanarak değiştiren işlemlerdir. Kernelin şekli ve boyutu, işlemin hangi yapıları etkileyeceğini belirler: küçük bir daire kerneli küçük yuvarlak gürültüyü, ince bir dikdörtgen kerneli ince çizgileri etkiler.
 
@@ -228,7 +228,7 @@ Yalnızca kernelin tamamen "sığdığı" yerlerde piksel 1 kalır. Diğer tüm 
 - İnce bağlantılar kopar
 - Küçük gürültü noktaları tamamen yok olur
 
-**Sezgi:** Kernel bir "eritici" gibi — nesnelerin dışından içe doğru eritir.
+**Sezgi:** Kernel bir "eritici" gibi - nesnelerin dışından içe doğru eritir.
 
 ### Genişleme (Dilation)
 
@@ -239,7 +239,7 @@ Kernelin herhangi bir piksele "dokunduğu" yerlerde çıktı 1 olur.
 - Boşluklar dolar
 - Kopmalar birleşir
 
-**Sezgi:** Kernel bir "boyama fırçası" gibi — nesnelerin etrafına ek piksel boyar.
+**Sezgi:** Kernel bir "boyama fırçası" gibi - nesnelerin etrafına ek piksel boyar.
 
 ### Açma (Opening) = Erozyon → Genişleme
 
@@ -264,7 +264,7 @@ graph LR
     ERODE & DILATE --> GRAD[Gradient\nKenar çıkar]
 ```
 
-**Morfolojik Gradient:** Genişleme ile erozyon arasındaki fark. Nesnenin sınır piksellerini verir — kenar tespitinin morfolojik versiyonu.
+**Morfolojik Gradient:** Genişleme ile erozyon arasındaki fark. Nesnenin sınır piksellerini verir - kenar tespitinin morfolojik versiyonu.
 
 ---
 
@@ -280,8 +280,8 @@ Görüntünün türevi (değişim hızı), yüksek gradyan bölgeleri kenar olar
 
 **Sobel Operatörü:** Yatay ve dikey iki ayrı filtre uygular. Yatay filtre (dikey kenarları bulur), dikey filtre (yatay kenarları bulur). İkisini birleştirerek kenar büyüklüğü ve yönü hesaplanır.
 
-- Yatay Sobel: `[-1 0 +1; -2 0 +2; -1 0 +1]` — sol-sağ geçişi yakalar
-- Dikey Sobel: `[-1 -2 -1; 0 0 0; +1 +2 +1]` — üst-alt geçişi yakalar
+- Yatay Sobel: `[-1 0 +1; -2 0 +2; -1 0 +1]` - sol-sağ geçişi yakalar
+- Dikey Sobel: `[-1 -2 -1; 0 0 0; +1 +2 +1]` - üst-alt geçişi yakalar
 
 **Laplacian Operatörü:** İkinci türev. Yönden bağımsız kenar tespiti yapar ama gürültüye çok duyarlıdır. Blob tespiti için kullanılır.
 
@@ -322,7 +322,7 @@ Görüntüdeki piksel yoğunluk dağılımını gösterir. Her yoğunluk değeri
 | :----------------: | ------------------------------------------------------- |
 |   Sola yığılmış    | Görüntü çok koyu (underexposed)                         |
 |   Sağa yığılmış    | Görüntü aşırı parlak (overexposed)                      |
-| İki tepe (bimodal) | Koyu arka plan + aydınlık ön plan — eşikleme için ideal |
+| İki tepe (bimodal) | Koyu arka plan + aydınlık ön plan - eşikleme için ideal |
 |   Geniş yayılım    | Yüksek kontrast                                         |
 |    Dar yayılım     | Düşük kontrast                                          |
 
@@ -334,7 +334,7 @@ Düşük kontrastlı görüntülerde piksel değerleri dar bir aralıkta yığı
 
 ### CLAHE (Sınırlandırılmış Adaptif Histogram Eşitleme)
 
-Görüntüyü küçük bloklara (tile) böler, her blokta ayrı histogram eşitleme yapar. Aşırı kontrast artışını "clip limit" ile sınırlandırır — belirli bir yoğunluğun üzerindeki histogram çubuğu kesilir, bu fazlalık diğer çubuklara dağıtılır.
+Görüntüyü küçük bloklara (tile) böler, her blokta ayrı histogram eşitleme yapar. Aşırı kontrast artışını "clip limit" ile sınırlandırır - belirli bir yoğunluğun üzerindeki histogram çubuğu kesilir, bu fazlalık diğer çubuklara dağıtılır.
 
 **Neden CLAHE tercih edilir?**
 - Global eşitlemeden daha doğal görünüm
@@ -385,8 +385,8 @@ Köşeler, blob'lar (yuvarlak bölgeler), kenar kesişimleri gibi "ilginç" nokt
 
 ### Anahtar Nokta ve Tanımlayıcı
 
-- **Keypoint:** "Bu noktada ilginç bir şey var" — konum, ölçek, yön bilgisi içerir.
-- **Descriptor:** O noktanın çevresini sayısal olarak tanımlayan vektör — parmak izi gibi. Eşleştirme bu vektörler karşılaştırılarak yapılır.
+- **Keypoint:** "Bu noktada ilginç bir şey var" - konum, ölçek, yön bilgisi içerir.
+- **Descriptor:** O noktanın çevresini sayısal olarak tanımlayan vektör - parmak izi gibi. Eşleştirme bu vektörler karşılaştırılarak yapılır.
 
 ### Popüler Algoritmalar
 
@@ -401,15 +401,15 @@ Köşeler, blob'lar (yuvarlak bölgeler), kenar kesişimleri gibi "ilginç" nokt
 
 **Brute Force:** Birinci görüntünün her descriptor'ını, ikinci görüntünün tüm descriptor'larıyla karşılaştır. En yakın olanı eşleştir. Kesin sonuç verir ama yavaştır.
 
-**FLANN:** Yaklaşık en yakın komşu araması — hızlı ama bazen yanlış eşleştirme yapabilir. Büyük descriptor kümelerinde Brute Force'tan çok daha hızlı.
+**FLANN:** Yaklaşık en yakın komşu araması - hızlı ama bazen yanlış eşleştirme yapabilir. Büyük descriptor kümelerinde Brute Force'tan çok daha hızlı.
 
 **Lowe's Ratio Test:** Bir noktanın en yakın iki eşleşmesi arasındaki mesafe oranı 0.7'den küçükse kabul et. Bu, belirsiz eşleşmeleri (iki aday çok yakın) reddeder.
 
-**RANSAC ile Geometrik Doğrulama:** Eşleştirme sonrası bazı yanlış eşleşmeler (outlier) olabilir. RANSAC geometrik tutarlılığı test eder. Görüntüler arasındaki dönüşüm modeliyle tutarsız eşleşmeleri atar — güvenilir eşleşmeler kalır.
+**RANSAC ile Geometrik Doğrulama:** Eşleştirme sonrası bazı yanlış eşleşmeler (outlier) olabilir. RANSAC geometrik tutarlılığı test eder. Görüntüler arasındaki dönüşüm modeliyle tutarsız eşleşmeleri atar - güvenilir eşleşmeler kalır.
 
 ---
 
-## Segmentasyon — Anlam Çıkarma
+## Segmentasyon - Anlam Çıkarma
 
 Segmentasyon, görüntüyü anlamlı bölgelere ayırma işlemidir. "Bu piksel hangi nesneye ait?" sorusunu yanıtlar.
 
@@ -421,11 +421,11 @@ En basit yöntem: eşikleme sonrası bağlı bileşenler (connected components) 
 
 ### Watershed Algoritması
 
-Su havzası analojisi: görüntüyü bir topografya haritası gibi düşünün. Düşük yoğunluk bölgeler "çukur", yüksek yoğunluk "dağ". Çukurlardan eş zamanlı "su" doldurulur. Farklı çukurlardan gelen su buluştuğunda "su ayrımı" (watershed) oluşur — bu nesne sınırlarıdır.
+Su havzası analojisi: görüntüyü bir topografya haritası gibi düşünün. Düşük yoğunluk bölgeler "çukur", yüksek yoğunluk "dağ". Çukurlardan eş zamanlı "su" doldurulur. Farklı çukurlardan gelen su buluştuğunda "su ayrımı" (watershed) oluşur - bu nesne sınırlarıdır.
 
 **Güçlü olduğu durum:** İç içe nesneleri ayırmak. Dokunuşan hücreler, üst üste meyve, birbirine yakın ürünler.
 
-**Dikkat:** Gürültülü görüntülerde aşırı segmentasyon (over-segmentation) oluşabilir — her küçük çukur ayrı nesne sayılır. Bunu önlemek için önce morfolojik açma uygulanır ve minimum belirgin çukurlar belirlenir.
+**Dikkat:** Gürültülü görüntülerde aşırı segmentasyon (over-segmentation) oluşabilir - her küçük çukur ayrı nesne sayılır. Bunu önlemek için önce morfolojik açma uygulanır ve minimum belirgin çukurlar belirlenir.
 
 ### Derin Öğrenme Tabanlı Segmentasyon
 
@@ -441,7 +441,7 @@ Klasik yöntemler basit geometrik nesnelerde iyi çalışır. Karmaşık sahnele
 
 ---
 
-## Nesne Tespiti — Derin Öğrenme ile
+## Nesne Tespiti - Derin Öğrenme ile
 
 Nesne sınıflandırma: "Bu görüntüde ne var?" → tek sınıf
 Nesne tespiti: "Bu görüntüde ne var ve nerede?" → sınıf + koordinat (bounding box)
@@ -466,13 +466,13 @@ Daha doğru ama yavaş. Tıbbi görüntüleme, hassasiyet kritik uygulamalar iç
 
 **Tek aşamalı dedektörler (YOLO ailesi):**
 
-Görüntüyü ızgara hücrelerine böl; her hücre doğrudan sınıf + koordinat tahmin eder. "You Only Look Once" — görüntüye bir kez bakıp tüm nesneleri bul.
+Görüntüyü ızgara hücrelerine böl; her hücre doğrudan sınıf + koordinat tahmin eder. "You Only Look Once" - görüntüye bir kez bakıp tüm nesneleri bul.
 
 Çok daha hızlı. Gerçek zamanlı uygulamalar için ideal. YOLOv8 hem hız hem doğruluk açısından dengeli, güncel standarttır.
 
 **Transformer tabanlı (DETR):**
 
-CNN yerine Transformer encoder kullanır. "Nesne sorguları" attention mekanizmasıyla görüntüden nesne konumlarını çıkarır. NMS gerekmez — uçtan uca eğitim.
+CNN yerine Transformer encoder kullanır. "Nesne sorguları" attention mekanizmasıyla görüntüden nesne konumlarını çıkarır. NMS gerekmez - uçtan uca eğitim.
 
 ### Temel Kavramlar
 
@@ -533,7 +533,7 @@ K = [fx  0  cx]
 3. Her görüntüde köşe noktaları (veya daire merkezleri) tespit et.
 4. 3D gerçek konumlar ile 2D görüntü konumları arasındaki farkı minimize eden parametreler hesapla.
 
-**RMS hatası:** Kalibrasyon kalitesinin göstergesi. < 0.5 mükemmel, < 1.0 yeterli, > 2.0 kalibrasyon geçersizdir — farklı açılar dene.
+**RMS hatası:** Kalibrasyon kalitesinin göstergesi. < 0.5 mükemmel, < 1.0 yeterli, > 2.0 kalibrasyon geçersizdir - farklı açılar dene.
 
 **Stereo Kalibrasyon:** İki kamera arasındaki geometrik ilişkiyi (R, T) de hesaplar. Bu, görüntüden derinlik (3D konum) hesaplamak için zorunludur.
 
@@ -556,7 +556,7 @@ Küçük bir pencere içinde hareketin sabit olduğunu varsayar. Önce iyi özel
 
 ### Farneback Yöntemi
 
-Yoğun optik akış — her piksel için ayrı hareket vektörü hesaplar. Tüm görüntüde hareket haritası (flow field) oluşturur. Lucas-Kanade'den yavaş ama daha kapsamlı bilgi verir.
+Yoğun optik akış - her piksel için ayrı hareket vektörü hesaplar. Tüm görüntüde hareket haritası (flow field) oluşturur. Lucas-Kanade'den yavaş ama daha kapsamlı bilgi verir.
 
 ### Derin Öğrenme Tabanlı Optik Akış
 

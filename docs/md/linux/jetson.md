@@ -28,7 +28,7 @@ flowchart LR
 
 ---
 
-## L4T — Linux for Tegra
+## L4T - Linux for Tegra
 
 L4T (Linux for Tegra), NVIDIA'nın Jetson platformu için özelleştirilmiş Ubuntu tabanlı Linux dağıtımıdır.
 
@@ -49,7 +49,7 @@ nvidia-smi   # Xavier/Orin
 tegrastats   # Tüm Jetson modelleri için daha ayrıntılı
 ```
 
-### tegrastats — Gerçek Zamanlı İzleme
+### tegrastats - Gerçek Zamanlı İzleme
 
 ```bash
 sudo tegrastats                        # Gerçek zamanlı izleme
@@ -63,12 +63,12 @@ sudo tegrastats --stop                 # Durdu
 # AO@35.5C CPU@42.5C GPU@40C PLL@39C
 ```
 
-### nvpmodel — Güç Modu
+### nvpmodel - Güç Modu
 
 ```bash
 sudo nvpmodel -q verbose   # Aktif mod ve detaylar
-sudo nvpmodel -m 0         # MAXN — maksimum performans
-sudo nvpmodel -m 1         # 5W / 10W — düşük güç
+sudo nvpmodel -m 0         # MAXN - maksimum performans
+sudo nvpmodel -m 1         # 5W / 10W - düşük güç
 
 # Sonraki açılışta da geçerli olsun
 sudo nvpmodel -m 0
@@ -80,7 +80,7 @@ sudo nvpmodel -m 0
 |      1      |  5W  |  2 çekirdek @ 918 MHz  | 128 core @ 640 MHz |
 
 ```bash
-# Jetclocks — tüm saatleri maksimuma al (benchmark için)
+# Jetclocks - tüm saatleri maksimuma al (benchmark için)
 sudo jetson_clocks          # Maksimum frekans kilitle
 sudo jetson_clocks --show   # Mevcut frekansları göster
 sudo jetson_clocks --restore  # Varsayılana dön
@@ -242,7 +242,7 @@ ssh ${JETSON} "sudo depmod -a && sudo reboot"
 
 ---
 
-## Docker — Jetson'da Konteyner
+## Docker - Jetson'da Konteyner
 
 NVIDIA, Jetson için GPU hızlandırması destekleyen `nvidia-docker2` sunmaktadır.
 
@@ -302,7 +302,7 @@ docker-compose up -d
 
 ---
 
-## TensorRT — Çıkarım Hızlandırma
+## TensorRT - Çıkarım Hızlandırma
 
 TensorRT, NVIDIA'nın derin öğrenme modellerini Jetson GPU'sunda optimize eden ve hızlandıran kütüphanedir. JetPack ile birlikte gelir.
 
@@ -320,7 +320,7 @@ ls /usr/include/aarch64-linux-gnu/NvInfer.h
 ### ONNX Modeli TensorRT'ye Dönüştürme
 
 ```bash
-# trtexec — komut satırı dönüştürücü
+# trtexec - komut satırı dönüştürücü
 trtexec --onnx=model.onnx --saveEngine=model.trt
 
 # FP16 hassasiyetle (daha hızlı, biraz daha az doğru)
@@ -387,7 +387,7 @@ deepstream-app -c /opt/nvidia/deepstream/deepstream/samples/configs/deepstream-a
 
 ---
 
-## CAN Bus — SocketCAN
+## CAN Bus - SocketCAN
 
 Robotic ve endüstriyel uygulamalarda yaygın kullanılan CAN protokolü, Jetson'da SocketCAN çerçevesi ile yönetilir.
 
@@ -487,10 +487,10 @@ notifier.stop()
 bus.shutdown()
 ```
 
-### DTS — Tegra Native CAN
+### DTS - Tegra Native CAN
 
 ```dts
-/* Jetson Xavier NX — mttcan */
+/* Jetson Xavier NX - mttcan */
 mttcan@c310000 {
     status = "okay";
 };
@@ -510,7 +510,7 @@ ethtool -i can0   # Sürücü: mttcan
 
 ---
 
-## Watchdog — Donanım İzleme
+## Watchdog - Donanım İzleme
 
 Watchdog timer, sistem kilitlenmesinde veya yazılım takılmasında otomatik sıfırlama yapar.
 
@@ -524,7 +524,7 @@ dmesg | grep -i watchdog
 # Watchdog bilgisi
 wdctl /dev/watchdog0
 
-# Basit test — 10 saniye içinde beslenmezse sıfırlar
+# Basit test - 10 saniye içinde beslenmezse sıfırlar
 sudo bash -c "exec 3>/dev/watchdog; sleep 20"
 # ^^^ tehlikeli! test için loopback modda kullan
 
@@ -595,7 +595,7 @@ int main(void) {
 
 ---
 
-## SPI — Ayrıntılı Kullanım
+## SPI - Ayrıntılı Kullanım
 
 ```bash
 # spidev modülü yüklü mü?
@@ -648,8 +648,8 @@ spi.close()
 # Mevcut seri portlar
 ls /dev/ttyTHS* /dev/ttyS* /dev/ttyUSB* 2>/dev/null
 
-# Jetson Nano — UART2 = debug konsol (/dev/ttyS0)
-# Jetson Xavier NX — UART1 = /dev/ttyTHS0
+# Jetson Nano - UART2 = debug konsol (/dev/ttyS0)
+# Jetson Xavier NX - UART1 = /dev/ttyTHS0
 
 # Port yapılandırması
 sudo stty -F /dev/ttyTHS0 raw speed 115200
@@ -657,7 +657,7 @@ sudo stty -F /dev/ttyTHS0 raw speed 115200
 # minicom ile bağlan
 sudo minicom -D /dev/ttyTHS0 -b 115200
 
-# picocom — daha hafif alternatif
+# picocom - daha hafif alternatif
 sudo picocom -b 115200 /dev/ttyTHS0
 
 # Python ile seri okuma
@@ -754,7 +754,7 @@ gst-launch-1.0 nvarguscamerasrc sensor-id=0 ! \
 
 ---
 
-## GPIO — Tegra Pin Numarası Hesaplama
+## GPIO - Tegra Pin Numarası Hesaplama
 
 Jetson'da GPIO sysfs numaraları, `tegra-gpio.h` dosyasındaki formül ile hesaplanır.
 
@@ -838,7 +838,7 @@ pwdn-gpios  = <0x5b 0x98 0x0>;
 //             ^phandle ^sysfs_no ^flags
 ```
 
-### Python — Jetson.GPIO
+### Python - Jetson.GPIO
 
 ```python
 import Jetson.GPIO as GPIO
@@ -868,7 +868,7 @@ except KeyboardInterrupt:
 
 ---
 
-## BSP — Kısa Hazırlık Rehberi
+## BSP - Kısa Hazırlık Rehberi
 
 Özel taşıyıcı kart için L4T BSP hazırlamak ve müşteriye dağıtmak için temel adımlar.
 
@@ -893,7 +893,7 @@ tar xf Jetson_Linux_R32.7.3_aarch64.tbz2
 cd Linux_for_Tegra/rootfs
 sudo tar xpf ../../Tegra_Linux_Sample-Root-Filesystem_R32.7.3_aarch64.tbz2
 cd ..
-# NOT: apply_binaries.sh'yi henüz ÇALIŞTIRMA — müşteri kendi host'unda çalıştıracak
+# NOT: apply_binaries.sh'yi henüz ÇALIŞTIRMA - müşteri kendi host'unda çalıştıracak
 
 # 4. Özel board dosyalarını yerleştir
 sudo cp my_board.conf     Linux_for_Tegra/
@@ -940,17 +940,17 @@ lsusb | grep NVIDIA
 pip3 install Jetson.GPIO
 python3 -c "import Jetson.GPIO as GPIO; GPIO.setmode(GPIO.BCM)"
 
-# jtop — interaktif sistem monitörü (htop gibi)
+# jtop - interaktif sistem monitörü (htop gibi)
 sudo pip3 install jetson-stats
 sudo jtop
 
-# jetson_release — sistem bilgisi özeti
+# jetson_release - sistem bilgisi özeti
 sudo jetson_release -v
 
 # L4T versiyon öğren
 dpkg -l | grep "l4t\|nvidia-l4t"
 
-# devmem2 — MMIO kayıt okuma/yazma (dikkatli kullan!)
+# devmem2 - MMIO kayıt okuma/yazma (dikkatli kullan!)
 sudo apt install devmem2
 sudo devmem2 0x2430038 w         # Belirtilen adresi oku
 sudo devmem2 0x2430038 w 0x1    # Adrese değer yaz

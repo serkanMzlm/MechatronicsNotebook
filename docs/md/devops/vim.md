@@ -15,7 +15,7 @@ stateDiagram-v2
 
 | Mod         | Giriş              | Açıklama                                   |
 | ----------- | ------------------ | ------------------------------------------ |
-| **Normal**  | `Esc`              | Komut modu — gezinme, silme, kopyalama     |
+| **Normal**  | `Esc`              | Komut modu - gezinme, silme, kopyalama     |
 | **Insert**  | `i`, `a`, `o`      | Metin yazma                                |
 | **Visual**  | `v`, `V`, `Ctrl+v` | Blok seçme                                 |
 | **Command** | `:`                | Dosya işlemleri, ayarlar, arama-değiştirme |

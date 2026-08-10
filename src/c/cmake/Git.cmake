@@ -1,5 +1,5 @@
 # ==============================================================================
-# Git.cmake — Git Bilgisi ve CMake Komut Örnekleri
+# Git.cmake - Git Bilgisi ve CMake Komut Örnekleri
 #
 # Kapsanan komutlar:
 #   execute_process  → dış komut çalıştırma
@@ -10,7 +10,7 @@
 # ==============================================================================
 
 # ==============================================================================
-# git_check_available — execute_process + temel if kontrolleri
+# git_check_available - execute_process + temel if kontrolleri
 # ==============================================================================
 function(git_check_available)
 
@@ -38,7 +38,7 @@ function(git_check_available)
 endfunction()
 
 # ==============================================================================
-# git_get_info — execute_process + string komutları
+# git_get_info - execute_process + string komutları
 # ==============================================================================
 function(git_get_info)
 
@@ -46,7 +46,7 @@ function(git_get_info)
         return()
     endif()
 
-    # Tek komutla birden fazla bilgi çeker — %n satır ayracıdır
+    # Tek komutla birden fazla bilgi çeker - %n satır ayracıdır
     execute_process(
         COMMAND git log -1 --format=%H%n%s%n%ci%n%D
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -105,7 +105,7 @@ function(git_get_info)
 endfunction()
 
 # ==============================================================================
-# git_write_report — file komutları
+# git_write_report - file komutları
 # ==============================================================================
 function(git_write_report)
 
@@ -123,7 +123,7 @@ function(git_write_report)
     set(REPORT "${CMAKE_BINARY_DIR}/reports/git_info.txt")
 
     # WRITE: dosyayı oluşturur veya üzerine yazar
-    file(WRITE "${REPORT}" "# Git Report — ${NOW}\n#\n")
+    file(WRITE "${REPORT}" "# Git Report - ${NOW}\n#\n")
 
     # APPEND: mevcut dosyaya satır ekler
     file(APPEND "${REPORT}" "branch      = ${GIT_BRANCH}\n")
@@ -142,12 +142,12 @@ function(git_write_report)
 endfunction()
 
 # ==============================================================================
-# git_print_summary — message seviyeleri
+# git_print_summary - message seviyeleri
 # ==============================================================================
 function(git_print_summary)
 
     if(NOT GIT_AVAILABLE)
-        message(WARNING "[Git] No summary — git info not available.")
+        message(WARNING "[Git] No summary - git info not available.")
         return()
     endif()
 
@@ -170,7 +170,7 @@ function(git_print_summary)
 endfunction()
 
 # ==============================================================================
-# Çağrılar — include(Git) yapıldığında otomatik çalışır
+# Çağrılar - include(Git) yapıldığında otomatik çalışır
 # ==============================================================================
 # git_check_available()
 git_get_info()

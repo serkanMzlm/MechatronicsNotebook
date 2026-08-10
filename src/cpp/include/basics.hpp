@@ -9,7 +9,7 @@
 // =============================================================================
 //  NAMESPACE
 //  İsim çakışmalarını önlemek için kullanılan kapsam mekanizması.
-//  Not: Header'da "using namespace X;" kullanma — dahil eden her dosyaya sızar.
+//  Not: Header'da "using namespace X;" kullanma - dahil eden her dosyaya sızar.
 //
 //  inline namespace → versiyon kontrolü için kullanılır.
 //    API::connect()     → v2 çağrılır (varsayılan)

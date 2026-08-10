@@ -1,5 +1,5 @@
 /*
- * structs.c — Struct, Union, Enum ve Bileşik Tipler
+ * structs.c - Struct, Union, Enum ve Bileşik Tipler
  *
  * Kapsanan konular:
  *   struct          → tanım, başlatma, üye erişim, kopyalama
@@ -21,7 +21,7 @@
 #include "common.h"
 
 /* ===========================================================================
- * BÖLÜM 1 — Temel struct
+ * BÖLÜM 1 - Temel struct
  *
  * struct: farklı tipteki verileri bir arada tutar.
  *
@@ -34,18 +34,18 @@
  *   → Self-referencing (linked list) için isim zorunlu.
  * ===========================================================================*/
 
-/* Anonim struct — typedef olmadan kullanılamaz */
+/* Anonim struct - typedef olmadan kullanılamaz */
 typedef struct
 {
     float x;
     float y;
 } Point_t;
 
-/* İsimli struct — self-referencing için zorunlu */
+/* İsimli struct - self-referencing için zorunlu */
 typedef struct Node
 {
     int          value;
-    struct Node *next;   /* kendi tipine pointer — isim olmadan yazılamaz */
+    struct Node *next;   /* kendi tipine pointer - isim olmadan yazılamaz */
 } Node_t;
 
 static void demo_basic_struct(void)
@@ -53,7 +53,7 @@ static void demo_basic_struct(void)
     /* Sıralı başlatma */
     Point_t p1 = {1.0f, 2.0f};
 
-    /* Designated initializer (C99) — sıra bağımsız, okunabilir */
+    /* Designated initializer (C99) - sıra bağımsız, okunabilir */
     Point_t p2 = { .x = 5.0f, .y = 3.0f };
 
     /* Belirtilmeyen alanlar sıfırlanır */
@@ -73,7 +73,7 @@ static void demo_basic_struct(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 2 — Struct pointer erişimi
+ * BÖLÜM 2 - Struct pointer erişimi
  *
  * ptr->field   == (*ptr).field
  * İkisi eşdeğer; -> daha yaygın ve okunabilir.
@@ -95,12 +95,12 @@ static void demo_struct_pointer(void)
 {
     Student_t s = { .name = "Alice", .age = 20, .score = 92.5f };
 
-    /* Stack struct — pointer ile erişim */
+    /* Stack struct - pointer ile erişim */
     Student_t *ptr = &s;
     printf("via ->  : name=%s\n", ptr->name);
     printf("via (*) : name=%s\n", (*ptr).name);
 
-    /* Fonksiyona pointer geçirme — kopyalamadan erişim */
+    /* Fonksiyona pointer geçirme - kopyalamadan erişim */
     print_student(&s);
 
     /* Heap struct */
@@ -115,9 +115,9 @@ static void demo_struct_pointer(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 3 — Nested struct
+ * BÖLÜM 3 - Nested struct
  *
- * Struct içinde struct — composit veri modeli.
+ * Struct içinde struct - composit veri modeli.
  * Erişim: obj.inner.field veya ptr->inner.field
  *
  * Dikkat: nested struct kopyalanırken derin kopyalama olmaz (shallow copy).
@@ -134,7 +134,7 @@ typedef struct
 {
     char   title[64];
     float  salary;
-    Date_t start_date;   /* nested struct — değer olarak gömülü */
+    Date_t start_date;   /* nested struct - değer olarak gömülü */
 } Employee_t;
 
 static void demo_nested_struct(void)
@@ -161,7 +161,7 @@ static void demo_nested_struct(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 4 — Flexible array member (C99)
+ * BÖLÜM 4 - Flexible array member (C99)
  *
  * Struct'ın son üyesi boyutsuz dizi olabilir.
  * Dinamik boyutlu veri yapıları için kullanılır (mesaj, paket vb.)
@@ -175,14 +175,14 @@ typedef struct
 {
     uint32_t id;
     uint16_t length;
-    uint8_t  data[];   /* flexible array — boyut dinamik belirlenir */
+    uint8_t  data[];   /* flexible array - boyut dinamik belirlenir */
 } Packet_t;
 
 static void demo_flexible_array(void)
 {
     uint16_t payload_size = 8;
 
-    /* sizeof(Packet_t) data[] dahil değil — manuel hesap */
+    /* sizeof(Packet_t) data[] dahil değil - manuel hesap */
     Packet_t *pkt = malloc(sizeof(Packet_t) + payload_size);
     if (!pkt) return;
 
@@ -202,7 +202,7 @@ static void demo_flexible_array(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 5 — Bitfield
+ * BÖLÜM 5 - Bitfield
  *
  * Struct üyelerinin bit seviyesinde boyutunu belirtir.
  *
@@ -237,22 +237,22 @@ static void demo_bitfield(void)
            reg.enable, reg.mode, reg.channel);
     printf("sizeof(Register_t)=%zu byte(s)\n", sizeof(Register_t));
 
-    /* Ham byte değeri — packed sayesinde 1 byte */
+    /* Ham byte değeri - packed sayesinde 1 byte */
     uint8_t raw;
     memcpy(&raw, &reg, 1);
     printf("raw byte: 0x%02X\n", raw);
 }
 
 /* ===========================================================================
- * BÖLÜM 6 — Union
+ * BÖLÜM 6 - Union
  *
  * Union: tüm üyeler aynı bellek bölgesini paylaşır.
  * Boyutu en büyük üyenin boyutuna eşittir.
  *
  * Kullanım yerleri:
- *   1. Memory overlay — aynı veriye farklı görünüm
- *   2. Type punning — float bit pattern'ini okuma
- *   3. Tagged union — tip güvenli variant
+ *   1. Memory overlay - aynı veriye farklı görünüm
+ *   2. Type punning - float bit pattern'ini okuma
+ *   3. Tagged union - tip güvenli variant
  * ===========================================================================*/
 
 /* Memory overlay: 32-bit değere byte, word, dword erişimi */
@@ -263,14 +263,14 @@ typedef union
     uint8_t  byte[4];
 } Register32_t;
 
-/* Type punning — float IEEE 754 bit pattern */
+/* Type punning - float IEEE 754 bit pattern */
 typedef union
 {
     float    f;
     uint32_t bits;
 } FloatUnion_t;
 
-/* Tagged union — hangi üyenin geçerli olduğunu enum ile işaret eder */
+/* Tagged union - hangi üyenin geçerli olduğunu enum ile işaret eder */
 typedef enum { TYPE_INT, TYPE_FLOAT, TYPE_STRING } ValueType_t;
 
 typedef struct
@@ -319,7 +319,7 @@ static void demo_union(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 7 — Enum ve bitmask flag pattern
+ * BÖLÜM 7 - Enum ve bitmask flag pattern
  *
  * Bitmask enum: her değer bir biti temsil eder.
  * Birden fazla flag aynı anda aktif olabilir (|= ile set, &~ ile clear).
@@ -362,7 +362,7 @@ static void demo_enum_bitmask(void)
 int main(void)
 {
     printf(LINE);
-    LOG_INFO("structs.c — starting demos");
+    LOG_INFO("structs.c - starting demos");
     printf(LINE);
 
     demo_basic_struct();    printf(LINE);
@@ -373,6 +373,6 @@ int main(void)
     demo_union();           printf(LINE);
     demo_enum_bitmask();    printf(LINE);
 
-    LOG_INFO("structs.c — all demos complete");
+    LOG_INFO("structs.c - all demos complete");
     return 0;
 }

@@ -23,7 +23,7 @@ graph LR
 
 ## UART / USART
 
-**Universal Asynchronous Receiver-Transmitter** — ortak clock olmaksızın asenkron seri iletişim.
+**Universal Asynchronous Receiver-Transmitter** - ortak clock olmaksızın asenkron seri iletişim.
 
 ```mermaid
 sequenceDiagram
@@ -45,10 +45,10 @@ sequenceDiagram
 
 | Alan      | Genişlik | Açıklama                   |
 | --------- | :------: | -------------------------- |
-| Start Bit |  1 bit   | LOW — frame başlangıcı     |
+| Start Bit |  1 bit   | LOW - frame başlangıcı     |
 | Veri      | 5–9 bit  | LSB önce; genellikle 8-bit |
 | Parity    | 0–1 bit  | None / Even / Odd          |
-| Stop Bit  | 1–2 bit  | HIGH — frame sonu          |
+| Stop Bit  | 1–2 bit  | HIGH - frame sonu          |
 
 ### Baud Rate Hesabı
 
@@ -66,7 +66,7 @@ UBRR = (16_000_000 / (16 × 9600)) - 1 = 103
 ### STM32 USART Örneği
 
 ```c title="STM32 USART2 Başlatma"
-/* USART2: PA2=TX, PA3=RX — APB1'de */
+/* USART2: PA2=TX, PA3=RX - APB1'de */
 RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
 RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
@@ -94,7 +94,7 @@ uint8_t usart2_recv(void) {
 | --------- | ----------------------------------------------- |
 | Topoloji  | Point-to-Point                                  |
 | Kablo     | TX→RX, RX→TX (çapraz)                           |
-| Clock     | Ortak referans yok — sadece baud rate eşleşmeli |
+| Clock     | Ortak referans yok - sadece baud rate eşleşmeli |
 | Hız       | 115.2 kbps (tipik) → 10+ Mbps (bazı USART)      |
 | Mesafe    | ~15 m (RS-232 seviye dönüştürücüyle)            |
 | Veri yönü | Full-duplex (TX + RX eş zamanlı)                |
@@ -143,8 +143,8 @@ graph LR
 | ---------------- | :----------: | ----------------------- |
 | **MOSI**         | Master→Slave | Master Out Slave In     |
 | **MISO**         | Slave→Master | Master In Slave Out     |
-| **SCK** (SCLK)   | Master→Slave | Clock — master üretir   |
-| **CS** (SS, NSS) | Master→Slave | Chip Select — LOW=aktif |
+| **SCK** (SCLK)   | Master→Slave | Clock - master üretir   |
+| **CS** (SS, NSS) | Master→Slave | Chip Select - LOW=aktif |
 
 ### SPI Modları (CPOL ve CPHA)
 
@@ -160,7 +160,7 @@ graph LR
 
 ### STM32 SPI Örneği
 
-```c title="STM32 SPI1 — Polling"
+```c title="STM32 SPI1 - Polling"
 /* SPI1: PA5=SCK, PA6=MISO, PA7=MOSI */
 RCC->APB2ENR |= RCC_APB2ENR_SPI1EN;
 RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
@@ -247,7 +247,7 @@ sequenceDiagram
 
 ### STM32 I²C Örneği
 
-```c title="STM32 I2C1 — HAL ile MPU6050 okuma"
+```c title="STM32 I2C1 - HAL ile MPU6050 okuma"
 /* HAL kullanımı (tercih edilen) */
 #include "stm32f4xx_hal.h"
 
@@ -265,7 +265,7 @@ HAL_I2C_Master_Transmit(&hi2c1, MPU6050_ADDR, &reg_start, 1, 100);
 HAL_I2C_Master_Receive (&hi2c1, MPU6050_ADDR, veri, 6, 100);
 ```
 
-```c title="Register Seviyesi I2C — STM32F4"
+```c title="Register Seviyesi I2C - STM32F4"
 void i2c1_write(uint8_t addr, uint8_t reg, uint8_t val) {
     /* START */
     I2C1->CR1 |= I2C_CR1_START;
@@ -348,7 +348,7 @@ graph LR
 
 | Alan            |     Bit      | Açıklama                          |
 | --------------- | :----------: | --------------------------------- |
-| SOF             |      1       | Start of Frame — dominant (0)     |
+| SOF             |      1       | Start of Frame - dominant (0)     |
 | Identifier (ID) | 11 (veya 29) | Mesaj kimliği **ve önceliği**     |
 | RTR             |      1       | Remote Transmission Request       |
 | DLC             |      4       | Data Length Code (0–8 byte)       |
@@ -360,7 +360,7 @@ graph LR
 !!! note "ID = Öncelik"
     CAN'da ID hem mesajı tanımlar hem de bus arbitrasyonunda önceliği belirler. **Düşük ID → Yüksek öncelik.** ID=0 en yüksek önceliklidir.
 
-### CSMA/CA — Bus Arbitrasyonu
+### CSMA/CA - Bus Arbitrasyonu
 
 ```mermaid
 sequenceDiagram
@@ -388,7 +388,7 @@ sequenceDiagram
 
 ### STM32 CAN Örneği
 
-```c title="STM32 bxCAN — Mesaj Gönder"
+```c title="STM32 bxCAN - Mesaj Gönder"
 CAN_TxHeaderTypeDef txHeader;
 uint8_t txData[8] = {0x01, 0x02, 0x03, 0x04};
 uint32_t txMailbox;
@@ -400,7 +400,7 @@ txHeader.DLC   = 4;              /* 4 byte veri */
 
 HAL_CAN_AddTxMessage(&hcan1, &txHeader, txData, &txMailbox);
 
-/* Filtre — sadece ID=0x123 mesajları kabul et */
+/* Filtre - sadece ID=0x123 mesajları kabul et */
 CAN_FilterTypeDef filtre;
 filtre.FilterIdHigh         = 0x123 << 5;
 filtre.FilterIdLow          = 0;
@@ -453,10 +453,10 @@ USB, PC ve gömülü cihazlar arasında yüksek hızlı, hot-pluggable haberleş
 | Human Interface Device  |   HID    | Klavye, fare, gamepad |
 | Mass Storage            |   MSC    | USB bellek            |
 | Device Firmware Upgrade |   DFU    | Bootloader            |
-| Vendor Specific         |    —     | Özel protokoller      |
+| Vendor Specific         |    -     | Özel protokoller      |
 
-!!! tip "STM32 USB CDC — Virtual COM Port"
-    STM32CubeMX'te USB_OTG_FS → Device → CDC seçilir; otomatik üretilen `usbd_cdc_if.c` içindeki `CDC_Transmit_FS()` ile veri gönderilebilir. PC'de sürücü gerekmez — standart COM port olarak görünür.
+!!! tip "STM32 USB CDC - Virtual COM Port"
+    STM32CubeMX'te USB_OTG_FS → Device → CDC seçilir; otomatik üretilen `usbd_cdc_if.c` içindeki `CDC_Transmit_FS()` ile veri gönderilebilir. PC'de sürücü gerekmez - standart COM port olarak görünür.
 
 ---
 

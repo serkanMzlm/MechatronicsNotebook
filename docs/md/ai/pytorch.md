@@ -1,4 +1,4 @@
-# PyTorch — Derin Öğrenme Temelleri
+# PyTorch - Derin Öğrenme Temelleri
 
 !!! note "Bu Sayfa Ne Anlatıyor?"
     PyTorch'u hiç kullanmamış biri için sıfırdan başlar. Tensor kavramından başlar, hazır model kullanmayı, kendi modelini eğitmeyi ve fine-tuning yapmayı anlatır. Her adım "neden yapıyoruz?" sorusuna cevap verir.
@@ -21,7 +21,7 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 
 ---
 
-## Tensor — Her Şeyin Temeli
+## Tensor - Her Şeyin Temeli
 
 Tensor, çok boyutlu sayı dizisidir. NumPy array'i gibi düşün ama GPU'da çalışabilir.
 
@@ -50,8 +50,8 @@ resim_batch = torch.zeros(8, 3, 224, 224)   # 8 adet 224×224 RGB görüntü
 a = torch.tensor([1.0, 2.0, 3.0])
 b = torch.tensor([4.0, 5.0, 6.0])
 print(a + b)            # tensor([5., 7., 9.])
-print(a * b)            # tensor([ 4., 10., 18.])  — eleman bazlı çarpma
-print(torch.dot(a, b))  # tensor(32.) — iç çarpım
+print(a * b)            # tensor([ 4., 10., 18.])  - eleman bazlı çarpma
+print(torch.dot(a, b))  # tensor(32.) - iç çarpım
 
 # Matris çarpımı
 A = torch.rand(3, 4)
@@ -116,7 +116,7 @@ for adim in range(100):
 
 ---
 
-## Sinir Ağı Yapısı — nn.Module
+## Sinir Ağı Yapısı - nn.Module
 
 Her sinir ağı `nn.Module` sınıfından türetilir.
 
@@ -135,7 +135,7 @@ class BasitAg(nn.Module):
         self.dropout = nn.Dropout(p=0.5)     # Overfitting önleme
 
     def forward(self, x):
-        # İleri geçiş — veri bu sırayla akar
+        # İleri geçiş - veri bu sırayla akar
         x = self.relu(self.katman1(x))
         x = self.dropout(x)
         x = self.relu(self.katman2(x))
@@ -157,7 +157,7 @@ print(cikis.shape)         # torch.Size([32, 10])
 
 ---
 
-## Veri Yükleme — Dataset ve DataLoader
+## Veri Yükleme - Dataset ve DataLoader
 
 ```python title="veri_yukleme.py"
 import torch
@@ -212,7 +212,7 @@ class OzelDataset(Dataset):
 
 ---
 
-## Model Eğitimi — Standart Döngü
+## Model Eğitimi - Standart Döngü
 
 ```python title="egitim_dongusu.py"
 import torch
@@ -254,7 +254,7 @@ def degerlendirme_epogu(model, yukleyici):
     toplam_kayip = 0.0
     dogru_sayisi = 0
 
-    with torch.no_grad():   # Gradyan hesaplama — bellek tasarrufu
+    with torch.no_grad():   # Gradyan hesaplama - bellek tasarrufu
         for resimler, etiketler in yukleyici:
             resimler = resimler.to(device)
             etiketler = etiketler.to(device)
@@ -289,7 +289,7 @@ for epoch in range(50):
 
 ---
 
-## Hazır Model Kullanma — torchvision.models
+## Hazır Model Kullanma - torchvision.models
 
 Sıfırdan eğitmek yerine zaten güçlü bir modeli yükleyip kullanabilirsin.
 
@@ -340,11 +340,11 @@ for olasilik, idx in zip(en_yuksek.values[0], en_yuksek.indices[0]):
 
 **Transfer learning**: Büyük veri setiyle eğitilmiş modelin öğrendiği özellikleri kendi problemine aktar.
 
-**Neden işe yarar?** ResNet kedi/köpek fotoğraflarında kenar, şekil, doku öğrendi. Sen de kendi verinde bu bilgileri kullanabilirsin — az veriyle yüksek doğruluk.
+**Neden işe yarar?** ResNet kedi/köpek fotoğraflarında kenar, şekil, doku öğrendi. Sen de kendi verinde bu bilgileri kullanabilirsin - az veriyle yüksek doğruluk.
 
 ```mermaid
 graph LR
-    A["Hazır Model\nResNet50 — ImageNet"] --> B["Özellik Çıkarıcı\nKatmanlar donmuş ❄️"]
+    A["Hazır Model\nResNet50 - ImageNet"] --> B["Özellik Çıkarıcı\nKatmanlar donmuş ❄️"]
     B --> C["Yeni Sınıflandırıcı\nSenin verinin 🔥"]
     C --> D["Eğit\nSadece son katman"]
 ```
@@ -412,7 +412,7 @@ model_tam = torch.load("tum_model.pth")
 
 ---
 
-## Çıkarım — Modeli Kullanmak
+## Çıkarım - Modeli Kullanmak
 
 ```python title="cikirim.py"
 import torch
@@ -465,7 +465,7 @@ cap.release()
 
 ## Yaygın Sorunlar ve Çözümleri
 
-!!! warning "Overfitting — Model Eğitim Verisini Ezberledi"
+!!! warning "Overfitting - Model Eğitim Verisini Ezberledi"
     Belirtisi: Eğitim doğruluğu yüksek, validasyon doğruluğu düşük.
     
     Çözümler:
@@ -488,7 +488,7 @@ cap.release()
             break   # Eğitimi durdur
     ```
 
-!!! warning "CUDA Belleği Doldu — out of memory"
+!!! warning "CUDA Belleği Doldu - out of memory"
     ```python
     # batch_size'ı küçült
     batch_size = 16  # 32 yerine
@@ -503,7 +503,7 @@ cap.release()
             optimizer.step()
             optimizer.zero_grad()
     
-    # Mixed precision (yarı hassas) — belleği %50 azaltır
+    # Mixed precision (yarı hassas) - belleği %50 azaltır
     from torch.cuda.amp import autocast, GradScaler
     scaler = GradScaler()
     with autocast():
@@ -514,7 +514,7 @@ cap.release()
     scaler.update()
     ```
 
-!!! tip "Reproducibility — Aynı Sonucu Almak"
+!!! tip "Reproducibility - Aynı Sonucu Almak"
     ```python
     import random
     torch.manual_seed(42)

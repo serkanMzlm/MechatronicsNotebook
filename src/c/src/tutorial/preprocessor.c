@@ -1,5 +1,5 @@
 /*
- * preprocessor.c — C Önişlemci Örnekleri
+ * preprocessor.c - C Önişlemci Örnekleri
  *
  * Kapsanan konular:
  *   #define / #undef        → sabit ve makro tanımlama/silme
@@ -15,9 +15,9 @@
 #include <stdint.h>
 
 /* ===========================================================================
- * #pragma once — çift include koruması (common.h'da kullanıldı)
- * #pragma pack — struct padding kontrolü
- * #pragma GCC optimize — fonksiyon bazlı optimizasyon
+ * #pragma once - çift include koruması (common.h'da kullanıldı)
+ * #pragma pack - struct padding kontrolü
+ * #pragma GCC optimize - fonksiyon bazlı optimizasyon
  * ===========================================================================*/
 #pragma GCC optimize("O2")
 
@@ -44,7 +44,7 @@
 #define MAKE_VAR(prefix, num)  prefix##num
 #define MAKE_FN(name)          fn_##name
 
-/* Güvenli function-like makro — do{}while(0) pattern */
+/* Güvenli function-like makro - do{}while(0) pattern */
 #define SWAP(type, a, b)  \
     do {                  \
         type _t = (a);    \
@@ -85,12 +85,12 @@
     #define COMPILER "Unknown"
 #endif
 
-/* Debug makroları — sadece DEBUG tanımlıysa aktif */
+/* Debug makroları - sadece DEBUG tanımlıysa aktif */
 #ifdef DEBUG
     #define DBG(fmt, ...) \
         fprintf(stderr, "[DBG %s:%d] " fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__)
 #else
-    #define DBG(fmt, ...)   /* boş — release'de sıfır maliyet */
+    #define DBG(fmt, ...)   /* boş - release'de sıfır maliyet */
 #endif
 
 /* ===========================================================================
@@ -103,7 +103,7 @@
  * __TIME__       → derleme saati (string)
  * __STDC_VERSION__ → C standardı (C99=199901L, C11=201112L)
  * ===========================================================================*/
-#define HERE()  printf("  %s:%d — %s()\n", __FILE__, __LINE__, __func__)
+#define HERE()  printf("  %s:%d - %s()\n", __FILE__, __LINE__, __func__)
 
 #define ASSERT(cond)                                          \
     do {                                                      \
@@ -150,7 +150,7 @@ static const char *error_to_string(ErrorCode_t code)
 }
 
 /* ===========================================================================
- * #pragma pack — struct padding kontrolü
+ * #pragma pack - struct padding kontrolü
  * ===========================================================================*/
 #pragma pack(push, 1)   /* 1-byte hizalama */
 typedef struct
@@ -199,7 +199,7 @@ int main(void)
     ASSERT(1 + 1 == 2);          /* geçer */
     ASSERT(sizeof(int) >= 2);    /* geçer */
 
-    /* DBG — sadece -DDEBUG ile derlendiyse çıktı üretir */
+    /* DBG - sadece -DDEBUG ile derlendiyse çıktı üretir */
     DBG("debug message: %d", 42);
 
     printf("\n");

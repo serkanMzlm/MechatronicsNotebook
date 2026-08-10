@@ -1,5 +1,5 @@
 // ============================================================
-//  C++ — Inheritance | Polymorphism | Operator Overloading | friend
+//  C++ - Inheritance | Polymorphism | Operator Overloading | friend
 //  Senaryo: Bir banka sistemi
 //    • Hesap (taban)
 //        ├── VadesizHesap (türetilmiş)
@@ -12,7 +12,7 @@
 #include <stdexcept>   // invalid_argument, runtime_error
 
 // ╔══════════════════════════════════════════════════════════╗
-//  BASE CLASS — Hesap
+//  BASE CLASS - Hesap
 //  • Tüm hesap türlerinin ortak özelliklerini barındırır.
 //  • virtual fonksiyonlar → polimorfizm için kapı açılır.
 // ╚══════════════════════════════════════════════════════════╝
@@ -85,7 +85,7 @@ public:
 
 
 // ════════════════════════════════════════════════════════════
-//  OPERATOR OVERLOADING — operator<<
+//  OPERATOR OVERLOADING - operator<<
 //  friend serbest fonksiyon olduğu için sınıfın korumalı
 //  alanlarına (bakiye, sahibi, hesapNo) doğrudan erişebilir.
 // ════════════════════════════════════════════════════════════
@@ -112,7 +112,7 @@ void hesaplaribirlestir(Hesap& hedef, Hesap& kaynak) {
 
 
 // ╔══════════════════════════════════════════════════════════╗
-//  DERIVED CLASS 1 — VadesizHesap
+//  DERIVED CLASS 1 - VadesizHesap
 //  • public inheritance: "VadesizHesap bir Hesap'tır" ilişkisi
 //  • faizHesapla() override edildi (saf sanal zorunlu)
 //  • paraCek()     override edildi (ek kural: limit kontrolü)
@@ -127,19 +127,19 @@ public:
         : Hesap(isim, bakiye), cekimLimiti(limit)
     {}
 
-    // Saf sanal override — yıllık %1 faiz
+    // Saf sanal override - yıllık %1 faiz
     double faizHesapla() const override {
         return bakiye * 0.01;
     }
 
-    // paraCek override — limit kontrolü eklendi
+    // paraCek override - limit kontrolü eklendi
     void paraCek(double miktar) override {
         if (miktar > cekimLimiti)
             throw std::runtime_error("Günlük çekim limitini aştınız!");
         Hesap::paraCek(miktar);   // taban sınıfın kontrollerini çalıştır
     }
 
-    // bilgiGoster override — ek bilgi
+    // bilgiGoster override - ek bilgi
     void bilgiGoster() const override {
         Hesap::bilgiGoster();     // önce taban davranışı
         std::cout << "  [Vadesiz] Çekim Limiti: "
@@ -156,7 +156,7 @@ public:
 
 
 // ╔══════════════════════════════════════════════════════════╗
-//  DERIVED CLASS 2 — VadeliHesap
+//  DERIVED CLASS 2 - VadeliHesap
 //  • Ek alan: faizOrani ve vadeAy
 //  • faizHesapla() farklı formülle override edildi
 // ╚══════════════════════════════════════════════════════════╝
@@ -171,7 +171,7 @@ public:
         : Hesap(isim, bakiye), faizOrani(oran), vadeAy(ay)
     {}
 
-    // Saf sanal override — vadeye göre faiz
+    // Saf sanal override - vadeye göre faiz
     double faizHesapla() const override {
         return bakiye * faizOrani * (vadeAy / 12.0);
     }
@@ -216,7 +216,7 @@ void tumHesaplariGoster(Hesap* hesaplar[], int adet) {
 // ════════════════════════════════════════════════════════════
 int main() {
     std::cout << "════════════════════════════════════\n";
-    std::cout << " BANKA SİSTEMİ — C++ OOP Örneği\n";
+    std::cout << " BANKA SİSTEMİ - C++ OOP Örneği\n";
     std::cout << "════════════════════════════════════\n\n";
 
     // ── Nesneler oluştur ─────────────────────────────────────

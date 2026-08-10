@@ -17,7 +17,7 @@ graph LR
 
 ---
 
-## dpkg — Düşük Seviye Paket Yöneticisi
+## dpkg - Düşük Seviye Paket Yöneticisi
 
 `dpkg`, Debian paket sisteminin en alt katmanıdır. `.deb` dosyalarını doğrudan sisteme kurar; ancak bağımlılık çözümlemez.
 
@@ -43,7 +43,7 @@ dpkg --configure -a      # Tamamlanamamış kurulumları tamamla
 
 ---
 
-## apt — Yüksek Seviye Paket Yöneticisi
+## apt - Yüksek Seviye Paket Yöneticisi
 
 `apt`, `dpkg`'yi kullanarak çalışır; repository'den indirme, bağımlılık çözümleme ve hata kurtarma ekler.
 
@@ -90,7 +90,7 @@ apt install -f                  # Bozuk bağımlılıkları düzelt
 
 ---
 
-## apt-cache — Metadata Sorgulama
+## apt-cache - Metadata Sorgulama
 
 ```bash
 apt-cache show <paket>          # Detaylı paket bilgisi
@@ -120,7 +120,7 @@ echo "deb [signed-by=/etc/apt/keyrings/example.gpg] https://example.com/repo sta
     sudo tee /etc/apt/sources.list.d/example.list
 sudo apt update
 
-# Pin — belirli paketi belirli sürümde kilitle
+# Pin - belirli paketi belirli sürümde kilitle
 # /etc/apt/preferences.d/mypin
 # Package: nginx
 # Pin: version 1.24.*
@@ -129,7 +129,7 @@ sudo apt update
 
 ---
 
-## pip — Python Paket Yöneticisi
+## pip - Python Paket Yöneticisi
 
 ```bash
 # Kurma
@@ -186,7 +186,7 @@ conda install numpy
 
 ---
 
-## snap — Evrensel Paket Yöneticisi
+## snap - Evrensel Paket Yöneticisi
 
 Snap, uygulamayı bağımlılıklarıyla birlikte yalıtılmış container içinde çalıştırır.
 
@@ -216,7 +216,7 @@ snap info <uygulama>             # Bilgi
 
 ---
 
-## Sistem Güncelleştirme — En İyi Pratikler
+## Sistem Güncelleştirme - En İyi Pratikler
 
 ```bash
 # Güvenli tam güncelleme sırası

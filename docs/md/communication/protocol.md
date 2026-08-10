@@ -30,7 +30,7 @@ UART, saat hattı olmayan eş zamansız seri haberleşme protokolüdür. İki ha
 ```
 IDLE  START   D0   D1   D2   D3   D4   D5   D6   D7   PARITY  STOP
  1  |  0  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |   x   |  1
-     ←————————————————— 1 tam çerçeve ————————————————————————→
+     ←----------------- 1 tam çerçeve ------------------------→
 ```
 
 | Alan         |   Değer   | Açıklama                     |
@@ -54,7 +54,7 @@ $$\text{Baud} = \frac{f_{clock}}{16 \times \text{BRR}}$$
 |   921600  |     ~92 KB/s    | Yüksek hızlı debug |
 |  4000000  |    ~400 KB/s    | STM32, FTDI FT4232 |
 
-```c title="STM32 USART2 — Register Seviyesi"
+```c title="STM32 USART2 - Register Seviyesi"
 /* APB1 clock = 42 MHz, hedef: 115200 baud */
 RCC->APB1ENR |= RCC_APB1ENR_USART2EN;   /* Clock aç */
 GPIOA->MODER |= (2 << 4) | (2 << 6);    /* PA2=TX, PA3=RX → Alternate */
@@ -128,7 +128,7 @@ graph LR
 |  2  |  1   |  0   |    HIGH    |  Düşen kenar   |
 |  3  |  1   |  1   |    HIGH    | Yükselen kenar |
 
-```c title="STM32 SPI1 — Polling"
+```c title="STM32 SPI1 - Polling"
 /* Yapılandırma (APB2 = 84 MHz, SPI Clk = 84/16 = 5.25 MHz) */
 SPI1->CR1 = SPI_CR1_MSTR          /* Master */
           | SPI_CR1_SSM            /* Yazılımsal CS */
@@ -426,7 +426,7 @@ stateDiagram-v2
 
 TCP (Transmission Control Protocol), güvenilir, sıralı, çift yönlü bağlantı odaklı taşıma katmanı protokolüdür. IP, paketleri kaynak'tan hedef'e yönlendiren ağ katmanı protokolüdür.
 
-### Bağlantı Kurma — Three-Way Handshake
+### Bağlantı Kurma - Three-Way Handshake
 
 ```mermaid
 sequenceDiagram
@@ -619,9 +619,9 @@ graph LR
 
 | QoS | Anlam                               | Kullanım       |
 | :-: | ----------------------------------- | -------------- |
-|  0  | At most once — teslim garantisi yok | Sensör akışı   |
-|  1  | At least once — en az 1 teslim      | Komutlar       |
-|  2  | Exactly once — tam 1 teslim         | Kritik veriler |
+|  0  | At most once - teslim garantisi yok | Sensör akışı   |
+|  1  | At least once - en az 1 teslim      | Komutlar       |
+|  2  | Exactly once - tam 1 teslim         | Kritik veriler |
 
 ```bash
 # Mosquitto broker kur ve başlat
@@ -738,7 +738,7 @@ asyncio.run(main())
 | -------------- | ------------------------------------------------------------------------ |
 | **Piconet**    | 1 Master + maks. 7 aktif Slave                                           |
 | **Scatternet** | Birden fazla Piconet'in örtüşmesi; bir cihaz iki Piconet'te rol alabilir |
-| **FHSS**       | 79 kanalda saniyede 1600 hop — parazit direnci                           |
+| **FHSS**       | 79 kanalda saniyede 1600 hop - parazit direnci                           |
 
 ---
 
@@ -811,17 +811,17 @@ cat ~/.ssh/id_ed25519.pub | ssh user@server "cat >> ~/.ssh/authorized_keys"
 ssh -p 2222 user@server            # Özel port
 ssh -i ~/.ssh/id_ed25519 user@server  # Belirli anahtar
 
-# Tünel — yerel yönlendirme (L)
+# Tünel - yerel yönlendirme (L)
 ssh -L 8080:localhost:80 user@server   # localhost:8080 → sunucu:80
 
-# Tünel — uzak yönlendirme (R)
+# Tünel - uzak yönlendirme (R)
 ssh -R 9090:localhost:3000 user@server # sunucu:9090 → yerel:3000
 
 # SOCKS5 proxy
 ssh -D 1080 user@server   # Tüm trafiği sunucu üzerinden geçir
 ```
 
-```ini title="/etc/ssh/sshd_config — Güvenlik Ayarları"
+```ini title="/etc/ssh/sshd_config - Güvenlik Ayarları"
 Port 2222                      # Varsayılan 22'yi değiştir
 PermitRootLogin no             # Root girişi engelle
 PasswordAuthentication no      # Sadece anahtar
@@ -919,12 +919,12 @@ graph LR
 |   32   | `LOCAL_POSITION_NED`  | Yerel NED konum                          |   10 Hz   |
 |   33   | `GLOBAL_POSITION_INT` | Global konum (cm, mm/s)                  |   10 Hz   |
 |   74   | `VFR_HUD`             | Airspeed, groundspeed, heading, throttle |    4 Hz   |
-|   76   | `COMMAND_LONG`        | Komut gönder (arm, takeoff, vb.)         |     —     |
-|   77   | `COMMAND_ACK`         | Komut yanıtı                             |     —     |
-|   83   | `ATTITUDE_TARGET`     | İstenen attitude                         |     —     |
+|   76   | `COMMAND_LONG`        | Komut gönder (arm, takeoff, vb.)         |     -     |
+|   77   | `COMMAND_ACK`         | Komut yanıtı                             |     -     |
+|   83   | `ATTITUDE_TARGET`     | İstenen attitude                         |     -     |
 |  105   | `HIGHRES_IMU`         | Yüksek çözünürlüklü IMU                  | 50–200 Hz |
 |  147   | `BATTERY_STATUS`      | Hücre gerilimleri                        |    1 Hz   |
-|  242   | `HOME_POSITION`       | Home noktası                             |     —     |
+|  242   | `HOME_POSITION`       | Home noktası                             |     -     |
 |  253   | `STATUSTEXT`          | İnsan okunabilir mesaj                   |    Olay   |
 
 ### Bağlantı Yöntemleri
@@ -947,11 +947,11 @@ graph LR
 
 | Bağlantı         |  Port | Açıklama                          |
 | ---------------- | :---: | --------------------------------- |
-| USB / Serial     |   —   | Doğrudan bağlantı; debug ve flash |
+| USB / Serial     |   -   | Doğrudan bağlantı; debug ve flash |
 | UDP (GCS)        | 14550 | Standart GCS portu                |
 | UDP (ikinci)     | 14551 | İkinci istemci (MAVROS, script)   |
 | TCP              |  5760 | SITL varsayılan TCP               |
-| UART (telemetri) |   —   | SiK radio, RFD900                 |
+| UART (telemetri) |   -   | SiK radio, RFD900                 |
 
 ### Uçuş Modları
 
@@ -981,7 +981,7 @@ graph LR
     | Return     | Home'a dön                 |
     | Offboard   | Harici bilgisayar kontrolü |
 
-### pymavlink — Python Örneği
+### pymavlink - Python Örneği
 
 ```python title="mavlink_connect.py"
 from pymavlink import mavutil
@@ -995,7 +995,7 @@ master = mavutil.mavlink_connection('udpin:0.0.0.0:14550')
 
 # İlk HEARTBEAT bekle
 master.wait_heartbeat()
-print(f"HEARTBEAT alındı — system: {master.target_system}, "
+print(f"HEARTBEAT alındı - system: {master.target_system}, "
       f"component: {master.target_component}")
 
 # --- HEARTBEAT oku ---
@@ -1032,7 +1032,7 @@ result = send_command(mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
 print("ARM:", result)
 time.sleep(2)
 
-# Takeoff — 10 metre
+# Takeoff - 10 metre
 result = send_command(mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,
                       param7=10.0)   # yükseklik (m)
 print("TAKEOFF:", result)
@@ -1130,7 +1130,7 @@ ack = master.recv_match(type='MISSION_ACK', blocking=True, timeout=5)
 print(f"Görev yüklendi: {ack.type}")
 ```
 
-### MAVROS — ROS2 Entegrasyonu
+### MAVROS - ROS2 Entegrasyonu
 
 MAVROS, MAVLink protokolünü ROS2 topic/service/action yapısına köprüleyen pakettir.
 
@@ -1220,7 +1220,7 @@ def main():
     rclpy.shutdown()
 ```
 
-### SITL (Software In The Loop) — Simülasyon
+### SITL (Software In The Loop) - Simülasyon
 
 ```bash
 # ArduPilot SITL
@@ -1234,7 +1234,7 @@ sim_vehicle.py -v ArduCopter --console --map
 cd PX4-Autopilot
 make px4_sitl gazebo-classic_iris
 
-# MAVProxy — komut satırı GCS
+# MAVProxy - komut satırı GCS
 mavproxy.py --master=udp:127.0.0.1:14550 --console
 
 # Temel SITL komutları (MAVProxy içinde)
@@ -1248,7 +1248,7 @@ mode auto          # Görevi başlat
 ### MAVLink Mesaj İzleme
 
 ```bash
-# mavlogdump — .tlog / .bin dosyası analizi
+# mavlogdump - .tlog / .bin dosyası analizi
 mavlogdump --types ATTITUDE,GPS_RAW_INT flight.tlog
 
 # Python ile anlık izleme

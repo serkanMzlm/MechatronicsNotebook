@@ -29,7 +29,7 @@ flowchart LR
 ### Temel Yapı
 
 ```dts
-/dts-v1/;               // DTS versiyon etiketi — zorunlu
+/dts-v1/;               // DTS versiyon etiketi - zorunlu
 
 #include "bcm2835.dtsi"  // SoC tanımını dahil et
 
@@ -74,7 +74,7 @@ node@ADRES {
     // Byte dizisi (MAC adresi vb.)
     local-mac-address = [DE AD BE EF 12 34];
 
-    // Phandle — başka düğüme referans
+    // Phandle - başka düğüme referans
     clocks = <&clk_ctrl 5>;
 
     // Boş bırakma
@@ -89,7 +89,7 @@ node@ADRES {
 
 ## Kritik Özellikler
 
-### compatible — Sürücü Eşleştirme
+### compatible - Sürücü Eşleştirme
 
 Kernel'in hangi sürücüyü yükleyeceğini belirleyen **en önemli özelliktir.**
 
@@ -114,7 +114,7 @@ static const struct of_device_id my_ids[] = {
 MODULE_DEVICE_TABLE(of, my_ids);
 ```
 
-### reg — Adres ve Boyut
+### reg - Adres ve Boyut
 
 Üst düğümdeki `#address-cells` ve `#size-cells` kaç kelime kullanılacağını belirler.
 
@@ -138,7 +138,7 @@ ethernet@ff700000 {
 };
 ```
 
-### interrupts — Kesme Tanımı
+### interrupts - Kesme Tanımı
 
 ```dts
 // Kesme kontrolörü tanımı
@@ -172,7 +172,7 @@ sensor@48 {
 | `IRQ_TYPE_LEVEL_HIGH`   |   4   | Seviye yüksek  |
 | `IRQ_TYPE_LEVEL_LOW`    |   8   | Seviye düşük   |
 
-### clocks — Saat Kaynağı
+### clocks - Saat Kaynağı
 
 ```dts
 // Saat kontrolörü
@@ -191,7 +191,7 @@ uart0: serial@7e201000 {
 };
 ```
 
-### pinctrl — Pin Çoğullama
+### pinctrl - Pin Çoğullama
 
 Çoğu SoC'ta GPIO pinleri farklı fonksiyonlar için yapılandırılabilir (UART TX/RX, I2C SDA/SCL, SPI vb.). Bu yapılandırma DT ile yapılır.
 
@@ -216,14 +216,14 @@ pinctrl: pinctrl@7e200000 {
     };
 };
 
-// Kullanım — cihaz kendi pinlerini belirtir
+// Kullanım - cihaz kendi pinlerini belirtir
 uart0: serial@7e201000 {
     pinctrl-names = "default";
     pinctrl-0     = <&uart0_pins>; // "default" durumunda bu konfigürasyon
 };
 ```
 
-### status — Etkinleştirme / Devre Dışı
+### status - Etkinleştirme / Devre Dışı
 
 ```dts
 // Temel DTB'de devre dışı (SoC default)
@@ -250,7 +250,7 @@ i2c1: i2c@7e804000 {
 
 ## Tam Pratik Örnekler
 
-### I2C Sensör — MPU-6050 IMU
+### I2C Sensör - MPU-6050 IMU
 
 ```dts
 &i2c1 {
@@ -279,7 +279,7 @@ i2c1: i2c@7e804000 {
 };
 ```
 
-### SPI Flash Bellek — W25Q128
+### SPI Flash Bellek - W25Q128
 
 ```dts
 &spi0 {
@@ -465,7 +465,7 @@ Overlay'ler temel DTB'yi değiştirmeden ek donanım tanımlamak için kullanıl
         };
     };
 
-    // Parametre tanımı — config.txt'ten kullanıcı özelleştirebilir
+    // Parametre tanımı - config.txt'ten kullanıcı özelleştirebilir
     __overrides__ {
         addr = <&bmp280@76>, "reg:0";         // I2C adres parametresi
         speed = <&i2c1>, "clock-frequency:0"; // Hız parametresi
@@ -480,7 +480,7 @@ dtoverlay=bmp280,addr=0x77,speed=100000
 
 ---
 
-## DTC — Device Tree Compiler
+## DTC - Device Tree Compiler
 
 ```bash
 # Derleme: .dts → .dtb
@@ -495,23 +495,23 @@ dtc -I dts -O dtb -@ -o overlay.dtbo overlay.dts
 # Uyarılarla derleme
 dtc -W no-unit_address_vs_reg -I dts -O dtb -o out.dtb in.dts
 
-# fdtdump — ham blob görüntüleme
+# fdtdump - ham blob görüntüleme
 fdtdump output.dtb | head -100
 
-# fdtget — belirli özelliği oku
+# fdtget - belirli özelliği oku
 fdtget output.dtb /soc/serial@7e201000 compatible
 fdtget -t s output.dtb / model
 
-# fdtput — özellik değiştir (binary içinde)
+# fdtput - özellik değiştir (binary içinde)
 fdtput -t s output.dtb /soc/serial@7e201000 status "okay"
 
-# fdtoverlay — overlay uygula
+# fdtoverlay - overlay uygula
 fdtoverlay -i base.dtb -o result.dtb overlay.dtbo
 ```
 
 ---
 
-## Boot Süreci — DTB Nasıl Yüklenir?
+## Boot Süreci - DTB Nasıl Yüklenir?
 
 ```mermaid
 sequenceDiagram
@@ -533,7 +533,7 @@ sequenceDiagram
 ### U-Boot Komutları
 
 ```bash
-# U-Boot shell — DTB yükle ve kernel başlat
+# U-Boot shell - DTB yükle ve kernel başlat
 load mmc 0:1 ${fdt_addr_r}    bcm2711-rpi-4-b.dtb
 load mmc 0:1 ${kernel_addr_r} Image
 booti ${kernel_addr_r} - ${fdt_addr_r}
@@ -571,13 +571,13 @@ ls -la /sys/bus/i2c/devices/                   # I2C cihazları
 ls -la /sys/bus/spi/devices/                   # SPI cihazları
 cat /sys/bus/i2c/devices/1-0068/name           # Sürücünün tanıdığı isim
 
-# Kernel mesajları — DT ve sürücü hataları
+# Kernel mesajları - DT ve sürücü hataları
 dmesg | grep "OF:"       # Open Firmware / Device Tree mesajları
 dmesg | grep "DT:"
 dmesg | grep "pinctrl"
 dmesg | grep "probe"     # Sürücü probe sonuçları
 
-# Raspberry Pi — overlay yönetimi
+# Raspberry Pi - overlay yönetimi
 dtoverlay my_overlay.dtbo          # Overlay yükle
 dtoverlay -l                       # Yüklü overlay'leri listele
 dtoverlay -r my_overlay            # Overlay kaldır
@@ -591,7 +591,7 @@ dtoverlay -h i2c1                  # Overlay parametrelerini göster
 ```ini title="/boot/firmware/config.txt"
 # --- Arayüz Overlay'leri ---
 dtoverlay=i2c0                          # I2C-0 (GPIO0/1)
-dtoverlay=i2c1                          # I2C-1 (GPIO2/3) — varsayılan
+dtoverlay=i2c1                          # I2C-1 (GPIO2/3) - varsayılan
 dtoverlay=i2c6                          # I2C-6 (Pi 4+)
 dtparam=i2c_arm_baudrate=400000         # I2C hızı 400 kHz
 
@@ -630,7 +630,7 @@ dtparam=watchdog=on
 ### address-cells / size-cells Uyumsuzluğu
 
 ```dts
-// HATALI — üst 2 address-cell tanımlıyor, alt 1 cell veriyor
+// HATALI - üst 2 address-cell tanımlıyor, alt 1 cell veriyor
 soc {
     #address-cells = <2>;
     #size-cells    = <1>;
@@ -665,8 +665,8 @@ uart0: serial@7e201000 {
 ### Hatalı compatible Formatı
 
 ```dts
-compatible = "Broadcom,BCM2835";    // HATALI — büyük harf yasak
-compatible = "brcm,bcm2835";        // DOĞRU — her zaman küçük harf, tire ile
+compatible = "Broadcom,BCM2835";    // HATALI - büyük harf yasak
+compatible = "brcm,bcm2835";        // DOĞRU - her zaman küçük harf, tire ile
 
 // vendor,device formatı: vendor kısa kod (brcm, fsl, ti, snps, nxp...)
 ```
@@ -674,7 +674,7 @@ compatible = "brcm,bcm2835";        // DOĞRU — her zaman küçük harf, tire 
 ### Düğüm Adresi ve reg Uyumsuzluğu
 
 ```dts
-// HATALI — düğüm adresindeki @ADRES, reg ile eşleşmeli
+// HATALI - düğüm adresindeki @ADRES, reg ile eşleşmeli
 uart@20000 {
     reg = <0x7e201000 0x200>;   // HATA: 0x20000 ≠ 0x7e201000
 };
@@ -688,7 +688,7 @@ uart@7e201000 {
 ### status = "ok" Hatalı Yazım
 
 ```dts
-status = "ok";      // HATALI — "ok" kernel tarafından tanınmaz
+status = "ok";      // HATALI - "ok" kernel tarafından tanınmaz
 status = "okay";    // DOĞRU
 ```
 

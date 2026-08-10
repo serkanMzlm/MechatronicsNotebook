@@ -218,7 +218,7 @@ ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.ms
 ```
 
 ###  Pozisyon ve Yön (Pose & Origin)
-- `<pose>`: Altı elemanlı liste—x y z roll pitch yaw (birim metre ve radyan).
+- `<pose>`: Altı elemanlı liste-x y z roll pitch yaw (birim metre ve radyan).
 - **relative_to** ile başka bir frame’e göre tanımlanabilir:
 
 ```xml

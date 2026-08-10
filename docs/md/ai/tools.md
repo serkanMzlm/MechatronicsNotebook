@@ -17,7 +17,7 @@ graph TD
 
 ---
 
-## NumPy — Sayısal Hesaplama
+## NumPy - Sayısal Hesaplama
 
 NumPy, Python'da çok boyutlu dizi (`ndarray`) işlemleri için temel kütüphanedir. Saf Python döngülerine kıyasla 10–100× hızlıdır.
 
@@ -84,7 +84,7 @@ X_norm = (X - mean) / std  # Broadcasting: (100,3) - (3,) = (100,3)
 ```python title="NumPy Yeniden Şekillendirme"
 a = np.arange(24)
 b = a.reshape(4, 6)       # (4, 6)
-c = a.reshape(2, 3, 4)    # (2, 3, 4) — 3D
+c = a.reshape(2, 3, 4)    # (2, 3, 4) - 3D
 d = b.reshape(-1)          # Düzleştir → (24,); -1 otomatik hesaplanır
 e = b.reshape(-1, 2)       # (12, 2)
 
@@ -98,7 +98,7 @@ c2 = np.concatenate([x, y], axis=0)   # Eşdeğer vstack
 
 ---
 
-## Pandas — Veri Analizi
+## Pandas - Veri Analizi
 
 Pandas, tablo formatındaki veri (CSV, Excel, SQL) üzerinde etiketli işlemler sağlar.
 
@@ -159,7 +159,7 @@ pivot = df.pivot_table(values='satis', index='ay', columns='urun', aggfunc='sum'
 df1.merge(df2, on='id', how='left')       # Left join
 df1.merge(df2, on='id', how='inner')      # Inner join
 
-# apply — her satır/sütuna özel fonksiyon
+# apply - her satır/sütuna özel fonksiyon
 df['kategori'] = df['skor'].apply(lambda x: 'Yüksek' if x > 80 else 'Düşük')
 
 # String işlemleri
@@ -175,7 +175,7 @@ df['tarih'].dt.dayofweek
 
 ---
 
-## Matplotlib / Seaborn — Görselleştirme
+## Matplotlib / Seaborn - Görselleştirme
 
 ```python title="Matplotlib Temel Grafikler"
 import matplotlib.pyplot as plt
@@ -208,7 +208,7 @@ plt.savefig('grafik.png', dpi=150, bbox_inches='tight')
 plt.show()
 ```
 
-```python title="Seaborn — İstatistiksel Görselleştirme"
+```python title="Seaborn - İstatistiksel Görselleştirme"
 import seaborn as sns
 
 # Korelasyon ısı haritası
@@ -242,7 +242,7 @@ plt.show()
 
 ---
 
-## Scikit-Learn — Klasik Makine Öğrenimi
+## Scikit-Learn - Klasik Makine Öğrenimi
 
 ```python title="Tam Scikit-Learn İş Akışı"
 from sklearn.datasets import load_breast_cancer
@@ -318,7 +318,7 @@ pca = PCA(n_components=0.95)   # Kümülatif varyansın %95'ini koru
 
 ---
 
-## PyTorch — Derin Öğrenme Çerçevesi
+## PyTorch - Derin Öğrenme Çerçevesi
 
 ```python title="PyTorch Temel Yapılar"
 import torch
@@ -485,7 +485,7 @@ model.fit(X_train, y_train,
 
 ## HuggingFace Transformers
 
-```python title="HuggingFace — Hızlı Kullanım"
+```python title="HuggingFace - Hızlı Kullanım"
 from transformers import (
     AutoTokenizer, AutoModelForSequenceClassification,
     Trainer, TrainingArguments
@@ -602,6 +602,6 @@ pip install -r requirements.txt
 | **TensorFlow/Keras** |       DL      | Production, TFLite edge deploy         |
 | **HuggingFace**      |   NLP/Vision  | Önceden eğitilmiş model ekosistemi     |
 | **OpenCV**           |    Görüntü    | Gerçek zamanlı görüntü işleme          |
-| **Ultralytics**      | Nesne Tespiti | YOLOv8 — hızlı fine-tune               |
+| **Ultralytics**      | Nesne Tespiti | YOLOv8 - hızlı fine-tune               |
 | **SHAP**             |    Açıklama   | Model yorumlanabilirliği               |
 | **Optuna**           |  Optimizasyon | Bayesian hiperparametre arama          |

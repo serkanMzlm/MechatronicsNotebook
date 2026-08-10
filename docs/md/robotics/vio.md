@@ -1,11 +1,11 @@
-# VIO — Görsel-Atalet Odometri
+# VIO - Görsel-Atalet Odometri
 
 !!! note "Bu Sayfa Ne Anlatıyor?"
     Optical Flow'dan başlayarak VIO'nun iç mimarisine, OpenVINS kurulumuna ve Kalibr ile kamera-IMU kalibrasyonuna kadar kapsamlı bir rehber. Her kavram "neden lazım?" sorusuna cevap vererek anlatılır.
 
 ---
 
-## Optical Flow — Piksellerin Hareketi
+## Optical Flow - Piksellerin Hareketi
 
 ### Temel Fikir
 
@@ -40,7 +40,7 @@ Ix, Iy    →  yatay/dikey gradyan (OpenCV'de Sobel ile hesaplanır)
 It        →  zaman gradyanı (kare 2 - kare 1)
 ```
 
-**Problem:** İki bilinmeyene (`u`, `v`) karşı tek denklem — **aperture problemi**. Bu yüzden ek kısıt gerekir.
+**Problem:** İki bilinmeyene (`u`, `v`) karşı tek denklem - **aperture problemi**. Bu yüzden ek kısıt gerekir.
 
 ```mermaid
 graph LR
@@ -50,7 +50,7 @@ graph LR
 
 ---
 
-### Lucas-Kanade — Seyrek Optik Akış
+### Lucas-Kanade - Seyrek Optik Akış
 
 **Fikir:** Küçük bir penceredeki (ör. 15×15 piksel) tüm piksellerin aynı hareketi yaptığını varsay. Bu pencerede N piksel varsa N denklem elde edersin → iki bilinmeyen için aşırı belirlenmiş sistem → en küçük kareler (least squares) ile çöz.
 
@@ -65,9 +65,9 @@ A · d = b
 d = (AᵀA)⁻¹Aᵀb   ← en küçük kareler çözümü
 ```
 
-`AᵀA` matrisinin iyi şartlı olması için noktanın **köşe** olması gerekir — düz kenarlarda (`AᵀA` tekilleşir) akış hesaplanamaz. Bu yüzden önce iyi noktalar (köşeler) seçilir.
+`AᵀA` matrisinin iyi şartlı olması için noktanın **köşe** olması gerekir - düz kenarlarda (`AᵀA` tekilleşir) akış hesaplanamaz. Bu yüzden önce iyi noktalar (köşeler) seçilir.
 
-#### Piramit Lucas-Kanade — Büyük Hareketler İçin
+#### Piramit Lucas-Kanade - Büyük Hareketler İçin
 
 Büyük hareketler "küçük hareket" hipotezini bozar. Çözüm: görüntüyü küçülterek büyük hareketi küçük gibi göster, sonra ince ayar yap.
 
@@ -142,7 +142,7 @@ while True:
             p0 = np.vstack([p0, yeni_noktalar])
 ```
 
-### Farneback — Yoğun Optik Akış
+### Farneback - Yoğun Optik Akış
 
 Tüm piksel için hareket vektörü hesaplar. LK'dan yavaş ama tam alan bilgisi verir.
 
@@ -202,7 +202,7 @@ while True:
 
 ---
 
-## VIO — Visual Inertial Odometry
+## VIO - Visual Inertial Odometry
 
 ### VIO Neden Gerekli?
 
@@ -216,7 +216,7 @@ Sadece kamera (VO) ile robotun nerede olduğunu hesaplamak mümkün ama zor. IMU
 | Uzun vadeli drift                |    ✗ Hata birikir   | Kısmen: IMU bias tahmin edilir |
 | Başlangıç oryantasyonu           |       Belirsiz      |      ✓ Yerçekimi vektörü       |
 
-**IMU'nun kendi sorunu:** Bias (sürüklenme) ve gürültü. Statik dururken bile ivmeölçer ve jiroskop sıfır göstermez — hafif sürüklenme (bias) var. Uzun süre entegre edilince büyük hata birikir. VIO bu bias'ı da tahmin eder.
+**IMU'nun kendi sorunu:** Bias (sürüklenme) ve gürültü. Statik dururken bile ivmeölçer ve jiroskop sıfır göstermez - hafif sürüklenme (bias) var. Uzun süre entegre edilince büyük hata birikir. VIO bu bias'ı da tahmin eder.
 
 ### Sistem Bileşenleri
 
@@ -247,7 +247,7 @@ flowchart LR
 
 ### IMU Ön Entegrasyon
 
-İki kamera karesi arasında IMU 10-100 ölçüm yapabilir. Bu ölçümleri tek bir "delta konum" ve "delta oryantasyon" olarak özetlemek gerekir — buna **IMU preintegration** denir.
+İki kamera karesi arasında IMU 10-100 ölçüm yapabilir. Bu ölçümleri tek bir "delta konum" ve "delta oryantasyon" olarak özetlemek gerekir - buna **IMU preintegration** denir.
 
 ```
 Kamera karesi k → Kamera karesi k+1 arasında:
@@ -262,7 +262,7 @@ bₐ = ivmeölçer bias (sürekli tahmin edilir)
 bω = jiroskop bias (sürekli tahmin edilir)
 ```
 
-Ön entegrasyon bias tahminleri değiştiğinde Jacobian ile yeniden hesaplamadan düzeltilebilir — bu büyük hesaplama tasarrufu sağlar.
+Ön entegrasyon bias tahminleri değiştiğinde Jacobian ile yeniden hesaplamadan düzeltilebilir - bu büyük hesaplama tasarrufu sağlar.
 
 ### EKF vs Faktör Grafı
 
@@ -293,9 +293,9 @@ graph LR
     end
 ```
 
-### MSCKF — Multi-State Constraint Kalman Filter
+### MSCKF - Multi-State Constraint Kalman Filter
 
-MSCKF (Mourikis & Roumeliotis, 2007), VIO'nun temeli olan algoritmadır. Harita noktalarını state'e eklemez — bunun yerine bir özellik noktasının birden fazla kamera pozisyonunda görülmesiyle oluşan geometrik kısıtı kullanır.
+MSCKF (Mourikis & Roumeliotis, 2007), VIO'nun temeli olan algoritmadır. Harita noktalarını state'e eklemez - bunun yerine bir özellik noktasının birden fazla kamera pozisyonunda görülmesiyle oluşan geometrik kısıtı kullanır.
 
 ```
 Geleneksel EKF-SLAM:
@@ -341,7 +341,7 @@ Yeni KF₆ gelince:
 
 ---
 
-## OpenVINS — Açık Kaynak VIO Sistemi
+## OpenVINS - Açık Kaynak VIO Sistemi
 
 **OpenVINS**, Wisconsin Üniversitesi tarafından geliştirilen MSCKF bazlı VIO sistemidir. Akademik çevrede referans uygulama sayılır.
 
@@ -481,7 +481,7 @@ ros2 topic echo /ov_msckf/odometry | grep covariance
 
 ```bash
 # EuRoC üzerinde karşılaştırma
-# Başarı metriği: ATE (Absolute Trajectory Error) — gerçek yol ile tahmini yol farkı
+# Başarı metriği: ATE (Absolute Trajectory Error) - gerçek yol ile tahmini yol farkı
 
 ros2 launch ov_eval comparison.launch.py \
     path_gt:=/path/to/ground_truth.csv \
@@ -490,7 +490,7 @@ ros2 launch ov_eval comparison.launch.py \
 
 ---
 
-## Kalibr — Kamera ve IMU Kalibrasyonu
+## Kalibr - Kamera ve IMU Kalibrasyonu
 
 **Kalibr**, ETH Zürich'in geliştirdiği kapsamlı kalibrasyon araç setidir.
 
@@ -528,7 +528,7 @@ tagSize:     0.088    # Etiket boyutu (metre cinsinden)
 tagSpacing:  0.3      # Etiketler arası boşluk oranı (tagSize'a göre)
 ```
 
-### Kurulum (Docker — Önerilen)
+### Kurulum (Docker - Önerilen)
 
 ```bash
 # Kalibr'i Docker ile çalıştır (bağımlılık sorunları olmadan)
@@ -651,7 +651,7 @@ rosrun kalibr kalibr_calibrate_imu_camera \
 ```
 
 ```yaml title="imu_params.yaml"
-# IMU gürültü modeli — datasheet veya Allan varyans'tan al
+# IMU gürültü modeli - datasheet veya Allan varyans'tan al
 rostopic: /imu/data
 update_rate: 200.0    # Hz
 
@@ -669,7 +669,7 @@ cam0:
     - [ 0.99956,   0.01497,   0.02572,  -0.06468]
     - [-0.02572,   0.00376,   0.99966,   0.00981]
     - [ 0.0,       0.0,       0.0,       1.0    ]
-  timeshift_cam_imu: -0.00246    # saniye — kamera IMU'dan 2.46ms önce geliyor
+  timeshift_cam_imu: -0.00246    # saniye - kamera IMU'dan 2.46ms önce geliyor
   intrinsics: [458.654, 457.296, 367.215, 248.375]
   distortion_coeffs: [-0.28340811, 0.07395907, 0.00019359, 1.76187114e-05]
 ```
@@ -717,7 +717,7 @@ kalibr_to_openvins("cam_imu_kalib-camchain.yaml", "openvins_config.yaml")
 
 ---
 
-## Allan Varyans — IMU Gürültü Parametrelerini Ölçmek
+## Allan Varyans - IMU Gürültü Parametrelerini Ölçmek
 
 IMU datasheet'teki değerler her sensörde farklı. Kendi ölçümünüzü yapın.
 
@@ -759,13 +759,13 @@ flowchart TD
 !!! warning "Kamera-IMU Senkronizasyon"
     Zaman damgaları hatalıysa VIO asla doğru çalışmaz. `timeshift_cam_imu` doğru tahmin edilmeli.
     
-    Test: `ros2 topic echo /camera/image_raw --field header.stamp` ve `/imu/data --field header.stamp` karşılaştır — fark sabit ve küçük (< 10ms) olmalı.
+    Test: `ros2 topic echo /camera/image_raw --field header.stamp` ve `/imu/data --field header.stamp` karşılaştır - fark sabit ve küçük (< 10ms) olmalı.
 
 !!! warning "Kamera Titremeye Karşı Hassas"
     Stereo kameranın iki kafası arasındaki extrinsic, titreme veya ısıl genleşmeyle değişir. Saha öncesi kalibrasyon yenile.
 
 !!! tip "Hızlı Parametre Tahmini"
-    IMU datasheet değerleri başlangıç için yeterli. Gerçek Allan varyans yoksa `gyro_n` ve `accel_n` için datasheet değerini 10× büyütün — aşırı güvensiz başlamak, çok güvenli başlamaktan iyidir.
+    IMU datasheet değerleri başlangıç için yeterli. Gerçek Allan varyans yoksa `gyro_n` ve `accel_n` için datasheet değerini 10× büyütün - aşırı güvensiz başlamak, çok güvenli başlamaktan iyidir.
 
 !!! tip "OpenVINS Başlatma"
     Sistem başlarken **2-3 saniye sabit tut** → IMU bias başlangıç tahmini için. Ardından **her eksende yavaş hareket et** → ölçek ve extrinsic hızlı yakınsar.

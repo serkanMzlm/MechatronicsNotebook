@@ -61,7 +61,7 @@ graph LR
 
 ```kotlin
 val isim: String = "Serkan"  // Tip belirtildi
-val yas = 30                  // Type Inference — derleyici Int çıkarır
+val yas = 30                  // Type Inference - derleyici Int çıkarır
 var sayac = 0
 sayac++
 
@@ -84,12 +84,12 @@ println("Yaş + 1 = ${yas + 1}")  // Expression için {}
 | `Long`      | 64-bit | Literal: `100L`                               |
 | `Float`     | 32-bit | Literal: `3.14f`                              |
 | `Double`    | 64-bit | Varsayılan ondalık                            |
-| `Boolean`   | —      | `true` / `false`                              |
+| `Boolean`   | -      | `true` / `false`                              |
 | `Char`      | 16-bit | Unicode; `'A'`                                |
-| `String`    | —      | Immutable; UTF-16                             |
-| `Any`       | —      | Tüm tiplerin üst sınıfı (Java `Object`)       |
-| `Unit`      | —      | `void` karşılığı                              |
-| `Nothing`   | —      | Asla değer döndürmez; `throw` ve sonsuz döngü |
+| `String`    | -      | Immutable; UTF-16                             |
+| `Any`       | -      | Tüm tiplerin üst sınıfı (Java `Object`)       |
+| `Unit`      | -      | `void` karşılığı                              |
+| `Nothing`   | -      | Asla değer döndürmez; `throw` ve sonsuz döngü |
 
 !!! note "Sayı Gösterimleri"
     ```kotlin
@@ -115,14 +115,14 @@ Kotlin'in en kritik özelliğidir. Tip sistemi, nullable ve non-nullable değerl
 ```kotlin
 val isim: String? = null
 
-isim?.length             // null — güvenli
-isim?.length ?: 0        // 0  — null yerine varsayılan
-// isim.length           // Derleme hatası — nullable'ı doğrudan kullanamaz
-// isim!!.length         // Runtime NPE — null ise çöker
+isim?.length             // null - güvenli
+isim?.length ?: 0        // 0  - null yerine varsayılan
+// isim.length           // Derleme hatası - nullable'ı doğrudan kullanamaz
+// isim!!.length         // Runtime NPE - null ise çöker
 
 val uzunluk = isim?.length ?: return  // Early return pattern
 
-// Smart Cast — null check sonrası derleyici tipi daraltır
+// Smart Cast - null check sonrası derleyici tipi daraltır
 if (isim != null) {
     println(isim.length)  // String? → String; !! gerekmez
 }
@@ -130,7 +130,7 @@ if (isim != null) {
 // Safe Cast
 val nesne: Any = "Merhaba"
 val s: String? = nesne as? String    // String
-val n: Int?    = nesne as? Int       // null — fırlatmaz
+val n: Int?    = nesne as? Int       // null - fırlatmaz
 ```
 
 !!! danger "!! Kullanımını Minimumda Tutun"
@@ -191,7 +191,7 @@ when (x) {
 ### Döngüler
 
 ```kotlin
-// for — range, iterable, destructuring
+// for - range, iterable, destructuring
 for (i in 1..5) println(i)
 for ((index, value) in liste.withIndex()) println("$index: $value")
 
@@ -222,7 +222,7 @@ fun topla(a: Int, b: Int): Int {
     return a + b
 }
 
-// Expression body — dönüş tipi çıkarılır
+// Expression body - dönüş tipi çıkarılır
 fun topla(a: Int, b: Int) = a + b
 
 // Default parametre + Named argument
@@ -265,7 +265,7 @@ println("hello world".wordCount)          // 2
 ```
 
 !!! note "Extension Function Kısıtlaması"
-    Extension fonksiyonlar static dispatch yapılır; virtual değildir. Sınıfın private üyelerine erişemez. Override edilemez — aynı imzada üye fonksiyon varsa o kazanır.
+    Extension fonksiyonlar static dispatch yapılır; virtual değildir. Sınıfın private üyelerine erişemez. Override edilemez - aynı imzada üye fonksiyon varsa o kazanır.
 
 ### Higher-Order Functions ve Lambda
 
@@ -273,13 +273,13 @@ println("hello world".wordCount)          // 2
 // Fonksiyon tipi: (parametreler) -> dönüş tipi
 fun islemi_uygula(x: Int, islem: (Int) -> Int): Int = islem(x)
 
-islemi_uygula(5) { it * 2 }   // 10 — trailing lambda sözdizimi
+islemi_uygula(5) { it * 2 }   // 10 - trailing lambda sözdizimi
 
 // Lambda
 val kare: (Int) -> Int = { x -> x * x }
 val kare2: (Int) -> Int = { it * it }   // it: tek parametre için kısa yol
 
-// Function reference — :: ile
+// Function reference - :: ile
 val sayilar = listOf(1, 2, 3, 4, 5)
 sayilar.filter(::isOdd)   // isOdd: (Int) -> Boolean fonksiyonu
 ```
@@ -319,7 +319,7 @@ class Kisi(
             field = value
         }
 
-    // Secondary constructor — primary'i çağırmalı
+    // Secondary constructor - primary'i çağırmalı
     constructor(isim: String) : this(isim, 0, "")
 
     init {
@@ -354,12 +354,12 @@ val p2 = p1.copy(y = 5.0)     // Nokta(1.0, 5.0)
 val (x, y) = p1
 println("x=$x y=$y")
 
-println(p1 == Nokta(1.0, 2.0))  // true — equals() struct compare
+println(p1 == Nokta(1.0, 2.0))  // true - equals() struct compare
 ```
 
 ### Sealed Class
 
-Kapalı bir tip hiyerarşisi — tüm alt sınıflar aynı dosyada tanımlanmak zorunda. `when` ifadesiyle `else` gerekmez.
+Kapalı bir tip hiyerarşisi - tüm alt sınıflar aynı dosyada tanımlanmak zorunda. `when` ifadesiyle `else` gerekmez.
 
 ```kotlin
 sealed class Sonuc<out T> {
@@ -372,7 +372,7 @@ fun isle(sonuc: Sonuc<String>) = when (sonuc) {
     is Sonuc.Basari     -> println("Veri: ${sonuc.veri}")
     is Sonuc.Hata       -> println("Hata (${sonuc.kod}): ${sonuc.mesaj}")
     is Sonuc.Yukleniyor -> println("Yükleniyor...")
-    // else gerekmiyor — derleyici tüm durumları bilir
+    // else gerekmiyor - derleyici tüm durumları bilir
 }
 ```
 
@@ -396,13 +396,13 @@ Yon.entries                     // Tüm değerler (Kotlin 1.9+)
 ### Object ve Companion Object
 
 ```kotlin
-// Singleton — Thread-safe, lazy başlatılır
+// Singleton - Thread-safe, lazy başlatılır
 object Ayarlar {
     var dil = "tr"
     fun sifirla() { dil = "tr" }
 }
 
-// Companion Object — Java'daki static benzer
+// Companion Object - Java'daki static benzer
 class Kullanici private constructor(val isim: String) {
     companion object {
         private var sayac = 0
@@ -426,7 +426,7 @@ val dinleyici = object : ArayuzAdi {
 ### Kalıtım (Inheritance)
 
 ```kotlin
-// Kotlin sınıfları varsayılan final — override için open şart
+// Kotlin sınıfları varsayılan final - override için open şart
 open class Hayvan(val isim: String) {
     open fun sesCikar() = println("...")
     fun nefesAl() = println("$isim nefes alıyor")  // override edilemez
@@ -436,13 +436,13 @@ class Kedi(isim: String) : Hayvan(isim) {
     override fun sesCikar() = println("$isim: Miyav!")
 }
 
-// Abstract — doğrudan nesne oluşturulamaz
+// Abstract - doğrudan nesne oluşturulamaz
 abstract class Sekil {
     abstract fun alan(): Double
     fun tanitim() = "Alan: ${alan()}"
 }
 
-// Interface — çoklu uygulama, varsayılan gövde
+// Interface - çoklu uygulama, varsayılan gövde
 interface Ucabilir {
     val maxYukseklik: Int get() = 1000     // Interface property
     fun uc(): String = "Uçuyor"           // Varsayılan gövde
@@ -455,7 +455,7 @@ interface Yuzebi_lir {
 class UcanBalik : Sekil(), Ucabilir, Yuzebi_lir {
     override fun alan() = 0.0
     override fun yuz() = "Yüzüyor"
-    // uc() — varsayılan kullanılır
+    // uc() - varsayılan kullanılır
 }
 ```
 
@@ -479,10 +479,10 @@ class UcanBalik : Sekil(), Ucabilir, Yuzebi_lir {
 | `setOf`      | `mutableSetOf`  | Sırasız, benzersiz   |
 | `mapOf`      | `mutableMapOf`  | Anahtar-değer        |
 | `arrayOf`    | `Array<T>`      | Sabit boyut          |
-| `intArrayOf` | —               | Primitive int dizisi |
+| `intArrayOf` | -               | Primitive int dizisi |
 
 !!! note "Kotlin Koleksiyon Felsefesi"
-    Kotlin standart kütüphanesi Java koleksiyonlarını wrap eder; ek bir runtime maliyet olmaz. `listOf()` gerçekte `java.util.List` döner — sadece read-only görünüm sağlar.
+    Kotlin standart kütüphanesi Java koleksiyonlarını wrap eder; ek bir runtime maliyet olmaz. `listOf()` gerçekte `java.util.List` döner - sadece read-only görünüm sağlar.
 
 ### Collection API
 
@@ -532,17 +532,17 @@ sayilar.zip(listOf('a','b','c'))  // [(1,a), (2,b), (3,c)]
 Büyük koleksiyonlarda ara liste oluşturmadan zincirleme işlem yapar.
 
 ```kotlin
-// Eager — her adım yeni liste oluşturur
+// Eager - her adım yeni liste oluşturur
 listOf(1..1_000_000)
     .map { it * 2 }      // 1M elemanlı liste
     .filter { it > 5 }   // 1M elemanlı liste
     .first()
 
-// Lazy — yalnızca gerekli kadar işler
+// Lazy - yalnızca gerekli kadar işler
 (1..1_000_000).asSequence()
     .map { it * 2 }
     .filter { it > 5 }
-    .first()             // 1M'nin tamamını işlemez — ilk eşleşmede durur
+    .first()             // 1M'nin tamamını işlemez - ilk eşleşmede durur
 ```
 
 !!! tip "Ne Zaman Sequence Kullanmalı?"
@@ -563,26 +563,26 @@ Nesne bağlamında lambda çalıştırmak için; farklı `this`/`it` ve dönüş
 | `also`    |   `it`   | Nesnenin kendisi | Side effect (log, debug)     |
 
 ```kotlin
-// let — nullable ile kullanım
+// let - nullable ile kullanım
 val isim: String? = "Kotlin"
 val uzunluk = isim?.let { it.length * 2 } ?: 0
 
-// apply — nesneyi yapılandır, kendisini döndür
+// apply - nesneyi yapılandır, kendisini döndür
 val liste = mutableListOf<Int>().apply {
     add(1); add(2); add(3)
 }  // MutableList<Int>
 
-// also — yan etki; nesneyi değiştirmez
+// also - yan etki; nesneyi değiştirmez
 val islem = hesapla().also { log.debug("Sonuç: $it") }
 
-// run — başlatma ve hesaplama
+// run - başlatma ve hesaplama
 val sonuc = StringBuilder().run {
     append("Merhaba")
     append(" Dünya")
     toString()  // Lambda sonucu döner
 }
 
-// with — extension olmadan nesne üzerinde işlem
+// with - extension olmadan nesne üzerinde işlem
 val metin = with(StringBuilder()) {
     for (i in 1..5) append("$i ")
     toString()
@@ -613,20 +613,20 @@ maksimum("Ali", "Veli") // Veli
 | ---------------------- | :------------------------: | ------------------------------------------- |
 | `out T` (Covariant)    | Yalnızca üretir (döndürür) | `List<out Animal>` → `List<Dog>` atanabilir |
 | `in T` (Contravariant) |  Yalnızca tüketir (alır)   | `Comparable<in String>`                     |
-| `*` (Star Projection)  |       Tip bilinmiyor       | `List<*>` — okuma güvenli                   |
+| `*` (Star Projection)  |       Tip bilinmiyor       | `List<*>` - okuma güvenli                   |
 
 ```kotlin
-// Covariant — sadece döndürür
+// Covariant - sadece döndürür
 interface Uretici<out T> {
     fun uret(): T
 }
 
-// Contravariant — sadece alır
+// Contravariant - sadece alır
 interface Tuketici<in T> {
     fun tuset(item: T)
 }
 
-// reified — inline içinde runtime'da tip bilgisine erişim
+// reified - inline içinde runtime'da tip bilgisine erişim
 inline fun <reified T> tipKontrol(nesne: Any): Boolean = nesne is T
 
 tipKontrol<String>("merhaba")  // true
@@ -664,17 +664,17 @@ stateDiagram-v2
 |            |      `launch`     |      `async`       |
 | ---------- | :---------------: | :----------------: |
 | Dönüş      |       `Job`       |   `Deferred<T>`    |
-| Sonuç alma |         —         |     `.await()`     |
+| Sonuç alma |         -         |     `.await()`     |
 | Kullanım   | "Fire and forget" | Değer bekleniyorsa |
 
 ```kotlin
-// launch — Job döner; dönüş değeri yok
+// launch - Job döner; dönüş değeri yok
 val is1 = scope.launch {
-    delay(1000L)    // suspend function — thread'i bloke etmez
+    delay(1000L)    // suspend function - thread'i bloke etmez
     println("İş tamamlandı")
 }
 
-// async — Deferred<T> döner; .await() ile değer alınır
+// async - Deferred<T> döner; .await() ile değer alınır
 val is2 = scope.async {
     delay(500L)
     42
@@ -731,11 +731,11 @@ viewModelScope.launch {
         .collect { println(it) }  // 20, 40
 }
 
-// StateFlow — Android UI için (LiveData alternatifi)
+// StateFlow - Android UI için (LiveData alternatifi)
 private val _durum = MutableStateFlow<Sonuc<List<Urun>>>(Sonuc.Yukleniyor)
 val durum: StateFlow<Sonuc<List<Urun>>> = _durum.asStateFlow()
 
-// SharedFlow — çok sayıda subscriber
+// SharedFlow - çok sayıda subscriber
 private val _olaylar = MutableSharedFlow<UIEvent>()
 val olaylar = _olaylar.asSharedFlow()
 ```
@@ -762,7 +762,7 @@ scope.launch(handler) {
     throw RuntimeException("Hata!")
 }
 
-// try-catch — async içinde await'te yakalanır
+// try-catch - async içinde await'te yakalanır
 val deferred = scope.async {
     throw IOException("Bağlantı hatası")
 }
@@ -887,7 +887,7 @@ dependencies {
         android:label="@string/app_name"
         android:theme="@style/Theme.App">
 
-        <!-- Launcher Activity — uygulamanın giriş noktası -->
+        <!-- Launcher Activity - uygulamanın giriş noktası -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -917,11 +917,11 @@ import android.util.Log
 
 val ETIKET = "UygulamaBenim"
 
-Log.v(ETIKET, "Verbose — çok ayrıntılı")  // Geliştirme
-Log.d(ETIKET, "Debug — değer: $veri")       // Debug
-Log.i(ETIKET, "Info — işlem tamamlandı")    // Bilgi
-Log.w(ETIKET, "Warning — uyarı durumu")     // Uyarı
-Log.e(ETIKET, "Error — hata!", exception)   // Hata
+Log.v(ETIKET, "Verbose - çok ayrıntılı")  // Geliştirme
+Log.d(ETIKET, "Debug - değer: $veri")       // Debug
+Log.i(ETIKET, "Info - işlem tamamlandı")    // Bilgi
+Log.w(ETIKET, "Warning - uyarı durumu")     // Uyarı
+Log.e(ETIKET, "Error - hata!", exception)   // Hata
 ```
 
 | Seviye  | Kısaltma | Kullanım                          |
@@ -976,4 +976,4 @@ fun EkranIcerigi(viewModel: EkranViewModel = viewModel()) {
 !!! note "@Composable Kuralları"
     - Composable fonksiyonlar yalnızca Composable bağlamda çağrılabilir.
     - İsimler **PascalCase** olmalı.
-    - Side effect'ler için `LaunchedEffect`, `SideEffect`, `DisposableEffect` kullanın — doğrudan composable gövdesinde yan etki oluşturmayın.
+    - Side effect'ler için `LaunchedEffect`, `SideEffect`, `DisposableEffect` kullanın - doğrudan composable gövdesinde yan etki oluşturmayın.

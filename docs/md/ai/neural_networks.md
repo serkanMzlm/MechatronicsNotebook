@@ -64,10 +64,10 @@ Aktivasyon fonksiyonu olmadan, ne kadar çok katman eklerseniz ekleyin, ağ tek 
 | **Softmax**    | (0, 1), toplam=1 |     Çok sınıflı çıkış katmanı     | Tüm sınıflar için olasılık dağılımı üretir                    |
 
 !!! warning "Dying ReLU Sorunu"
-    ReLU, negatif girdi için sıfır gradyan üretir. Bir nöron sürekli negatif değer alıyorsa asla güncellenmez — "ölmüş nöron" olur. **Leaky ReLU**, negatif tarafta küçük bir eğim (0.01) tutarak bunu çözer. **Batch Normalization** da bu riski önemli ölçüde azaltır.
+    ReLU, negatif girdi için sıfır gradyan üretir. Bir nöron sürekli negatif değer alıyorsa asla güncellenmez - "ölmüş nöron" olur. **Leaky ReLU**, negatif tarafta küçük bir eğim (0.01) tutarak bunu çözer. **Batch Normalization** da bu riski önemli ölçüde azaltır.
 
 !!! info "Neden Softmax çıkışta, ReLU ortada?"
-    Softmax tüm çıktıların toplamını 1 yapar — bu bir olasılık dağılımı demektir. "Bu görüntü %72 kedi, %18 köpek, %10 tavşan" şeklinde yorumlanabilir. ReLU ise ara katmanlarda büyük sayılara izin verir, bu hesaplamaları hızlandırır.
+    Softmax tüm çıktıların toplamını 1 yapar - bu bir olasılık dağılımı demektir. "Bu görüntü %72 kedi, %18 köpek, %10 tavşan" şeklinde yorumlanabilir. ReLU ise ara katmanlarda büyük sayılara izin verir, bu hesaplamaları hızlandırır.
 
 ---
 
@@ -146,11 +146,11 @@ $$\frac{\partial \mathcal{L}}{\partial W_1} = \frac{\partial \mathcal{L}}{\parti
 
 ---
 
-## CNN — Evrişimli Sinir Ağları
+## CNN - Evrişimli Sinir Ağları
 
 MLP her pikseli bağımsız özellik sayar. CNN ise görüntünün **uzamsal yapısını** kullanır: yakın pikseller birbiriyle ilişkilidir ve bir örüntü görüntünün her yerinde aynı görünür.
 
-**Temel fikir:** Bir kedi kulağı görüntünün sol üstünde de sol altında da kulak gibi görünür. CNN aynı filtreyi tüm görüntüye uygular — bir yerde öğrenilen örüntüyü her yerde arar. Bu **ağırlık paylaşımı** parametre sayısını dramatik biçimde azaltır.
+**Temel fikir:** Bir kedi kulağı görüntünün sol üstünde de sol altında da kulak gibi görünür. CNN aynı filtreyi tüm görüntüye uygular - bir yerde öğrenilen örüntüyü her yerde arar. Bu **ağırlık paylaşımı** parametre sayısını dramatik biçimde azaltır.
 
 ### Konvolüsyon (Evrişim) İşlemi
 
@@ -166,13 +166,13 @@ Giriş (5×5):          Filtre (3×3):     Çıktı (3×3):
 ```
 
 - Farklı filtreler farklı özellikleri yakalar: yatay kenar, dikey kenar, renk, doku...
-- Bu filtreler eğitimde otomatik olarak öğrenilir — siz tasarlamazsınız.
+- Bu filtreler eğitimde otomatik olarak öğrenilir - siz tasarlamazsınız.
 - Çıktı boyutu formülü: `(W - F + 2P) / S + 1`
     - W = Giriş boyutu, F = Filtre boyutu, P = Padding, S = Stride
 
 **Padding:** Filtreyi uygulamadan önce görüntü etrafına sıfır eklenir. "Same" padding çıktının giriş ile aynı boyutta kalmasını sağlar.
 
-**Stride:** Filtrenin kaç piksel atlayarak kaydırılacağı. Stride=1 her piksele, Stride=2 her ikinci piksele bakar — görüntüyü küçültür.
+**Stride:** Filtrenin kaç piksel atlayarak kaydırılacağı. Stride=1 her piksele, Stride=2 her ikinci piksele bakar - görüntüyü küçültür.
 
 ### CNN Katmanları
 
@@ -191,7 +191,7 @@ graph LR
 | **MaxPool**     | Bölgedeki en büyük değeri alır, boyutu küçültür | Konum hassasiyetini azaltır; hesaplamayı hızlandırır |
 | **Dropout**     | Rastgele nöronları kapatır                      |                  Overfitting önler                   |
 | **Flatten**     | 2D özellik haritasını 1D vektöre dönüştürür     |                 FC katmana hazırlık                  |
-| **Linear (FC)** | Final sınıflandırma kararı                      |                          —                           |
+| **Linear (FC)** | Final sınıflandırma kararı                      |                          -                           |
 
 **Hiyerarşik özellik öğrenimi:**
 
@@ -203,9 +203,9 @@ Bu hiyerarşi CNN'i güçlü kılan şeydir. İnsan görsel korteksinin de benze
 
 ---
 
-## ResNet — Skip Connection Neden Devrimdi?
+## ResNet - Skip Connection Neden Devrimdi?
 
-2012–2014 yıllarında daha derin ağların daha iyi sonuç vermesi bekleniyor ama pratikte 20 katmanlı ağ 56 katmanlıdan daha iyi çalışıyordu. Neden? **Vanishing gradient** — gradyan çok katmandan geçerken katlanarak küçülüyor, ilk katmanlara çok az sinyal ulaşıyordu.
+2012–2014 yıllarında daha derin ağların daha iyi sonuç vermesi bekleniyor ama pratikte 20 katmanlı ağ 56 katmanlıdan daha iyi çalışıyordu. Neden? **Vanishing gradient** - gradyan çok katmandan geçerken katlanarak küçülüyor, ilk katmanlara çok az sinyal ulaşıyordu.
 
 **ResNet'in zarif çözümü:** Bir bloğun girişini, o bloğun çıktısına doğrudan ekle.
 
@@ -232,7 +232,7 @@ Bu sayede gradyan iki yoldan geri akabilir: normal yol ve skip yol. Skip yol üz
 | **EfficientNet** | 2019 |   5–66 M  | Derinlik, genişlik ve çözünürlüğü birlikte dengeler                 |
 | **ConvNeXt**     | 2022 |  29–350 M | Transformer fikirlerini CNN'e entegre eder                          |
 
-### Transfer Learning — Neden İşe Yarar?
+### Transfer Learning - Neden İşe Yarar?
 
 ImageNet'te 1.2 milyon görüntüyle eğitilen ResNet-50, milyonlarca ağırlık öğrenir. Bu ağırlıkların büyük çoğunluğu **evrenseldir**: kenar dedektörleri, doku tanıyıcılar, şekil dedektörleri.
 
@@ -249,9 +249,9 @@ Bu alt katman özellikleri tıbbi görüntüde de, uydu görüntüsünde de, ür
 
 ---
 
-## RNN / LSTM — Tekrarlayan Sinir Ağları
+## RNN / LSTM - Tekrarlayan Sinir Ağları
 
-Standart sinir ağları sırasız veriye bakar — her örnek bağımsızdır. Ama dil, ses, zaman serisi gibi verilerde sıra önemlidir: "köpek adam ısırdı" ile "adam köpek ısırdı" aynı kelimelerden oluşur ama anlam farklıdır.
+Standart sinir ağları sırasız veriye bakar - her örnek bağımsızdır. Ama dil, ses, zaman serisi gibi verilerde sıra önemlidir: "köpek adam ısırdı" ile "adam köpek ısırdı" aynı kelimelerden oluşur ama anlam farklıdır.
 
 **RNN'in fikri:** Her adımda hem mevcut girdiyi hem de önceki adımın çıktısını (gizli durum) kullanmak. Gizli durum, "şimdiye kadar ne gördüğümü" özetleyen bir bellek gibidir.
 
@@ -266,7 +266,7 @@ graph LR
 
 **RNN'in büyük sorunu:** Vanishing gradient. Uzun dizilerde (100+ kelime) geri yayılım sırasında erken adımların gradyanı yok olur. Model, cümlenin başındaki bilgiyi sona taşıyamaz. "Fransa'da doğdum ve ... ve ... [100 kelime] ... bu yüzden Fransızcam iyi" cümlesinde "Fransa" ile "Fransızca" arasındaki bağlantı kurulamaz.
 
-### LSTM — Akıllı Bellek Mekanizması
+### LSTM - Akıllı Bellek Mekanizması
 
 LSTM bu sorunu çözmek için üç "kapı" mekanizması tasarlar. Her kapı 0 ile 1 arasında bir değer üretir ve hangi bilginin ne kadar geçeceğini kontrol eder.
 
@@ -283,7 +283,7 @@ graph LR
 - **Forget Gate (Unutma Kapısı):** "Önceki cell state'ten ne kadar bilgiyi sil?" Konuşma konusu değiştiğinde önceki konuyu unutmak gibi.
 - **Input Gate (Girdi Kapısı):** "Yeni girdiyi ne kadar belleğe ekle?" Önemli yeni bilgiyi uzun dönem belleğe yaz.
 - **Output Gate (Çıktı Kapısı):** "Bu adımda cell state'in ne kadarını dışarıya ver?"
-- **Cell State:** Uzun dönem bellek — kapıların filtresiyle güncellenerek tüm dizi boyunca taşınır.
+- **Cell State:** Uzun dönem bellek - kapıların filtresiyle güncellenerek tüm dizi boyunca taşınır.
 
 **GRU (Gated Recurrent Unit):** LSTM'in daha basit versiyonu. İki kapı kullanır, cell state yoktur. Genellikle LSTM kadar iyi sonuç verir ama daha az parametre ile. Hesaplama kaynakları kısıtlıysa tercih edilir.
 
@@ -293,9 +293,9 @@ graph LR
 
 2017'de "Attention is All You Need" makalesi çıktığında NLP dünyasını kökten değiştirdi. RNN'in sıralı hesaplaması yerine tüm diziyi aynı anda işleyen paralel bir yapı önerdi.
 
-**RNN'in temel kısıtı:** Uzun dizilerde bilgi "sıkıştırılarak" tek bir vektörde taşınır. 1000 kelimelik bir belgeyi tek bir vektöre sıkıştırmak bilgi kaybına yol açar; ilk kelimeleri "unutur." Ayrıca sıralı hesaplama paralel çalıştırılamaz — GPU'ları tam kullanamaz.
+**RNN'in temel kısıtı:** Uzun dizilerde bilgi "sıkıştırılarak" tek bir vektörde taşınır. 1000 kelimelik bir belgeyi tek bir vektöre sıkıştırmak bilgi kaybına yol açar; ilk kelimeleri "unutur." Ayrıca sıralı hesaplama paralel çalıştırılamaz - GPU'ları tam kullanamaz.
 
-**Transformer'ın çözümü:** Her kelime, diğer tüm kelimelere **doğrudan** bakabilir. Uzun mesafe bağımlılıkları kolayca yakalar. Tüm dizi aynı anda işlenir — GPU paralelizmi tam kullanılır.
+**Transformer'ın çözümü:** Her kelime, diğer tüm kelimelere **doğrudan** bakabilir. Uzun mesafe bağımlılıkları kolayca yakalar. Tüm dizi aynı anda işlenir - GPU paralelizmi tam kullanılır.
 
 ### Self-Attention Sezgisi
 
@@ -303,13 +303,13 @@ graph LR
 
 **Örnek:** "Banka nehir kenarındaydı."
 
-Model "banka" kelimesini işlerken "nehir" kelimesine yüksek dikkat ağırlığı verir — bu bağlamda banka bir finans kurumu değil, nehir kıyısıdır. "Banka para yatırdım." cümlesinde ise "para" kelimesine yüksek dikkat verilir. Aynı kelime, bağlama göre farklı anlam kazanır.
+Model "banka" kelimesini işlerken "nehir" kelimesine yüksek dikkat ağırlığı verir - bu bağlamda banka bir finans kurumu değil, nehir kıyısıdır. "Banka para yatırdım." cümlesinde ise "para" kelimesine yüksek dikkat verilir. Aynı kelime, bağlama göre farklı anlam kazanır.
 
 $$\text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{QK^T}{\sqrt{d_k}}\right) V$$
 
-- **Q (Query — Sorgu):** "Ben ne arıyorum?" — mevcut kelimenin sorusu.
-- **K (Key — Anahtar):** "Ben ne sunuyorum?" — diğer kelimelerin kendilerini tanıtması.
-- **V (Value — Değer):** "Dikkat ağırlığı yüksekse benden al" — asıl bilgi içeriği.
+- **Q (Query - Sorgu):** "Ben ne arıyorum?" - mevcut kelimenin sorusu.
+- **K (Key - Anahtar):** "Ben ne sunuyorum?" - diğer kelimelerin kendilerini tanıtması.
+- **V (Value - Değer):** "Dikkat ağırlığı yüksekse benden al" - asıl bilgi içeriği.
 
 $\sqrt{d_k}$ ile bölme: Q ve K vektörleri çok büyük olabilir; bölme softmax'ın daha dengeli dağılım üretmesini sağlar.
 
@@ -330,13 +330,13 @@ graph LR
 
 **Feed-Forward Network:** Her tokenı aynı şekilde işleyen iki katmanlı MLP. Dikkat katmanı "hangi bilgiler önemli?" sorusunu cevaplarken FFN "bu bilgiyle ne yapmalı?" sorusunu cevaplar.
 
-### Encoder — Decoder — Encoder-Decoder Farkı
+### Encoder - Decoder - Encoder-Decoder Farkı
 
 | Mimari              | Ne Yapar                                          | Örnek                 |
 | ------------------- | ------------------------------------------------- | --------------------- |
-| **Encoder**         | Girdiyi anlar, temsil üretir; yeni token üretemez | BERT — metin anlama   |
-| **Decoder**         | Önceki çıktıya bakarak sonraki tokeni üretir      | GPT — metin üretme    |
-| **Encoder-Decoder** | Girdiyi anlayıp farklı bir dile/forma dönüştürür  | T5 — çeviri, özetleme |
+| **Encoder**         | Girdiyi anlar, temsil üretir; yeni token üretemez | BERT - metin anlama   |
+| **Decoder**         | Önceki çıktıya bakarak sonraki tokeni üretir      | GPT - metin üretme    |
+| **Encoder-Decoder** | Girdiyi anlayıp farklı bir dile/forma dönüştürür  | T5 - çeviri, özetleme |
 
 ### Popüler Transformer Modelleri
 
@@ -383,7 +383,7 @@ Inferansta: o₁  o₂  o₃  o₄  o₅  o₆     (hepsi aktif, (1-p) ile ölç
 
 **Sezgi:** Bir futbol takımı her antrenmanı farklı oyuncularla yaparsa, her oyuncu kendi başına iyi olmak zorunda kalır. Hiçbir oyuncuya körü körüne bağımlılık oluşmaz. Dropout da ağın belirli nöronlara aşırı bağımlı olmasını önler.
 
-**Ensemble etkisi:** Dropout, aynı ağırlıkları paylaşan üstel sayıda farklı ağ mimarisi eğitmek gibidir. Inferansta bu ağların ortalaması alınır — ensemble performansı elde edilir.
+**Ensemble etkisi:** Dropout, aynı ağırlıkları paylaşan üstel sayıda farklı ağ mimarisi eğitmek gibidir. Inferansta bu ağların ortalaması alınır - ensemble performansı elde edilir.
 
 **Dropout nereden uygulanır?** Genellikle tam bağlantılı (FC) katmanlardan önce. CNN'nin konvolüsyon katmanlarında genellikle BatchNorm daha etkili olduğu için Dropout daha az kullanılır.
 
@@ -406,13 +406,13 @@ Az veriden daha fazlasını simüle etmenin yolu: mevcut görüntüleri dönüş
 | **Mixup**            | İki görüntüyü ağırlıklı olarak karıştırır | "Sınırlar arası genelleme"                     |
 
 !!! tip "Ne zaman ne kadar augmentation?"
-    Az veri + derin model kombinasyonunda augmentation zorunludur. Çok veri varsa fayda azalır. Sağlıksız augmentation (örn. tıbbi görüntüde dikey çevirme — "böbrek yukarı aşağı olamaz") zararla sonuçlanır.
+    Az veri + derin model kombinasyonunda augmentation zorunludur. Çok veri varsa fayda azalır. Sağlıksız augmentation (örn. tıbbi görüntüde dikey çevirme - "böbrek yukarı aşağı olamaz") zararla sonuçlanır.
 
 ---
 
-## Üretici Modeller — GAN ve VAE
+## Üretici Modeller - GAN ve VAE
 
-### GAN (Generative Adversarial Network — Çekişmeli Üretici Ağ)
+### GAN (Generative Adversarial Network - Çekişmeli Üretici Ağ)
 
 İki model birbiriyle yarışır: **Generator** sahte veri üretir, **Discriminator** gerçek/sahte ayrımı yapar.
 
@@ -429,7 +429,7 @@ graph LR
 
 **Eğitim dinamiği:** Generator, Discriminator'u kandırmaya çalışır. Discriminator, kandırılmamaya. Bu "kedi-fare oyunu" ikisini de sürekli geliştirir. Nash dengesinde Generator, Discriminator'un bile ayırt edemeyeceği sahte veri üretir.
 
-**Kullanım alanları:** Gerçekçi yüz üretimi (StyleGAN), veri artırma, görüntüden görüntüye çeviri (CycleGAN — at→zebra), süper çözünürlük, sanat üretimi.
+**Kullanım alanları:** Gerçekçi yüz üretimi (StyleGAN), veri artırma, görüntüden görüntüye çeviri (CycleGAN - at→zebra), süper çözünürlük, sanat üretimi.
 
 **Eğitim zorlukları:**
 - **Mode collapse:** Generator sadece birkaç türde çıktı üretmeyi öğrenir, çeşitlilik kaybolur.
@@ -481,7 +481,7 @@ graph TD
 
 |   Veri Boyutu   | Öneri                                                   |
 | :-------------: | ------------------------------------------------------- |
-|    **< 1 K**    | Klasik ML — RF, SVM, GBM. Derin öğrenme overfit eder    |
-| **1 K – 100 K** | Transfer learning — önceden eğitilmiş ağı fine-tune et  |
+|    **< 1 K**    | Klasik ML - RF, SVM, GBM. Derin öğrenme overfit eder    |
+| **1 K – 100 K** | Transfer learning - önceden eğitilmiş ağı fine-tune et  |
 |   **> 100 K**   | CNN / Transformer sıfırdan veya büyük ölçekli fine-tune |
 |    **> 1 M**    | Dağıtık eğitim, büyük modeller                          |

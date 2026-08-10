@@ -122,10 +122,10 @@ Flash'ın başında yer alan, her kesme/exception kaynağı için ISR adreslerin
 ```c
 /* startup_stm32f4xx.s içinde (tipik) */
 __Vectors:
-    .word  _estack           /* 0x0000_0000 — Başlangıç MSP değeri   */
-    .word  Reset_Handler     /* 0x0000_0004 — Reset                  */
-    .word  NMI_Handler       /* 0x0000_0008 — Non-Maskable Interrupt */
-    .word  HardFault_Handler /* 0x0000_000C — HardFault              */
+    .word  _estack           /* 0x0000_0000 - Başlangıç MSP değeri   */
+    .word  Reset_Handler     /* 0x0000_0004 - Reset                  */
+    .word  NMI_Handler       /* 0x0000_0008 - Non-Maskable Interrupt */
+    .word  HardFault_Handler /* 0x0000_000C - HardFault              */
     .word  MemManage_Handler /* MPU Fault                            */
     .word  BusFault_Handler
     .word  UsageFault_Handler
@@ -158,7 +158,7 @@ __Vectors:
 | `BSRR`    |     32 bit    | [15:0]=Set, [31:16]=Reset; atomik         |
 
 ```c
-/* Tam GPIO başlatma — PA5 çıkış */
+/* Tam GPIO başlatma - PA5 çıkış */
 RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;    /* 1. Clock aç */
 
 GPIOA->MODER   &= ~(3UL << (5*2));
@@ -175,7 +175,7 @@ uint8_t pin = (GPIOA->IDR >> 5) & 1; /* PA5 oku */
 ```
 
 !!! tip "BSRR vs ODR"
-    `ODR` doğrudan yazma RMW (Read-Modify-Write) gerektirir ve kesme bağlamında **atomik değildir**. `BSRR` tek yazmayla set/reset yapar — her zaman `BSRR` tercih edin.
+    `ODR` doğrudan yazma RMW (Read-Modify-Write) gerektirir ve kesme bağlamında **atomik değildir**. `BSRR` tek yazmayla set/reset yapar - her zaman `BSRR` tercih edin.
 
 ---
 
@@ -253,7 +253,7 @@ __attribute__((weak)) int _write(int file, char *ptr, int len) {
 
 ---
 
-## STM32CubeIDE — Debug Görünümleri
+## STM32CubeIDE - Debug Görünümleri
 
 | Görünüm              | Açıklama                                                    |
 | -------------------- | ----------------------------------------------------------- |
@@ -285,14 +285,14 @@ C'de struct'lar içindeki en büyük tipinin hizalama gereksinimine göre paddin
 struct Normal {
     char  a;   /*  1 byte  */
                /*  3 byte padding  */
-    int   b;   /*  4 byte — toplam 8 byte */
+    int   b;   /*  4 byte - toplam 8 byte */
 };
 
-/* Padding kaldır — donanım register map veya network paket için */
+/* Padding kaldır - donanım register map veya network paket için */
 #pragma pack(push, 1)
 typedef struct {
     char a;    /* 1 byte */
-    int  b;    /* 4 byte — toplam 5 byte */
+    int  b;    /* 4 byte - toplam 5 byte */
 } PackedStruct;
 #pragma pack(pop)
 

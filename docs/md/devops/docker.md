@@ -122,7 +122,7 @@ docker cp mongo:/etc/mongod.conf ./  # Dosya kopyala
 | `HEALTHCHECK` | Sağlık kontrolü                             |
 | `USER`        | Kullanıcı bağlamı                           |
 
-```dockerfile title="Temel Örnek — Node.js"
+```dockerfile title="Temel Örnek - Node.js"
 FROM node:20-slim
 
 WORKDIR /app
@@ -143,9 +143,9 @@ CMD ["node", "index.js"]
 !!! tip "Layer Cache Optimizasyonu"
     `COPY package.json` ve `RUN npm install` adımları, kaynak kodu değişmediği sürece önbellekten gelir. Bu nedenle bağımlılık kurulumu her zaman kaynak koddan önce yapılmalıdır.
 
-### Multi-Stage Build — Küçük ve Güvenli İmaj
+### Multi-Stage Build - Küçük ve Güvenli İmaj
 
-```dockerfile title="Multi-Stage — Go Uygulaması"
+```dockerfile title="Multi-Stage - Go Uygulaması"
 # ===== Aşama 1: Build =====
 FROM golang:1.22 AS builder
 
@@ -167,7 +167,7 @@ EXPOSE 8080
 ENTRYPOINT ["/server"]
 ```
 
-```dockerfile title="Multi-Stage — C++ ROS 2 Paketi"
+```dockerfile title="Multi-Stage - C++ ROS 2 Paketi"
 # Aşama 1: Build ortamı
 FROM ros:humble AS builder
 
@@ -394,7 +394,7 @@ docker compose config             # Derlenmiş YAML'i göster
     - `docker scan <image>` ile güvenlik taraması yap
 
 ```bash
-# Temizlik — disk alanı geri kazan
+# Temizlik - disk alanı geri kazan
 docker system prune              # Container + image + network (kullanılmayanlar)
 docker system prune -a           # Volume hariç her şey
 docker system prune -a --volumes # Volume dahil her şey

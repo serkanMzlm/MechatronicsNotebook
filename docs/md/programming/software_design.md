@@ -4,16 +4,20 @@
 
 Sürdürülebilir, genişletilebilir ve esnek yazılımlar geliştirmek için kullanılan tasarım prensibidir. Kodun hantallaşmasını, kırılgan hale gelmesini ve spagetti koda dönüşmesini engeller.
 
-- **Single Responsibility Principle (SRP):** Bir modül tek bir işten sorumlu olmalıdır.
+!!! abstract "Single Responsibility Principle (SRP)"
+    Bir modül tek bir işten sorumlu olmalıdır.
 
-- **Open/Closed Principle (OCP):** Sınıflar **genişletmeye açık, değiştirmeye kapalı** olmalıdır. `if/else - switch` ile tür kontrolü yapıldığında her yeni tür bu bloğu değiştirmeyi zorunlu kılar fakat polimorfizm ile yeni tür yeni bir sınıf olarak eklenir var olan kod değişmez.
+!!! abstract "Open/Closed Principle (OCP)"
+    Sınıflar **genişletmeye açık, değiştirmeye kapalı** olmalıdır. `if/else - switch` ile tür kontrolü yapıldığında her yeni tür bu bloğu değiştirmeyi zorunlu kılar fakat polimorfizm ile yeni tür yeni bir sınıf olarak eklenir var olan kod değişmez.
 
-- **Liskov Substitution Principle (LSP):** Alt sınıflar, miras aldıkları üst sınıfların yerine kullanılabilmeli ve bu durum programın davranışını bozmamalıdır.
+!!! abstract "Liskov Substitution Principle (LSP)"
+    Alt sınıflar, miras aldıkları üst sınıfların yerine kullanılabilmeli ve bu durum programın davranışını bozmamalıdır.
 
-- **Interface Segregation Principle (ISP):** Çok amaçlı tek bir arayüz yerine, amaca yönelik özelleştirilmiş birden fazla arayüz tercih edilmelidir.
+!!! abstract "Interface Segregation Principle (ISP)"
+    Çok amaçlı tek bir arayüz yerine, amaca yönelik özelleştirilmiş birden fazla arayüz tercih edilmelidir.
 
-- **Dependency Inversion Principle (DIP):** Yüksek seviyeli modüller, düşük seviyeli modülleri doğrudan referans almamalıdır. Her iki modül de soyutlamalara (Abstraction) bağımlı olmalıdır. Soyutlamalar detaylara değil, detaylar soyutlamalara bağımlı olmalıdır.
-
+!!! abstract "Dependency Inversion Principle (DIP)"
+    Yüksek seviyeli modüller, düşük seviyeli modülleri doğrudan referans almamalıdır. Her iki modül de soyutlamalara (Abstraction) bağımlı olmalıdır. Soyutlamalar detaylara değil, detaylar soyutlamalara bağımlı olmalıdır.
 
 
 ## Design Pattern

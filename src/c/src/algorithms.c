@@ -1,5 +1,5 @@
 /*
- * algorithm_lab.c — Temel Algoritmalar
+ * algorithm_lab.c - Temel Algoritmalar
  *
  * Number theory, arama, sıralama ve sayı işlemleri örnekleri.
  */
@@ -69,7 +69,7 @@ void decimalToBinary(int n)
  * Factorial
  * ===========================================================================*/
 
-/* n! = n * (n-1)! — klasik özyineleme */
+/* n! = n * (n-1)! - klasik özyineleme */
 int factorial(int n)
 {
     if (n <= 1) return 1;
@@ -89,7 +89,7 @@ void printFactorial(int n)
  * Fibonacci
  * ===========================================================================*/
 
-/* İteratif — O(n) zaman, O(1) alan */
+/* İteratif - O(n) zaman, O(1) alan */
 void fibonacci(int n)
 {
     int a = 0, b = 1;
@@ -104,7 +104,7 @@ void fibonacci(int n)
     printf("\n");
 }
 
-/* Özyinelemeli helper — state pointer ile geçilir */
+/* Özyinelemeli helper - state pointer ile geçilir */
 static void fib_helper(int n, int *a, int *b)
 {
     if (n == 0) return;
@@ -127,7 +127,7 @@ void fibonacciRecursion(int n)
  * Search
  * ===========================================================================*/
 
-/* Doğrusal arama — O(n), sırasız dizide çalışır */
+/* Doğrusal arama - O(n), sırasız dizide çalışır */
 int sequentialSearch(const int *arr, int size, int target)
 {
     for (int i = 0; i < size; i++)
@@ -135,7 +135,7 @@ int sequentialSearch(const int *arr, int size, int target)
     return -1;
 }
 
-/* İkili arama — O(log n), SIRALI dizi gerektirir */
+/* İkili arama - O(log n), SIRALI dizi gerektirir */
 int binarySearch(const int *arr, int left, int right, int target)
 {
     while (left <= right)
@@ -158,7 +158,7 @@ static void swap(int *a, int *b)
     int t = *a; *a = *b; *b = t;
 }
 
-/* Bubble sort — O(n²), her geçişte en büyük eleman sona taşınır */
+/* Bubble sort - O(n²), her geçişte en büyük eleman sona taşınır */
 void bubbleSort(int *arr, int n)
 {
     for (int i = 0; i < n - 1; i++)
@@ -167,7 +167,7 @@ void bubbleSort(int *arr, int n)
                 swap(&arr[j], &arr[j + 1]);
 }
 
-/* Selection sort — O(n²), her geçişte en küçük eleman başa taşınır */
+/* Selection sort - O(n²), her geçişte en küçük eleman başa taşınır */
 void selectionSort(int *arr, int n)
 {
     for (int i = 0; i < n - 1; i++)
@@ -179,7 +179,7 @@ void selectionSort(int *arr, int n)
     }
 }
 
-/* Insertion sort — O(n²), küçük ve neredeyse sıralı dizilerde verimli */
+/* Insertion sort - O(n²), küçük ve neredeyse sıralı dizilerde verimli */
 void insertionSort(int *arr, int n)
 {
     for (int i = 1; i < n; i++)
@@ -198,13 +198,13 @@ void insertionSort(int *arr, int n)
  * Swap
  * ===========================================================================*/
 
-/* Geçici değişken ile — en güvenli yöntem */
+/* Geçici değişken ile - en güvenli yöntem */
 void swapTemp(int *a, int *b)
 {
     int t = *a; *a = *b; *b = t;
 }
 
-/* XOR ile — geçici değişken yok, a==b ise 0 yapar (dikkat) */
+/* XOR ile - geçici değişken yok, a==b ise 0 yapar (dikkat) */
 void swapXOR(int *a, int *b)
 {
     if (a == b) return;

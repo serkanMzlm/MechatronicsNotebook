@@ -59,7 +59,7 @@ public:
         integral_ = std::clamp(integral_, out_min_ / ki_, out_max_ / ki_);
         double i = ki_ * integral_;
 
-        // Türevsel: önceki hatadan türev — setpoint sıçramasında spike önler
+        // Türevsel: önceki hatadan türev - setpoint sıçramasında spike önler
         double derivative = (error - prev_error_) / dt_;
         double d = kd_ * derivative;
 
@@ -95,8 +95,8 @@ while (running) {
 
 | Kontrolör |    Kp   |     Ki    |    Kd   |
 | --------- | :-----: | :-------: | :-----: |
-| P         | 0.50·Ku |     —     |    —    |
-| PI        | 0.45·Ku | 1.2·Kp/Tu |    —    |
+| P         | 0.50·Ku |     -     |    -    |
+| PI        | 0.45·Ku | 1.2·Kp/Tu |    -    |
 | PID       | 0.60·Ku |  2·Kp/Tu  | Kp·Tu/8 |
 
 !!! warning "Anti-Windup Şart"
@@ -125,7 +125,7 @@ PID vel_loop(8.0, 0.5, 0.1, 0.005);  // iç: 200 Hz
 double vel_ref = pos_loop.compute(target_z, measured_z);
 vel_ref = std::clamp(vel_ref, -2.0, 2.0);  // Hız limiti
 
-// Hız döngüsü (200 Hz) — her konum adımında 4 kez çalışır
+// Hız döngüsü (200 Hz) - her konum adımında 4 kez çalışır
 double thrust = vel_loop.compute(vel_ref, measured_vz);
 ```
 
@@ -323,9 +323,9 @@ solver = AcadosOcpSolver(ocp, json_file='acados_ocp.json')
 
 !!! tip "MPC Ne Zaman Tercih Edilir?"
     - Sistem kısıtlamaları kritikse (güvenlik sınırları, mekanik limitler)
-    - Çok değişkenli kontrol (MIMO) — örneğin robot kolu
+    - Çok değişkenli kontrol (MIMO) - örneğin robot kolu
     - İleriye dönük referans biliniyorsa (navigasyon yolu)
-    - Doğrusal olmayan dinamikler (NMPC — drone, araç)
+    - Doğrusal olmayan dinamikler (NMPC - drone, araç)
 
 !!! warning "Gerçek Zamanlı MPC"
     QP/NLP çözücü süresi kontrol periyodundan kısa olmalı. Yüksek frekanslı sistemlerde (>100 Hz) ACADOS veya FORCES Pro gibi özelleşmiş çözücüler zorunlu. `scipy.optimize` çok yavaş.

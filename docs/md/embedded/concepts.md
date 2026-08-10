@@ -7,7 +7,7 @@
 
 ---
 
-## CPU — MPU — MCU
+## CPU - MPU - MCU
 
 ```mermaid
 graph LR
@@ -57,7 +57,7 @@ graph LR
 | **PLL**               | Düşük frekanslı giriş sinyalini çarparak yüksek frekans üretir              |
 | **Callee-saved**      | Fonksiyon kullanılan register'ları işi bitince eski haline getirir (R4–R11) |
 
-!!! danger "T Bit — HardFault Sebebi"
+!!! danger "T Bit - HardFault Sebebi"
     Cortex-M mimarisinde T Bit **her zaman 1** olmalıdır (Thumb modu). Yanlış adresleme veya hatalı fonksiyon işaretçisi T Bit'i 0'a düşürür → `HardFault`. LSB = 1 → Thumb, LSB = 0 → ARM (Cortex-M'de desteklenmez).
 
 ---
@@ -136,7 +136,7 @@ ARM Cortex-M kesme yönetim donanımıdır.
 
 ---
 
-## RCC — HSI — HSE — PLL
+## RCC - HSI - HSE - PLL
 
 ```mermaid
 graph LR
@@ -164,7 +164,7 @@ graph LR
 
 ---
 
-## AHB — APB Bus Mimarisi
+## AHB - APB Bus Mimarisi
 
 ```mermaid
 graph TD
@@ -226,8 +226,8 @@ stateDiagram-v2
 | Mod                       |        Erişim        | Açıklama                               |
 | ------------------------- | :------------------: | -------------------------------------- |
 | **Handler Mode**          | Privileged (zorunlu) | ISR ve exception handler'lar           |
-| **Thread — Privileged**   |      Tam erişim      | Kernel kodu, RTOS kodu                 |
-| **Thread — Unprivileged** |       Kısıtlı        | Kullanıcı uygulama kodu (MPU korumalı) |
+| **Thread - Privileged**   |      Tam erişim      | Kernel kodu, RTOS kodu                 |
+| **Thread - Unprivileged** |       Kısıtlı        | Kullanıcı uygulama kodu (MPU korumalı) |
 
 ---
 
@@ -298,20 +298,20 @@ graph LR
 
 ---
 
-## GPIO — Nibble — Bit İşlemleri
+## GPIO - Nibble - Bit İşlemleri
 
 | Terim      | Açıklama                               |
 | ---------- | -------------------------------------- |
 | **Nibble** | 4 bit; 0x0–0xF arası hex değer         |
-| **MSB**    | Most Significant Bit — en soldaki bit  |
-| **LSB**    | Least Significant Bit — en sağdaki bit |
+| **MSB**    | Most Significant Bit - en soldaki bit  |
+| **LSB**    | Least Significant Bit - en sağdaki bit |
 
 | Operatör | İşlem                             |
 | -------- | --------------------------------- |
-| `&`      | Bitwise AND — bit maskeleme için  |
-| `\|`     | Bitwise OR — bit set için         |
-| `^`      | Bitwise XOR — bit toggle için     |
-| `~`      | Bitwise NOT — tüm bitleri çevirir |
+| `&`      | Bitwise AND - bit maskeleme için  |
+| `\|`     | Bitwise OR - bit set için         |
+| `^`      | Bitwise XOR - bit toggle için     |
+| `~`      | Bitwise NOT - tüm bitleri çevirir |
 | `<<`     | Bit sola kaydır                   |
 | `>>`     | Bit sağa kaydır                   |
 
@@ -333,7 +333,7 @@ Geliştirme ortamında (x86/macOS/Windows) çalışıp hedef mimari (ARM Cortex-
 arm-none-eabi-gcc
 │   │    │      └─ gcc (GNU Compiler Collection)
 │   │    └─ eabi (Embedded Application Binary Interface)
-│   └─ none (İşletim sistemi yok — bare-metal)
+│   └─ none (İşletim sistemi yok - bare-metal)
 └─ arm (ARM mimarisi)
 ```
 

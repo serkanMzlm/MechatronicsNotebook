@@ -53,8 +53,8 @@ graph LR
 Qt'nin bellek yönetiminin temeli parent-child ilişkisine dayanır: **bir parent silindiğinde tüm child'ları da otomatik silinir.**
 
 ```cpp
-// Parent verildiğinde Qt belleği yönetir — delete gerekmez
-QWidget *pencere = new QWidget(nullptr);         // Root — sahibi yok
+// Parent verildiğinde Qt belleği yönetir - delete gerekmez
+QWidget *pencere = new QWidget(nullptr);         // Root - sahibi yok
 QPushButton *buton = new QPushButton("Tamam", pencere);  // Pencere sahibi
 QLabel *etiket = new QLabel("Merhaba", pencere);
 
@@ -116,7 +116,7 @@ private:
 };
 ```
 
-!!! note "m_ Prefix — Member Değişken Konvansiyonu"
+!!! note "m_ Prefix - Member Değişken Konvansiyonu"
     Qt kod stilinde sınıf üye değişkenleri `m_` öneki ile isimlendirilir (ör. `m_deger`). Bu, yerel değişkenlerle karışmayı önler ve getter/setter isimlerinde çakışmayı engeller.
 
 ### Q_PROPERTY
@@ -126,7 +126,7 @@ Q_PROPERTY(type name
     READ getter
     WRITE setter      // İsteğe bağlı
     NOTIFY signal     // QML binding güncelleme için zorunlu
-    RESET resetFunc   // İsteğe bağlı — varsayılana döndür
+    RESET resetFunc   // İsteğe bağlı - varsayılana döndür
     CONSTANT          // Yazılabilir değil; NOTIFY ile birlikte kullanamaz
 )
 ```
@@ -172,9 +172,9 @@ qDebug()    << "Debug:" << deger;     // Geliştirme aşaması
 qInfo()     << "Info:"  << mesaj;     // Bilgilendirici
 qWarning()  << "Uyarı:" << mesaj;     // Potansiyel sorun
 qCritical() << "Kritik:" << hata;     // Kurtarılabilir hata
-qFatal("Mesaj");                      // Crash — abort() çağrılır
+qFatal("Mesaj");                      // Crash - abort() çağrılır
 
-// Koşullu debug — yalnızca belirli kategori etkinse çalışır
+// Koşullu debug - yalnızca belirli kategori etkinse çalışır
 QLoggingCategory network("ag");
 qCDebug(network) << "Paket alındı";
 ```
@@ -202,9 +202,9 @@ sequenceDiagram
 
 ### connect() Sözdizimi
 
-=== "Modern (Function Pointer) — Önerilen"
+=== "Modern (Function Pointer) - Önerilen"
     ```cpp
-    // Derleme zamanı doğrulaması — yanlış imza derleyici hatası verir
+    // Derleme zamanı doğrulaması - yanlış imza derleyici hatası verir
     connect(slider, &QSlider::valueChanged,
             spinBox, &QSpinBox::setValue);
 
@@ -214,9 +214,9 @@ sequenceDiagram
     });
     ```
 
-=== "SIGNAL/SLOT Makrosu — Eski"
+=== "SIGNAL/SLOT Makrosu - Eski"
     ```cpp
-    // Çalışma zamanı doğrulaması — imza hatası derleme geçer, runtime'da uyarı
+    // Çalışma zamanı doğrulaması - imza hatası derleme geçer, runtime'da uyarı
     connect(slider, SIGNAL(valueChanged(int)),
             spinBox, SLOT(setValue(int)));
     ```
@@ -247,7 +247,7 @@ sequenceDiagram
     | `Qt::BlockingQueuedConnection` | QueuedConnection + gönderen thread alıcı bitene kadar bekler    |
 
 ```cpp
-// disconnect — belirli bağlantıyı kes
+// disconnect - belirli bağlantıyı kes
 disconnect(slider, &QSlider::valueChanged, spinBox, &QSpinBox::setValue);
 
 // Nesnenin tüm bağlantılarını kes
@@ -447,10 +447,10 @@ kume.subtract(diger);   // {1}
 | `QScopedPointer<T>` | `unique_ptr<T>` | Scope bitince otomatik sil; kopyalanamaz |
 | `QSharedPointer<T>` | `shared_ptr<T>` | Ref-counted; paylaşımlı sahiplik         |
 | `QWeakPointer<T>`   |  `weak_ptr<T>`  | Döngüsel bağımlılığı kırar               |
-| `QPointer<T>`       |        —        | Nesne silinirse otomatik `nullptr` olur  |
+| `QPointer<T>`       |        -        | Nesne silinirse otomatik `nullptr` olur  |
 
 !!! note "Parent-Child veya Smart Pointer?"
-    Qt parent mekanizması varsa genellikle ham pointer yeterlidir — parent silinince child silinir. Parent yoksa `QScopedPointer` veya `QSharedPointer` tercih edilir.
+    Qt parent mekanizması varsa genellikle ham pointer yeterlidir - parent silinince child silinir. Parent yoksa `QScopedPointer` veya `QSharedPointer` tercih edilir.
 
 ---
 
@@ -479,7 +479,7 @@ if (dosya.open(QIODevice::ReadOnly | QIODevice::Text)) {
 }
 ```
 
-### QDataStream — Binary Serileştirme
+### QDataStream - Binary Serileştirme
 
 ```cpp
 // Yazma
@@ -528,7 +528,7 @@ bilgi.absolutePath();
 bilgi.lastModified();
 ```
 
-### QSettings — Yapılandırma Saklama
+### QSettings - Yapılandırma Saklama
 
 ```cpp
 QSettings ayarlar("SirketAdi", "UygulamaAdi");
@@ -547,7 +547,7 @@ QString dil  = ayarlar.value("dil", "en").toString();
 
 ---
 
-## GUI — Widget Uygulamaları
+## GUI - Widget Uygulamaları
 
 ### Layout Sistemi
 
@@ -593,7 +593,7 @@ grid->addWidget(input2, 1, 1, 1, 2);  // 1 satır, 2 sütun span
 | `QTimer`                  | Zamanlayıcı; `timeout()` sinyali        |
 
 ```cpp
-// QLabel — HTML destekli
+// QLabel - HTML destekli
 QLabel *etiket = new QLabel("<b>Kalın</b> ve <i>italik</i>");
 etiket->setFont(QFont("Arial", 14, QFont::Bold));
 
@@ -657,11 +657,11 @@ int paylasilan = 0;
 
 // Thread A
 {
-    QMutexLocker kilit(&mutex);  // RAII — scope bitince unlock
+    QMutexLocker kilit(&mutex);  // RAII - scope bitince unlock
     paylasilan++;
 }
 
-// QReadWriteLock — çok okuyucu / tek yazıcı
+// QReadWriteLock - çok okuyucu / tek yazıcı
 QReadWriteLock rwLock;
 
 // Okuyucu
@@ -728,7 +728,7 @@ watcher->setFuture(gorev);
     Sayac { id: sayac }
     ```
 
-=== "QML_ELEMENT Makrosu (Qt 6 — Önerilen)"
+=== "QML_ELEMENT Makrosu (Qt 6 - Önerilen)"
     ```cpp
     class Sayac : public QObject {
         Q_OBJECT
@@ -747,7 +747,7 @@ watcher->setFuture(gorev);
 | Fonksiyon                                                    | Açıklama                                            |
 | ------------------------------------------------------------ | --------------------------------------------------- |
 | `qmlRegisterType<T>(uri, major, minor, name)`                | QML'de new ile oluşturulabilir tip                  |
-| `qmlRegisterSingletonInstance(uri, major, minor, name, ptr)` | Singleton — QML'de global erişim                    |
+| `qmlRegisterSingletonInstance(uri, major, minor, name, ptr)` | Singleton - QML'de global erişim                    |
 | `qmlRegisterUncreatableType<T>(...)`                         | QML'de örneklenemez; yalnızca enum/property erişimi |
 | `qRegisterMetaType<T>()`                                     | Signal/slot ve QVariant için tip kaydı              |
 | `Q_DECLARE_METATYPE(T)`                                      | `qRegisterMetaType` öncesi şablon özelleştirme      |
@@ -782,7 +782,7 @@ Connections {
 }
 ```
 
-### QVariant — C++/QML Veri Köprüsü
+### QVariant - C++/QML Veri Köprüsü
 
 ```cpp
 // C++ tarafı
@@ -804,7 +804,7 @@ ListView {
 
 ## Build Sistemi
 
-### CMake (Qt 6 — Önerilen)
+### CMake (Qt 6 - Önerilen)
 
 ```cmake
 cmake_minimum_required(VERSION 3.16)
@@ -878,8 +878,8 @@ find_package(Qt6 REQUIRED COMPONENTS
 | `Qt6::QuickControls2` | Material, Fluent gibi QML bileşen setleri |
 | `Qt6::Network`        | QNetworkAccessManager, QTcpSocket         |
 | `Qt6::Sql`            | QSqlDatabase, QSqlQuery                   |
-| `Qt6::SerialPort`     | QSerialPort — gömülü/donanım haberleşmesi |
-| `Qt6::Concurrent`     | QtConcurrent — paralel işleme             |
+| `Qt6::SerialPort`     | QSerialPort - gömülü/donanım haberleşmesi |
+| `Qt6::Concurrent`     | QtConcurrent - paralel işleme             |
 | `Qt6::Bluetooth`      | QBluetoothSocket, LE                      |
 
 ---
@@ -894,7 +894,7 @@ qint16 / quint16
 qint32 / quint32
 qint64 / quint64
 qintptr // Pointer boyutunda (32/64-bit otomatik)
-qreal   // double (veya float — Qt konfigürasyona bağlı)
+qreal   // double (veya float - Qt konfigürasyona bağlı)
 ```
 
 !!! tip "qDebug() Operatörü Genişletme"

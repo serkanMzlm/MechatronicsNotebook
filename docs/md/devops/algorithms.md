@@ -10,7 +10,7 @@
 
 ## Graf Algoritmaları
 
-### BFS — Genişlik Öncelikli Arama
+### BFS - Genişlik Öncelikli Arama
 
 **Mantık:** Başlangıç düğümünden katman katman dışa doğru genişler. Önce tüm komşular ziyaret edilir, sonra komşuların komşuları. **Kuyruk (FIFO)** veri yapısıyla çalışır.
 
@@ -35,7 +35,7 @@ Ziyaret sırası: A → B → C → D → E → F (seviye seviye)
 | Özellik                  | Değer                      |
 | ------------------------ | -------------------------- |
 | Zaman Karmaşıklığı       | O(V + E)                   |
-| Alan Karmaşıklığı        | O(V) — kuyruktaki düğümler |
+| Alan Karmaşıklığı        | O(V) - kuyruktaki düğümler |
 | En kısa yol (ağırlıksız) | ✓ Garanti                  |
 | Döngü tespiti            | ✓                          |
 
@@ -46,7 +46,7 @@ Ziyaret sırası: A → B → C → D → E → F (seviye seviye)
 
 ---
 
-### DFS — Derinlik Öncelikli Arama
+### DFS - Derinlik Öncelikli Arama
 
 **Mantık:** Bir yolu sonuna kadar takip eder, çıkmaz sokağa gelince geri döner ve başka bir yol dener. **Yığın (LIFO)** veya özyineleme ile çalışır.
 
@@ -64,12 +64,12 @@ Ziyaret sırası: A → B → D → E → C → F (dala gir, bitince geri dön)
 | Özellik            | Değer                    |
 | ------------------ | ------------------------ |
 | Zaman Karmaşıklığı | O(V + E)                 |
-| Alan Karmaşıklığı  | O(V) — özyineleme yığını |
+| Alan Karmaşıklığı  | O(V) - özyineleme yığını |
 | En kısa yol        | ✗ Garanti etmez          |
 | Döngü tespiti      | ✓ (geri kenar tespiti)   |
 
 **Ne zaman kullanılır?**
-- Topolojik sıralama (bağımlılık çözümü — paket yöneticileri)
+- Topolojik sıralama (bağımlılık çözümü - paket yöneticileri)
 - Bağlantılı bileşen bulma
 - Labirent çözme
 - Döngü tespiti
@@ -104,7 +104,7 @@ A'dan D'ye en kısa yol: A→C→B→D (1+2+5=8), A→C→D değil (1+8=9)
 
 | Özellik            | Değer                           |
 | ------------------ | ------------------------------- |
-| Zaman Karmaşıklığı | O((V + E) log V) — min-heap ile |
+| Zaman Karmaşıklığı | O((V + E) log V) - min-heap ile |
 | Negatif kenar      | ✗ Desteklemez                   |
 | Negatif döngü      | ✗ Tespit edemez                 |
 
@@ -134,7 +134,7 @@ A'dan D'ye en kısa yol: A→C→B→D (1+2+5=8), A→C→D değil (1+8=9)
 **Ne zaman kullanılır?**
 - Negatif ağırlıklar içeren graflarda
 - Finans: arbitraj fırsatı tespiti (negatif döngü = para kazanma döngüsü)
-- Ağ protokollerinde (RIP — Routing Information Protocol)
+- Ağ protokollerinde (RIP - Routing Information Protocol)
 
 ---
 
@@ -151,7 +151,7 @@ dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
 | Özellik               | Değer                   |
 | --------------------- | ----------------------- |
 | Zaman Karmaşıklığı    | O(V³)                   |
-| Alan Karmaşıklığı     | O(V²) — matris          |
+| Alan Karmaşıklığı     | O(V²) - matris          |
 | Negatif kenar         | ✓                       |
 | Negatif döngü tespiti | ✓ (köşegen eksi olursa) |
 | Tek kaynak mı?        | ✗ Tüm çiftler           |
@@ -169,14 +169,14 @@ dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
 
 ```mermaid
 graph LR
-    subgraph DIJKSTRA["Dijkstra — Her yöne eşit arar"]
+    subgraph DIJKSTRA["Dijkstra - Her yöne eşit arar"]
         D1((Start)) --> D2((...))
         D2 --> D3((...))
         D2 --> D4((...))
         D3 --> D5((Goal))
         D4 --> D6((...))
     end
-    subgraph ASTAR["A* — Hedefe doğru yönelir"]
+    subgraph ASTAR["A* - Hedefe doğru yönelir"]
         A1((Start)) --> A2((...))
         A2 --> A3((Goal))
     end
@@ -211,7 +211,7 @@ graph LR
 
 ## Sıralama Algoritmaları
 
-### Bubble Sort — Kabarcık Sıralaması
+### Bubble Sort - Kabarcık Sıralaması
 
 **Mantık:** Komşu iki elemanı karşılaştırır, yanlış sıradaysa yer değiştirir. Her geçişte en büyük eleman sona "kabarcık gibi" yükselir. Saf kuvvet yöntemi.
 
@@ -221,16 +221,16 @@ graph LR
 
 |                    | Değer                                    |
 | ------------------ | ---------------------------------------- |
-| En iyi             | O(n) — zaten sıralıysa (erken çıkış ile) |
+| En iyi             | O(n) - zaten sıralıysa (erken çıkış ile) |
 | Ortalama / En kötü | O(n²)                                    |
-| Bellek             | O(1) — yerinde                           |
+| Bellek             | O(1) - yerinde                           |
 | Kararlı (Stable)   | ✓                                        |
 
 **Kullanım:** Eğitim amaçlı. Gerçek sistemlerde kullanılmaz.
 
 ---
 
-### Selection Sort — Seçme Sıralaması
+### Selection Sort - Seçme Sıralaması
 
 **Mantık:** Her geçişte dizinin sıralanmamış kısmından **en küçük elemanı** bulur ve başa taşır. Bubble'dan farkı: swap sayısı azdır (en fazla n-1 swap).
 
@@ -240,17 +240,17 @@ graph LR
 
 |             | Değer                   |
 | ----------- | ----------------------- |
-| Her durumda | O(n²) — erken çıkış yok |
+| Her durumda | O(n²) - erken çıkış yok |
 | Bellek      | O(1)                    |
 | Kararlı     | ✗                       |
 
-**Kullanım:** Bellek yazma işlemi pahalıysa (flash bellek gibi) — swap sayısı minimumdur.
+**Kullanım:** Bellek yazma işlemi pahalıysa (flash bellek gibi) - swap sayısı minimumdur.
 
 ---
 
-### Insertion Sort — Ekleme Sıralaması
+### Insertion Sort - Ekleme Sıralaması
 
-**Mantık:** Kart oyunundaki gibi — sıralanmış kısma yeni elemanı doğru yerine ekler. Sıralı kısım solda büyür.
+**Mantık:** Kart oyunundaki gibi - sıralanmış kısma yeni elemanı doğru yerine ekler. Sıralı kısım solda büyür.
 
 ```
 [5, 3, 8, 1]
@@ -261,7 +261,7 @@ graph LR
 
 |         | Değer                         |
 | ------- | ----------------------------- |
-| En iyi  | O(n) — neredeyse sıralıysa    |
+| En iyi  | O(n) - neredeyse sıralıysa    |
 | En kötü | O(n²)                         |
 | Bellek  | O(1)                          |
 | Kararlı | ✓                             |
@@ -271,7 +271,7 @@ graph LR
 
 ---
 
-### Merge Sort — Birleştirme Sıralaması
+### Merge Sort - Birleştirme Sıralaması
 
 **Mantık:** Böl-ve-yönet. Diziyi ikiye böler, her yarıyı özyinelemeli olarak sıralar, sonra iki sıralı yarıyı birleştirir.
 
@@ -291,14 +291,14 @@ graph TD
 |             | Değer                     |
 | ----------- | ------------------------- |
 | Her durumda | O(n log n)                |
-| Bellek      | O(n) — ek dizi gerektirir |
+| Bellek      | O(n) - ek dizi gerektirir |
 | Kararlı     | ✓                         |
 
 **Kullanım:** Bağlı listeler için ideal (eleman kopyalamadan birleştirilir). Büyük veri kümelerinde garantili O(n log n). Dış sıralama (disk üzerindeki veriler).
 
 ---
 
-### Quick Sort — Hızlı Sıralama
+### Quick Sort - Hızlı Sıralama
 
 **Mantık:** Bir **pivot** seçer, pivot'tan küçükleri sola, büyükleri sağa taşır (partition). Sonra her iki tarafı özyinelemeli sıralar.
 
@@ -312,19 +312,19 @@ graph TD
 |          | Değer                                         |
 | -------- | --------------------------------------------- |
 | Ortalama | O(n log n)                                    |
-| En kötü  | O(n²) — pivot her seferinde min/max seçilirse |
-| Bellek   | O(log n) — özyineleme yığını                  |
+| En kötü  | O(n²) - pivot her seferinde min/max seçilirse |
+| Bellek   | O(log n) - özyineleme yığını                  |
 | Kararlı  | ✗                                             |
 
 **Neden hızlı?** Bellek erişim örüntüsü cache'e dosttur (in-place, yerel erişim). Merge sort'un aksine ek bellek gerektirmez.
 
 **Pivot seçimi kritik:** Rastgele pivot veya "median of three" yöntemi en kötü durum olasılığını azaltır.
 
-**Kullanım:** Genel amaçlı sıralama için pratikte en hızlı. C++'ın `std::sort`, Java'nın `Arrays.sort(int[])` temelde introsort kullanır — quicksort bazlı.
+**Kullanım:** Genel amaçlı sıralama için pratikte en hızlı. C++'ın `std::sort`, Java'nın `Arrays.sort(int[])` temelde introsort kullanır - quicksort bazlı.
 
 ---
 
-### Heap Sort — Yığın Sıralaması
+### Heap Sort - Yığın Sıralaması
 
 **Mantık:** Önce diziyi **max-heap** (her ebeveyn çocuklarından büyük) yapısına dönüştürür. Ardından heap'in kökünü (maksimum) sondan başa yerleştirir ve heap'i yeniden düzenler.
 
@@ -339,7 +339,7 @@ Sonuç: [1, 3, 5, 8]
 |             | Değer          |
 | ----------- | -------------- |
 | Her durumda | O(n log n)     |
-| Bellek      | O(1) — yerinde |
+| Bellek      | O(1) - yerinde |
 | Kararlı     | ✗              |
 
 **Quicksort ile farkı:** En kötü durumda bile O(n log n) garantisi verir, yerinde çalışır. Ancak cache performansı quicksort'tan zayıf (heap erişimi sıçramalı).
@@ -370,7 +370,7 @@ Sonuç: [1, 3, 5, 8]
 
 ## Arama Algoritmaları
 
-### Linear Search — Doğrusal Arama
+### Linear Search - Doğrusal Arama
 
 **Mantık:** Dizinin başından sonuna kadar teker teker her elemana bakılır. Bulunan ilk eşleşmede durur.
 
@@ -384,7 +384,7 @@ Sonuç: [1, 3, 5, 8]
 
 ---
 
-### Binary Search — İkili Arama
+### Binary Search - İkili Arama
 
 **Mantık:** **Sıralanmış** dizide orta elemana bakılır. Aranan değer ortadan küçükse sol yarıya, büyükse sağ yarıya odaklanılır. Her adımda arama alanı **ikiye bölünür**.
 

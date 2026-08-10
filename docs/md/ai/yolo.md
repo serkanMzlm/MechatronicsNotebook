@@ -1,4 +1,4 @@
-# YOLO — Nesne Tespiti ve Segmentasyon
+# YOLO - Nesne Tespiti ve Segmentasyon
 
 !!! note "Bu Sayfa Ne Anlatıyor?"
     YOLO'yu hiç kullanmamış biri için sıfırdan başlar. Nesne tespitinin ne olduğunu açıklar, YOLO'nun nasıl çalıştığını anlatır, YOLOv8 ile hızlı başlangıç yapmayı ve kendi verisiyle eğitim sürecini gösterir.
@@ -49,7 +49,7 @@ graph LR
 
 **Backbone**: Görüntüden özellik çıkarır (kenar, şekil, doku)
 
-**Neck (FPN + PAN)**: Farklı boyuttaki nesneleri yakalamak için birden fazla ölçekte çalışır — büyük nesneler için düşük çözünürlüklü özellik haritası, küçük nesneler için yüksek çözünürlüklü.
+**Neck (FPN + PAN)**: Farklı boyuttaki nesneleri yakalamak için birden fazla ölçekte çalışır - büyük nesneler için düşük çözünürlüklü özellik haritası, küçük nesneler için yüksek çözünürlüklü.
 
 **Head**: Her hücre için "buraya kutu uyar mı?" diye sorar; kutu koordinatı ve sınıf olasılığı tahmin eder.
 
@@ -57,7 +57,7 @@ graph LR
 
 ---
 
-## YOLOv8 — Hızlı Başlangıç
+## YOLOv8 - Hızlı Başlangıç
 
 ```bash
 pip install ultralytics
@@ -68,16 +68,16 @@ from ultralytics import YOLO
 import cv2
 
 # ──────────────────────────────────────────
-# Hazır model yükle — internetten indirir
+# Hazır model yükle - internetten indirir
 # ──────────────────────────────────────────
 model = YOLO("yolov8n.pt")   # n=nano (en hızlı), s/m/l/x artar
 
 # Model seçenekleri:
-# yolov8n.pt  → ~3 MB,  80 sınıf COCO — en hızlı
+# yolov8n.pt  → ~3 MB,  80 sınıf COCO - en hızlı
 # yolov8s.pt  → ~11 MB
 # yolov8m.pt  → ~25 MB
 # yolov8l.pt  → ~43 MB
-# yolov8x.pt  → ~68 MB  — en doğru
+# yolov8x.pt  → ~68 MB  - en doğru
 
 # Görev bazlı modeller:
 # yolov8n-seg.pt   → segmentasyon
@@ -102,7 +102,7 @@ for sonuc in sonuclar:
 
     # Görselleştir ve kaydet
     sonuc.save("sonuc.jpg")            # Kutularla kaydet
-    gorsel = sonuc.plot()              # numpy array — kendin çizebilirsin
+    gorsel = sonuc.plot()              # numpy array - kendin çizebilirsin
 
 # ──────────────────────────────────────────
 # Kamera / video üzerinde gerçek zamanlı
@@ -144,7 +144,7 @@ for sonuc in sonuclar:
     if sonuc.boxes is not None:
         for kutu in sonuc.boxes:
             xyxy    = kutu.xyxy[0].tolist()    # [x1, y1, x2, y2]
-            xywh    = kutu.xywh[0].tolist()    # [cx, cy, w, h] — merkez format
+            xywh    = kutu.xywh[0].tolist()    # [cx, cy, w, h] - merkez format
             xywhn   = kutu.xywhn[0].tolist()   # normalize edilmiş (0-1 arası)
             guven   = kutu.conf[0].item()
             sinif   = int(kutu.cls[0])
@@ -159,7 +159,7 @@ for sonuc in sonuclar:
     # ── Poz tahmini ──
     if sonuc.keypoints is not None:             # yolov8n-pose.pt ile
         for kp in sonuc.keypoints:
-            noktalar = kp.xy[0]                # (17, 2) — 17 iskelet noktası
+            noktalar = kp.xy[0]                # (17, 2) - 17 iskelet noktası
             guvenler = kp.conf[0]              # Her nokta için güven skoru
 
 # ──────────────────────────────────────────
@@ -220,14 +220,14 @@ names:
 ### 2. Etiketleme Araçları
 
 ```bash
-# Roboflow — web tarayıcı tabanlı, ücretsiz
+# Roboflow - web tarayıcı tabanlı, ücretsiz
 # https://roboflow.com  → YOLO formatında indir
 
-# LabelImg — masaüstü, açık kaynak
+# LabelImg - masaüstü, açık kaynak
 pip install labelImg
 labelImg
 
-# CVAT — kurumsal seviye, açık kaynak
+# CVAT - kurumsal seviye, açık kaynak
 # https://cvat.ai
 ```
 
@@ -275,7 +275,7 @@ model = YOLO("runs/kedi_kopek_kus/weights/best.pt")
 metrikler = model.val(data="data/dataset.yaml")
 
 print(f"mAP50:    {metrikler.box.map50:.3f}")    # IoU@0.5
-print(f"mAP50-95: {metrikler.box.map:.3f}")      # IoU@[0.5:0.95] — ana metrik
+print(f"mAP50-95: {metrikler.box.map:.3f}")      # IoU@[0.5:0.95] - ana metrik
 print(f"Precision: {metrikler.box.mp:.3f}")
 print(f"Recall:    {metrikler.box.mr:.3f}")
 
@@ -291,12 +291,12 @@ for i, sinif in enumerate(metrikler.names.values()):
 ```mermaid
 timeline
     title YOLO Evrimi
-    2015 : YOLOv1 — İlk gerçek zamanlı tespit
-    2018 : YOLOv3 — Çoklu ölçek, Darknet
-    2020 : YOLOv5 — PyTorch, Ultralytics
-    2022 : YOLOv7 — E-ELAN mimarisi
-    2023 : YOLOv8 — Yeni mimari, görev çeşitliliği
-    2024 : YOLOv11 — Daha küçük, daha doğru
+    2015 : YOLOv1 - İlk gerçek zamanlı tespit
+    2018 : YOLOv3 - Çoklu ölçek, Darknet
+    2020 : YOLOv5 - PyTorch, Ultralytics
+    2022 : YOLOv7 - E-ELAN mimarisi
+    2023 : YOLOv8 - Yeni mimari, görev çeşitliliği
+    2024 : YOLOv11 - Daha küçük, daha doğru
 ```
 
 | Model   | mAP50-95 | Hız (ms) | Parametre |
@@ -411,7 +411,7 @@ sonuclar = model("foto.jpg",
     - **Hailo NPU** → `yolov8n` → DFC ile HEF'e derle
 
 !!! warning "Sık Yapılan Hatalar"
-    - Eğitim verisinde etiket hatası varsa model asla düzeltemez — kaliteli etiketleme şart
+    - Eğitim verisinde etiket hatası varsa model asla düzeltemez - kaliteli etiketleme şart
     - `imgsz` eğitim ve çıkarımda aynı olmalı
     - Çok az veri (< 100 görüntü/sınıf) → overfitting riski yüksek → veri çoğaltma
     - COCO modeli ile başlayın, ardından kendi verinizde fine-tune edin

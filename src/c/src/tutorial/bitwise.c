@@ -1,5 +1,5 @@
 /*
- * bitwise.c — Bit Operasyonları
+ * bitwise.c - Bit Operasyonları
  *
  * Kapsanan konular:
  *   Temel operatörler → &, |, ^, ~, <<, >>
@@ -24,7 +24,7 @@ static void print_binary(uint32_t val, int bits)
 }
 
 /* ===========================================================================
- * BÖLÜM 1 — Temel bitwise operatörler
+ * BÖLÜM 1 - Temel bitwise operatörler
  *
  * &  → AND:  her iki bit 1 ise 1
  * |  → OR:   en az bir bit 1 ise 1
@@ -54,7 +54,7 @@ static void demo_basic_operators(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 2 — Bit maskeleme: set, clear, toggle, check
+ * BÖLÜM 2 - Bit maskeleme: set, clear, toggle, check
  *
  * SET    : reg |=  (1u << bit)    → biti 1 yap
  * CLEAR  : reg &= ~(1u << bit)    → biti 0 yap
@@ -97,10 +97,10 @@ static void demo_masking(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 3 — Donanım register simülasyonu
+ * BÖLÜM 3 - Donanım register simülasyonu
  *
  * Gerçek donanımda memory-mapped I/O register'ları bu şekilde yönetilir.
- * volatile eklenmeliydi (donanım için) — burada simülasyon amaçlı.
+ * volatile eklenmeliydi (donanım için) - burada simülasyon amaçlı.
  * ===========================================================================*/
 typedef enum
 {
@@ -131,7 +131,7 @@ static void demo_register_sim(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 4 — Bit tricks
+ * BÖLÜM 4 - Bit tricks
  *
  * Yaygın bit manipülasyon teknikleri.
  * Gömülü sistemlerde ve performans kritik kodda sık kullanılır.
@@ -140,8 +140,8 @@ static void demo_bit_tricks(void)
 {
     uint32_t x;
 
-    /* XOR swap — geçici değişken olmadan iki değeri takas et
-     * NOT: a == b ise yanlış sonuç verir (0 olur) — kullanımda dikkat */
+    /* XOR swap - geçici değişken olmadan iki değeri takas et
+     * NOT: a == b ise yanlış sonuç verir (0 olur) - kullanımda dikkat */
     uint32_t a = 0xABCD, b = 0x1234;
     a ^= b;
     b ^= a;
@@ -163,7 +163,7 @@ static void demo_bit_tricks(void)
     /* En düşük set biti temizle: x & (x-1) */
     printf("clear LSB: "); print_binary(x & (x - 1), 8); printf("\n");
 
-    /* Popcount: set bit sayısı (Manuel — __builtin_popcount ile de yapılabilir) */
+    /* Popcount: set bit sayısı (Manuel - __builtin_popcount ile de yapılabilir) */
     x = 0b10110101;
     uint32_t count = 0;
     uint32_t tmp = x;
@@ -174,10 +174,10 @@ static void demo_bit_tricks(void)
     }
     printf("popcount(%u) = %u\n", x, count);
 
-    /* Derleyici built-in — genellikle tek CPU talimatına iner */
+    /* Derleyici built-in - genellikle tek CPU talimatına iner */
     printf("__builtin_popcount(%u) = %d\n", x, __builtin_popcount(x));
 
-    /* Byte'ları ters çevirme — 32-bit */
+    /* Byte'ları ters çevirme - 32-bit */
     x = 0x12345678;
     uint32_t rev = ((x & 0xFF000000) >> 24) |
                    ((x & 0x00FF0000) >>  8) |
@@ -187,7 +187,7 @@ static void demo_bit_tricks(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 5 — Signed shift davranışı
+ * BÖLÜM 5 - Signed shift davranışı
  *
  * Left shift (<<):
  *   unsigned → well-defined (n bit sola, sağdan sıfır girer)
@@ -195,14 +195,14 @@ static void demo_bit_tricks(void)
  *
  * Right shift (>>):
  *   unsigned → mantıksal shift (soldan sıfır girer)
- *   signed   → aritmetik shift (soldan işaret biti girer) — implementation-defined
+ *   signed   → aritmetik shift (soldan işaret biti girer) - implementation-defined
  *              GCC/Clang pratikte aritmetik shift uygular
  *
  * Güvenli kural: shift operasyonlarında unsigned kullan.
  * ===========================================================================*/
 static void demo_shift(void)
 {
-    /* unsigned shift — well-defined */
+    /* unsigned shift - well-defined */
     uint8_t u = 0b10000001;
     printf("u      = "); print_binary(u, 8); printf("\n");
     printf("u << 1 = "); print_binary((uint8_t)(u << 1), 8);
@@ -210,12 +210,12 @@ static void demo_shift(void)
     printf("u >> 1 = "); print_binary(u >> 1, 8);
     printf(" (sağ: soldan 0 girer)\n");
 
-    /* signed shift — implementation-defined sağa shift */
+    /* signed shift - implementation-defined sağa shift */
     int8_t s = (int8_t)0b10000001;   /* -127 */
     printf("s      = %d\n", s);
     printf("s >> 1 = %d (aritmetik: işaret biti korunur)\n", s >> 1);
 
-    /* Çarpma/bölme kısayolu — sadece unsigned veya pozitif signed ile güvenli */
+    /* Çarpma/bölme kısayolu - sadece unsigned veya pozitif signed ile güvenli */
     uint32_t val = 7;
     printf("%u << 3 = %u (× 8)\n", val, val << 3);
     printf("%u >> 2 = %u (÷ 4)\n", val, val >> 2);
@@ -236,7 +236,7 @@ static void demo_shift(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 6 — Endianness
+ * BÖLÜM 6 - Endianness
  *
  * Little-endian: LSB düşük adreste (x86, ARM LE)
  * Big-endian:    MSB düşük adreste (ağ protokolleri, bazı ARM)
@@ -268,7 +268,7 @@ static void demo_endianness(void)
                        ((val & 0x000000FF) << 24);
     printf("byte_swapped: 0x%08X\n", swapped);
 
-    /* __builtin_bswap32 — derleyici built-in, genellikle tek talimat */
+    /* __builtin_bswap32 - derleyici built-in, genellikle tek talimat */
     printf("bswap32: 0x%08X\n", __builtin_bswap32(val));
     printf("bswap16: 0x%04X\n", __builtin_bswap16((uint16_t)val));
 }
@@ -279,7 +279,7 @@ static void demo_endianness(void)
 int main(void)
 {
     printf(LINE);
-    LOG_INFO("bitwise.c — starting demos");
+    LOG_INFO("bitwise.c - starting demos");
     printf(LINE);
 
     demo_basic_operators(); printf(LINE);
@@ -289,6 +289,6 @@ int main(void)
     demo_shift();           printf(LINE);
     demo_endianness();      printf(LINE);
 
-    LOG_INFO("bitwise.c — all demos complete");
+    LOG_INFO("bitwise.c - all demos complete");
     return 0;
 }

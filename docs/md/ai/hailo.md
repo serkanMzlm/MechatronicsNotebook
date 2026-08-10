@@ -1,4 +1,4 @@
-# Hailo — Kenar AI Hızlandırıcı
+# Hailo - Kenar AI Hızlandırıcı
 
 !!! note "Bu Sayfa Ne Anlatıyor?"
     Hailo'yu hiç duymamış biri için sıfırdan açıklar. Hailo'nun ne olduğunu, nasıl çalıştığını, modelini nasıl deploy edeceğini ve Python/C++ ile nasıl kullanacağını anlatır. Raspberry Pi + AI HAT+ ve Jetson senaryolarını kapsar.
@@ -31,7 +31,7 @@ Tasarruf: 10-15× daha hızlı, 60× daha az güç tüketimi
 | Hailo-8   |    26 TOPS     | ~2.5W | Genel kenar AI       |
 | Hailo-10H | 40 TOPS (INT4) | ~2.5W | LLM, üretken AI      |
 
-**TOPS = Tera Operations Per Second** — saniyede yapılabilen işlem sayısı (çarpma+toplama).
+**TOPS = Tera Operations Per Second** - saniyede yapılabilen işlem sayısı (çarpma+toplama).
 
 ---
 
@@ -53,7 +53,7 @@ flowchart LR
     CAM[Kamera] -->|Görüntü| APP
 ```
 
-**Anahtar nokta**: CPU modeli hesaplamaz — sadece Hailo'ya veri gönderir ve sonucu alır.
+**Anahtar nokta**: CPU modeli hesaplamaz - sadece Hailo'ya veri gönderir ve sonucu alır.
 
 ---
 
@@ -81,7 +81,7 @@ hailortcli fw-control identify
 
 ---
 
-## HEF — Hailo'nun Model Formatı
+## HEF - Hailo'nun Model Formatı
 
 Hailo, PyTorch/ONNX modelini doğrudan çalıştıramaz. Modelin önce **HEF (Hailo Executable Format)** dosyasına derlenmesi gerekir.
 
@@ -115,7 +115,7 @@ python hailo_model_zoo/main.py info hailo8l
 
 ---
 
-## Dataflow Compiler — Model Derleme
+## Dataflow Compiler - Model Derleme
 
 ```bash
 # DFC kurulumu (x86 Linux'ta)
@@ -181,7 +181,7 @@ runner.visualize_params(save_path="profil.pdf")
 
 ---
 
-## HailoRT Python API — Çıkarım Yapmak
+## HailoRT Python API - Çıkarım Yapmak
 
 ```python title="hailort_cikirim.py"
 import hailo_platform as hpl
@@ -256,7 +256,7 @@ with hpl.InputVStreams(ag_grubu, girdi_params) as girdi_vs, \
 
 ## YOLO Çıktısını İşlemek
 
-Hailo'dan gelen YOLO çıktısı ham tensördür — post-processing sen yaparsın.
+Hailo'dan gelen YOLO çıktısı ham tensördür - post-processing sen yaparsın.
 
 ```python title="yolo_postprocess.py"
 import numpy as np
@@ -321,7 +321,7 @@ def yolov8_postprocess(cikislar: dict, conf_esik=0.5, iou_esik=0.45,
 
 ---
 
-## Gerçek Zamanlı Pipeline — Raspberry Pi
+## Gerçek Zamanlı Pipeline - Raspberry Pi
 
 ```python title="rpi_hailo_pipeline.py"
 import hailo_platform as hpl
@@ -420,7 +420,7 @@ if __name__ == "__main__":
 ## rpicam-apps ile Hailo (Raspberry Pi'de En Kolay Yol)
 
 ```bash
-# JSON ile hazır pipeline — kod yazmana gerek yok
+# JSON ile hazır pipeline - kod yazmana gerek yok
 rpicam-hello -t 0 \
     --post-process-file /usr/share/rpi-camera-assets/hailo_yolov8_inference.json \
     --lores-width 640 --lores-height 640
@@ -441,7 +441,7 @@ rpicam-hello -t 0 \
 ## GStreamer Pipeline
 
 ```bash
-# GStreamer ile Hailo — daha fazla kontrol
+# GStreamer ile Hailo - daha fazla kontrol
 gst-launch-1.0 \
     libcamerasrc ! \
     video/x-raw,width=1280,height=720,framerate=30/1,format=NV12 ! \
@@ -502,7 +502,7 @@ export HAILORT_LOGGER_PATH=/tmp/hailo.log   # Log dosyası
 
 ## Jetson + Hailo
 
-Jetson cihazlara Hailo NPU M.2 arayüzü ile takılabilir. PCIe üzerinden bağlanır — Raspberry Pi ile aynı yazılım.
+Jetson cihazlara Hailo NPU M.2 arayüzü ile takılabilir. PCIe üzerinden bağlanır - Raspberry Pi ile aynı yazılım.
 
 ```bash
 # Jetson'da Hailo kurulum kontrolü
@@ -513,18 +513,18 @@ hailortcli fw-control identify
 # hailonet elementini DeepStream pipeline'ına entegre et
 ```
 
-!!! tip "Çoklu Kamera — vdevice-key"
+!!! tip "Çoklu Kamera - vdevice-key"
     Birden fazla kamera aynı Hailo cihazını paylaşabilir. `vdevice-key` aynı olduğunda Hailo, kameralar arasında Round-Robin ile yük paylaşımı yapar.
     
     ```bash
-    # İki kamera, tek Hailo — her ikisi de vdevice-key=1 kullanır
+    # İki kamera, tek Hailo - her ikisi de vdevice-key=1 kullanır
     gst-launch-1.0 \
         libcamerasrc camera-name="cam0" ! ... hailonet hef-path=model.hef vdevice-key=1 ! ... \
         libcamerasrc camera-name="cam1" ! ... hailonet hef-path=model.hef vdevice-key=1 ! ...
     ```
 
 !!! warning "Sık Yapılan Hatalar"
-    - HEF dosyası doğru mimariye derlenmeli — Hailo-8L için `hw_arch="hailo8l"`
+    - HEF dosyası doğru mimariye derlenmeli - Hailo-8L için `hw_arch="hailo8l"`
     - `configure()` çağrısından önce HEF nesnesinin bellekte olması gerekir
     - Birden fazla süreç aynı Hailo'ya erişmek istiyorsa `multi_process_service=True`
     - Sürücü sorununda: `sudo modprobe -r hailo_pci && sudo modprobe hailo_pci`

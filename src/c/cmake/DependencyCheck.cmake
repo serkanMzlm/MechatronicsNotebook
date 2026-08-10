@@ -1,5 +1,5 @@
 # ==============================================================================
-# DependencyCheck.cmake — Bağımlılık Kontrolleri ve CMake Komut Örnekleri
+# DependencyCheck.cmake - Bağımlılık Kontrolleri ve CMake Komut Örnekleri
 #
 # Kapsanan komutlar:
 #   macro             → function farkı, ARGC, ARGN kullanımı
@@ -16,7 +16,7 @@
 include(FetchContent)
 
 # ==============================================================================
-# log_dep — macro örneği
+# log_dep - macro örneği
 #
 # macro ile function arasındaki temel fark:
 #   - macro kendi kapsamı oluşturmaz, çağıranın kapsamında çalışır
@@ -28,17 +28,17 @@ include(FetchContent)
 
 macro(log_dep NAME)
     if(${NAME}_FOUND)
-        message(STATUS "[Dep] ${NAME} — FOUND")
+        message(STATUS "[Dep] ${NAME} - FOUND")
         # PARENT_SCOPE olmadan doğrudan dışarıya yazılır
         set(DEP_${NAME}_OK TRUE)
     else()
-        message(WARNING "[Dep] ${NAME} — NOT FOUND (ARGC=${ARGC})")
+        message(WARNING "[Dep] ${NAME} - NOT FOUND (ARGC=${ARGC})")
         set(DEP_${NAME}_OK FALSE)
     endif()
 endmacro()
 
 # ==============================================================================
-# check_dep — cmake_parse_arguments örneği (function)
+# check_dep - cmake_parse_arguments örneği (function)
 #
 # cmake_parse_arguments: fonksiyona isimli parametre desteği ekler.
 #
@@ -73,10 +73,10 @@ macro(run_dependency_checks)
 
     message(STATUS "--- Dependency Checks Starting ---")
 
-    # find_package MODULE modu — REQUIRED: bulunamazsa derleme durur
+    # find_package MODULE modu - REQUIRED: bulunamazsa derleme durur
     find_package(Threads REQUIRED)
 
-    # find_package CONFIG modu — kütüphanenin kendi Config.cmake'ini arar
+    # find_package CONFIG modu - kütüphanenin kendi Config.cmake'ini arar
     find_package(GTest CONFIG QUIET)
     log_dep(GTest)
 
@@ -94,7 +94,7 @@ macro(run_dependency_checks)
     )
     FetchContent_MakeAvailable(unity)
 
-    # math EXPR: aritmetik işlem — sonuç her zaman integer'dır
+    # math EXPR: aritmetik işlem - sonuç her zaman integer'dır
     math(EXPR DEP_FLAGS "(1 << 0) | (1 << 1)")
     message(STATUS "[Dep] Flags: ${DEP_FLAGS}")
 
@@ -107,9 +107,9 @@ macro(run_dependency_checks)
         list(REMOVE_AT DEP_QUEUE 0)
 
         if(DEP_${CURRENT}_OK)
-            message(STATUS "[Dep] ${CURRENT} — OK")
+            message(STATUS "[Dep] ${CURRENT} - OK")
         else()
-            message(STATUS "[Dep] ${CURRENT} — SKIPPED")
+            message(STATUS "[Dep] ${CURRENT} - SKIPPED")
         endif()
 
         list(LENGTH DEP_QUEUE QUEUE_LEN)

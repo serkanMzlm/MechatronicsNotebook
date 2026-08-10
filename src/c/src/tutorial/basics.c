@@ -1,5 +1,5 @@
 /*
- * basics.c — Temel C Kavramları
+ * basics.c - Temel C Kavramları
  *
  * Kapsanan konular:
  *   Veri tipleri      → tam sayı, ondalık, char, bool
@@ -25,14 +25,14 @@
 /* ===========================================================================
  * Dosya kapsamı static değişken
  *
- * static — dosya dışından erişilemez (internal linkage).
+ * static - dosya dışından erişilemez (internal linkage).
  * Global değişkenden farkı: bu sembol başka .c dosyalarında görünmez.
  * Production kodunda global state yerine bu tercih edilir.
  * ===========================================================================*/
 static int file_scope_counter = 0;
 
 /* ===========================================================================
- * BÖLÜM 1 — Temel veri tipleri
+ * BÖLÜM 1 - Temel veri tipleri
  *
  * C standardı minimum boyutları garanti eder, tam boyutu değil.
  *   char       ≥ 8 bit
@@ -57,10 +57,10 @@ static void demo_data_types(void)
     double      d  = 3.141592;
     long double ld = 3.14159265358979L;
 
-    /* bool — <stdbool.h> ile gelir, C99+ */
+    /* bool - <stdbool.h> ile gelir, C99+ */
     bool flag = true;
 
-    /* Sabit boyutlu tipler — taşınabilir kod için tercih edilmeli */
+    /* Sabit boyutlu tipler - taşınabilir kod için tercih edilmeli */
     int8_t   i8  = -128;
     uint8_t  u8  = 255;
     int16_t  i16 = -32768;
@@ -85,7 +85,7 @@ static void demo_data_types(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 2 — signed / unsigned farkı
+ * BÖLÜM 2 - signed / unsigned farkı
  *
  * signed:   negatif ve pozitif değer taşır, taşmada UB (undefined behavior)
  * unsigned: sadece pozitif, taşmada modüler aritmetik (well-defined)
@@ -105,22 +105,22 @@ static void demo_signed_unsigned(void)
     if ((unsigned int)s > u)
         printf("WARNING: -1 > 0 as unsigned!\n");
 
-    /* unsigned taşma — well-defined, modulo 2^32 */
+    /* unsigned taşma - well-defined, modulo 2^32 */
     uint8_t byte = 255;
     byte++;                        /* 255 + 1 = 0 (wrap-around) */
     printf("uint8 wrap: %u\n", byte);
 
-    /* unsigned ile bit maskeleme — güvenli yol */
+    /* unsigned ile bit maskeleme - güvenli yol */
     uint32_t flags = 0xDEADBEEF;
     uint8_t  low   = (uint8_t)(flags & 0xFF);   /* alt byte */
     printf("Low byte: 0x%02X\n", low);
 }
 
 /* ===========================================================================
- * BÖLÜM 3 — const
+ * BÖLÜM 3 - const
  *
  * const değişken: değeri değiştirilemez, derleyici korur.
- * const pointer kombinasyonları — okuma sağdan sola:
+ * const pointer kombinasyonları - okuma sağdan sola:
  *
  *   const int *p      → pointer to const int     (değer sabit, adres değişebilir)
  *   int *const p      → const pointer to int     (adres sabit, değer değişebilir)
@@ -134,17 +134,17 @@ static void demo_const(void)
     int x = 10;
     int y = 20;
 
-    /* pointer to const int — değeri değiştiremeyiz, adresi değiştirebiliriz */
+    /* pointer to const int - değeri değiştiremeyiz, adresi değiştirebiliriz */
     const int *ptr1 = &x;
-    ptr1 = &y;             /* OK — adres değişti */
-    /* *ptr1 = 99; */      /* hata — değer const */
+    ptr1 = &y;             /* OK - adres değişti */
+    /* *ptr1 = 99; */      /* hata - değer const */
 
-    /* const pointer to int — adres sabit, değer değişebilir */
+    /* const pointer to int - adres sabit, değer değişebilir */
     int *const ptr2 = &x;
-    *ptr2 = 99;            /* OK — değer değişti */
-    /* ptr2 = &y; */       /* hata — adres const */
+    *ptr2 = 99;            /* OK - değer değişti */
+    /* ptr2 = &y; */       /* hata - adres const */
 
-    /* const pointer to const int — ikisi de sabit */
+    /* const pointer to const int - ikisi de sabit */
     const int *const ptr3 = &x;
     /* *ptr3 = 1; */       /* hata */
     /* ptr3 = &y; */       /* hata */
@@ -153,7 +153,7 @@ static void demo_const(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 4 — static
+ * BÖLÜM 4 - static
  *
  * 1. Yerel static değişken:
  *    - Fonksiyon çağrıları arasında değerini korur
@@ -180,7 +180,7 @@ static void demo_static(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 5 — volatile
+ * BÖLÜM 5 - volatile
  *
  * volatile: derleyiciye "bu değişkeni optimize etme, her okumada bellekten al"
  * der.
@@ -190,7 +190,7 @@ static void demo_static(void)
  *   - Interrupt handler ile paylaşılan değişkenler
  *   - setjmp/longjmp kullanan kod
  *
- * volatile tek başına thread safety sağlamaz — mutex veya atomik gerekir.
+ * volatile tek başına thread safety sağlamaz - mutex veya atomik gerekir.
  * ===========================================================================*/
 
 /* Interrupt handler'dan yazılan bayrak simülasyonu */
@@ -212,7 +212,7 @@ static void demo_volatile(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 6 — register (C17 ve öncesi)
+ * BÖLÜM 6 - register (C17 ve öncesi)
  *
  * Derleyiciye "bu değişkeni CPU register'ında tut" önerisi verir.
  * Modern derleyiciler bu öneriyi büyük ölçüde görmezden gelir;
@@ -234,7 +234,7 @@ static void demo_register(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 7 — Type casting
+ * BÖLÜM 7 - Type casting
  *
  * Implicit cast: derleyici otomatik dönüştürür (veri kaybı uyarısı verebilir)
  * Explicit cast: programcı açıkça belirtir (sorumluluğu üstlenir)
@@ -247,14 +247,14 @@ static void demo_register(void)
  * ===========================================================================*/
 static void demo_casting(void)
 {
-    /* Implicit cast — derleyici otomatik genişletir */
+    /* Implicit cast - derleyici otomatik genişletir */
     int    i = 42;
     double d = i;        /* int → double, veri kaybı yok */
     printf("implicit: int %d → double %.1f\n", i, d);
 
-    /* Explicit cast — kesme (truncation) */
+    /* Explicit cast - kesme (truncation) */
     double pi    = 3.99;
-    int    pi_int = (int)pi;   /* 3 — yuvarlama değil, kesme */
+    int    pi_int = (int)pi;   /* 3 - yuvarlama değil, kesme */
     printf("explicit: double %.2f → int %d (truncated)\n", pi, pi_int);
 
     /* Tehlikeli: veri kaybı */
@@ -262,20 +262,20 @@ static void demo_casting(void)
     int8_t byte = (int8_t)big;   /* 300 mod 256 = 44 */
     printf("narrowing: int %d → int8_t %d (data loss)\n", big, byte);
 
-    /* void pointer cast — generic bellek işlemleri için */
+    /* void pointer cast - generic bellek işlemleri için */
     int   val = 100;
     void *vptr = &val;
     int  *iptr = (int *)vptr;   /* void* → int* */
     printf("void cast: %d\n", *iptr);
 
-    /* float bit pattern okuma — union ile güvenli type punning */
+    /* float bit pattern okuma - union ile güvenli type punning */
     FloatBits_t fb;
     fb.f = 1.0f;
     printf("float 1.0 bits: 0x%08X\n", fb.u);
 }
 
 /* ===========================================================================
- * BÖLÜM 8 — sizeof ve alignof
+ * BÖLÜM 8 - sizeof ve alignof
  *
  * sizeof: derleme zamanında boyutu verir (byte cinsinden), runtime maliyeti sıfır.
  * alignof: tipin bellek hizalama gereksinimini verir (C11, <stdalign.h>).
@@ -313,7 +313,7 @@ static void demo_sizeof(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 9 — Limitler
+ * BÖLÜM 9 - Limitler
  *
  * <limits.h>: tam sayı tip sınırları
  * <float.h>:  ondalık tip sınırları ve hassasiyet bilgisi
@@ -359,7 +359,7 @@ void __attribute__((destructor(101))) system_cleanup(void)
 int main(void)
 {
     printf(LINE);
-    LOG_INFO("basics.c — starting demos");
+    LOG_INFO("basics.c - starting demos");
     printf(LINE);
 
     demo_data_types();      printf(LINE);
@@ -376,7 +376,7 @@ int main(void)
     demo_sizeof();          printf(LINE);
     demo_limits();          printf(LINE);
 
-    LOG_INFO("basics.c — all demos complete");
+    LOG_INFO("basics.c - all demos complete");
 
     return 0;
 }

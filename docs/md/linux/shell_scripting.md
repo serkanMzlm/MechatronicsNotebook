@@ -26,7 +26,7 @@ echo "Script başlıyor..."
 ```
 
 !!! tip "Shebang Neden Önemli?"
-    Shebang (`#!/bin/bash`) kernel'e hangi yorumlayıcının kullanılacağını söyler. `#!/usr/bin/env bash` kullanımı daha taşınabilirdir — `bash`'ı PATH üzerinden bulur.
+    Shebang (`#!/bin/bash`) kernel'e hangi yorumlayıcının kullanılacağını söyler. `#!/usr/bin/env bash` kullanımı daha taşınabilirdir - `bash`'ı PATH üzerinden bulur.
 
 ---
 
@@ -35,7 +35,7 @@ echo "Script başlıyor..."
 ```bash
 #!/bin/bash
 
-# Değişken atama — eşittir işaretinin yanında boşluk OLMAZ
+# Değişken atama - eşittir işaretinin yanında boşluk OLMAZ
 isim="Serkan"
 sayi=42
 tarih=$(date +%Y-%m-%d)  # Komut çıktısı atama
@@ -110,7 +110,7 @@ fi
 
 ## Kontrol Akışı
 
-### if — elif — else
+### if - elif - else
 
 ```bash
 #!/bin/bash
@@ -147,13 +147,13 @@ if [[ "$ad" == ser* ]]; then echo "ser ile başlıyor"; fi  # [[ ]] glob destekl
 
 | Operatör   | Sayısal |          String         |                   Dosya                    |
 | ---------- | :-----: | :---------------------: | :----------------------------------------: |
-| Eşit       |  `-eq`  |      `=` veya `==`      |                     —                      |
-| Eşit değil |  `-ne`  |           `!=`          |                     —                      |
-| Küçük      |  `-lt`  |            —            |                     —                      |
-| Büyük      |  `-gt`  |            —            |                     —                      |
-| Küçük eşit |  `-le`  |            —            |                     —                      |
-| Büyük eşit |  `-ge`  |            —            |                     —                      |
-| Var mı     |    —    | `-z` (boş), `-n` (dolu) | `-e` (dosya/dir), `-f` (dosya), `-d` (dir) |
+| Eşit       |  `-eq`  |      `=` veya `==`      |                     -                      |
+| Eşit değil |  `-ne`  |           `!=`          |                     -                      |
+| Küçük      |  `-lt`  |            -            |                     -                      |
+| Büyük      |  `-gt`  |            -            |                     -                      |
+| Küçük eşit |  `-le`  |            -            |                     -                      |
+| Büyük eşit |  `-ge`  |            -            |                     -                      |
+| Var mı     |    -    | `-z` (boş), `-n` (dolu) | `-e` (dosya/dir), `-f` (dosya), `-d` (dir) |
 
 ### case
 
@@ -382,7 +382,7 @@ done
 declare -A kisi
 kisi["isim"]="Serkan"
 kisi["yas"]=30
-echo "${kisi["isim"]} — ${kisi["yas"]}"
+echo "${kisi["isim"]} - ${kisi["yas"]}"
 ```
 
 ---
@@ -421,7 +421,7 @@ ls /yanlış/yol || { echo "Dizin yok!"; exit 1; }
 
 ---
 
-## Metin İşleme — Araç Kombinasyonları
+## Metin İşleme - Araç Kombinasyonları
 
 ```bash
 # Hata içeren log satırlarını say
@@ -451,7 +451,7 @@ awk -F' ' '{for(i=1;i<=NF;i++) if($i~/^ms=/ && substr($i,4)+0>500) print $0}' ap
 ## Here Document ve Here String
 
 ```bash
-# Here Document — birden fazla satır
+# Here Document - birden fazla satır
 cat > /tmp/mesaj.txt << 'EOF'
 Merhaba!
 Bu birden fazla satır içerir.
@@ -465,7 +465,7 @@ Tarih: $(date)
 Kullanıcı: $USER
 EOF
 
-# Here String — tek satır stdin
+# Here String - tek satır stdin
 grep "pattern" <<< "bu bir test dizesidir"
 ```
 
@@ -506,7 +506,7 @@ grep "pattern" <<< "bu bir test dizesidir"
         if systemctl is-active --quiet "$servis"; then
             echo "✓ $servis çalışıyor"
         else
-            echo "✗ $servis DURDU — yeniden başlatılıyor..."
+            echo "✗ $servis DURDU - yeniden başlatılıyor..."
             systemctl restart "$servis" || { echo "HATA: $servis başlatılamadı"; HATA=1; }
         fi
     done
@@ -650,7 +650,7 @@ mkfifo /tmp/veri_akisi
 rm /tmp/veri_akisi
 ```
 
-### printf — Biçimlendirilmiş Çıktı
+### printf - Biçimlendirilmiş Çıktı
 
 ```bash
 # printf, echo'dan daha güvenilir ve taşınabilir
@@ -658,7 +658,7 @@ printf "Merhaba, %s!\n" "Dünya"
 printf "Sayı: %d, Ondalık: %.2f\n" 42 3.14159
 printf "Hex: %x, Oct: %o\n" 255 255     # ff  377
 printf "%-20s %5d\n" "Öğe"  42          # Sola hizalı, sağa hizalı
-printf "%0*d\n" 5 7                      # 00007 — genişlik değişkende
+printf "%0*d\n" 5 7                      # 00007 - genişlik değişkende
 
 # Renkli çıktı (ANSI escape)
 printf "\033[1;32m%-10s\033[0m %s\n" "OK" "Servis çalışıyor"
@@ -688,7 +688,7 @@ for satir in "${satirlar[@]}"; do
 done
 ```
 
-### select — Etkileşimli Menü
+### select - Etkileşimli Menü
 
 ```bash
 #!/bin/bash
@@ -735,7 +735,7 @@ wait
 ### Güvenli Geçici Dosya
 
 ```bash
-# mktemp — güvenli geçici dosya/dizin
+# mktemp - güvenli geçici dosya/dizin
 gecici=$(mktemp)                       # /tmp/tmp.XXXXXX
 gecici_dir=$(mktemp -d)               # /tmp/tmp.XXXXXX/
 

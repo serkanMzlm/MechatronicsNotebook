@@ -1,4 +1,4 @@
-# ROS 2 — Derinlemesine Rehber
+# ROS 2 - Derinlemesine Rehber
 
 !!! note "Genel Bakış"
     ROS 2, robot yazılımı geliştirmek için tasarlanmış meta-işletim sistemidir. ROS 1'deki merkezi `rosmaster` mimarisini tamamen terk ederek **DDS (Data Distribution Service)** üzerine kurulmuş, merkeziyetsiz, gerçek zamanlı yetenekli bir haberleşme altyapısı sunar. Bu sayfa; bir sistem yazılımcısının "neden böyle çalışır?" sorularını yanıtlamak için kaleme alınmıştır.
@@ -26,14 +26,14 @@ graph TD
 | Katman           | Sorumluluk                         |  Değiştirilebilir mi?  |
 | ---------------- | ---------------------------------- | :--------------------: |
 | **rclcpp/rclpy** | C++/Python API, callback, executor |        Dil ile         |
-| **rcl**          | Dil bağımsız çekirdek C API        |           —            |
+| **rcl**          | Dil bağımsız çekirdek C API        |           -            |
 | **rmw**          | DDS bağımsızlık katmanı            | ✓ (RMW_IMPLEMENTATION) |
 | **DDS**          | RTPS, QoS, keşif (discovery)       |           ✓            |
 | **Transport**    | UDP / TCP / SHM                    | DDS yapılandırması ile |
 
 ---
 
-## Neden UDP? — Temel Soru
+## Neden UDP? - Temel Soru
 
 > "TCP güvenilir ama neden ROS 2 UDP tercih eder?"
 
@@ -65,8 +65,8 @@ TCP'nin `ACK` / yeniden iletim mekanizmasının eşdeğerini RTPS **uygulama kat
 | Gecikme önceliği             |     ✗     | ✓ (güvenilirlik kapatılabilir) |
 | Bant genişliği akış kontrolü | Kernel'de |             DDS'de             |
 
-**Best-effort topic'ler** (sensör akışı, lidar, kamera) için UDP'nin `RELIABLE` mekanizması kullanılmaz — paketin kaybı tolere edilir, düşük gecikme önceliklenir.  
-**Güvenilir topic'ler** (hedef gönder, durum güncelleme) için RTPS `ACKNACK` döngüsü paketi yeniden iletir — TCP benzeri garanti, ama multicast desteğiyle.
+**Best-effort topic'ler** (sensör akışı, lidar, kamera) için UDP'nin `RELIABLE` mekanizması kullanılmaz - paketin kaybı tolere edilir, düşük gecikme önceliklenir.  
+**Güvenilir topic'ler** (hedef gönder, durum güncelleme) için RTPS `ACKNACK` döngüsü paketi yeniden iletir - TCP benzeri garanti, ama multicast desteğiyle.
 
 ```mermaid
 sequenceDiagram
@@ -81,7 +81,7 @@ sequenceDiagram
     PUB->>SUB: DATA[seqNr=2] yeniden ilet
 ```
 
-### UDP Multicast — Discovery
+### UDP Multicast - Discovery
 
 DDS node'ları birbirini bulmak için **PDP (Participant Discovery Protocol)** kullanır. Bu süreç UDP multicast üzerinde yürür:
 
@@ -143,7 +143,7 @@ export RMW_IMPLEMENTATION=rmw_connextdds
 
 ---
 
-## QoS — Kalite Servis Politikaları
+## QoS - Kalite Servis Politikaları
 
 QoS, publisher ve subscriber arasındaki davranış sözleşmesidir. **Uyumsuz QoS → bağlantı kurulamaz** (sessiz hata; `ros2 topic info -v` ile görülür).
 
@@ -174,7 +174,7 @@ graph LR
     | `VOLATILE`        | Geç bağlanan subscriber önceki mesajları almaz              |           Default           |
     | `TRANSIENT_LOCAL` | Publisher önceki N mesajı önbelleğe alır; geç bağlanan alır | Harita, statik parametreler |
 
-    `TRANSIENT_LOCAL` + `HISTORY KEEP_LAST 1` = "en son değer her zaman mevcut" kalıbı — `/map`, `/robot_description` gibi topic'lerde standart kullanım.
+    `TRANSIENT_LOCAL` + `HISTORY KEEP_LAST 1` = "en son değer her zaman mevcut" kalıbı - `/map`, `/robot_description` gibi topic'lerde standart kullanım.
 
 === "History"
 
@@ -246,7 +246,7 @@ ros2 topic info /my_topic -v
 
 ---
 
-## Haberleşme Katmanları — Yerel'den Uzak'a
+## Haberleşme Katmanları - Yerel'den Uzak'a
 
 ROS 2, aynı süreci paylaşan node'lardan farklı makinelerdeki node'lara kadar **dört farklı haberleşme katmanını** otomatik olarak seçer.
 
@@ -276,7 +276,7 @@ public:
     Producer() : Node("producer", rclcpp::NodeOptions().use_intra_process_comms(true)) {
         pub_ = create_publisher<std_msgs::msg::Int32>("/data", 10);
         timer_ = create_wall_timer(std::chrono::milliseconds(100), [this]() {
-            // unique_ptr ile sahiplik devri — sıfır kopya!
+            // unique_ptr ile sahiplik devri - sıfır kopya!
             auto msg = std::make_unique<std_msgs::msg::Int32>();
             msg->data = count_++;
             RCLCPP_INFO(get_logger(), "Gönder: %d @%p", msg->data, (void*)msg.get());
@@ -413,7 +413,7 @@ export ROS_DOMAIN_ID=42   # 0–101 güvenli aralık
 
 ## Component ve Executor Mimarisi
 
-### Component Container — Tek Süreçte Çoklu Node
+### Component Container - Tek Süreçte Çoklu Node
 
 Birden fazla node'u tek süreç içinde çalıştırır. Avantajları:
 - Intra-process communication (sıfır kopya)
@@ -458,7 +458,7 @@ rclcpp_components_register_node(my_node
 )
 ```
 
-### Executor — Callback Zamanlama Mekanizması
+### Executor - Callback Zamanlama Mekanizması
 
 Executor, DDS'den gelen olayları (mesaj, timer, servis) alır ve callback'leri çalıştırır.
 
@@ -474,15 +474,15 @@ graph TD
 ```
 
 ```cpp title="Executor Tipleri"
-// Tek thread — en basit, callback'ler sırayla çalışır
+// Tek thread - en basit, callback'ler sırayla çalışır
 rclcpp::executors::SingleThreadedExecutor exec;
 
-// Çok thread — thread_count kadar paralel callback
+// Çok thread - thread_count kadar paralel callback
 rclcpp::executors::MultiThreadedExecutor exec(
     rclcpp::ExecutorOptions(), 4  // 4 thread
 );
 
-// Statik tek thread — compile time optimizasyon (gerçek zamanlı için)
+// Statik tek thread - compile time optimizasyon (gerçek zamanlı için)
 rclcpp::executors::StaticSingleThreadedExecutor exec;
 
 exec.add_node(node);
@@ -509,7 +509,7 @@ rclcpp::executors::MultiThreadedExecutor exec(rclcpp::ExecutorOptions(), 4);
 
 ---
 
-## Lifecycle Node — Yönetilen Yaşam Döngüsü
+## Lifecycle Node - Yönetilen Yaşam Döngüsü
 
 Lifecycle node, node'un durumunu dışarıdan kontrol etmeyi sağlar. Kritik sistem bileşenlerinde güvenli başlatma/kapama için kullanılır.
 
@@ -803,7 +803,7 @@ def generate_launch_description():
             launch_arguments={'use_sim_time': use_sim}.items()
         ),
 
-        # Kompozit container — intra-process için
+        # Kompozit container - intra-process için
         ComposableNodeContainer(
             name='my_container',
             namespace='',
@@ -955,7 +955,7 @@ ros2 bag play my_bag/ --loop                     # Döngüsel
 ros2 bag play my_bag/ -r 2.0                     # 2x hız
 ros2 bag play my_bag/ --topics /scan /odom       # Seçili topic'ler
 
-# Dönüştürme (mcap formatı — Foxglove Studio için)
+# Dönüştürme (mcap formatı - Foxglove Studio için)
 ros2 bag convert my_bag/ -o mcap_bag/ --output-format mcap
 ```
 
@@ -970,7 +970,7 @@ RCLCPP_WARN(get_logger(), "Beklenmedik durum");
 RCLCPP_ERROR(get_logger(), "Hata: %s", err.c_str());
 RCLCPP_FATAL(get_logger(), "Kritik hata, çıkılıyor");
 
-// Throttle — her 1 saniyede en fazla 1 kez log
+// Throttle - her 1 saniyede en fazla 1 kez log
 RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 1000, "1Hz log");
 
 // Named logger
@@ -1050,7 +1050,7 @@ export FASTRTPS_DEFAULT_PROFILES_FILE=/path/to/fastdds.xml
 export CYCLONEDDS_URI=file:///path/to/cyclonedds.xml
 ```
 
-```xml title="cyclonedds.xml — Performans Ayarı"
+```xml title="cyclonedds.xml - Performans Ayarı"
 <?xml version="1.0" encoding="UTF-8"?>
 <CycloneDDS xmlns="https://cdds.io/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Domain>
@@ -1074,7 +1074,7 @@ export CYCLONEDDS_URI=file:///path/to/cyclonedds.xml
 
 ---
 
-## ROS 1 vs ROS 2 — Temel Farklar
+## ROS 1 vs ROS 2 - Temel Farklar
 
 | Konu                 |             ROS 1              |             ROS 2             |
 | -------------------- | :----------------------------: | :---------------------------: |
@@ -1092,7 +1092,7 @@ export CYCLONEDDS_URI=file:///path/to/cyclonedds.xml
 
 ---
 
-## Paylaşımlı Bellek — Derinlemesine
+## Paylaşımlı Bellek - Derinlemesine
 
 ROS 2'de sıfır kopya veri transferi üç farklı mekanizmayla sağlanır. Her katman bir öncekinden daha geniş bir kapsama sahiptir.
 
@@ -1104,9 +1104,9 @@ graph TD
     FASTEST["Performans\nEn İyiden En İyiye"]
 ```
 
-### Loaned Messages API — DDS Düzeyi Sıfır Kopya
+### Loaned Messages API - DDS Düzeyi Sıfır Kopya
 
-Loaned Messages, mesaj belleğini DDS middleware'den **ödünç alır**; mesaj, yayınlandıktan sonra publisher'ın değil DDS'in yönettiği bellekte yaşar. Subscriber aynı belleği okur — hiç kopya olmaz.
+Loaned Messages, mesaj belleğini DDS middleware'den **ödünç alır**; mesaj, yayınlandıktan sonra publisher'ın değil DDS'in yönettiği bellekte yaşar. Subscriber aynı belleği okur - hiç kopya olmaz.
 
 ```cpp title="loaned_publisher.cpp"
 #include "rclcpp/rclcpp.hpp"
@@ -1118,7 +1118,7 @@ public:
         pub_ = create_publisher<std_msgs::msg::Float64MultiArray>("/data", 10);
 
         timer_ = create_wall_timer(std::chrono::milliseconds(10), [this]() {
-            // DDS'den bellek ödünç al — malloc çağrısı yok!
+            // DDS'den bellek ödünç al - malloc çağrısı yok!
             auto loaned = pub_->borrow_loaned_message();
             auto& msg = loaned.get();
 
@@ -1126,7 +1126,7 @@ public:
             for (size_t i = 0; i < msg.data.size(); ++i)
                 msg.data[i] = static_cast<double>(i);
 
-            // Yayınla — DDS sahipliği alır, kopya olmaz
+            // Yayınla - DDS sahipliği alır, kopya olmaz
             pub_->publish(std::move(loaned));
         });
     }
@@ -1170,7 +1170,7 @@ Publisher → iceoryx SHM pool → Subscriber
 sudo apt install ros-humble-rmw-cyclonedds-cpp
 sudo apt install iceoryx-posh iceoryx-utils
 
-# RouDi daemon — SHM yöneticisi (root veya capabilities ile)
+# RouDi daemon - SHM yöneticisi (root veya capabilities ile)
 sudo iox-roudi
 
 # ROS 2 node'larını iceoryx ile başlat
@@ -1214,7 +1214,7 @@ ls -lh /dev/shm/iceoryx_*
 
 ---
 
-## tf2 — Koordinat Dönüşümleri
+## tf2 - Koordinat Dönüşümleri
 
 `tf2`, farklı koordinat çerçevelerindeki (frame) verileri birbirine dönüştüren ROS 2'nin temel kütüphanesidir. Her sensör, robot parçası ve ortam öğesi kendi çerçevesinde ifade edilir; `tf2` bunlar arasındaki geometrik ilişkiyi zaman damgalı olarak takip eder.
 
@@ -1397,7 +1397,7 @@ ros2 run tf2_ros static_transform_publisher \
 
 ---
 
-## pluginlib — Çalışma Zamanı Eklenti Mimarisi
+## pluginlib - Çalışma Zamanı Eklenti Mimarisi
 
 `pluginlib`, bir temel sınıfın farklı uygulamalarını **derleme zamanında bağımlılık olmadan** çalışma zamanında yüklemek için kullanılır. Nav2 costmap layer'ları, planlayıcılar, kontrolörler pluginlib kullanır.
 
@@ -1422,7 +1422,7 @@ class BaseMotionPlanner {
 public:
     virtual ~BaseMotionPlanner() = default;
 
-    // Saf sanal — her eklenti uygulamak zorunda
+    // Saf sanal - her eklenti uygulamak zorunda
     virtual void initialize(const std::string& name) = 0;
     virtual bool computePath(double goal_x, double goal_y) = 0;
     virtual std::string getName() const = 0;
@@ -1519,7 +1519,7 @@ int main() {
 
 ---
 
-## ros2_control — Donanım Kontrol Çerçevesi
+## ros2_control - Donanım Kontrol Çerçevesi
 
 `ros2_control`, robot donanımını (motor, encoder, IMU, kamera) soyutlayan standart bir arayüz sağlar. Controller Manager, donanım sürücüleri ve kontrolörler arasındaki koordinasyonu yönetir.
 
@@ -1648,7 +1648,7 @@ ros2 control load_controller my_controller --set-state active
 
 ---
 
-## Test — gtest ve colcon test
+## Test - gtest ve colcon test
 
 ROS 2'de birim test (gtest/ament_gtest) ve entegrasyon test (launch_testing) standart altyapıdır.
 
@@ -1781,7 +1781,7 @@ genhtml coverage.info --output-directory coverage_html/
 
 ---
 
-## SROS2 — Güvenlik
+## SROS2 - Güvenlik
 
 SROS2, DDS-Security standardı üzerinden şifreleme, kimlik doğrulama ve erişim kontrolü sağlar. Her node bir **kimlik (identity)** ve **izin belgesi** ile imzalanır.
 
@@ -1858,7 +1858,7 @@ ros2 run my_pkg sensor_node \
     - CA özel anahtarını (`private/`) asla robot üzerinde tutmayın
     - `ROS_SECURITY_STRATEGY=Enforce` → sertifikasız node başlamaz (güvenli)
     - `ROS_SECURITY_STRATEGY=Permissive` → sertifikasız node başlar ama şifresiz (test için)
-    - Sertifika süresi dolarsa tüm sistem iletişimi durur — otomatik yenileme planı yapın
+    - Sertifika süresi dolarsa tüm sistem iletişimi durur - otomatik yenileme planı yapın
 
 ---
 
@@ -1882,15 +1882,15 @@ using ExecutorT = rclcpp::executors::StaticSingleThreadedExecutor;
 int main(int argc, char** argv) {
     rclcpp::init(argc, argv);
 
-    // Belleği önceden kilitle — sayfa hatası yok
+    // Belleği önceden kilitle - sayfa hatası yok
     mlockall(MCL_CURRENT | MCL_FUTURE);
 
-    // SCHED_FIFO — RT zamanlayıcı (root gerektirir)
+    // SCHED_FIFO - RT zamanlayıcı (root gerektirir)
     struct sched_param sp;
     sp.sched_priority = 80;
     pthread_setschedparam(pthread_self(), SCHED_FIFO, &sp);
 
-    // StaticSingleThreadedExecutor — dinamik bellek yok
+    // StaticSingleThreadedExecutor - dinamik bellek yok
     auto exec = std::make_unique<ExecutorT>();
 
     auto node = std::make_shared<MyRTNode>();
@@ -1908,7 +1908,7 @@ int main(int argc, char** argv) {
 class MyRTNode : public rclcpp::Node {
 public:
     MyRTNode() : Node("rt_node") {
-        // Önceden bellek ayır — RT döngüsünde tahsis yok
+        // Önceden bellek ayır - RT döngüsünde tahsis yok
         cmd_.data.reserve(1000);
         history_.reserve(500);
 
@@ -1916,7 +1916,7 @@ public:
         sub_ = create_subscription<sensor_msgs::msg::LaserScan>(
             "/scan", rclcpp::SensorDataQoS(),
             [this](sensor_msgs::msg::LaserScan::ConstSharedPtr msg) {
-                // Callback — RT kurallarına uy:
+                // Callback - RT kurallarına uy:
                 // ✗ malloc/new çağırma
                 // ✗ mutex ile kilitle (priority inversion)
                 // ✗ I/O yapma
@@ -1943,7 +1943,7 @@ private:
 # RT thread önceliği ver
 sudo chrt -f 80 ros2 run my_pkg rt_node
 
-# CPU affinity — RT node'u belirli çekirdeğe sabitle
+# CPU affinity - RT node'u belirli çekirdeğe sabitle
 sudo taskset -c 3 ros2 run my_pkg rt_node
 
 # Kernel RT yamaları kontrolü
@@ -1976,7 +1976,7 @@ pthread_mutex_init(&rt_mutex, &attr);
 
 ---
 
-## Diagnostics — Sistem Sağlık İzleme
+## Diagnostics - Sistem Sağlık İzleme
 
 `diagnostic_updater`, node'ların kendi sağlık durumlarını standart formatta yayınlamasını sağlar. `diagnostic_aggregator` bunları toplar; operatör uyarı/hata mesajları alır.
 

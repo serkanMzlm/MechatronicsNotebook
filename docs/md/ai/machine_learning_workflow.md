@@ -56,7 +56,7 @@ graph TD
     **Ev fiyat tahmini:**
     - X = [metrekare, oda sayısı, konum, bina yaşı]
     - Y = satış fiyatı
-    - Tür: **Regresyon** — sürekli sayısal çıktı
+    - Tür: **Regresyon** - sürekli sayısal çıktı
     - Başarı kriteri: RMSE < 50.000 TL, R² > 0.85
     
     **Kredi başvurusu değerlendirme:**
@@ -106,7 +106,7 @@ Model kurmadan önce verinizi tanıyın. EDA, varsayımları doğrular, sorunlar
 
 ## 3. Veri Ön İşleme
 
-Ham veri neredeyse hiçbir zaman doğrudan kullanılamaz. Eksik değerler, yanlış tipler, tutarsız biçimler, aykırı değerler — bunların hepsi model performansını bozar.
+Ham veri neredeyse hiçbir zaman doğrudan kullanılamaz. Eksik değerler, yanlış tipler, tutarsız biçimler, aykırı değerler - bunların hepsi model performansını bozar.
 
 ### Eksik Veri Stratejileri
 
@@ -138,19 +138,19 @@ Bazı algoritmalar özelliklerin büyüklük sırasına duyarlıdır. 1000 TL'li
 - Düzenlilik kullanan: Ridge, Lasso
 
 **Ölçeklendirme kimler için gerekmez?**
-- Ağaç tabanlı: Karar Ağacı, Random Forest, XGBoost — bölme noktaları ölçekten bağımsızdır.
+- Ağaç tabanlı: Karar Ağacı, Random Forest, XGBoost - bölme noktaları ölçekten bağımsızdır.
 
 === "Min-Max Normalizasyon"
 
     $$x' = \frac{x - x_{min}}{x_{max} - x_{min}} \in [0, 1]$$
 
-    Tüm değerleri [0, 1] aralığına sıkıştırır. Aykırı değerlere **çok duyarlı** — bir outlier tüm dağılımı sıkıştırır. Görüntü pikselleri gibi bilinen sabit aralıklarda kullanımı idealdir.
+    Tüm değerleri [0, 1] aralığına sıkıştırır. Aykırı değerlere **çok duyarlı** - bir outlier tüm dağılımı sıkıştırır. Görüntü pikselleri gibi bilinen sabit aralıklarda kullanımı idealdir.
 
 === "Standardizasyon (Z-Score)"
 
     $$x' = \frac{x - \mu}{\sigma}$$
 
-    Ortalama 0, standart sapma 1 yapılır. Aykırı değerlere **dayanıklı** — outlier varlığında Min-Max'tan üstün. Gradyan iniş optimizasyonu için en yaygın tercih.
+    Ortalama 0, standart sapma 1 yapılır. Aykırı değerlere **dayanıklı** - outlier varlığında Min-Max'tan üstün. Gradyan iniş optimizasyonu için en yaygın tercih.
 
 === "Robust Scaler"
 
@@ -175,7 +175,7 @@ Makine öğrenimi modelleri sayısal girdi bekler. Kategorik değerleri sayıya 
 
 **Label Encoding:** Hedef değişken veya ağaç tabanlı modeller için. 0, 1, 2... olarak atar ama sıra varsayımı içerebilir.
 
-**Target Encoding:** Yüksek kardinaliteli değişkenler için. Her kategori, o kategoriye ait hedef değişkenin ortalamasıyla kodlanır. Güçlü ama veri sızıntısı riski yüksek — cross-validation ile dikkatli uygulanmalı.
+**Target Encoding:** Yüksek kardinaliteli değişkenler için. Her kategori, o kategoriye ait hedef değişkenin ortalamasıyla kodlanır. Güçlü ama veri sızıntısı riski yüksek - cross-validation ile dikkatli uygulanmalı.
 
 ---
 
@@ -259,13 +259,13 @@ graph LR
 - **Test seti:** Sadece final değerlendirmede bir kez kullanılır. Defalarca test ederseniz test setine overfit edersiniz!
 
 !!! danger "Kritik Kural: Data Leakage"
-    Test seti eğitim sürecinin hiçbir aşamasında kullanılmamalıdır. Scaler'ı sadece eğitim setine fit edin. Imputer'ı sadece eğitim setine fit edin. Test seti sadece son değerlendirmede görünür — "sanki gerçek dünyadan yeni gelen veri" gibi.
+    Test seti eğitim sürecinin hiçbir aşamasında kullanılmamalıdır. Scaler'ı sadece eğitim setine fit edin. Imputer'ı sadece eğitim setine fit edin. Test seti sadece son değerlendirmede görünür - "sanki gerçek dünyadan yeni gelen veri" gibi.
 
 ---
 
 ## 6. Cross-Validation (Çapraz Doğrulama)
 
-Tek bir eğitim/test bölmesi şansa bağlı olabilir — verinin hangi örneklerin test setine düştüğüne göre sonuç değişir. Cross-validation bu problemi çözer.
+Tek bir eğitim/test bölmesi şansa bağlı olabilir - verinin hangi örneklerin test setine düştüğüne göre sonuç değişir. Cross-validation bu problemi çözer.
 
 ### k-Fold Cross-Validation
 
@@ -279,7 +279,7 @@ graph LR
     F1 & F2 & F3 & F4 & F5 --> AVG[Ortalama ± Std\nGerçek Performans]
 ```
 
-**Nasıl çalışır?** Veri k parçaya bölünür. Her tur bir parça test, geri kalanı eğitim olarak kullanılır. k tur sonunda k ayrı skor elde edilir — ortalaması gerçek genelleme hatasının tarafsız tahminidir.
+**Nasıl çalışır?** Veri k parçaya bölünür. Her tur bir parça test, geri kalanı eğitim olarak kullanılır. k tur sonunda k ayrı skor elde edilir - ortalaması gerçek genelleme hatasının tarafsız tahminidir.
 
 **k değeri seçimi:** k=5 veya k=10 yaygındır. k büyüdükçe tahmin daha doğru ama hesaplama yavaşlar.
 
@@ -289,7 +289,7 @@ graph LR
 | **Stratified k-Fold** | Sınıf oranını her parçada koru                        |       **Sınıflandırma (zorunlu)**       |
 | **Leave-One-Out**     | N=k, her örnek bir kez test                           |              Çok küçük veri             |
 | **Time Series Split** | Zaman sırasını korur: geçmişle eğit, geleceği test et |               Zaman serisi              |
-| **Group k-Fold**      | Aynı gruba ait örnekler aynı katta                    | Hasta ID, kullanıcı ID — sızıntı önleme |
+| **Group k-Fold**      | Aynı gruba ait örnekler aynı katta                    | Hasta ID, kullanıcı ID - sızıntı önleme |
 
 **CV nasıl yorumlanır?** `F1: 0.847 ± 0.023` → ortalama F1 0.847, standart sapma 0.023. Düşük std: model kararlı. Yüksek std: modelin performansı veriye çok bağımlı, daha fazla veri veya daha güçlü regularizasyon gerekebilir.
 
@@ -297,7 +297,7 @@ graph LR
 
 ## 7. Değerlendirme ve Hata Analizi
 
-Metrikler yeterli değil — *neyin* yanlış gittiğini anlamak gerekir.
+Metrikler yeterli değil - *neyin* yanlış gittiğini anlamak gerekir.
 
 ### Hata Analizi
 
@@ -320,7 +320,7 @@ Bazı durumlarda metrikler çakışır:
 
 | Durum                           | Sorun                                               | Çözüm                                 |
 | ------------------------------- | --------------------------------------------------- | ------------------------------------- |
-| Yüksek Accuracy, düşük Recall   | Dengesiz sınıf — çoğunluğu her zaman doğru söylüyor | F1, ROC-AUC kullan; class weight ekle |
+| Yüksek Accuracy, düşük Recall   | Dengesiz sınıf - çoğunluğu her zaman doğru söylüyor | F1, ROC-AUC kullan; class weight ekle |
 | Yüksek eğitim F1, düşük test F1 | Overfitting                                         | Regularizasyon, daha fazla veri       |
 | CV F1 iyi, production F1 kötü   | Distribution shift                                  | Production verisiyle CV yap           |
 
@@ -346,7 +346,7 @@ Belirlenen aralıktan rastgele kombinasyonlar dener.
 
 - Grid Search'ten çoğunlukla daha verimli. Neden?
 - Bazı hiperparametrelerin etkisi küçüktür. Random Search, önemli olanları daha fazla değerde test eder.
-- n_iter kadar kombinasyon dener — bütçeyle kontrol edilir.
+- n_iter kadar kombinasyon dener - bütçeyle kontrol edilir.
 
 ### Bayesian Optimizasyon (Optuna, Hyperopt)
 
@@ -376,7 +376,7 @@ Veri setinde bir sınıf çok az örnekle temsil edilebilir. Kredi dolandırıc�
 
 ### Neden Sorun?
 
-Model veriyi eğitim için kullanır. %99 negatif varsa, model "her şeye negatif de" stratejisi benimseyip %99 Accuracy elde eder. Ama tek bir pozitifi bulamamış olabilir — ki bu tam anlamıyla işe yaramayan bir modeldir.
+Model veriyi eğitim için kullanır. %99 negatif varsa, model "her şeye negatif de" stratejisi benimseyip %99 Accuracy elde eder. Ama tek bir pozitifi bulamamış olabilir - ki bu tam anlamıyla işe yaramayan bir modeldir.
 
 ### Çözüm Stratejileri
 
@@ -393,9 +393,9 @@ Model eğitiminde azınlık sınıfına daha yüksek ağırlık verin. Azınlık
 
 **3. Örnekleme Teknikleri**
 
-- **Oversampling:** Azınlık sınıfını çoğalt. En basit yol: rastgele kopyala. Daha gelişmişi: **SMOTE** — azınlık örnekleri arasında enterpolasyonla sentetik yeni örnekler üret.
+- **Oversampling:** Azınlık sınıfını çoğalt. En basit yol: rastgele kopyala. Daha gelişmişi: **SMOTE** - azınlık örnekleri arasında enterpolasyonla sentetik yeni örnekler üret.
 - **Undersampling:** Çoğunluk sınıfından örnekleri at. Bilgi kaybı riski. NearMiss algoritması en bilgilendirici örnekleri tutar.
-- **Combined:** İkisini birlikte kullan — azınlığı artır, çoğunluğu azalt.
+- **Combined:** İkisini birlikte kullan - azınlığı artır, çoğunluğu azalt.
 
 **4. Karar Eşiğini Ayarla**
 
@@ -403,13 +403,13 @@ Model 0.5 varsayılan eşiği kullanır. "0.3'ten büyükse pozitif say" diyerek
 
 ---
 
-## 10. Pipeline — Temiz ve Sızıntısız Akış
+## 10. Pipeline - Temiz ve Sızıntısız Akış
 
 Veri ön işleme, özellik mühendisliği ve model adımlarını tek bir zincire bağlamak:
 
 **Neden Pipeline gerekir?**
 - Test verisine fit etme hatasını önler (scaler, imputer sadece eğitim verisine fit edilir)
-- Cross-validation'da her fold için tüm adımlar tekrar edilir — sızıntı imkânsız
+- Cross-validation'da her fold için tüm adımlar tekrar edilir - sızıntı imkânsız
 - Deployment'ta tek bir nesne tüm akışı kapsar: yeni veri girince dönüşüm + tahmin otomatik
 
 ```mermaid
@@ -451,7 +451,7 @@ Oyun teorisinden türeyen SHAP, her özelliğin her tahmine katkısını hesapla
 
 ---
 
-## Hızlı Başvuru — Algoritma Seçim Tablosu
+## Hızlı Başvuru - Algoritma Seçim Tablosu
 
 | Problem               | Veri    |      Başlangıç      |        Gelişmiş       |
 | --------------------- | ------- | :-----------------: | :-------------------: |

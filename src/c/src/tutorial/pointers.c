@@ -1,5 +1,5 @@
 /*
- * pointers.c — Pointer Kavramları
+ * pointers.c - Pointer Kavramları
  *
  * Kapsanan konular:
  *   Temel pointer      → adres, dereference, NULL kontrolü
@@ -19,7 +19,7 @@
 #include "common.h"
 
 /* ===========================================================================
- * BÖLÜM 1 — Temel pointer
+ * BÖLÜM 1 - Temel pointer
  *
  * Pointer: bir değişkenin bellek adresini tutan değişken.
  *
@@ -46,11 +46,11 @@ static void demo_basic_pointer(void)
     /* NULL kontrolü */
     int *null_ptr = NULL;
     if (null_ptr == NULL)
-        LOG_INFO("null_ptr is NULL — safe to skip dereference");
+        LOG_INFO("null_ptr is NULL - safe to skip dereference");
 }
 
 /* ===========================================================================
- * BÖLÜM 2 — Pointer aritmetiği
+ * BÖLÜM 2 - Pointer aritmetiği
  *
  * Pointer +/- integer: sizeof(type) * n byte ilerleme.
  * Pointer - pointer: aradaki eleman sayısı (ptrdiff_t).
@@ -82,7 +82,7 @@ static void demo_pointer_arithmetic(void)
     int *end   = arr + n;
     printf("end - start = %td elements\n", end - start);  /* ptrdiff_t → %td */
 
-    /* Sınır kontrolü — güvenli iterasyon */
+    /* Sınır kontrolü - güvenli iterasyon */
     ptr = arr;
     while (ptr < arr + n)
     {
@@ -93,7 +93,7 @@ static void demo_pointer_arithmetic(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 3 — void pointer
+ * BÖLÜM 3 - void pointer
  *
  * void*: tip bilgisi olmayan generic pointer.
  *   - malloc/free void* döner ve alır
@@ -121,14 +121,14 @@ static void demo_void_pointer(void)
     ptr = s;
     printf("void*→char*: %s\n",  (char *)ptr);
 
-    /* Generic swap — void* ile tip bağımsız */
+    /* Generic swap - void* ile tip bağımsız */
     void generic_swap(void *a, void *b, size_t size);
     char x = 'A', y = 'Z';
     generic_swap(&x, &y, sizeof(char));
     printf("after swap: x=%c y=%c\n", x, y);
 }
 
-/* Generic swap implementasyonu — memcpy ile byte bazlı takas */
+/* Generic swap implementasyonu - memcpy ile byte bazlı takas */
 void generic_swap(void *a, void *b, size_t size)
 {
     /* VLA yerine sabit boyutlu geçici buffer */
@@ -141,7 +141,7 @@ void generic_swap(void *a, void *b, size_t size)
 }
 
 /* ===========================================================================
- * BÖLÜM 4 — Function pointer
+ * BÖLÜM 4 - Function pointer
  *
  * Sözdizimi: return_type (*name)(param_types)
  *
@@ -196,7 +196,7 @@ static void demo_function_pointer(void)
         printf("\n");
     }
 
-    /* qsort callback — stdlib sort, kullanıcı karşılaştırma fonksiyonu */
+    /* qsort callback - stdlib sort, kullanıcı karşılaştırma fonksiyonu */
     int arr[] = {5, 2, 8, 1, 9, 3};
     int n = (int)(sizeof(arr) / sizeof(arr[0]));
 
@@ -212,7 +212,7 @@ static void demo_function_pointer(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 5 — Double pointer (**)
+ * BÖLÜM 5 - Double pointer (**)
  *
  * Kullanım yerleri:
  *   1. Out-parameter: fonksiyon içinde pointer'ı değiştirmek
@@ -266,11 +266,11 @@ static void demo_double_pointer(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 6 — Pointer vs Array
+ * BÖLÜM 6 - Pointer vs Array
  *
  * Array decay: dizi ismi, dizinin ilk elemanının pointer'ına dönüşür.
  *   - sizeof farkı: sizeof(arr) dizi boyutu, sizeof(ptr) pointer boyutu
- *   - Fonksiyona geçildiğinde dizi pointer'a decay olur — boyut kaybolur
+ *   - Fonksiyona geçildiğinde dizi pointer'a decay olur - boyut kaybolur
  *
  * String literal:
  *   char *s  = "hello"  → read-only memory'de, s[0]='H' → UB
@@ -289,8 +289,8 @@ static void demo_pointer_vs_array(void)
     printf("arr[2] = %d | *(ptr+2) = %d\n", arr[2], *(ptr + 2));
 
     /* String literal farkı */
-    const char *str_ptr = "immutable";   /* read-only — değiştirme */
-    char        str_arr[] = "mutable";   /* stack kopya — değiştirilebilir */
+    const char *str_ptr = "immutable";   /* read-only - değiştirme */
+    char        str_arr[] = "mutable";   /* stack kopya - değiştirilebilir */
 
     str_arr[0] = 'M';
     printf("str_ptr: %s\n", str_ptr);
@@ -298,7 +298,7 @@ static void demo_pointer_vs_array(void)
 }
 
 /* ===========================================================================
- * BÖLÜM 7 — restrict
+ * BÖLÜM 7 - restrict
  *
  * restrict (C99): derleyiciye "bu pointer'ın gösterdiği belleğe
  * başka pointer erişmiyor" garantisi verir.
@@ -350,7 +350,7 @@ static void demo_restrict(void)
 int main(void)
 {
     printf(LINE);
-    LOG_INFO("pointers.c — starting demos");
+    LOG_INFO("pointers.c - starting demos");
     printf(LINE);
 
     demo_basic_pointer();     printf(LINE);
@@ -361,6 +361,6 @@ int main(void)
     demo_pointer_vs_array();  printf(LINE);
     demo_restrict();          printf(LINE);
 
-    LOG_INFO("pointers.c — all demos complete");
+    LOG_INFO("pointers.c - all demos complete");
     return 0;
 }

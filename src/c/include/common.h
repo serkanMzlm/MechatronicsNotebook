@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 /* ===========================================================================
- * common.h — Ortak Tanımlar, Makrolar ve Tipler
+ * common.h - Ortak Tanımlar, Makrolar ve Tipler
  *
  * Kapsanan konular:
  *   Makrolar          → object-like, function-like, variadic, güvenli yazım
@@ -19,7 +19,7 @@
  * ===========================================================================*/
 
 /* ===========================================================================
- * BÖLÜM 1 — Terminal renk kodları (ANSI escape sequences)
+ * BÖLÜM 1 - Terminal renk kodları (ANSI escape sequences)
  *
  * Object-like macro: parametre almaz, sabit bir değere expand olur.
  * \x1b[ → ESC karakteri (ASCII 27), ANSI terminal kontrolü için.
@@ -37,7 +37,7 @@
 #define LINE "================================================\n"
 
 /* ===========================================================================
- * BÖLÜM 2 — Log makroları
+ * BÖLÜM 2 - Log makroları
  *
  * Variadic macro: __VA_ARGS__ ile değişken sayıda argüman alır.
  * do { } while(0) pattern: makronun her zaman tek deyim gibi davranmasını sağlar.
@@ -59,7 +59,7 @@
     do { printf(COLOR_GRN "[DEBUG] " fmt COLOR_RST "\n", ##__VA_ARGS__); } while(0)
 
 /* ===========================================================================
- * BÖLÜM 3 — Yardımcı makrolar
+ * BÖLÜM 3 - Yardımcı makrolar
  *
  * Hatalı yazım örnekleri ve düzeltmeleri:
  *
@@ -75,7 +75,7 @@
  *   İYİ  → tüm ifade parantez içinde
  *
  * NOT: Yan etkili ifadelerle makro hâlâ tehlikelidir:
- *   SQUARE(i++) → ((i++)*(i++))  — tanımsız davranış (undefined behavior)
+ *   SQUARE(i++) → ((i++)*(i++))  - tanımsız davranış (undefined behavior)
  *   Bu yüzden tip-güvenli inline fonksiyon tercih edilmeli (Bölüm 4).
  * ===========================================================================*/
 
@@ -94,7 +94,7 @@
 #define MAKE_NAME(prefix, suffix) prefix##_##suffix
 
 /* ===========================================================================
- * BÖLÜM 4 — static inline fonksiyonlar
+ * BÖLÜM 4 - static inline fonksiyonlar
  *
  * Makro yerine tercih edilmeli çünkü:
  *   - Tip güvenlidir (type-safe)
@@ -102,7 +102,7 @@
  *   - Hata ayıklanabilir (debugger görebilir)
  *   - Kapsam (scope) kurallarına uyar
  *
- * static: her çeviri biriminde (translation unit) ayrı kopya — bağlantı sorunu olmaz.
+ * static: her çeviri biriminde (translation unit) ayrı kopya - bağlantı sorunu olmaz.
  * inline: derleyiciye "bu çağrıyı satır içine al" isteği (garanti değil).
  * ===========================================================================*/
 
@@ -138,9 +138,9 @@ static inline uint32_t bit_clear(uint32_t reg, uint8_t bit)
 }
 
 /* ===========================================================================
- * BÖLÜM 5 — _Static_assert
+ * BÖLÜM 5 - _Static_assert
  *
- * Derleme zamanında koşul kontrolü yapar — runtime maliyeti sıfır.
+ * Derleme zamanında koşul kontrolü yapar - runtime maliyeti sıfır.
  * C11 ile gelmiştir. C23'te assert() gibi tek argümanla da kullanılabilir.
  *
  * Kullanım yerleri:
@@ -154,7 +154,7 @@ _Static_assert(sizeof(int32_t) == 4, "int32_t must be exactly 4 bytes");
 _Static_assert(sizeof(void *)  >= 4, "pointer must be at least 4 bytes");
 
 /* ===========================================================================
- * BÖLÜM 6 — __attribute__ (GCC / Clang)
+ * BÖLÜM 6 - __attribute__ (GCC / Clang)
  *
  * Derleyiciye ek bilgi verir; optimizasyon, uyarı ve davranış kontrolü sağlar.
  *
@@ -182,9 +182,9 @@ static inline void old_log(const char *msg)
 }
 
 /* ===========================================================================
- * BÖLÜM 7 — typedef enum
+ * BÖLÜM 7 - typedef enum
  *
- * Enum: derleme zamanı sabitleri — magic number kullanımını önler.
+ * Enum: derleme zamanı sabitleri - magic number kullanımını önler.
  * typedef: isimsiz enum'u doğrudan tip olarak kullanmayı sağlar.
  *
  * İyi pratik:
@@ -197,7 +197,7 @@ typedef enum
     STATE_X = 0,
     STATE_Y,
     STATE_Z,
-    STATE_COUNT   /* toplam eleman sayısı — dizi boyutu için kullanılır */
+    STATE_COUNT   /* toplam eleman sayısı - dizi boyutu için kullanılır */
 } StateIndex_t;
 
 typedef enum
@@ -210,7 +210,7 @@ typedef enum
 } LogLevel_t;
 
 /* ===========================================================================
- * BÖLÜM 8 — typedef struct
+ * BÖLÜM 8 - typedef struct
  *
  * Struct: farklı tipteki verileri bir arada tutar.
  *
@@ -227,25 +227,25 @@ typedef struct
     float weight;
 } People_t;
 
-/* Bitfield örneği — donanım register simülasyonu */
+/* Bitfield örneği - donanım register simülasyonu */
 typedef struct __attribute__((packed))
 {
-    uint8_t power   : 1;   /* bit 0 — sadece 0 veya 1 */
-    uint8_t mode    : 2;   /* bit 1-2 — 0-3 arası değer */
-    uint8_t channel : 4;   /* bit 3-6 — 0-15 arası değer */
+    uint8_t power   : 1;   /* bit 0 - sadece 0 veya 1 */
+    uint8_t mode    : 2;   /* bit 1-2 - 0-3 arası değer */
+    uint8_t channel : 4;   /* bit 3-6 - 0-15 arası değer */
     uint8_t error   : 1;   /* bit 7 */
 } DeviceConfig_t;
 
 _Static_assert(sizeof(DeviceConfig_t) == 1, "DeviceConfig_t must be 1 byte");
 
 /* ===========================================================================
- * BÖLÜM 9 — typedef union
+ * BÖLÜM 9 - typedef union
  *
  * Union: tüm üyeler aynı memory bölgesini paylaşır.
  * Boyutu en büyük üyenin boyutuna eşittir.
  *
  * Kullanım alanları:
- *   - Tip dönüşümü (type punning) — dikkatli kullanılmalı
+ *   - Tip dönüşümü (type punning) - dikkatli kullanılmalı
  *   - Memory overlay (aynı veriye farklı görünümler)
  *   - Protokol parsing (byte/word/dword erişimi)
  * ===========================================================================*/
@@ -261,7 +261,7 @@ typedef union
     int state[STATE_COUNT];   /* aynı memory'ye dizi olarak erişim */
 } State_u;
 
-/* Tip dönüşümü için union — float'ın bit pattern'ini okur */
+/* Tip dönüşümü için union - float'ın bit pattern'ini okur */
 typedef union
 {
     float    f;
@@ -270,7 +270,7 @@ typedef union
 } FloatBits_t;
 
 /* ===========================================================================
- * BÖLÜM 10 — Fonksiyon prototipleri (constructor/destructor örnekleri)
+ * BÖLÜM 10 - Fonksiyon prototipleri (constructor/destructor örnekleri)
  *
  * Prototip bildirimi: başlık dosyasında tanım değil, sadece imza.
  * Derleyici bu imzayı kullanarak tip kontrolü yapar.

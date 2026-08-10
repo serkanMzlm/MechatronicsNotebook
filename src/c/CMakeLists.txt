@@ -1,5 +1,5 @@
 # ==============================================================================
-# CMakeLists.txt — C Learning Project
+# CMakeLists.txt - C Learning Project
 #
 # Kapsanan komutlar:
 #   cmake_minimum_required    → VERSION range
@@ -77,13 +77,13 @@ option(ENABLE_UBSAN   "Enable UndefinedBehaviorSanitizer" OFF)
 option(BUILD_NETWORK  "Build network module"              ON)
 
 # ==============================================================================
-# CMAKE_MODULE_PATH — özel cmake modüllerinin aranacağı dizin
+# CMAKE_MODULE_PATH - özel cmake modüllerinin aranacağı dizin
 # ==============================================================================
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # ==============================================================================
-# Modüller — her biri include edildiğinde otomatik çalışır
+# Modüller - her biri include edildiğinde otomatik çalışır
 # ==============================================================================
 
 include(Git)            # git_get_info() vb. çalışır
@@ -92,7 +92,7 @@ include(DependencyCheck)# run_dependency_checks() çalışır
 include(CustomTools)    # macro ve fonksiyonlar tanımlanır
 
 # ==============================================================================
-# C standardı — global ayar
+# C standardı - global ayar
 #
 # CMAKE_C_STANDARD: tüm hedefler için varsayılan C standardını belirler.
 # set_target_properties ile hedef bazlı da ayarlanabilir (aşağıda gösterildi).
@@ -112,7 +112,7 @@ set(CMAKE_C_EXTENSIONS        OFF)  # GNU uzantılarını kapat (-std=c11, -std=
 add_compile_options(-Wall -Wextra -Wpedantic)
 
 # ==============================================================================
-# Hedef listesi — modül bazlı yönetim
+# Hedef listesi - modül bazlı yönetim
 #
 # Her modül bağımsız bir executable olarak derlenir.
 # Her birinin kendi main() fonksiyonu vardır.
@@ -253,7 +253,7 @@ foreach(TARGET_NAME IN LISTS ALL_TARGETS)
     )
 endforeach()
 
-# filter_existing_files: function versiyonu — PARENT_SCOPE ile değer döner
+# filter_existing_files: function versiyonu - PARENT_SCOPE ile değer döner
 set(SOURCE_LIST
     "tutorial/basics.c"
     "algorithms.c"

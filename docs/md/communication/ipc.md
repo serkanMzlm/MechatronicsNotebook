@@ -1,4 +1,4 @@
-# IPC — Süreçler Arası İletişim
+# IPC - Süreçler Arası İletişim
 
 !!! note "Genel Bakış"
     **Inter-Process Communication (IPC)**, aynı makinede çalışan bağımsız süreçlerin veri paylaşmasını ve koordineli çalışmasını sağlayan mekanizmalar bütünüdür. Her yöntemin farklı performans, karmaşıklık ve kullanım senaryosu dengesi vardır.
@@ -58,14 +58,14 @@ int main(void) {
 
     pid_t pid = fork();
 
-    if (pid == 0) {          /* Alt süreç — okuyucu */
+    if (pid == 0) {          /* Alt süreç - okuyucu */
         close(fd[1]);        /* Yazma ucunu kapat */
         char buf[64];
         ssize_t n = read(fd[0], buf, sizeof(buf));
         buf[n] = '\0';
         printf("Çocuk aldı: %s\n", buf);
         close(fd[0]);
-    } else {                 /* Ebeveyn — yazıcı */
+    } else {                 /* Ebeveyn - yazıcı */
         close(fd[0]);        /* Okuma ucunu kapat */
         const char *msg = "merhaba";
         write(fd[1], msg, strlen(msg));
@@ -99,10 +99,10 @@ int main(void) {
 # FIFO oluştur
 mkfifo /tmp/myfifo
 
-# Terminal 1 — okuyucu
+# Terminal 1 - okuyucu
 cat /tmp/myfifo
 
-# Terminal 2 — yazıcı
+# Terminal 2 - yazıcı
 echo "veri" > /tmp/myfifo
 ```
 
@@ -219,7 +219,7 @@ kill -SIGTERM <PID>
 ```
 
 !!! danger "Sinyal Handler Güvenliği"
-    Sinyal handler'ların içinde yalnızca **async-signal-safe** fonksiyonlar çağrılabilir. `printf`, `malloc`, `free` güvenli değildir — bunları handler içinde çağırmak tanımsız davranışa yol açar. Bunun yerine global bir bayrak (`sig_atomic_t`) set edip ana döngüde işleyin.
+    Sinyal handler'ların içinde yalnızca **async-signal-safe** fonksiyonlar çağrılabilir. `printf`, `malloc`, `free` güvenli değildir - bunları handler içinde çağırmak tanımsız davranışa yol açar. Bunun yerine global bir bayrak (`sig_atomic_t`) set edip ana döngüde işleyin.
 
 ---
 
@@ -614,7 +614,7 @@ int main(void) {
 ```
 
 ```bash
-# Terminal termios — baud rate sorgusu
+# Terminal termios - baud rate sorgusu
 stty -F /dev/ttyUSB0
 
 # ioctl kullanan araçlar
@@ -675,7 +675,7 @@ for dev in devices:
 
 ---
 
-## mmap — Bellek Eşlemeli Dosya
+## mmap - Bellek Eşlemeli Dosya
 
 `mmap`, bir dosyayı veya anonim belleği sürecin adres alanına doğrudan eşler. Shared memory'nin dosya tabanlı alternatifidir ve sıfır kopyalamayla (zero-copy) dosya I/O gerçekleştirir.
 
@@ -749,10 +749,10 @@ graph LR
 | Signal             |  Çok hızlı   |   Veri yok   | Tek  |   Herhangi   |      Anlık       |
 | Shared Memory      | **En hızlı** | **0 kopya**  | Çift |   Herhangi   | `shm_unlink` ile |
 | Message Queue      |    Hızlı     |   1 kopya    | Çift |   Herhangi   | `mq_unlink` ile  |
-| Semaphore          |      —       |   Veri yok   |  —   |   Herhangi   | `sem_unlink` ile |
+| Semaphore          |      -       |   Veri yok   |  -   |   Herhangi   | `sem_unlink` ile |
 | Unix Domain Socket |    Hızlı     |  1–2 kopya   | Çift | Aynı makine  |   `unlink` ile   |
-| Netlink            |    Hızlı     |   1 kopya    | Çift | User/Kernel  |        —         |
-| D-Bus              |    Yavaş     |   2+ kopya   | Çift |   Herhangi   |        —         |
+| Netlink            |    Hızlı     |   1 kopya    | Çift | User/Kernel  |        -         |
+| D-Bus              |    Yavaş     |   2+ kopya   | Çift |   Herhangi   |        -         |
 | mmap               | **En hızlı** | **0 kopya**  | Çift |   Herhangi   |  Dosya tabanlı   |
 
 ```mermaid

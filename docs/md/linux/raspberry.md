@@ -89,7 +89,7 @@ while True:
 
 ---
 
-## config.txt — Donanım Yapılandırması
+## config.txt - Donanım Yapılandırması
 
 `/boot/firmware/config.txt` (Pi 5) veya `/boot/config.txt` (Pi 4 ve öncesi), Raspberry Pi'nin U-Boot öncesi firmware yapılandırma dosyasıdır.
 
@@ -221,7 +221,7 @@ sudo systemctl disable bluetooth avahi-daemon cups
 # GPU minimum bellek (headless sunucu için)
 gpu_mem=16
 
-# Overclock (Pi 4 — soğutucu gerekli)
+# Overclock (Pi 4 - soğutucu gerekli)
 arm_freq=1900
 gpu_freq=600
 over_voltage=2
@@ -333,7 +333,7 @@ udevadm info --query=all --name=/dev/ttyUSB0
 
 ---
 
-## Systemd Servis — Uygulama Otomasyonu
+## Systemd Servis - Uygulama Otomasyonu
 
 Pi'de çalışan uygulamayı önyüklemede otomatik başlatmak ve izlemek için systemd kullanılır.
 

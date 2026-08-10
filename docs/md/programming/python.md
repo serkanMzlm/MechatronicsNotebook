@@ -103,7 +103,7 @@ graph LR
 # Ternary expression
 sonuc = "çift" if n % 2 == 0 else "tek"
 
-# Walrus — atama ve kontrol tek satırda
+# Walrus - atama ve kontrol tek satırda
 if (n := len(input("deger: "))) < 10:
     print(f"Girdi {n} karakterden kısa")
 
@@ -129,7 +129,7 @@ else:
 
 ### String
 
-Tek (`'…'`), çift (`"…"`) veya üçlü tırnak ile tanımlanır. **Immutable** — bir karakter değiştirmek için yeni string üretmek gerekir.
+Tek (`'…'`), çift (`"…"`) veya üçlü tırnak ile tanımlanır. **Immutable** - bir karakter değiştirmek için yeni string üretmek gerekir.
 
 ```python
 kelime = "python"
@@ -227,18 +227,18 @@ a.clear()             # Tüm elemanları siler
     ```python
     import copy
     a  = [[1,2], [3,4]]
-    b  = a.copy()          # Yüzeysel — iç listeler paylaşılır
-    c  = copy.deepcopy(a)  # Derin — tamamen bağımsız
+    b  = a.copy()          # Yüzeysel - iç listeler paylaşılır
+    c  = copy.deepcopy(a)  # Derin - tamamen bağımsız
     ```
 
 ### Tuple
 
-`()` içinde virgülle oluşturulur. **Immutable** — değiştirilemez.
+`()` içinde virgülle oluşturulur. **Immutable** - değiştirilemez.
 
 ```python
 t = (1, 2, 3)
 t2 = 4, 5, 6       # Parantez zorunlu değil
-tek = (42,)        # Tek elemanlı — sondaki virgül zorunlu
+tek = (42,)        # Tek elemanlı - sondaki virgül zorunlu
 
 # Unpacking
 a, b, c = t
@@ -467,7 +467,7 @@ class Yigin(Generic[T]):
         return self._veri.pop()
 ```
 
-!!! note "Protocol — Yapısal Subtipleme"
+!!! note "Protocol - Yapısal Subtipleme"
     ```python
     class Yazdirabilir(Protocol):
         def yazdir(self) -> None: ...
@@ -475,7 +475,7 @@ class Yigin(Generic[T]):
     def cikti_al(obj: Yazdirabilir) -> None:
         obj.yazdir()
     # Herhangi bir sınıf `yazdir` metoduna sahipse Protocol'u karşılar.
-    # Explicit miras almak gerekmez — duck typing'in tip güvenli hali.
+    # Explicit miras almak gerekmez - duck typing'in tip güvenli hali.
     ```
 
 ### Fonksiyon İmzası ve Anotasyonlar
@@ -497,7 +497,7 @@ uygula(lambda x: x * 2, 5)  # 10
 
 ```python
 class Sekil:
-    sinif_sayisi: int = 0     # Sınıf niteliği — tüm örnekler paylaşır
+    sinif_sayisi: int = 0     # Sınıf niteliği - tüm örnekler paylaşır
 
     def __init__(self, renk: str) -> None:
         self.renk = renk          # Örnek niteliği
@@ -508,11 +508,11 @@ class Sekil:
         return cls.sinif_sayisi
 
     @staticmethod
-    def tanim() -> str:          # Ne self ne cls — bağımsız
+    def tanim() -> str:          # Ne self ne cls - bağımsız
         return "Geometrik şekil"
 
     @property
-    def bilgi(self) -> str:      # Getter — parametre almaz
+    def bilgi(self) -> str:      # Getter - parametre almaz
         return f"Renk: {self.renk}"
 
     @bilgi.setter
@@ -524,7 +524,7 @@ class Sekil:
 | ------------ | ------------------------------ | ------------------------------------------ |
 | `isim`       | Her yerden                     | Public                                     |
 | `_isim`      | Kural gereği yalnızca içeriden | Protected (gelenek)                        |
-| `__isim`     | Yalnızca içeriden              | Private — name mangling: `_SinifAdi__isim` |
+| `__isim`     | Yalnızca içeriden              | Private - name mangling: `_SinifAdi__isim` |
 
 ```python
 class Sayac:
@@ -636,7 +636,7 @@ class Daire(Sekil):
     def cevre(self) -> float:
         return 2 * 3.14159 * self.r
 
-# s = Sekil()   # TypeError — abstract sınıf örneklenemez
+# s = Sekil()   # TypeError - abstract sınıf örneklenemez
 ```
 
 ### Dataclasses (Python 3.7+)
@@ -651,7 +651,7 @@ class Nokta:
     x: float
     y: float
     z: float = 0.0
-    etiket: list = field(default_factory=list)  # Mutable default — GÜVENLİ
+    etiket: list = field(default_factory=list)  # Mutable default - GÜVENLİ
 
     def uzaklik(self) -> float:
         return (self.x**2 + self.y**2 + self.z**2) ** 0.5
@@ -749,7 +749,7 @@ finally:
         ...
     except ValueError as e:
         raise RuntimeError("Dönüşüm başarısız") from e
-    # Traceback her iki hatayı da gösterir — kayıp bağlam olmaz
+    # Traceback her iki hatayı da gösterir - kayıp bağlam olmaz
     ```
 
 ---
@@ -768,14 +768,14 @@ finally:
 | `'+'` | Hem okuma hem yazma: `'r+'`, `'w+'` |
 
 ```python
-# Text modu — with bloğu kapanışı garanti eder
+# Text modu - with bloğu kapanışı garanti eder
 with open("veri.txt", "r", encoding="utf-8") as f:
     icerik = f.read()          # Tüm içerik
     # ya da satır satır (büyük dosyalarda bellek verimli):
     for satir in f:
         print(satir.rstrip())
 
-# Binary modu — magic number ile dosya türü tespiti
+# Binary modu - magic number ile dosya türü tespiti
 with open("resim.png", "rb") as f:
     header = f.read(8)
     if header[:8] == b"\x89PNG\r\n\x1a\n":
@@ -901,26 +901,26 @@ from ..core import config            # Bir üst pakete çıkış
 ```python
 from collections import Counter, defaultdict, namedtuple, deque
 
-# Counter — eleman sayma
+# Counter - eleman sayma
 metin = "abracadabra"
 c = Counter(metin)
 c.most_common(3)    # [('a', 5), ('b', 2), ('r', 2)]
 c + Counter("abc")  # Counter'ları toplar
 
-# defaultdict — eksik anahtar için otomatik varsayılan
+# defaultdict - eksik anahtar için otomatik varsayılan
 dd = defaultdict(list)
 dd["notlar"].append(90)  # KeyError yok
 
-# deque — O(1) baştan ve sondan ekleme/silme
+# deque - O(1) baştan ve sondan ekleme/silme
 q = deque([1, 2, 3], maxlen=5)
 q.appendleft(0)    # [0, 1, 2, 3]
 q.rotate(1)        # Sağa döndür: [3, 0, 1, 2]
 
-# namedtuple — immutable, isimli alanlı tuple
+# namedtuple - immutable, isimli alanlı tuple
 Nokta = namedtuple('Nokta', ['x', 'y'])
 p = Nokta(3, 4)
 p.x, p.y            # 3, 4
-p._replace(x=10)    # Yeni Nokta(10, 4) — immutable
+p._replace(x=10)    # Yeni Nokta(10, 4) - immutable
 ```
 
 ### itertools
@@ -932,7 +932,7 @@ Lazy iterator kombinasyonları; bellek dostu ve sıfır kopyalama.
 | `count(start, step)`   | Sonsuz sayaç                 |
 | `cycle(seq)`           | Sonsuz tekrar                |
 | `repeat(obj, n)`       | n kez tekrar                 |
-| `chain(*iters)`        | Zincirleme — tek iterator    |
+| `chain(*iters)`        | Zincirleme - tek iterator    |
 | `islice(it, n)`        | Lazy dilimleme               |
 | `product(*iters)`      | Kartezyen çarpım             |
 | `permutations(seq, r)` | Permütasyonlar               |
@@ -946,7 +946,7 @@ from itertools import chain, groupby, product, islice
 
 liste = list(chain([1,2], [3,4], [5]))  # [1,2,3,4,5]
 
-# groupby — önce sort zorunlu
+# groupby - önce sort zorunlu
 data = sorted([('A', 1), ('B', 2), ('A', 3)], key=lambda x: x[0])
 for grup, elemanlar in groupby(data, key=lambda x: x[0]):
     print(grup, list(elemanlar))
@@ -960,24 +960,24 @@ ciftle = islice(filter(lambda x: x%2==0, range(1000)), 5)
 ```python
 from functools import lru_cache, partial, reduce, wraps, cache
 
-# lru_cache — memoization
+# lru_cache - memoization
 @lru_cache(maxsize=128)
 def fib(n: int) -> int:
     return n if n < 2 else fib(n-1) + fib(n-2)
 
-# @cache (Python 3.9+) — sınırsız LRU
+# @cache (Python 3.9+) - sınırsız LRU
 @cache
 def pahalı_hesap(n):
     return sum(range(n))
 
-# partial — argüman kilitler
+# partial - argüman kilitler
 def kuvvet(taban, us):
     return taban ** us
 
 kare = partial(kuvvet, us=2)
 print(kare(5))   # 25
 
-# reduce — koleksiyonu tek değere indirger
+# reduce - koleksiyonu tek değere indirger
 toplam = reduce(lambda a, b: a + b, range(1, 6))  # 15
 ```
 
@@ -1014,7 +1014,7 @@ m = re.search(r"(\d{4})-(\d{2})-(\d{2})", metin)
 if m:
     yil, ay, gun = m.groups()  # ('2024', '06', '19')
 
-# Compile ile tekrar kullanım — performans
+# Compile ile tekrar kullanım - performans
 email_re = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 mailler = email_re.findall("info@ornek.com ve admin@test.org")
 
@@ -1041,7 +1041,7 @@ logging.basicConfig(
 
 log = logging.getLogger(__name__)
 
-log.debug("Değişken: %s", veri)   # % interpolation — lazy; string üretilmez
+log.debug("Değişken: %s", veri)   # % interpolation - lazy; string üretilmez
 log.info("İşlem tamamlandı")
 log.warning("Disk doluyor")
 log.error("Bağlantı başarısız")
@@ -1099,7 +1099,7 @@ sayac = 0
 def artir():
     global sayac
     for _ in range(100_000):
-        with kilit:      # RAII — scope bitince release
+        with kilit:      # RAII - scope bitince release
             sayac += 1
 
 t1 = threading.Thread(target=artir)
@@ -1128,18 +1128,18 @@ if __name__ == '__main__':   # Windows'ta zorunlu
 
 ### asyncio
 
-Cooperative multitasking — `await` noktasında event loop başka coroutine'lere geçer.
+Cooperative multitasking - `await` noktasında event loop başka coroutine'lere geçer.
 
 ```python
 import asyncio
 
 async def veri_getir(n: int) -> str:
-    await asyncio.sleep(1)   # I/O simülasyonu — bloke etmez
+    await asyncio.sleep(1)   # I/O simülasyonu - bloke etmez
     return f"Sonuç {n}"
 
 async def ana():
     gorevler = [asyncio.create_task(veri_getir(i)) for i in range(5)]
-    sonuclar = await asyncio.gather(*gorevler)  # Paralel — ~1 saniyede tamamlanır
+    sonuclar = await asyncio.gather(*gorevler)  # Paralel - ~1 saniyede tamamlanır
     return sonuclar
 
 asyncio.run(ana())
@@ -1225,13 +1225,13 @@ pip install -r requirements.txt      # Ortamı içe aktar
 | `bytes(x)` / `bytearray(x)`           | Byte nesneleri                                    |
 | `open(path, mode, encoding)`          | Dosya açma                                        |
 | `print(*objs, sep, end, file, flush)` | Çıktı                                             |
-| `input(prompt)`                       | Kullanıcı girişi — her zaman `str` döner          |
+| `input(prompt)`                       | Kullanıcı girişi - her zaman `str` döner          |
 
 ---
 
 ## Yapısal Desen Eşleştirme (Python 3.10+)
 
-`match/case` — `if/elif` zincirinin okunabilir ve güçlü alternatifi; değer, tür ve yapı bazlı eşleştirme yapar.
+`match/case` - `if/elif` zincirinin okunabilir ve güçlü alternatifi; değer, tür ve yapı bazlı eşleştirme yapar.
 
 ```python
 def http_acikla(kod: int) -> str:
@@ -1242,7 +1242,7 @@ def http_acikla(kod: int) -> str:
         case n if 400 <= n < 500:  return f"İstemci hatası: {n}"
         case _:                    return "Bilinmiyor"
 
-# Yapısal eşleştirme — dict / dataclass / tuple üzerinde çalışır
+# Yapısal eşleştirme - dict / dataclass / tuple üzerinde çalışır
 def isle(komut: dict) -> None:
     match komut:
         case {"eylem": "git",  "yol": str(y)}: print(f"Git: {y}")
@@ -1252,7 +1252,7 @@ def isle(komut: dict) -> None:
 
 ---
 
-## OOP — İleri Konular
+## OOP - İleri Konular
 
 ### \_\_slots\_\_
 
@@ -1313,7 +1313,7 @@ class Nokta(metaclass=AutoRepr):
 print(Nokta(1, 2))  # Nokta({'x': 1, 'y': 2})
 ```
 
-!!! tip "\_\_init_subclass\_\_ — Metaclass Alternatifi"
+!!! tip "\_\_init_subclass\_\_ - Metaclass Alternatifi"
     ```python
     class Plugin:
         _registry: dict = {}
@@ -1331,7 +1331,7 @@ print(Nokta(1, 2))  # Nokta({'x': 1, 'y': 2})
 
 ---
 
-## Standart Kütüphane — İleri
+## Standart Kütüphane - İleri
 
 ### concurrent.futures
 
@@ -1353,7 +1353,7 @@ with ProcessPoolExecutor() as ex:
 
 |                  |     `threading`     |  `concurrent.futures` |
 | ---------------- | :-----------------: | :-------------------: |
-| Seviye           | Düşük — manuel join |   Yüksek — otomatik   |
+| Seviye           | Düşük - manuel join |   Yüksek - otomatik   |
 | İstisna yayılımı |        Manuel       | `f.result()` fırlatır |
 | `map` desteği    |          ✗          |           ✓           |
 
@@ -1370,7 +1370,7 @@ result = subprocess.run(
 )
 print(result.stdout)
 
-# Birden fazla komut pipeline — Popen ile
+# Birden fazla komut pipeline - Popen ile
 p1 = subprocess.Popen(["ps", "aux"], stdout=subprocess.PIPE)
 p2 = subprocess.Popen(["grep", "python"], stdin=p1.stdout, stdout=subprocess.PIPE)
 p1.stdout.close()
@@ -1394,9 +1394,9 @@ class Renk(Enum):
 
 Renk.KIRMIZI.name   # 'KIRMIZI'
 Renk.KIRMIZI.value  # 1
-Renk["MAVI"]        # Renk.MAVI — string'den erişim
+Renk["MAVI"]        # Renk.MAVI - string'den erişim
 
-# Flag — bit maskesi kombinasyonu
+# Flag - bit maskesi kombinasyonu
 class Izin(Flag):
     OKU   = auto()
     YAZ   = auto()
@@ -1421,7 +1421,7 @@ ref   = weakref.ref(nesne)
 
 print(ref())   # <__main__.Agir object ...>
 del nesne
-print(ref())   # None — nesne GC tarafından toplandı
+print(ref())   # None - nesne GC tarafından toplandı
 ```
 
 !!! tip "Circular Reference Çözümü"

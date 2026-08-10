@@ -1,50 +1,60 @@
 # C Programlama
 
-!!! note "Genel Bakış"
-    C, donanıma yakın kontrol, yüksek performans ve taşınabilirlik sunan sistem programlama dilidir. Gömülü sistemler, işletim sistemi çekirdekleri ve kritik uygulamalar için yaygın olarak tercih edilir.
-
----
-
 ## Temel Kavramlar
 
-### Kapsam (Scope)
-
-| Kapsam                  | Açıklama                                            |
+| Kapsam (Scope)          | Açıklama                                            |
 | ----------------------- | --------------------------------------------------- |
 | **File Scope (Global)** | Tüm dosya genelinde görünürdür                      |
 | **Block Scope (Local)** | Yalnızca tanımlandığı `{ }` bloğu içinde geçerlidir |
 
-### Tür Dönüşümü (Type Conversion)
 
-| Tür                        | Açıklama                           | Örnek                     |
+| Tür Dönüşümü               | Açıklama                           | Örnek                     |
 | -------------------------- | ---------------------------------- | ------------------------- |
 | **Implicit (Örtük)**       | Derleyicinin otomatik dönüştürmesi | `int x = 3.14;` → `x = 3` |
 | **Explicit (Açık / Cast)** | Geliştiricinin manuel dönüştürmesi | `int x = (int)y;`         |
 
-### Depolama Sınıfları
 
-| Anahtar Kelime    | Yaşam Süresi | Kapsam | Açıklama                                                           |
-| ----------------- | ------------ | ------ | ------------------------------------------------------------------ |
-| `auto`            | Block        | Local  | Varsayılan yerel değişken sınıfı; artık kullanılmaz                |
-| `register`        | Block        | Local  | CPU register'ında tutulmasını önerir; adresi alınamaz (`&`)        |
-| `static` (local)  | Program      | Local  | Fonksiyon bittikten sonra değerini korur; Data Segment'te tutulur  |
-| `static` (global) | Program      | File   | Değişkeni/fonksiyonu yalnızca o `.c` dosyasına özel yapar          |
-| `extern`          | Program      | Global | Değişkenin/fonksiyonun başka bir dosyada tanımlı olduğunu bildirir |
-| `volatile`        | Block        | Local  | Derleyici optimizasyonunu engeller; doğrudan bellekten okur        |
+| Depolama Sınıfları | Yaşam Süresi | Kapsam | Açıklama                                                           |
+| -------------------| ------------ | ------ | ------------------------------------------------------------------ |
+| `auto`             | Block        | Local  | Varsayılan yerel değişken sınıfı; artık kullanılmaz                |
+| `register`         | Block        | Local  | CPU register'ında tutulmasını önerir; adresi alınamaz (`&`)        |
+| `static` (local)   | Program      | Local  | Fonksiyon bittikten sonra değerini korur; Data Segment'te tutulur  |
+| `static` (global)  | Program      | File   | Değişkeni/fonksiyonu yalnızca o `.c` dosyasına özel yapar          |
+| `extern`           | Program      | Global | Değişkenin/fonksiyonun başka bir dosyada tanımlı olduğunu bildirir |
+| `volatile`         | Block        | Local  | Derleyici optimizasyonunu engeller; doğrudan bellekten okur        |
 
-!!! tip "static - Global Seviye"
-    Bir global değişken veya fonksiyonun başına `static` koyulursa, o sembol yalnızca tanımlandığı `.c` dosyasına özel (private) hale gelir. Başka bir dosya onu `extern` ile bile çağıramaz. İsim çakışmalarını önlemek için etkili bir yöntemdir.
-
-!!! tip "volatile - Donanım Programcısının Dostu"
-    Donanım register'ları, ISR içinde değiştirilen değişkenler veya paylaşılan bellek alanları `volatile` ile işaretlenmelidir. Aksi hâlde derleyici optimizasyon aşamasında bu değişkene yapılan erişimleri kaldırabilir.
-
-### Temel Operatörler
 
 | Operatör  | Açıklama                                                                                                                                                                     |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sizeof`  | Veri tipi veya değişkenin bellekte kapladığı boyutu **byte** cinsinden döndürür. Fonksiyon değil, derleme zamanı operatörüdür (`sizeof(a++)` ifadesinde `a++` çalıştırılmaz) |
 | `const`   | Verinin değerini sabitler; yanlışlıkla değiştirilmeye karşı koruma sağlar                                                                                                    |
 | `typedef` | Mevcut bir veri tipine takma isim (alias) verir; gerçek bir C deyimidir, tip güvenliği sağlar                                                                                |
+
+
+| Fonksiyon                | Açıklama                                                       |
+| ------------------------ | -------------------------------------------------------------- |
+| `sprintf(buf, fmt, ...)` | Formatlanmış veriyi ekrana değil, `char` dizisine yazar        |
+| `sscanf(str, fmt, ...)`  | Karakter dizisini belirtilen formatla analiz edip veri çıkarır |
+
+
+| Dosya Mod  | Flagler        | Açıklama                                                             |
+| ---------- | -------------- | -------------------------------------------------------------------- |
+| **Text**   | `"r"`, `"w"`   | Satır sonu karakterleri işletim sistemine göre otomatik dönüştürülür |
+| **Binary** | `"rb"`, `"wb"` | Diskteki byte'lara hiç dokunulmaz; gömülü sistemlerde tercih edilir  |
+
+
+| fseek Sabiti | Açıklama                                        |
+| ------------ | ----------------------------------------------- |
+| `SEEK_SET`   | Dosyanın en başından `offset` kadar ilerler     |
+| `SEEK_CUR`   | İmlecin bulunduğu yerden `offset` kadar ilerler |
+| `SEEK_END`   | Dosyanın sonundan geriye/ileriye gider          |
+
+
+!!! tip "Not"
+    1. **`static`:** Bir global değişken veya fonksiyonun başına `static` koyulursa, o sembol yalnızca tanımlandığı `.c` dosyasına özel (private) hale gelir. Başka bir dosya onu `extern` ile bile çağıramaz. İsim çakışmalarını önlemek için etkili bir yöntemdir.
+
+    2. **`volatile`:** Donanım register'ları, ISR içinde değiştirilen değişkenler veya paylaşılan bellek alanları `volatile` ile işaretlenmelidir. Aksi hâlde derleyici optimizasyon aşamasında bu değişkene yapılan erişimleri kaldırabilir.
+
 
 !!! example "#define vs typedef"
     ```c
@@ -55,56 +65,24 @@
     t_ptr_int p3, p4;     // p3 ve p4: ikisi de pointer ← doğru
     ```
 
-### Faydalı String/Bellek Fonksiyonları
 
-| Fonksiyon                | Açıklama                                                       |
-| ------------------------ | -------------------------------------------------------------- |
-| `sprintf(buf, fmt, ...)` | Formatlanmış veriyi ekrana değil, `char` dizisine yazar        |
-| `sscanf(str, fmt, ...)`  | Karakter dizisini belirtilen formatla analiz edip veri çıkarır |
+## Koşul ve Döngüler
 
-### Dosya Modu (Text vs Binary)
-
-| Mod        | Flagler        | Açıklama                                                             |
-| ---------- | -------------- | -------------------------------------------------------------------- |
-| **Text**   | `"r"`, `"w"`   | Satır sonu karakterleri işletim sistemine göre otomatik dönüştürülür |
-| **Binary** | `"rb"`, `"wb"` | Diskteki byte'lara hiç dokunulmaz; gömülü sistemlerde tercih edilir  |
-
-| fseek Sabiti | Açıklama                                        |
-| ------------ | ----------------------------------------------- |
-| `SEEK_SET`   | Dosyanın en başından `offset` kadar ilerler     |
-| `SEEK_CUR`   | İmlecin bulunduğu yerden `offset` kadar ilerler |
-| `SEEK_END`   | Dosyanın sonundan geriye/ileriye gider          |
-
----
-
-## Kontrol Akışı
-
-### Koşul İfadeleri
-
-C dilinde koşul yapıları: `if-else`, `switch-case`, `? :` (ternary), `goto`
+- **Koşul Yapıları:** `if-else`, `switch-case`, `? :`, `goto`
+- **Döngü Yapıları:** `for`, `while`, `do-while` (`break` döngüyü sonlandırır, `continue` bir sonraki iterasyona geçer, `return` fonksiyondan çıkar.)
 
 !!! note "Jump Table Nasıl Çalışır?"
-    `case` değerleri ardışık ve düzenli olduğunda derleyici gizli bir pointer dizisi (jump table) oluşturur. Kontrol değişkeni doğrudan bu dizinin indeksi olarak kullanılır; işlemci `O(1)` karmaşıklıkla doğrudan ilgili bloğa atlar.
-
-    `case` değerleri çok dağınıksa (`case 1:`, `case 1500:`) derleyici tablo oluşturamaz ve arka planda yavaş `if-else` mantığına döner.
+    `case` değerleri ardışık ve düzenli olduğunda derleyici gizli bir pointer dizisi (jump table) oluşturur. Kontrol değişkeni doğrudan bu dizinin indeksi olarak kullanılır; işlemci `O(1)` karmaşıklıkla doğrudan ilgili bloğa atlar. Eğer `case` değerleri çok dağınıksa (`case 1:`, `case 1500:`) derleyici tablo oluşturamaz ve arka planda yavaş `if-else` mantığına döner.
 
 !!! danger "break Unutma Tuzağı (Fall-Through)"
     Bir `case` bloğunun sonuna `break;` koyulmazsa, kod bir sonraki `case`'in içine de girer. Bu bilinçli yapılıyorsa, derleyici uyarısından kaçınmak için `[[fallthrough]];` (C23) özniteliği kullanılmalıdır.
 
-### Döngüler
+!!! example "`;` kullanmadan çıktı alma"
 
-C dilinde döngü yapıları: `for`, `while`, `do-while`
-
-| Deyim      | Etki                         |
-| ---------- | ---------------------------- |
-| `break`    | Döngüyü sonlandırır          |
-| `continue` | Bir sonraki iterasyona geçer |
-| `return`   | Fonksiyondan çıkar           |
-
-```c
-if (printf("Hello World")) {}  // ";" kullanılmadan çıktı oluşturur (bir kez)
-while (printf("Hello World"))  // ";" kullanılmadan çıktı oluşturur (sonsuz)
-```
+    ```c
+    if (printf("Hello World")) {}  // bir kez
+    while (printf("Hello World"))  // sonsuz
+    ```
 
 !!! tip "Cache Locality ve Döngü Sırası"
     C dilinde çok boyutlu diziler bellekte **satır satır (Row-Major Order)** saklanır. Döngülerin sırası performansı ciddi ölçüde etkiler.
@@ -125,26 +103,22 @@ while (printf("Hello World"))  // ";" kullanılmadan çıktı oluşturur (sonsuz
 
 ## Veri Türleri
 
-### Temel Tipler
 
-| Tip      | Boyut         | Açıklama                                                |
-| -------- | ------------- | ------------------------------------------------------- |
-| `char`   | 1 byte        | Karakter veya küçük tam sayı                            |
-| `int`    | 2 veya 4 byte | Tam sayı (mimariye bağlı)                               |
-| `float`  | 4 byte        | Tek hassasiyetli ondalık                                |
-| `double` | 8 byte        | Çift hassasiyetli ondalık                               |
-| `void`   | -             | Tip yok; fonksiyon dönüş tipi veya generic pointer için |
-| `enum`   | `int` boyutu  | Numaralandırma; varsayılan olarak `0`'dan başlar        |
+| Tip      | Boyut                        | Açıklama                                                |
+| -------- | -----------------------------| ------------------------------------------------------- |
+| `char`   | 1 byte                       | Karakter veya küçük tam sayı                            |
+| `int`    | 2 veya 4 byte                | Tam sayı (mimariye bağlı)                               |
+| `float`  | 4 byte                       | Tek hassasiyetli ondalık                                |
+| `double` | 8 byte                       | Çift hassasiyetli ondalık                               |
+| `void`   | -                            | Tip yok; fonksiyon dönüş tipi veya generic pointer için |
+| `enum`   | `int` boyutu                 | Numaralandırma; varsayılan olarak `0`'dan başlar        |
+| `struct` | Üyelerin toplamı (+ padding) | Her üye kendi bellek alanına sahiptir                   |
+| `union`  | En büyük üye kadar           | Tüm üyeler aynı bellek alanını paylaşır                 |
+
 
 !!! note "Sabit Boyutlu Tipler"
     Veri boyutları derleyici ve mimariye göre değişkendir. Pointer'lar **32-bit** sistemlerde 4 byte, **64-bit** sistemlerde 8 byte kaplar. Sabit boyut için `<stdint.h>` kütüphanesi (`int8_t`, `uint8_t`, `uint32_t` vb.) kullanılmalıdır.
 
-### struct ve union
-
-| Yapı     | Bellek                       | Açıklama                                |
-| -------- | ---------------------------- | --------------------------------------- |
-| `struct` | Üyelerin toplamı (+ padding) | Her üye kendi bellek alanına sahiptir   |
-| `union`  | En büyük üye kadar           | Tüm üyeler aynı bellek alanını paylaşır |
 
 !!! tip "__attribute__((packed))"
     `__attribute__((packed))` hizalama boşluklarını (padding) engelleyerek yapının bellekte tam ihtiyaç duyduğu boyutta yer kaplamasını sağlar. Gömülü sistemlerde donanım register haritalarına doğrudan map etmek için kullanılır.
@@ -177,7 +151,6 @@ int PascalCaseVariable;    // Pascal Case
     Packet *p = malloc(sizeof(Packet) + n);  // data artık 50 byte olur
     ```
 
----
 
 ## Bit-Field
 
@@ -223,9 +196,8 @@ struct AracKontrol {
 
     Donanım register'ları için kesinlikle `unsigned int` veya `uint8_t` / `uint32_t` kullanılmalıdır.
 
-### Endianness
 
-Birden fazla byte kaplayan bir verinin bellekte hangi byte sırasıyla yazılacağını belirleyen mimari kuraldır.
+- **Endianness:** Birden fazla byte kaplayan bir verinin bellekte hangi byte sırasıyla yazılacağını belirleyen mimari kuraldır.
 
 | Terim                            | Açıklama                      |
 | -------------------------------- | ----------------------------- |
@@ -251,11 +223,9 @@ else
     printf("Big-Endian\n");     // [00 00 00 01]
 ```
 
-### Two's Complement (İki'ye Tümleyen)
+- **Two's Complement:** Bilgisayarlar negatif sayıları **Two's Complement** yöntemiyle saklar. Bu sayede toplama ve çıkarma işlemleri **aynı donanım** (toplama devresi) ile gerçekleştirilebilir; `5 - 3` yerine `5 + (-3)` hesaplanır.
 
-Bilgisayarlar negatif sayıları **Two's Complement** yöntemiyle saklar. Bu sayede toplama ve çıkarma işlemleri **aynı donanım** (toplama devresi) ile gerçekleştirilebilir; `5 - 3` yerine `5 + (-3)` hesaplanır.
-
-!!! tip "Neden Bu Yöntem?"
+!!! tip "Neden Two's Complement Yöntemi?"
     `-5` sayısını 8 bit ile temsil etmek:
 
     1. Pozitif halini yaz: `+5` → `00000101`
@@ -275,28 +245,12 @@ Bilgisayarlar negatif sayıları **Two's Complement** yöntemiyle saklar. Bu say
 | `signed char`: `127 + 1`   | **Signed Overflow** → Undefined Behavior (UB); pratikte `-128` görülür |
 | `unsigned char`: `255 + 1` | Tanımlı davranış: `0`'a döner (modular arithmetic)                     |
 
----
 
 ## Bellek Hizalaması (Memory Alignment ve Padding)
 
-İşlemciler bellekten **bloklar halinde** veri okur: 32-bit işlemci → 4 byte, 64-bit işlemci → 8 byte. Değişkenlerin kendi boyutlarının katı olan adreslere yerleşmesi, **Alignment** olarak adlandırılır.
+İşlemciler bellekten **bloklar halinde** veri okur. Değişkenlerin kendi boyutlarının katı olan adreslere yerleşmesi, **Alignment** olarak adlandırılır. (32-bit işlemci 4 byte, 64-bit işlemci 8 byte)
 
-```mermaid
-graph LR
-    subgraph "Kötü Tasarım (12 byte)"
-        A1["char a\n1 byte"]
-        A2["padding\n3 byte"]
-        A3["int b\n4 byte"]
-        A4["char c\n1 byte"]
-        A5["padding\n3 byte"]
-    end
-    subgraph "İyi Tasarım (8 byte)"
-        B1["int b\n4 byte"]
-        B2["char a\n1 byte"]
-        B3["char c\n1 byte"]
-        B4["padding\n2 byte"]
-    end
-```
+- `struct` üyelerini büyükten küçüğe sıralamak padding'i minimize eder ve bellek kullanımını optimize eder.
 
 ```c
 // Kötü Tasarım - 12 byte
@@ -314,12 +268,8 @@ struct Data2 {
 };
 ```
 
-!!! tip "Kural"
-    `struct` üyelerini büyükten küçüğe sıralamak padding'i minimize eder ve bellek kullanımını optimize eder.
 
----
-
-## Bellek Yönetimi: Stack ve Heap
+## Bellek Yönetimi
 
 ```mermaid
 graph TD
@@ -334,7 +284,7 @@ graph TD
     A --> B --> C --> D --> E --> F
 ```
 
-### Stack (Yığın)
+### Stack
 
 - **Çalışma Mantığı:** LIFO (Last In, First Out). İşlemci tarafından doğrudan yönetilir; çok hızlıdır.
 - **Kapsam:** Fonksiyon çağrıları, parametreler ve yerel değişkenler burada tutulur. Fonksiyon return ettiğinde bellek otomatik temizlenir.
@@ -346,7 +296,6 @@ graph TD
 - **Kapsam:** Verilerin ömrü fonksiyonlara bağlı değildir; `free()` edilene kadar bellekte kalır.
 - **Risk:** Yönetim programcıdadır. **Memory Leak** (serbest bırakılmayan bellek) ve **Dangling Pointer** (serbest bırakılmış alana erişim) temel riskleridir.
 
-### Dinamik Bellek Fonksiyonları
 
 | Fonksiyon             | Başlangıç Değeri | Açıklama                                           |
 | --------------------- | :--------------: | -------------------------------------------------- |
@@ -377,7 +326,7 @@ free(ptr_3);
 !!! danger "Dikkat Edilmesi Gereken Konular"
     **1. Memory Leak:** Belleği `free()` etmeden pointer'ı kaybedersen, o bellek program kapanana kadar RAM'de kilitli kalır. 7/24 çalışan sistemlerde zamanla RAM tükenmesine yol açar.
 
-    **2. Dangling Pointer:** `free(p)` işleminden hemen sonra `p = NULL;` yapılmazsa pointer eski (geçersiz) adresi göstermeye devam eder.
+    **2. Dangling Pointer:** `free(p)` işleminden hemen sonra `p = NULL;` yapılmazsa pointer geçersiz adresi göstermeye devam eder.
 
     **3. realloc Tuzağı:** `p = realloc(p, 10000);` şeklinde yazılırsa, `realloc` başarısız olduğunda `p`'ye `NULL` atanır ve eski adres kaybolur. Geçici pointer kullanılmalıdır:
     ```c
@@ -386,7 +335,6 @@ free(ptr_3);
     else ptr = tmp;
     ```
 
----
 
 ## Dinamik Veri Yapıları
 
@@ -394,7 +342,7 @@ Heap kullanılarak oluşturulan, boyutu çalışma zamanında değişebilen esne
 
 ### Bağlı Listeler (Linked Lists)
 
-Bellekte ardışık yer kaplamayan, heap'te dağınık hâlde bulunan düğümlerin (node) pointer'lar aracılığıyla birbirine bağlandığı yapılardır.
+Bellekte ardışık yer kaplamayan, heap'te dağınık hâlde bulunan node pointer'lar aracılığıyla birbirine bağlandığı yapılardır.
 
 - **Self-Referential Struct:** Bir struct içinde kendi tipinden bir pointer barındırılmasıdır; bağlı listenin temel yapı taşıdır.
 
@@ -405,18 +353,15 @@ graph LR
     N2 --> N3["data: 30\nnext: NULL"]
 ```
 
-!!! danger "Zinciri Koparmak (Memory Leak)"
-    Bir düğüm `free()` edilmeden önce sonraki düğümün adresi yedeklenmezse, tüm sonraki elemanlara erişim kalıcı olarak kaybolur.
-
-!!! danger "Döngüsel Tuzak (Infinite Loop)"
-    Bir düğümün `next` pointer'ı yanlışlıkla önceki bir düğüme bağlanırsa, listeyi gezen fonksiyonlar **sonsuz döngüye** girer.
+!!! danger "Dikkat Edilmesi Gereken Konular"
+    1. **Zinciri Koparmak (Memory Leak):** Bir düğüm `free()` edilmeden önce sonraki düğümün adresi yedeklenmezse, tüm sonraki elemanlara erişim kalıcı olarak kaybolur.
+    2. **Döngüsel Tuzak (Infinite Loop):** Bir düğümün `next` pointer'ı yanlışlıkla önceki bir düğüme bağlanırsa, listeyi gezen fonksiyonlar **sonsuz döngüye** girer.
 
 ### Queue (Kuyruk)
 
-- **Çalışma Mantığı:** FIFO (First In, First Out - İlk giren ilk çıkar).
+- **Çalışma Mantığı:** FIFO (First In, First Out).
 - **Operasyonlar:** Eleman ekleme kuyruğun **arkasından (Rear/Enqueue)**, çıkarma ise **önünden (Front/Dequeue)** yapılır.
 
----
 
 ## Bitwise Operatörler
 
@@ -431,18 +376,13 @@ graph LR
 | `&&`     | Logical AND | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |                                  |                                                               |
 | `        |             | `                                                             | Logical OR                       | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |
 
-!!! tip "Short-Circuit Evaluation"
-    `if(a && 5/a)` ifadesinde `a = 0` ise sol taraf `false` olduğu için sağ taraf (`5/a`) hiç değerlendirilmez. Bu sayede `division by zero` hatası önlenmiş olur.
-
-!!! note "Postfix vs Prefix"
+!!! tip "Terimler"
+    - **Short-Circuit Evaluation:** `if(a && 5/a)` ifadesinde `a = 0` ise sol taraf `false` olduğu için sağ taraf (`5/a`) hiç değerlendirilmez. Bu sayede `division by zero` hatası önlenmiş olur.
     - **Postfix** (`i++`): Mevcut değeri kullan, sonra artır.
     - **Prefix** (`++i`): Önce artır, sonra kullan.
 
----
 
 ## Pointer
-
-Bir değişken bellekte bir değer saklar. Pointer ise içinde **bellek adresi** saklar.
 
 | Operatör | İsim        | Açıklama                                                       |
 | -------- | ----------- | -------------------------------------------------------------- |
@@ -456,24 +396,17 @@ int *p = &x;   // p, x'in adresini tutuyor
 ```
 
 !!! note "Neden Her Tipin Kendi Pointer'ı Var?"
-    Pointer'a gidildiğinde o adresten **kaç byte okunacağı ve nasıl yorumlanacağı** bilgisi tipin içindedir:
+    Pointer'a gidildiğinde o adresten **kaç byte okunacağı ve nasıl yorumlanacağı** bilgisi tipin içindedir: `char *` 1 byte, `int *` 4 byte, `double *` 8 byte
 
-    | Pointer Tipi | Okunan Boyut |
-    | ------------ | :----------: |
-    | `char *`     |    1 byte    |
-    | `int *`      |    4 byte    |
-    | `double *`   |    8 byte    |
+!!! tip "Pointer Aritmetiği"
+    İşaret ettiği veri tipinin boyutuna (`sizeof`) göre ölçeklenir.
 
-### Pointer Aritmetiği
+    ```c
+    int dizi[3] = {10, 20, 30};
+    int *p = dizi;  // p → dizi[0] (örn: 0x1000)
 
-Pointer matematiği, işaret ettiği veri tipinin boyutuna (`sizeof`) göre ölçeklenir.
-
-```c
-int dizi[3] = {10, 20, 30};
-int *p = dizi;  // p → dizi[0] (örn: 0x1000)
-
-p++;  // p → 0x1000 + sizeof(int) = 0x1004 (dizi[1])
-```
+    p++;  // p → 0x1000 + sizeof(int) = 0x1004 (dizi[1])
+    ```
 
 ### Diziler
 
@@ -482,16 +415,13 @@ Dizi adı, **ilk elemanının başlangıç adresini gösteren sabit bir pointer'
 ```c
 int dizi[5] = {10, 20, 30, 40, 50};
 
-int *p1 = dizi;       // Eşdeğer
-int *p2 = &dizi[0];   // Eşdeğer
-
-printf("%d", dizi[2]);  // Eşdeğer
-printf("%d", 2[dizi]);  // Eşdeğer → *(dizi + 2) = *(2 + dizi)
+int *p1 = dizi;                       // &dizi[0] ile eşdeğer
+printf("%d - %d", dizi[2], 2[dizi]);  // *(dizi + 2) = *(2 + dizi)
 ```
 
 ### String (Metin)
 
-C'de yerleşik string tipi yoktur. Metinler `char` dizileri olarak tutulur ve sonları `\0` (Null Terminator) ile belirtilir.
+C'de yerleşik string tipi yoktur bunun yerine `char` dizileri olarak tutulur ve sonları `\0` (Null Terminator) ile belirtilir.
 
 !!! danger "Stack vs Read-Only Data"
     ```c
@@ -515,21 +445,22 @@ printf("%zu\n", sizeof(text));  // 100 - bellekte ayrılan alan
 printf("%zu\n", strlen(text));  // 10  - görünen karakter sayısı
 ```
 
-### Generic Pointer (`void*`)
+!!! note "Generic Pointer (`void*`)"
 
-Tipi önceden bilinmeyen pointer'lar için kullanılır. Doğrudan dereference edilemez; kullanılmadan önce cast edilmelidir.
+    Tipi önceden bilinmeyen pointer'lar için kullanılır. Doğrudan dereference edilemez; kullanılmadan önce cast edilmelidir.
 
-```c
-int   a    = 5;
-void *vptr = &a;  // Her tipten adres atanabilir
+    ```c
+    int   a    = 5;
+    void *vptr = &a;  // Her tipten adres atanabilir
 
-// printf("%d", *vptr);        // HATA! Tip bilinmiyor
-printf("%d", *(int *)vptr);    // DOĞRU: önce int*'a cast et
-```
+    // printf("%d", *vptr);        // HATA! Tip bilinmiyor
+    printf("%d", *(int *)vptr);    // DOĞRU: önce int*'a cast et
+    ```
 
-### const Pointer Çeşitleri
+!!! note "`const` Pointer Çeşitleri"
 
-!!! note "Sağdan Sola Okuma Kuralı"
+    - Sağdan Sola Okuma Kuralı
+
     | Tanım                | İsim                         | Adres Değişir mi? | Değer Değişir mi? |
     | -------------------- | ---------------------------- | :---------------: | :---------------: |
     | `const int *p`       | Pointer to Constant          |         ✓         |         ✗         |
@@ -548,17 +479,17 @@ printf("%d", *(int *)vptr);    // DOĞRU: önce int*'a cast et
     // p1 = &y;   // HATA  - pointer sabittir
     ```
 
-### Pointer to Pointer
+!!! note "Pointer to Pointer"
 
-Bir pointer da bellekte yer kaplayan bir değişkendir ve onun da bir adresi vardır.
+    Bir pointer da bellekte yer kaplayan bir değişkendir ve onun da bir adresi vardır.
 
-```c
-int  x  = 5;
-int *p  = &x;   // p  → x'in adresi
-int **pp = &p;  // pp → p pointer'ının adresi
+    ```c
+    int  x  = 5;
+    int *p  = &x;   // p  → x'in adresi
+    int **pp = &p;  // pp → p pointer'ının adresi
 
-// **pp == 5, *pp == p, pp == &p
-```
+    // **pp == 5, *pp == p, pp == &p
+    ```
 
 ### Function Pointers (Fonksiyon Göstericileri)
 
@@ -591,7 +522,6 @@ int main(void) {
 }
 ```
 
----
 
 ## Önişlemci Komutları (`#`)
 
@@ -604,19 +534,28 @@ int main(void) {
 | `#ifdef / #ifndef / #endif` | Koşullu derleme ve Include Guard                                   |
 | `#pragma once`              | Include Guard'ın modern alternatifi                                |
 
-!!! tip "Makro Özel Operatörleri"
-    | Operatör | Açıklama                                                                 |
-    | -------- | ------------------------------------------------------------------------ |
-    | `#`      | Argümanı **string literal**'e dönüştürür (Stringification)               |
-    | `##`     | İki sembolü birleştirerek yeni bir tanımlayıcı oluşturur (Token Pasting) |
 
-!!! note "Önceden Tanımlı Makrolar"
-    | Makro      | Açıklama                     |
-    | ---------- | ---------------------------- |
-    | `__FILE__` | Kaynak dosyanın adı (string) |
-    | `__LINE__` | Geçerli satır numarası (int) |
-    | `__DATE__` | Derleme tarihi (string)      |
-    | `__TIME__` | Derleme saati (string)       |
+!!! tip "Genel Bilgi"
+
+    | Özel Operatör | Açıklama                                                                 |
+    | --------------| ------------------------------------------------------------------------ |
+    | `#`           | Argümanı **string literal**'e dönüştürür (Stringification)               |
+    | `##`          | İki sembolü birleştirerek yeni bir tanımlayıcı oluşturur (Token Pasting) |
+
+    | Önceden Tanımlı Makro  | Açıklama                     |
+    | ---------------------- | ---------------------------- |
+    | `__FILE__`             | Kaynak dosyanın adı (string) |
+    | `__LINE__`             | Geçerli satır numarası (int) |
+    | `__DATE__`             | Derleme tarihi (string)      |
+    | `__TIME__`             | Derleme saati (string)       |
+    
+    ```c title="Makro Tuzagı"
+    #define KARE(x) x * x
+    int sonuc = KARE(3 + 2);  // 3 + 2 * 3 + 2 = 11  ← yanlış!
+    ```
+
+    - Her argümanı ve tüm makroyu paranteze al `#define KARE(x) ((x) * (x))`
+    - Küçük ve sık kullanılan fonksiyonlarda `inline` tercih edilir (tip güvenliği sağlar).
 
 ```c
 // donanim.h
@@ -651,16 +590,6 @@ void test(void) {
 #endif  // DONANIM_H
 ```
 
-!!! danger "Makro Tuzakları"
-    ```c
-    #define KARE(x) x * x
-    int sonuc = KARE(3 + 2);  // 3 + 2 * 3 + 2 = 11  ← yanlış!
-    ```
-    Her argümanı ve tüm makroyu paranteze al: `#define KARE(x) ((x) * (x))`
-
-    Daha güvenlisi: küçük ve sık kullanılan fonksiyonlarda `inline` tercih edilir (tip güvenliği sağlar).
-
----
 
 ## Fonksiyonlar
 
@@ -695,9 +624,16 @@ sequenceDiagram
     | Debugger görünürlüğü |                   ✓                   |          ✗          |
     | Garanti              | Öneri (derleyici görmezden gelebilir) | Kesin metin ikamesi |
 
----
 
 ## Concurrency ve Parallelism
+
+| Özellik              |     Multi-processing    |     Multi-threading      |
+| -------------------- | :---------------------: | :----------------------: |
+| Bellek alanı         |           Ayrı          | Paylaşımlı (Heap/Global) |
+| İzolasyon            |           Tam           |           Yok            |
+| Maliyet              | Yüksek (context switch) |   Düşük (lightweight)    |
+| İletişim             |  IPC (Pipe, Shared Mem) |       Ortak bellek       |
+| Race Condition riski |          Düşük          |          Yüksek          |
 
 ### Multi-processing (`fork`)
 
@@ -709,14 +645,6 @@ graph TD
     P --> P1["Parent fork dönüş: PID 101"]
     C --> C1["Child fork dönüş: 0"]
 ```
-
-| Özellik              |     Multi-processing    |     Multi-threading      |
-| -------------------- | :---------------------: | :----------------------: |
-| Bellek alanı         |           Ayrı          | Paylaşımlı (Heap/Global) |
-| İzolasyon            |           Tam           |           Yok            |
-| Maliyet              | Yüksek (context switch) |   Düşük (lightweight)    |
-| İletişim             |  IPC (Pipe, Shared Mem) |       Ortak bellek       |
-| Race Condition riski |          Düşük          |          Yüksek          |
 
 ```c
 pid_t pid = fork();
@@ -737,6 +665,7 @@ if (pid < 0) {
     printf("Parent: Child bitti, kapanıyorum.\n");
 }
 ```
+
 
 ### Multi-threading (`pthread`)
 
@@ -773,7 +702,6 @@ int main(void) {
 }
 ```
 
----
 
 ## Mutex (Mutual Exclusion)
 
@@ -810,23 +738,19 @@ void *increment(void *arg) {
 
 ## Hata Yönetimi
 
-C dilinde yerleşik `try-catch` mekanizması yoktur. Hata yönetimi dönüş değerleri, `errno` ve `assert` üzerinden yapılır.
+Yerleşik `try-catch` mekanizması yoktur. Hata yönetimi dönüş değerleri, `errno` ve `assert` üzerinden yapılır.
 
-### errno
+1. **`errno`:** Standart kütüphane fonksiyonları hata oluştuğunda işletim sistemi tarafından set edilen `errno` global değişkenine kod yazar.
 
-Standart kütüphane fonksiyonları hata oluştuğunda işletim sistemi tarafından set edilen `errno` global değişkenine kod yazar.
+    | Errno Kodu | Açıklama                      |
+    | ---------- | ----------------------------- |
+    | `ENOENT`   | Dosya veya dizin bulunamadı   |
+    | `EACCES`   | İzin hatası (yetkisiz erişim) |
+    | `ENOMEM`   | RAM'de yeterli yer yok        |
 
-| Errno Kodu | Açıklama                      |
-| ---------- | ----------------------------- |
-| `ENOENT`   | Dosya veya dizin bulunamadı   |
-| `EACCES`   | İzin hatası (yetkisiz erişim) |
-| `ENOMEM`   | RAM'de yeterli yer yok        |
+2. **`assert:`** Kodun çalışması esnasında **"kesinlikle doğru olması gereken"** varsayımları kontrol eder. Koşul yanlışsa program durur ve hatanın dosya/satır bilgisini basar.
 
-### assert
-
-Kodun çalışması esnasında **"kesinlikle doğru olması gereken"** varsayımları kontrol eder. Koşul yanlışsa program durur ve hatanın dosya/satır bilgisini basar.
-
-!!! note "assert Production'da Devre Dışı Bırakma"
+!!! note "`assert` Production'da Devre Dışı Bırakma"
     `#define NDEBUG` makrosu tanımlandığında ön işlemci tüm `assert` satırlarını siler. Sıfır maliyetle production hazır hâle gelir.
 
 ---
@@ -846,18 +770,9 @@ Derleyici her `.c` dosyasını ayrı ayrı `object file`'a dönüştürür. Link
     - `.c` dosyaları `#include` edilmez; yalnızca `.h` dosyaları eklenir.
     - Başka dosyalarda kullanılacak global değişkenler tek bir `.c`'de tanımlanır, `.h`'da `extern` ile bildirilir.
 
-### Makro Tehlikeleri
-
-```c
-#define KARE(x) x * x
-int sonuc = KARE(3 + 2);  // 3 + 2 * 3 + 2 = 11 ← 25 değil!
-```
-
-Her argümanı ve tüm ifadeyi paranteze al: `#define KARE(x) ((x) * (x))`
-
 ### Undefined Behavior (UB)
 
-C standardı belirli durumlarda derleyiciye davranışı garanti etme yükümlülüğü vermez.
+Belirli durumlarda derleyiciye davranışı garanti etme yükümlülüğü vermez.
 
 | UB Türü                      | Açıklama                                                      |
 | ---------------------------- | ------------------------------------------------------------- |

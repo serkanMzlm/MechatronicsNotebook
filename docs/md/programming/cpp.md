@@ -1,51 +1,45 @@
 # C++ Programlama
 
-!!! note "Genel Bakış"
-    C++, C'nin sistem programlama gücünü nesne yönelimli programlama, generic programlama ve modern soyutlamalarla birleştiren çok paradigmalı bir dildir. "Zero-overhead abstraction" ilkesi temel felsefesidir: kullanmadığın şey için bedel ödemezsin.
+- C'de bulunan bütün veri türleriyle koşul ve döngü yapıları geçerlidir; genel syntax da C ile büyük ölçüde aynıdır. C++ bu temelin üzerine OOP, generic programlama ve modern soyutlamalar ekler. **"zero-overhead abstraction"** ilkesi (kullanmadığın şey için bedel ödemezsin).
 
----
+- List Initialization ile değişken başlatmanın avantajları:
+    - **Narrowing conversion izin vermez.** `int x{3.14}` derleme hatası verir; `int x = 3.14` ise sessizce `3` atar.
+    - **Aggregate ve container initialization** üye/eleman listesiyle doğrudan başlatma yapabilir, diğerleri yapamaz.
+    - **Zero/value initialization tutarlılığı** her tipte tutarlı biçimde sıfır/varsayılan değer verir.
 
-## Temel Kavramlar
+- Dosya işlemlerinde `.close()` ile manuel kapatmak şart değildir. Sınıfın destructor'ı scope dışına çıkıldığında dosyayı otomatik kapatır (RAII).
 
-### Değişken Başlatma
+- `explicit` Tek parametreli constructor'ların örtük (implicit) tip dönüşümü yapmasını engeller; çağrı sadece açıkça belirtilerek yapılabilir.
+- `constexpr` derleme zamanında kesin sabit; `const`'tan güçlüdür (`const` runtime'da da değer alabilir)
+- `consteval` her çağrısı derleme zamanında zorunlu olarak değerlendirilir (C++20)    
+- `[[maybe_unused]]` Kullanılmayan değişken için derleyici uyarısını bastırır (C++17)   
+- `auto` Değişken tipini sağ taraftaki ifadeden çıkarır. (Sıfır runtime maliyeti)   
+- `decltype` İfadenin tam tipini `const`/referans niteliğiyle birlikte verir   
+- `std::cout` Tamponlu; buffer dolduğunda veya flush olduğunda yazar.
+- `std::cerr` Tamponsuz; hata anında anında yazar (çökme senaryolarında kritik).
+- `std::setw(n)` Minimum karakter genişliği (sağa hizalı).
+- `std::setprecision(n)` Ondalık basamak sayısı.
+- `std::fixed` Bilimsel gösterim yerine sabit ondalık.
+- `std::hex - oct - dec` Sayı tabanı seçimi.
+- `std::ifstream - ofstream - fstream` Dosyadan okuma - yazma - ikiside.
+- `mutable` **const-correctness**'in bir parçasıdır. Bir sınıf üyesi `mutable` işaretlenirse, o üye `const` bir member fonksiyon içinde bile değiştirilebilir. Bu, nesnenin gözlemlenebilir durumunu değiştirmeyen ama teknik olarak bir alanı güncelleyen durumlar için kullanılır en yaygın örnek `std::mutex`
 
-| Yöntem                  | Sözdizimi    | Açıklama                     |
-| ----------------------- | ------------ | ---------------------------- |
-| Copy initialization     | `int a = 5;` | C'den gelen klasik yöntem    |
-| Direct initialization   | `int b(5);`  | Constructor çağrısına benzer |
-| **List initialization** | `int c{5};`  | Modern ve en güvenli yöntem  |
+- `<=>` Spaceship operatörü (C++20) tek bir satırda iki değerin küçüklük, büyüklük ve eşitlik durumunu analiz eder; `std::strong_ordering` veya `std::partial_ordering` döner.
+- `<<` Insertion - veriyi akışa gönderir.
+- `>>` Extraction - akıştan veri çeker; boşluk/tab/newline'da durur.
+- `::` (Scope Resolution) Önünde isim yoksa global kapsamı ifade eder; ayrıca namespace, sınıf üyesi, base class ve `enum class` erişiminde kullanılır.
 
-!!! tip "Neden List Initialization?"
-    **Daraltıcı dönüşümlere (narrowing conversion) izin vermez.** `int x{3.14}` derleme hatası verir; `int x = 3.14` ise sessizce `3` atar. Yeni kodda her zaman `{}` tercih edilmelidir.
+- `++i` (Prefix) Hemen artırır, nesnenin referansını döndürür; geçici nesne oluşturmaz.
+- `i++` (Postfix) Kopyayı alır, ardından artırır, kopyayı döndürür; geçici nesne oluşturduğu için maliyetlidir.
 
-### Önemli Anahtar Kelimeler
+!!! tip "std::endl vs '\\n'"
+    `std::endl` yeni satır ekler **ve** buffer'ı flush eder. Flush işlemi, tampondaki veriyi zorla işletim sistemine gönderir; bu I/O maliyetlidir ve döngü içinde sık sık `std::endl` kullanmak, her seferinde bu maliyeti tekrar ödediği için programın darboğaza (bottleneck) girmesine yol açar. Sadece yeni satır için `'\n'` kullanın; flush gerektiğinde `std::flush` çağırın.
 
-| Anahtar Kelime     | Açıklama                                                                                   |
-| ------------------ | ------------------------------------------------------------------------------------------ |
-| `constexpr`        | Derleme zamanında kesin sabit; `const`'tan güçlüdür (`const` runtime'da da değer alabilir) |
-| `consteval`        | Her çağrısı derleme zamanında zorunlu olarak değerlendirilir (C++20)                       |
-| `[[maybe_unused]]` | Kullanılmayan değişken için derleyici uyarısını bastırır (C++17)                           |
-| `auto`             | Değişken tipini sağ taraftaki ifadeden çıkarır; sıfır runtime maliyeti                     |
-| `decltype`         | İfadenin tam tipini `const`/referans niteliğiyle birlikte verir                            |
-| `::`               | Önünde isim yoksa global kapsamı ifade eder                                                |
-
-!!! note "Sayı Gösterimleri"
-    ```cpp
-    int ondalik = 100'000'000;  // ' digit separator (C++14)
-    int oktal   = 012;          // Sekizlik
-    int hex     = 0x1F;         // Onaltılık
-    int binary  = 0b1010;       // İkilik (C++14)
-
-    std::cout << std::oct << n;  // Sekizlik çıktı
-    std::cout << std::hex << n;  // Onaltılık çıktı
-    ```
-
-### Veri Tipleri ve Tür Takma Adları
-
-```cpp
-typedef unsigned long long ULLI1;  // C tarzı (eski)
-using   ULLI2 = unsigned long long; // Modern C++ (tercih edilmeli)
-```
+|            | Text Modu                           | Binary Modu (`std::ios::binary`)  |
+| ---------- | ----------------------------------- | --------------------------------- |
+| Satır sonu | `\n` ↔ `\r\n` (OS'a göre otomatik)  | Dönüşüm yok                       |
+| Metotlar   | `<<`, `>>`, `getline()`             | `.write()`, `.read()`             |
+| Performans | Dönüşüm yüzünden yavaş              | Hızlı                             |
 
 | Özellik                | C                                     | C++                                |
 | ---------------------- | ------------------------------------- | ---------------------------------- |
@@ -55,8 +49,6 @@ using   ULLI2 = unsigned long long; // Modern C++ (tercih edilmeli)
 | `enum` kapsam          | Tanımlandığı kapsama sızar            | `enum class` ile kendi kapsamı     |
 | `enum` boyutu          | Derleyiciye bağlı                     | `: type` ile yazılımcı belirler    |
 
-### std::string ve std::string_view
-
 |                    | `std::string` |     `std::string_view`    |
 | ------------------ | :-----------: | :-----------------------: |
 | Bellek sahibi      |       ✓       |      ✗ (sadece bakış)     |
@@ -65,48 +57,73 @@ using   ULLI2 = unsigned long long; // Modern C++ (tercih edilmeli)
 | Kopyalama maliyeti |     Yüksek    |           Sıfır           |
 | Ömür bağımlılığı   | Kendi yönetir | Gösterdiği veriye bağımlı |
 
-!!! danger "std::string_view Ömür Riski"
-    `string_view` gösterdiği verinin sahibi değildir. Kaynak string destroy edilirse `string_view` geçersiz bir veriye işaret eder.
+!!! danger "Neden `std::string_view` Kullanılır?"
+    - Gereksiz bellek kopyalamalarını ve dinamik bellek tahsislerini (heap allocation) sıfıra indirmek için kullanılır.
 
-### Prefix vs Postfix
+    - İlk bakışta const `std::string&` kullanmak bellek kopyalamasını engelliyor gibi görünse de gizli performans maliyetlerine sahiptir. `std::string_view` sadece bellek alanı ve uzunluk tutar sadece read-only durumlarında kullanılır.
 
-| Operatör        | Davranış                                         | Performans              |
-| --------------- | ------------------------------------------------ | ----------------------- |
-| `++i` (Prefix)  | Hemen artırır, nesnenin referansını döndürür     | Geçici nesne oluşturmaz |
-| `i++` (Postfix) | Kopyayı alır, ardından artırır, kopyayı döndürür | Geçici nesne oluşturur  |
+    - **`std::string_view` Ömür Riski:** Metnin kendisine değil, bellekteki yerine işaret eder. İşaret ettiği orijinal metin bellekten silinirse `std::string_view` geçersiz hale gelir (dangling pointer). Bu yüzden `std::string_view` veriyi saklamak için değil, genellikle fonksiyon parametrelerinde okuma yapmak için tasarlanmıştır
 
-!!! tip "Spaceship Operator (C++20)"
-    `<=>` tek bir satırda iki değerin küçüklük, büyüklük ve eşitlik durumunu analiz eder; `std::strong_ordering` veya `std::partial_ordering` döner.
 
-### Kontrol Akışı
+```cpp 
+// Değişken Başlatma Yöntemi 
+int a = 5; // Copy initialization   -> C'den gelen klasik yöntem 
+int b(5);  // Direct initialization -> Constructor çağrısına benzer
+int c{5};  // List initialization   -> Modern ve en güvenli yöntem
 
-```cpp
-// Short-Circuit Evaluation
-// ptr nullptr ise ptr->data asla çalıştırılmaz → Null Pointer Dereference önlenir
+// Sayı Gösterimleri
+int ondalik = 100'000;      // ' digit separator (C++14)
+int oktal   = 012;          // Sekizlik
+int hex     = 0x1F;         // Onaltılık
+int binary  = 0b1010;       // İkilik (C++14)
+
+std::cout << std::oct << n;  // Sekizlik çıktı
+std::cout << std::hex << n;  // Onaltılık çıktı
+std::cout << std::fixed << std::setprecision(2) << 3.141; // 3.14
+std::cout << std::setw(10) << "test";                     // "      test"
+
+// Tür Takma Adları
+typedef unsigned long long ULLI1;   // C tarzı (eski)
+using   ULLI2 = unsigned long long; // Modern C++ (tercih edilmeli)
+
+// Short-Circuit Evaluation -> ptr nullptr ise ptr->data asla çalıştırılmaz
 if (ptr != nullptr && ptr->data == 5) { /* ... */ }
-```
 
-- **Range-based for loop:** Koleksiyon üzerinde sıralı gezinme. Kopyalamayı önlemek için `const auto&` kullanılır.
-
-```cpp
+// Kopyalamayı önlemek için `const auto&` kullanılır.
 std::vector<int> sayilar = {10, 20, 30};
-for (const auto& sayi : sayilar) {
-    std::cout << sayi << ' ';
-}
+for (const auto& sayi : sayilar) { std::cout << sayi << ' '; }
+
+// mutable -> `getir()` const'tur çünkü `deger_`'i mantıksal olarak değiştirmez fakat 
+// thread-safety için mutex'i kilitlemek gerekir `mutable` olmasaydı, const bir fonksiyon içinde
+// `m_.lock()` çağrısı derleyici hatası verirdi.
+class Sayac {
+    mutable std::mutex m_; // const fonksiyon içinde lock/unlock edilebilsin diye mutable
+    int deger_ = 0;
+public:
+    int getir() const {
+        std::lock_guard<std::mutex> lock(m_); // m_ const olsaydı bu satır derlenmezdi
+        return deger_;
+    }
+};
 ```
 
----
 
 ## Type Casting
 
-C++'ın dört özel cast operatörü, C'nin tek formatlı `(tip)deger` dönüşümüne karşı tip güvenliği ve niyet netliği sağlar.
+C-Style Cast tehlikelidir çünkü arka planda const kaldırma, alakasız pointer dönüşümü ve sayısal dönüşüm işlemlerini ayırt etmeksizin uygular; niyeti derleyiciye aktaramaz.
 
-| Cast Operatörü     | Zaman   | Maliyet                             | Amaç                                        |
-| ------------------ | ------- | ----------------------------------- | ------------------------------------------- |
-| `static_cast`      | Derleme | Sıfır                               | Mantıksal, güvenli tip dönüşümleri          |
-| `dynamic_cast`     | Runtime | **Yüksek** (RTTI + vtable taraması) | Polimorfik hiyerarşide güvenli downcast     |
-| `const_cast`       | Derleme | Sıfır                               | `const`/`volatile` niteleyici manipülasyonu |
-| `reinterpret_cast` | Derleme | Sıfır                               | Bit seviyesinde ham ve tehlikeli dönüşüm    |
+```cpp
+const int sabit = 10;
+int *p = (int*)&sabit;   // const kırıldı → Undefined Behavior (C tarzı)
+```
+    
+
+| Cast Operatörü     | Zaman   | Maliyet                             | Amaç                                                                                                                                          |
+| ------------------ | ------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `static_cast`      | Derleme | Sıfır                               | Veri tipleri arası mantıksal dönüşümler; kalıtım hiyerarşisinde güvenli upcasting; `void*` göstericisini belirgin bir tipe dönüştürme          |
+| `dynamic_cast`     | Runtime | **Yüksek** (RTTI + vtable taraması) | Polimorfik hiyerarşide güvenli downcasting (Base Class → Derived Class); tip uyuşmazsa pointer için `nullptr`, referans için `bad_cast` fırlatır |
+| `const_cast`       | Derleme | Sıfır                               | `const`/`volatile` niteleyici manipülasyonu; genellikle const kabul etmeyen legacy (eski C) kütüphane API'lerine const veri geçirmek için       |
+| `reinterpret_cast` | Derleme | Sıfır                               | Bit seviyesinde ham ve tehlikeli dönüşüm; donanım sürücüsü yazarken (hardware register erişimi) veya network/socket programlamada veriyi bayt dizisine (`char*`) paketlerken |
 
 === "static_cast"
     ```cpp
@@ -152,24 +169,26 @@ C++'ın dört özel cast operatörü, C'nin tek formatlı `(tip)deger` dönüş�
     // Sıfır güvenlik. Yalnızca donanım/network düzeyinde kullanılır.
     ```
 
-!!! danger "C-Style Cast Neden Tehlikeli?"
-    ```cpp
-    const int sabit = 10;
-    int *p = (int*)&sabit;   // const kırıldı → Undefined Behavior
-    ```
-    C-style cast arka planda const kaldırma, alakasız pointer dönüşümü ve sayısal dönüşüm işlemlerini ayırt etmeksizin uygular; niyeti derleyiciye aktaramaz.
-
----
 
 ## Namespace
 
 Mantıksal olarak ilişkili kod bloklarını, sınıfları ve fonksiyonları belirli bir isim altında gruplayan ve global kapsamdan izole eden sanal kapsamdır.
 
+- **Anonymous Namespace:** C'deki dosya-seviyesi `static`'in modern C++ karşılığıdır. Başka hiçbir dosya `extern` ile bile erişemez.
+
+- **Inline Namespace** sürüm Yönetimi için kullanılır.
+
 === "main.hpp"
     ```cpp
     #pragma once    // Include Guard
 
-    namespace A::B {    // C++17 - iç içe yazım
+    namespace A {      // Eski 
+        namespace B {    
+            void foo();
+        }
+    }
+
+    namespace A::B {    // Yeni C++17 - iç içe yazım
         void foo();
     }
 
@@ -191,6 +210,15 @@ Mantıksal olarak ilişkili kod bloklarını, sınıfları ve fonksiyonları bel
     using namespace std;   // Tüm std isimlerini açar
     // using std::cout;    // Sadece belirli bir isim
 
+    namespace { // Anonymous namespace
+        void gizli() { /* Yalnızca bu .cpp dosyasına görünür */ }
+    }
+
+    namespace Lib {
+        inline namespace V2 { void hesapla(int x) {} }   // Güncel sürüm
+        namespace V1        { void hesapla(double x) {} } // Eski sürüm
+    }
+
     // Designated Initializer (C++20)
     Foo f0 {1, 2, 3};          // Sırayla atar
     Foo f1 {.a = 1, .c = 3};   // b = 0 (varsayılan)
@@ -202,117 +230,54 @@ Mantıksal olarak ilişkili kod bloklarını, sınıfları ve fonksiyonları bel
 
         auto f = []() { std::cout << "Hello\n"; };
         f();
+
+        Lib::hesapla(5);      // → V2 (inline)
+        Lib::V1::hesapla(5.5); // → V1 (açık)
     }
     ```
 
-!!! note "İsimsiz (Anonymous) Namespace"
-    ```cpp
-    namespace {
-        void gizli() { /* Yalnızca bu .cpp dosyasına görünür */ }
-    }
-    ```
-    C'deki dosya-seviyesi `static`'in modern C++ karşılığıdır. Başka hiçbir dosya `extern` ile bile erişemez.
-
-!!! tip "Inline Namespace - Sürüm Yönetimi"
-    ```cpp
-    namespace Lib {
-        inline namespace V2 { void hesapla(int x) {} }   // Güncel sürüm
-        namespace V1        { void hesapla(double x) {} } // Eski sürüm
-    }
-    Lib::hesapla(5);      // → V2 (inline)
-    Lib::V1::hesapla(5.5); // → V1 (açık)
-    ```
-
----
-
-## Standart IO
-
-| Nesne       | Açıklama                                                          |
-| ----------- | ----------------------------------------------------------------- |
-| `std::cout` | Tamponlu; buffer dolduğunda veya flush olduğunda yazar            |
-| `std::cerr` | Tamponsuz; hata anında anında yazar (çökme senaryolarında kritik) |
-| `<<`        | Insertion - veriyi akışa gönderir                                 |
-| `>>`        | Extraction - akıştan veri çeker; boşluk/tab/newline'da durur      |
-
-!!! tip "std::endl vs '\\n'"
-    `std::endl` yeni satır ekler **ve** buffer'ı flush eder. Performans kritik sistemlerde bu flush bottleneck yaratabilir. Sadece yeni satır için `'\n'` kullanın; flush gerektiğinde `std::flush` çağırın.
-
-| Format Manipülatör                   | Açıklama                                 |
-| ------------------------------------ | ---------------------------------------- |
-| `std::setw(n)`                       | Minimum karakter genişliği (sağa hizalı) |
-| `std::setprecision(n)`               | Ondalık basamak sayısı                   |
-| `std::fixed`                         | Bilimsel gösterim yerine sabit ondalık   |
-| `std::hex` / `std::oct` / `std::dec` | Sayı tabanı seçimi                       |
-
-```cpp
-std::cout << std::fixed << std::setprecision(2) << 3.14159; // 3.14
-std::cout << std::setw(10) << "test";                       // "      test"
-```
-
----
 
 ## Fonksiyonlar
 
-### Overloading ve Name Mangling
+- **Name Mangling:** C++ Derleyicisi, Overloading fonksiyonları birbirinden ayırmak için arka planda benzersiz isim vermesine denir.
 
-C++ derleyicisi, aşırı yüklenmiş fonksiyonları birbirinden ayırmak için arka planda benzersiz isimler üretir; buna **Name Mangling** denir.
+- **Varsayılan Parametreler:** değer ataması sağdan sola yapılır. Varsayılan parametrenin sağında varsayılansız parametre bulunamaz.
+- **Lambda:** İsmi olmayan, tanımlandığı yerde kullanılabilen küçük fonksiyonlardır.
+    - `[]`   Hiçbir dış değişkene erişemez          
+    - `[x]`  `x`'in kopyasını alır. `[=]` Tüm dış değişkenlerin kopyasını alır.                 
+    - `[&x]` `x`'e referansla erişir. `[&]` Tüm dış değişkenlerin referansını alır.
+    - Bir lambda'nın `operator()`'ı **varsayılan olarak `const`**'tur. Bu yüzden değer olarak (`[x]`, `[=]`) yakalanan değişkenler lambda gövdesi içinde değiştirilemez; değiştirmek için `mutable` eklenerek `operator()`'ın const olması engellenir:
 
-!!! note "extern \"C\" - C Kütüphane Entegrasyonu"
-    ```cpp
-    extern "C" {
-        void c_func(int x);  // Name mangling uygulanmaz; saf C sembolü kalır
-    }
-    ```
-
-### Varsayılan Parametreler
-
-Varsayılan değer ataması sağdan sola yapılır. Varsayılan parametrenin sağında varsayılansız parametre bulunamaz.
 
 ```cpp
+extern "C" {
+void myCFunction(int x); // Derleyici bu fonksiyona Name Mangling yapmaz.
+}                        // Direkt "myCFunction" olarak kalır. (C sembolü kalır)
+
+namespace Math {
+    class Calculator {
+        int add(int a, int b);
+        double add(double a, double b); // Aynı isimde 2 farklı fonksiyon! (Name Mangling)
+    };
+}
+
 void f(int a, int b = 10, int c = 20);  // Geçerli
 // void g(int a = 10, int b);           // HATA
+
+// Lambda -> [capture](parametreler) -> dönüş_tipi { gövde } 
+auto topla = [](int a, int b) -> int { return a + b; }; // a ve b değiştirilemez
+
+int count = 0;
+auto inc = [count]() mutable { return ++count; }; // count'un kopyası değiştirilebilir
 ```
 
-### Lambda İfadeleri
-
-İsmi olmayan, tanımlandığı yerde kullanılabilen küçük fonksiyonlardır.
-
-```cpp
-// [capture](parametreler) -> dönüş_tipi { gövde }
-auto topla = [](int a, int b) -> int { return a + b; };
-```
-
-| Capture | Açıklama                                |
-| ------- | --------------------------------------- |
-| `[]`    | Hiçbir dış değişkene erişemez           |
-| `[x]`   | `x`'in kopyasını alır                   |
-| `[&x]`  | `x`'e referansla erişir                 |
-| `[=]`   | Tüm dış değişkenleri kopyayla yakalar   |
-| `[&]`   | Tüm dış değişkenleri referansla yakalar |
-
-!!! tip "mutable Lambda"
-    Değer olarak yakalanan değişkeni lambda içinde değiştirmek için `mutable` eklenir:
-    ```cpp
-    int count = 0;
-    auto inc = [count]() mutable { return ++count; };
-    ```
-
----
 
 ## Pointer
 
-### nullptr vs NULL
-
-|                       |        `NULL`       |    `nullptr`     |
+|                       | C'den Miras `NULL`  |  C++11 `nullptr` |
 | --------------------- | :-----------------: | :--------------: |
 | Tür                   |    `0` (tam sayı)   | `std::nullptr_t` |
 | Overloading güvenliği | ✗ - `0` ile karışır |        ✓         |
-| C++ versiyonu         |     C'den miras     |      C++11       |
-
-!!! note "C++ Güvenlik Notu"
-    Modern C++ mimarisinde ham pointer (`*`) ve `delete` kullanımı birer güvenlik zafiyeti (code smell) olarak görülür. Bunların yerini `nullptr` ve Akıllı İşaretçiler almıştır.
-
-### Pointer vs Referans
 
 | Kriter                     |               Pointer (`*`)               |       Referans (`&`)       |
 | -------------------------- | :---------------------------------------: | :------------------------: |
@@ -324,9 +289,11 @@ auto topla = [](int a, int b) -> int { return a + b; };
 | sizeof davranışı           | Pointer'ın kendi boyutu (8 byte / 64-bit) | Bağlandığı nesnenin boyutu |
 | Multi-level                |                ✓ (`int**`)                |             ✗              |
 
-### Smart Pointers
 
-C++11'in RAII prensibiyle hayatımıza giren akıllı işaretçiler, `delete` kullanma zorunluluğunu ortadan kaldırır.
+- Modern C++ mimarisinde ham pointer (`*`) ve `delete` kullanımı birer güvenlik zafiyeti (code smell) olarak görülür. Bunların yerini `nullptr` ve Smart Pointers almıştır (RAII).
+    - `unique_ptr` Nesnenin tek bir sahibi vardır; kopyalanamaz, sadece `move` ile başka bir `unique_ptr`'a devredilebilir. Ekstra referans sayacı tutmadığı için zero-overhead'dir, bu yüzden varsayılan tercih olmalıdır.
+    - `shared_ptr` Nesnenin birden fazla sahibi olabilir; kopyalandıkça dahili referans sayacı (`ref count`) artar, son sahip yok olduğunda nesne silinir. Paylaşımlı sahiplik gerektiren durumlarda kullanılır, ancak referans sayacı yönetimi ekstra maliyet getirir.
+    - `weak_ptr` Bir `shared_ptr`'ın gözlemcisidir; sahiplik almaz, referans sayacını artırmaz. Genellikle `shared_ptr`'lar arasında oluşabilecek döngüsel bağımlılığı (circular reference) kırmak için kullanılır, çünkü döngüdeki her taraf birbirini `shared_ptr` ile tutarsa referans sayacı hiç sıfıra inmez (Memory Leak) ve bellek sızıntısı oluşur.
 
 ```mermaid
 graph LR
@@ -336,99 +303,72 @@ graph LR
     WP["weak_ptr\n(Gözlemci)"] -->|ref_count artırmaz| SP
 ```
 
-| Smart Pointer |      Sahiplik     |    Kopyalanabilir   | Kullanım                         |
-| ------------- | :---------------: | :-----------------: | -------------------------------- |
-| `unique_ptr`  |     Tek sahip     |  ✗ (sadece `move`)  | Varsayılan tercih; zero-overhead |
-| `shared_ptr`  |     Çok sahip     | ✓ (ref count artar) | Paylaşımlı sahiplik              |
-| `weak_ptr`    | Sahipsiz gözlemci |          ✓          | Döngüsel bağımlılığı kırar       |
-
 ```cpp
 auto ptr = std::make_unique<int>(42);           // C++14
 auto arr = std::make_unique<int[]>(5);          // 5 elemanlık dizi
 auto sp  = std::make_shared<std::string>("hi"); // Paylaşımlı
 ```
 
-!!! danger "Döngüsel Bağımlılık"
-    İki `shared_ptr` birbirini tutarsa ref count hiç sıfırlanmaz → Memory Leak. Döngüyü kırmak için bir yönü `weak_ptr` yapın.
-
----
-
-## Dosya İşlemleri
-
-| Sınıf           | Amaç                                                  |
-| --------------- | ----------------------------------------------------- |
-| `std::ifstream` | Dosyadan okuma                                        |
-| `std::ofstream` | Dosyaya yazma (yoksa oluşturur, varsa içini temizler) |
-| `std::fstream`  | Hem okuma hem yazma                                   |
-
-|            |             Text Modu              |      Binary Modu      |
-| ---------- | :--------------------------------: | :-------------------: |
-| Satır sonu | `\n` ↔ `\r\n` (OS'a göre otomatik) |      Dönüşüm yok      |
-| Metotlar   |      `<<`, `>>`, `getline()`       | `.write()`, `.read()` |
-| Performans |       Dönüşüm yüzünden yavaş       |         Hızlı         |
-
-!!! note "Otomatik Kapatma"
-    Dosyayı `.close()` ile manuel kapatmak şart değildir. Sınıfın destructor'ı scope dışına çıkıldığında dosyayı otomatik kapatır (RAII).
-
----
 
 ## Hata Yönetimi
 
-=== "Hata Kodları"
-    ```cpp
-    enum class Hata { OK, DOSYA_YOK, IZINSIZ };
+- `noexcept` bir fonksiyona eklenen "bu fonksiyon exception fırlatmayacak" sözüdür. Derleyici bu söze güvenip hata olursa geri sarma (stack unwinding) için gereken ekstra kodu üretmez; bu yüzden fonksiyon biraz daha hızlı ve küçük olur. Ama söz tutulmaz da fonksiyon içinde gerçekten bir exception fırlatılırsa, `try/catch` bile devreye giremeden program anında `std::terminate()` ile çöker.
 
-    Hata dosyaOku(const std::string& yol, std::string& cikti) {
-        // başarılı: cikti doldurulur, Hata::OK döner
-        // başarısız: Hata kodu döner
-    }
-    ```
+```cpp title="Exceptions"
+double bolme(double a, double b) {
+    if (b == 0.0)
+        throw std::invalid_argument("Sıfıra bölme!");
+    return a / b;
+}
 
-=== "Exceptions"
-    ```cpp
-    double bolme(double a, double b) {
-        if (b == 0.0)
-            throw std::invalid_argument("Sıfıra bölme!");
-        return a / b;
-    }
+try {
+    double r = bolme(10.0, 0.0);
+} catch (const std::invalid_argument& e) {
+    std::cerr << "Hata: " << e.what() << '\n';
+} catch (const std::exception& e) {
+    std::cerr << "Genel hata: " << e.what() << '\n';
+}
+```
 
-    try {
-        double r = bolme(10.0, 0.0);
-    } catch (const std::invalid_argument& e) {
-        std::cerr << "Hata: " << e.what() << '\n';
-    } catch (const std::exception& e) {
-        std::cerr << "Genel hata: " << e.what() << '\n';
-    }
-    ```
-
-!!! tip "noexcept"
-    `noexcept` derleyiciye "Bu fonksiyon asla exception fırlatmaz" garantisi verir; stack unwinding kodu üretilmez, binary küçülür, optimizasyon artar. Eğer `noexcept` fonksiyon içinde exception fırlatılırsa program anında `std::terminate()` ile çöker.
 
 !!! danger "RAII + Exceptions"
-    Ham pointer kullanıyorsanız stack unwinding sırasında `delete` çağrılmaz → Memory Leak. Kaynakları her zaman `unique_ptr` veya RAII sınıflarıyla yönetin.
+    Bir exception fırlatıldığında, en yakın `catch` bloğu bulunana kadar çağrı yığınındaki (call stack) fonksiyonlar sırayla terk edilir; buna **stack unwinding** denir. Bu sırada her fonksiyonun scope'undaki **yerel nesnelerin destructor'ları otomatik çağrılır** ama bu sadece nesnelerin kendisi için geçerlidir, nesnenin *içinde tuttuğu* ham pointer'lar için değil.
 
----
+    ```cpp
+    // Ham Pointer 
+    void fonksiyon() { 
+        int* veri = new int[100];   // Ham pointer, kimse sahiplenmiyor
+        riskli_islem();              // exception fırlatırsa...
+        delete[] veri;                // ...buraya asla ulaşılmaz → Memory Leak
+    }
+
+    // RAII 
+    void fonksiyon() {
+        auto veri = std::make_unique<int[]>(100); 
+        riskli_islem();                           
+    }   
+    ```
+
+    - `veri` bir ham pointer olduğu için destructor'ı yoktur; stack unwinding onu "temizlemez", sadece stack'ten kaldırır. Sonuç: `delete[]` hiç çalışmaz ve ayrılan bellek sızar.
+
+    - RAII sınıfında kullanıldığında, stack unwinding o nesnenin destructor'ını çağırır ve destructor içindeki `delete` garantili şekilde çalışır. Bu yüzden kaynakları (bellek, dosya, mutex vb.) hiçbir zaman `new`/`delete` ile değil, her zaman RAII sınıflarıyla yönetin.
+
 
 ## Template
 
-Veri tipini koddan ayırarak aynı algoritmayı farklı tipler için tekrar yazmayı önler.
+- Veri tipini koddan ayırarak aynı algoritmayı farklı tipler için tekrar yazmayı önler.
+- **Template Specialization:** Genel şablonun belirli bir tip için farklı çalışması gerektiğinde kullanılır.
+- Tüm argümanlar aynı türdense `<>` yazmaya gerek yoktur; derleyici otomatik çıkarım yapar.
+- Template kullanılan her `.cpp` dosyası kendi derlenirken kodu yeniden üretir; bunun için derleyicinin template'in **tam gövdesini** görmesi gerekir. Bu yüzden tanım `.h` dosyasında yazılmalıdır `.cpp`'de bırakılırsa derleyici gövdeyi göremez ve **linker error: undefined reference** hatası oluşur.
+
+!!! danger "İstisna - Explicit Instantiation"
+    Template `.cpp` dosyasında tanımlanıp dosya sonunda hangi tipler için kullanılacağı belirtilirse (`template class FixedArray<int, 5>;`), sadece o tipler diğer dosyalardan kullanılabilir. Genel esnekliği kaybettirir; genellikle binary boyutunu küçültmek isteyen büyük kütüphanelerde tercih edilir.
 
 ```cpp
 template <typename T>
 T maxVal(T a, T b) { return (a > b) ? a : b; }
 
-// Explicit
-std::cout << maxVal<double>(5.5, 3.2) << '\n';
-// Implicit (Template Argument Deduction)
-std::cout << maxVal(10, 20) << '\n';
-```
-
-!!! note "Tür Argümanı Çıkarımı"
-    Tüm argümanlar aynı türdense `<>` yazmaya gerek yoktur; derleyici otomatik çıkarım yapar.
-
-### Class Templates
-
-```cpp
+// Class Templates
 template <typename T, size_t N>
 class FixedArray {
     T data[N];
@@ -437,40 +377,39 @@ public:
     T     get(size_t i) const       { return data[i]; }
 };
 
-FixedArray<std::string, 5> arr;
-```
-
-### Template Specialization
-
-Genel şablonun belirli bir tip için farklı çalışması gerektiğinde kullanılır.
-
-```cpp
+// Template Specialization
 template <typename T>
 bool isEqual(T a, T b) { return a == b; }
 
-// const char* için özelleştirme (pointer karşılaştırmasını önler)
-template <>
+template <> // const char* için özelleştirme
 bool isEqual<const char*>(const char* a, const char* b) {
     return std::strcmp(a, b) == 0;
 }
+
+std::cout << maxVal<double>(5.5, 3.2) << '\n';
+std::cout << maxVal(10, 20) << '\n';
+
+FixedArray<std::string, 5> arr;
 ```
 
----
 
 ## OOP
 
-### struct vs class
+- `struct` ile `class` arasındaki tek teknik fark, varsayılan erişim ve kalıtımın `struct`'ta `public`, `class`'ta `private` olmasıdır; bu yüzden sadece veri tutan yapılar için `struct`, davranışı olan ve kapsülleme gerektiren yapılar için `class` tercih edilir.
 
-|                    |           `struct`           |  `class`  |
-| ------------------ | :--------------------------: | :-------: |
-| Varsayılan erişim  |           `public`           | `private` |
-| Varsayılan kalıtım |           `public`           | `private` |
-| Teknik fark        | Yalnızca bu iki kural farklı |           |
+- Derleyici varsayılan olarak şu özel üyeleri otomatik üretir: **default constructor**, **copy constructor**, **copy assignment operator**, **destructor**, **move constructor** ve **move assignment operator**.
+    - `default` varsayılan davranışını açıkça talep eder.
+    - `delete` üyenin kullanımını tamamen yasaklar. 
 
-!!! tip "Kural"
-    Passive data (sadece veri tutan) yapılar için `struct`; davranışı olan, kapsülleme gerektiren yapılar için `class` tercih edilir.
+- **Rule of Three:** Sınıf kendi kaynağını (ör. ham pointer ile heap belleği) yönetiyorsa, Copy Constructor, Copy Assignment Operator ve Destructor'dan biri elle yazıldığında genelde üçü de birlikte yazılmalıdır; aksi halde derleyicinin ürettiği varsayılan sürüm kaynağı yanlış kopyalar.
 
-### Constructor ve Özel Üyeler
+- **Rule of Five (C++11):** Move semantiğiyle birlikte bu listeye Move Constructor ve Move Assignment Operator de eklenir; performans için taşımayı da elle tanımlamak gerekir.
+
+- **Rule of Zero:** Kaynak yönetimi zaten `unique_ptr`/`shared_ptr` gibi **RAII** sınıflarına bırakılırsa, bu beş üyenin hiçbiri elle yazılmaz; derleyicinin ürettiği varsayılanlar zaten doğru çalışır.
+
+- **Shallow Copy:** Varsayılan kopyalama davranışıdır; sadece pointer'ın adresi kopyalanır, işaret ettiği veri kopyalanmaz. İki nesne aynı heap alanını paylaştığı için biri silindiğinde diğeri geçersiz pointer'a sahip olur (**Double Free Crash** riski).
+
+- **Deep Copy:** Kopyalama sırasında heap'te yeni bir alan açılıp veri oraya kopyalanır; iki nesne artık birbirinden bağımsız belleğe sahip olur, biri silinse diğeri etkilenmez.
 
 ```cpp
 class MyClass {
@@ -481,66 +420,45 @@ public:
 };
 ```
 
-!!! note "Rule of Three / Five / Zero"
-    - **Rule of Three:** Copy Constructor, Copy Assignment Operator, Destructor birlikte tanımlanmalı.
-    - **Rule of Five (C++11):** + Move Constructor, Move Assignment Operator.
-    - **Rule of Zero:** Akıllı pointer ve RAII kullanılıyorsa hiçbirini tanımlamaya gerek yoktur.
+---
+- **Encapsulation (Kapsülleme):** Üye değişkenler ve metotlar bir sınıf içinde bir arada tutulup, dışarıya sadece `public` metotlar üzerinden erişime açılmasıdır; `private` üyeler doğrudan dışarıdan değiştirilemez.
 
-!!! danger "Shallow vs Deep Copy"
-    - **Shallow Copy:** Pointer adresi kopyalanır; iki nesne aynı Heap'i gösterir → **Double Free Crash**.
-    - **Deep Copy:** Heap'te yeni alan açılır, veri kopyalanır; nesneler bağımsızlaşır.
 
-### Inheritance (Kalıtım)
+- **Abstraction (Soyutlama):** Nesnenin karmaşık iç detaylarını gizleyip kullanıcıya sadece gerekli/basit bir arayüz sunmaktır; 
 
-```mermaid
-graph TD
-    A[Base] --> B[Derived1]
-    A --> C[Derived2]
-    B --> D[Derived3]
-    style A fill:#2196F3,color:#fff
-```
 
-| Kalıtım Türü | Yapı               | İlişki                            |
-| ------------ | ------------------ | --------------------------------- |
-| Single       | `A → B`            | Baba → Çocuk                      |
-| Multiple     | `A + B → C`        | Anne + Baba → Çocuk               |
-| Multilevel   | `A → B → C`        | Dede → Baba → Torun               |
-| Hierarchical | `A → B` ve `A → C` | Tek ebeveynin birden fazla çocuğu |
+- **Inheritance (Kalıtım):** Bir sınıfın, başka bir sınıfın üye ve davranışlarını devralarak üzerine yeni özellik ekleyebilmesidir; kod tekrarını azaltır.
+    - **`public` kalıtım:** Base'in `public` üyeleri `public`, `protected` üyeleri `protected` kalır; `private` üyelere hiçbir zaman erişilemez.
+    - **`protected` kalıtım:** Base'in `public` ve `protected` üyelerinin ikisi de derived'da `protected` olur.
+    - **`private` kalıtım:** Base'in `public` ve `protected` üyelerinin ikisi de derived'da `private` olur (yani derived'ın dışına sızmaz).
+    - **Virtual Destructor**, Base class pointer üzerinden Derived nesne yönetilecekse destructor **kesinlikle `virtual`** olmalıdır. Aksi hâlde `delete base_ptr` yalnızca Base destructor'ını çağırır; Derived'ın heap kaynakları sızar.
 
-| Base Üyesi  | public kalıtım | protected kalıtım | private kalıtım |
-| ----------- | :------------: | :---------------: | :-------------: |
-| `public`    |    `public`    |    `protected`    |    `private`    |
-| `protected` |  `protected`   |    `protected`    |    `private`    |
-| `private`   |   Erişilemez   |     Erişilemez    |    Erişilemez   |
+    - **Single** (`A → B`): Bir sınıf sadece bir base class'tan türer.
+    - **Multiple** (`A + B → C`): Bir sınıf birden fazla base class'tan aynı anda türer.
+    - **Multilevel** (`A → B → C`): Kalıtım zincirlenir; her sınıf bir öncekinden türer.
+    - **Hierarchical** (`A → B` ve `A → C`): Tek bir base class'tan birden fazla sınıf türer.
 
-!!! danger "Virtual Destructor"
-    Base class pointer üzerinden Derived nesne yönetilecekse destructor **kesinlikle `virtual`** olmalıdır. Aksi hâlde `delete base_ptr` yalnızca Base destructor'ını çağırır; Derived'ın heap kaynakları sızar.
 
-### Polymorphism
+- **Polymorphism (Çok Biçimlilik):** Aynı arayüz (fonksiyon adı) üzerinden farklı sınıfların kendine özgü davranışlar sergileyebilmesidir; C++'ta genellikle `virtual` fonksiyonlar ve base class pointer/referansı ile (runtime polymorphism) veya template'lerle (compile-time polymorphism) sağlanır.
 
-```mermaid
-graph LR
-    subgraph "Compile-Time (Static)"
-        OVL[Function Overloading]
-        OPR[Operator Overloading]
-        TPL[Templates]
-    end
-    subgraph "Runtime (Dynamic)"
-        VF[Virtual Functions]
-        VT[vtable + vptr]
-    end
-```
+    - `virtual` bir üye fonksiyonu base class pointer/referansı üzerinden çağrılırken, pointer'ın **tuttuğu tipe değil, işaret ettiği gerçek (derived) nesnenin tipine göre** çözülmesini sağlar; böylece her derived sınıf kendi versiyonunu çalıştırabilir (runtime polymorphism).
 
-| Tür          | Çözülme Zamanı |      Maliyet       | Mekanizma              |
-| ------------ | :------------: | :----------------: | ---------------------- |
-| Compile-Time |    Derleme     |       Sıfır        | Overloading, Templates |
-| Runtime      | Çalışma zamanı | vtable indirection | `virtual` + kalıtım    |
+    - `override` derived sınıfta yazılan bir fonksiyonun, base class'taki bir `virtual` fonksiyonu **gerçekten override ettiğini** derleyiciye doğrulatır. Zorunlu değildir ama güçlü bir derleme güvencesidir: imza (parametre tipi, `const` niteliği vb.) yanlış yazılırsa `override` sayesinde derleyici hata verir; `override` olmadan aynı hata sessizce yeni ve alakasız bir overload oluşturur, bu da runtime polymorphism'i sessizce bozar.
+
+    - Derived nesneyi Base'e **değer olarak** atamak Derived'a ait kısmı keser. Polymorphism için daima **pointer veya referans** kullanın.
+
+!!! note "Polymorphism iki farklı zamanda ve iki farklı mekanizmayla çözülebilir"
+
+    - **Compile-Time (Static) Polymorphism:** Hangi fonksiyonun çalışacağına derleyici, kodu derlerken karar verir. Function overloading, operator overloading ve template'ler bu gruba girer. Çalışma zamanında ekstra bir arama/yönlendirme olmadığı için **maliyeti sıfırdır**.
+    - **Runtime (Dynamic) Polymorphism:** Hangi fonksiyonun çalışacağına program çalışırken, nesnenin gerçek tipine bakılarak karar verilir. `virtual` fonksiyonlar ve kalıtım ile sağlanır; arka planda her nesnenin **vtable + vptr** mekanizmasıyla doğru fonksiyona yönlendirilmesi gerekir, bu da küçük bir **indirection maliyeti** getirir.
+
 
 !!! note "vtable / vptr Mekanizması"
     ```
     Base *ptr = new Derived();
     ptr->method();
     ```
+
     1. Nesnenin içindeki gizli `vptr`'ye git
     2. `vptr`'nin işaret ettiği sınıfın `VTABLE`'ına ulaş
     3. Tablodaki doğru indeksteki fonksiyon adresini çöz
@@ -549,6 +467,9 @@ graph LR
     Bu ekstra pointer takibi (indirection) cache-miss olasılığını artırır ve küçük bir runtime maliyeti oluşturur.
 
 !!! tip "Pure Virtual ve Abstract Class"
+    - **Pure virtual**, `= 0` ile gövdesiz bırakılan bir `virtual` fonksiyondur; sınıf bu fonksiyonun gövdesini vermez, sadece "bu fonksiyon derived sınıflarda mutlaka tanımlanmalı" der. 
+    - En az bir **pure virtual** fonksiyon içeren sınıf **abstract class** olur: eksik/tamamlanmamış bir tasarım olduğu için doğrudan nesnesi oluşturulamaz, sadece ondan türeyen ve fonksiyonu gerçekten tanımlayan sınıfların nesnesi oluşturulabilir.
+
     ```cpp
     class Shape {
     public:
@@ -557,57 +478,44 @@ graph LR
     };
     // Shape s;  // HATA - doğrudan nesne oluşturulamaz
     ```
+    
 
-!!! note "override Anahtar Kelimesi"
-    Zorunlu değil ama güçlü bir derleme güvencesidir. İmza yanlış yazılırsa derleyici `override` ile hata verir; yoksa sessizce yeni bir overload oluşturur ve runtime polymorphism bozulur.
-
-!!! danger "Object Slicing"
-    Derived nesneyi Base'e **değer olarak** atamak Derived'a ait kısmı keser. Polymorphism için daima **pointer veya referans** kullanın.
-
-### Operator Overloading
-
-!!! note "Kurallar"
+- **Operator Overloading:** 
     - Yeni operatör icat edilemez.
     - Temel tiplerin davranışı değiştirilemez (en az bir işlenen kullanıcı tanımlı tip olmalı).
     - Operatör önceliği ve ilişkilendirilebilirlik değiştirilemez.
     - `.`, `.*`, `::`, `?:`, `sizeof` aşırı yüklenemez.
 
-=== "Üye Fonksiyon"
-    ```cpp
-    class Vec2 {
-    public:
-        float x, y;
-        Vec2 operator+(const Vec2& rhs) const {
-            return {x + rhs.x, y + rhs.y};
-        }
-    };
-    ```
 
-=== "Friend Global Fonksiyon"
-    ```cpp
-    class Vec2 {
-        float x, y;
-        friend std::ostream& operator<<(std::ostream& os, const Vec2& v);
-    };
-    std::ostream& operator<<(std::ostream& os, const Vec2& v) {
-        return os << '(' << v.x << ", " << v.y << ')';
-    }
-    ```
-
-### Friend Yapıları
-
-!!! note "Friend Kuralları"
+- **Friend Yapıları:**
     - **Karşılıklı değildir:** `A`, `B`'yi friend ilan ederse `B` `A`'nın private'larına erişir; ama `A`, `B`'ninkine erişemez.
     - **Geçişli değildir:** `A-B` dost, `B-C` dost ise `A-C` otomatik dost değildir.
     - **Miras kalmaz:** Base'in dostu Derived'ın private'larına erişemez.
 
----
+```cpp
+class Vec2 {
+public:
+    float x, y;
+    Vec2 operator+(const Vec2& rhs) const {
+        return {x + rhs.x, y + rhs.y};
+    }
+};
+
+class Vec2 {
+    float x, y;
+    friend std::ostream& operator<<(std::ostream& os, const Vec2& v);
+};
+std::ostream& operator<<(std::ostream& os, const Vec2& v) {
+    return os << '(' << v.x << ", " << v.y << ')';
+}
+``` 
+
 
 ## STL (Standard Template Library)
 
-### Sequence Containers Karşılaştırması
+### Sequence Containers 
 
-|                      |       `array`        |    `vector`    |        `deque`         |        `list`       |
+|  Karşılaştırması     |       `array`        |    `vector`    |        `deque`         |        `list`       |
 | -------------------- | :------------------: | :------------: | :--------------------: | :-----------------: |
 | Bellek               |   Stack (Ardışık)    | Heap (Ardışık) | Heap (Parçalı Bloklar) | Heap (Dağınık Node) |
 | Rastgele Erişim `[]` |        O(1) ⚡        |     O(1) ⚡     |   O(1) ufak maliyet    |        O(N) ✗       |
@@ -617,99 +525,43 @@ graph LR
 | Cache Locality       |         ⚡⚡⚡          |       ⚡⚡       |           ⚡            |          ✗          |
 | Boyut                | Sabit (Compile-time) |    Dinamik     |        Dinamik         |       Dinamik       |
 
-*`vector` kapasitesi dolunca reallocation → O(N)
 
 #### Vector
 
-Dinamik boyutlu, bellekte **ardışık** dizi; en sık kullanılan konteyner.
-
-| Fonksiyon           | Açıklama                                                        |
-| ------------------- | --------------------------------------------------------------- |
-| `size()`            | Aktif eleman sayısı                                             |
-| `capacity()`        | Reallocation olmadan tutulabilecek maksimum eleman sayısı       |
-| `reserve(n)`        | Capacity'yi en az `n` yapar; size değişmez                      |
-| `resize(n)`         | Size'ı `n` yapar; yeni elemanlar default-construct edilir       |
-| `push_back(v)`      | Dışarıda oluşturulmuş nesneyi kopyalar/taşır                    |
-| `emplace_back(...)` | Nesneyi **içeride in-place** inşa eder; geçici nesne oluşturmaz |
-
-!!! note "Reallocation Zinciri"
-    Kapasite dolduğunda: **Yeni alan aç → Taşı/Kopyala → Eski alanı serbest bırak**. Bu işlem sırasında tüm pointer, referans ve iterator'lar geçersiz kalır (**Iterator Invalidation**).
-
-!!! tip "Erase-Remove Idiom"
-    Döngü içinde `erase()` çağırmak O(N²)'dir. Bunun yerine:
-    ```cpp
-    vec.erase(std::remove(vec.begin(), vec.end(), deger), vec.end()); // O(N)
-    ```
-
-!!! note "vector\\<bool\\> - Özel Durum"
-    Standart, her `bool` için 1 bit ayırarak space optimize eder. Sonuç: adres (`&`) alınamaz, thread-safe değildir. Gerçek `bool` vektörü için `std::vector<char>` veya `std::bitset` tercih edin.
+- `std::vector`, elemanları bellekte **ardışık (contiguous)** tutan, boyutu program çalışırken otomatik büyüyüp küçülebilen dinamik bir dizidir; STL'de en sık kullanılan konteynerdir.
+- **Reallocation Zinciri:** Kapasite dolduğunda `vector` önce yeni ve daha büyük bir alan açar, mevcut elemanları oraya taşır/kopyalar, sonra eski alanı serbest bırakır. Elemanların adresi değiştiği için önceki tüm pointer, referans ve iterator'lar geçersiz kalır (**Iterator Invalidation**); bu işlem O(N) maliyetlidir.
+- **Erase-Remove Idiom:** Döngü içinde tek tek `erase()` çağırmak O(N²)'ye çıkar (her silmede kalan elemanlar kaydırılır). Bunun yerine `std::remove` ile silinecekler sona toplanıp tek seferde `erase()` edilirse maliyet O(N)'e düşer: `vec.erase(std::remove(vec.begin(), vec.end(), deger), vec.end());`
+- **Özel Durum (`vector<bool>`):** Bellekten tasarruf etmek için her `bool` değeri için tek bir bit ayrılır (gerçek `bool` dizisi tutulmaz). Sonuç olarak tek bir elemanın adresi (`&`) alınamaz ve thread-safe değildir; gerçek `bool` elemanlar gerekiyorsa `std::vector<char>` veya `std::bitset` tercih edilmelidir.
+- Önemli fonksiyonlar: `size()` aktif eleman sayısını, `capacity()` reallocation olmadan tutulabilecek maksimum eleman sayısını verir; `reserve(n)` size'ı değiştirmeden capacity'yi büyütür, `resize(n)` ise size'ı değiştirir. `push_back(v)` dışarıda hazır bir nesneyi kopyalar/taşırken, `emplace_back(...)` nesneyi doğrudan **içeride in-place** inşa ederek geçici nesne oluşturmaktan kaçınır.
 
 ```cpp
 std::vector<int> v;
-v.reserve(10);    // Kapasite = 10, size = 0
-
+v.reserve(10);           // Kapasite = 10, size = 0
 v.push_back(1);
-v.push_back(2);
-
-std::cout << v.size();      // 2
-std::cout << v.capacity();  // 10
+std::cout << v.size();   // 1
 ```
 
 #### Deque
 
-Hem başından hem sonundan O(1) ekleme/silme yapabilen, **parçalı bellek blokları** kullanan konteyner.
-
-!!! note "Deque vs Vector"
-    - `vector` kapasitesi dolduğunda tüm belleği kopyalar → ani latency spike.
-    - `deque` eski elemanları taşımaz, yeni blok bağlar → daha stabil.
-    - Ortadan ekleme/silme her ikisinde de O(N).
-
-```cpp
-// Deque'de olan ama vector'de olmayan:
-push_front(), pop_front()
-
-// Vector'de olan ama deque'de olmayan:
-capacity(), reserve(), shrink_to_fit()
-```
+- `std::deque` (double-ended queue), tek bir ardışık blok yerine **parçalı bellek blokları** kullanan; hem başından hem sonundan O(1) maliyetle eleman ekleyip silebilen bir konteynerdir.
+- `vector` kapasitesi dolduğunda tüm belleği kopyalar ve ani bir gecikme (latency spike) yaşanır; `deque` ise mevcut elemanları taşımadan yeni bir blok bağladığı için daha stabil davranır. Ortadan ekleme/silme her ikisinde de O(N)'dir.
+- `deque`'e özgü olup `vector`'de bulunmayan: `push_front()`, `pop_front()`. `vector`'e özgü olup `deque`'de bulunmayan: `capacity()`, `reserve()`, `shrink_to_fit()` (çünkü `deque` tek bir ardışık blok olmadığı için bu kavramlar burada anlamsızdır).
 
 #### List / Forward_list
 
-Her düğüm bağımsız Node; bellekte ardışık değil.
-
-|                      |      `list`     |      `forward_list`     |
-| -------------------- | :-------------: | :---------------------: |
-| Yön                  |    Çift yönlü   |        Tek yönlü        |
-| Düğüm pointer sayısı | 2 (prev + next) |         1 (next)        |
-| `size()`             |        ✓        | ✗ (O(N) saymak gerekir) |
-| Bellek per eleman    |     +16 byte    |         +8 byte         |
-
-!!! note "forward_list - C Felsefesi"
-    Ham C tek yönlü bağlı listesinden daha fazla bellek kaplamasın ve yavaş olmasın ilkesiyle tasarlanmıştır. `push_back` yoktur (sona gitmek O(N)); `insert_after`/`erase_after` kullanılır.
-
-```cpp
-// list'e özgü algoritmalar
-list.sort();               // O(N log N) - sadece pointer bağlarını günceller
-list.reverse();            // O(N)
-list.unique();             // Ardışık tekrarları siler (önce sort() tavsiye edilir)
-list.splice(iter, other);  // Kopyasız O(1) aktarım
-```
+- `std::list`, her elemanı bellekte ayrı ve bağımsız bir düğüm (Node) olarak tutan, çift yönlü bağlı bir listedir; elemanlar ardışık değildir, bu yüzden rastgele erişim (`[]`) yoktur ama listenin herhangi bir noktasına ekleme/silme O(1)'dir.
+- `std::forward_list`, ham C'deki tek yönlü bağlı listeden daha fazla bellek kaplamamak ve yavaş olmamak ilkesiyle tasarlanmış tek yönlü bir listedir. `push_back` yoktur (sona ulaşmak O(N) sürer); ekleme/silme için `insert_after`/`erase_after` kullanılır.
+- Fark: `list` her düğümde hem önceki hem sonraki elemana pointer tutar (2 pointer, +16 byte), `forward_list` sadece sonrakine (1 pointer, +8 byte); bu yüzden `forward_list` daha az bellek kullanır ama geriye doğru gezilemez. `list.size()` sabit zamanda çalışırken `forward_list` boyutunu bilmediği için saymak O(N) sürer.
+- `list`'e özgü, düğüm bağlarını değiştirerek çalışan (elemanları taşımayan) algoritmalar vardır: `sort()` O(N log N), `reverse()` O(N), `unique()` ardışık tekrarları siler, `splice(iter, other)` başka bir `list`ten elemanları kopyasız, O(1) maliyetle aktarır.
 
 #### Array
 
-Boyutu derleme zamanında sabit olan, **Stack'te** tutulan konteyner.
+- `std::array<T, N>`, boyutu derleme zamanında sabit olan ve **Stack'te** tutulan bir konteynerdir; ham C dizisinin (`T arr[N]`) STL uyumlu, daha güvenli bir sürümü gibi düşünülebilir.
+- Ham C dizisinden farkı: `.at()` ile sınır kontrollü erişim sağlar (aralık dışına çıkılırsa `std::out_of_range` fırlatır) ve `=` ile doğrudan kopyalanabilir; ham C dizisi kopyalanamaz, elle döngüyle kopyalanması gerekir.
 
 ```cpp
 std::array<int, 5> arr = {5, 2, 9, 1, 6};
-
-std::sort(arr.begin(), arr.end());
-
-try {
-    arr.at(10) = 99;   // Sınır dışı → std::out_of_range
-} catch (const std::out_of_range& e) {
-    std::cerr << e.what() << '\n';
-}
-
-std::array<int, 5> kopya = arr;  // Ham C dizisinin aksine doğrudan kopyalanabilir
+std::array<int, 5> kopya = arr;   // Doğrudan kopyalanabilir
 ```
 
 ### Associative Containers
@@ -764,30 +616,6 @@ std::array<int, 5> kopya = arr;  // Ham C dizisinin aksine doğrudan kopyalanabi
 | `std::transform`                 |     O(N)    | Her elemanı fonksiyondan geçirir             |
 | `std::accumulate`                |     O(N)    | Elemanları tek değere indirger (`<numeric>`) |
 | `std::remove` / `std::remove_if` |     O(N)    | Erase-Remove idiom için kullanılır           |
-
----
-
-## Modern C++ (C++11 ve Sonrası)
-
-| Özellik              | Versiyon | Açıklama                                             |
-| -------------------- | :------: | ---------------------------------------------------- |
-| `auto`               |  C++11   | Derleme zamanında tip çıkarımı; runtime maliyeti yok |
-| `decltype`           |  C++11   | İfadenin tam tipini const/ref ile birlikte verir     |
-| Lambda               |  C++11   | İsimsiz fonksiyon nesneleri                          |
-| `nullptr`            |  C++11   | Tip güvenli null pointer sabiti                      |
-| Smart Pointers       |  C++11   | `unique_ptr`, `shared_ptr`, `weak_ptr`               |
-| `constexpr`          |  C++11   | Derleme zamanı sabit                                 |
-| Range-based for      |  C++11   | `for (auto& x : container)`                          |
-| `std::move`          |  C++11   | Nesneyi kopyalamadan taşır                           |
-| `=default`/`=delete` |  C++11   | Özel üyeleri açıkça yönetir                          |
-| Variadic Templates   |  C++11   | Değişken sayıda şablon argümanı                      |
-| `std::atomic`        |  C++11   | Lock-free senkronizasyon                             |
-| `[[maybe_unused]]`   |  C++17   | Kullanılmayan sembol uyarısını bastırır              |
-| CTAD                 |  C++17   | Sınıf şablon argümanı otomatik çıkarımı              |
-| Structured Bindings  |  C++17   | `auto [key, val] = pair;`                            |
-| `consteval`          |  C++20   | Derleme zamanında zorunlu değerlendirme              |
-| `<=>` Spaceship      |  C++20   | Üç yönlü karşılaştırma operatörü                     |
-| `contains()`         |  C++20   | Associative container varlık kontrolü                |
 
 ---
 
@@ -903,10 +731,9 @@ void consumer() {
 
 ### Futures ve Async
 
-|                    |    `std::async`   |  `std::promise` / `std::future` |
-| ------------------ | :---------------: | :-----------------------------: |
-| Kullanım kolaylığı | ✓ (yüksek seviye) |          Manuel kontrol         |
-| Dönüş değeri       |  `std::future<T>` | `future` ile `promise`'i çiftle |
+- **`std::future<T>`:** Henüz hazır olmayan, ileride bir thread tarafından üretilecek bir `T` değerine tutulan "bilet" gibidir. `f.get()` çağrıldığında, değer hazırsa hemen döner; hazır değilse değer üretilene kadar çağıran thread'i bloke eder.
+- **`std::async`:** Bir fonksiyonu (genellikle ayrı bir thread'de) arka planda çalıştırıp, sonucunu almak için otomatik olarak bir `std::future` döndüren **yüksek seviye** bir araçtır. Thread'i, senkronizasyonu veya sonucun nasıl taşınacağını elle yönetmeniz gerekmez; sadece çalıştırılacak fonksiyonu verirsiniz.
+- **`std::promise` / `std::future` çifti:** `std::async`'in aksine, sonucun nasıl ve ne zaman üretileceğini **manuel** kontrol etmek istediğinizde kullanılır. `std::promise<T>`, değeri üretecek tarafta tutulur ve iş bitince `.set_value(...)` ile değeri "vaat edilen yere koyar"; bu değeri bekleyen taraf ise `promise`'den alınan eşleşen `std::future<T>` üzerinden `.get()` ile o değeri okur. Yani `promise` **yazma ucu**, `future` ise **okuma ucudur** — aralarında tek yönlü, tek seferlik bir veri kanalı kurarlar.
 
 ```cpp
 // std::async - arka planda çalıştır, sonucu future ile al
@@ -961,13 +788,15 @@ void wrapper(T&& arg) {
 !!! note "std::move vs std::forward"
     `std::move` - koşulsuz rvalue'ya çevirir. `std::forward` - orijinal kategoriyi korur; yalnızca şablon kodda kullanılır.
 
----
 
 ## Utility Types
 
-### std::optional (C++17)
+- `std::optional` Değeri olmayabilecek sonuçlar için; `nullptr` veya sentinel değer kullanmayı önler.
+- `std::variant` Tür güvenli union; birden fazla tipten birini tutabilir; aktif olmayan tipe erişim exception fırlatır.
+- `std::span` Bellek sahibi olmadan array, vector veya pointer üzerinde güvenli bir pencere sunar. 
 
-Değeri olmayabilecek sonuçlar için; `nullptr` veya sentinel değer kullanmayı önler.
+!!! tip "std::span ne zaman kullanılır?"
+    Fonksiyona "veriyi oku ama sahiplenme" semantiği vermek istediğinde. `const std::span<const T>` read-only görünüm sağlar.
 
 ```cpp
 std::optional<int> divide(int a, int b) {
@@ -978,24 +807,13 @@ std::optional<int> divide(int a, int b) {
 auto r = divide(10, 0);
 r.has_value();           // false
 r.value_or(0);           // değer yoksa 0 döner; exception fırlatmaz
-```
 
-### std::variant (C++17)
 
-Tür güvenli union; birden fazla tipten birini tutabilir; aktif olmayan tipe erişim exception fırlatır.
-
-```cpp
 std::variant<int, float, std::string> v = "merhaba";
 
 std::get<std::string>(v);                          // "merhaba"
 std::visit([](auto& x){ std::cout << x; }, v);    // tüm olası tipleri işler
-```
 
-### std::span (C++20)
-
-Bellek sahibi olmadan array, vector veya pointer üzerinde güvenli bir pencere sunar.
-
-```cpp
 void process(std::span<int> data) {
     for (auto x : data) std::cout << x << ' ';
 }
@@ -1007,16 +825,13 @@ process(v);    // vector geçerli
 process(arr);  // ham dizi de geçerli - pointer + boyut çifti yazmak gerekmez
 ```
 
-!!! tip "std::span ne zaman kullanılır?"
-    Fonksiyona "veriyi oku ama sahiplenme" semantiği vermek istediğinde. `const std::span<const T>` read-only görünüm sağlar.
-
 ---
 
 ## Derleme Zamanı Programlama
 
-### if constexpr (C++17)
+- `if constexpr` Şablon kodu içinde derleme zamanında dal seçimi yapar; seçilmeyen dal derlenmez, bu sayede tip uyumsuzluğu hatası oluşmaz.
 
-Şablon kodu içinde derleme zamanında dal seçimi yapar; seçilmeyen dal derlenmez, bu sayede tip uyumsuzluğu hatası oluşmaz.
+- `Concepts` Şablon parametrelerine anlamlı kısıtlamalar ekler; SFINAE'nin yerini alan, okunabilir hata mesajları üreten modern alternatif.
 
 ```cpp
 template <typename T>
@@ -1028,13 +843,7 @@ void print(T val) {
     else
         std::cout << "diğer: " << val;
 }
-```
 
-### Concepts (C++20)
-
-Şablon parametrelerine anlamlı kısıtlamalar ekler; SFINAE'nin yerini alan, okunabilir hata mesajları üreten modern alternatif.
-
-```cpp
 template <typename T>
 concept Sayisal = std::is_arithmetic_v<T>;
 
@@ -1050,3 +859,183 @@ T topla(T a, T b) { return a + b; }
 | Hata mesajı |         Karmaşık ve uzun        |             Net ve okunabilir             |
 | Sözdizimi   | `enable_if`, `void_t` karmaşası | `requires` / `concept` anahtar kelimeleri |
 | Versiyon    |              C++98+             |                   C++20                   |
+
+## QT 
+
+Qt, C++ tabanlı, çapraz platform uygulama geliştirme çerçevesidir. Grafik arayüz (Widgets, QML/Quick), ağ, veri tabanı, dosya sistemi ve thread yönetimini kapsayan kapsamlı bir standart kütüphane sunar. **Meta-Object System (MOC)**, C++'ın statik tip sistemini genişleterek çalışma zamanı yansıma, sinyal-slot mekanizması ve dinamik özellik sistemini mümkün kılar.
+
+### QObject ve Parent-Child Hiyerarşisi
+
+Qt'nin bellek yönetiminin temeli parent-child ilişkisine dayanır: **bir parent silindiğinde tüm child'ları da otomatik silinir.**
+
+```cpp
+// Parent verildiğinde Qt belleği yönetir - delete gerekmez
+QWidget *pencere = new QWidget(nullptr);         // Root - sahibi yok
+QPushButton *buton = new QPushButton("Tamam", pencere);  // Pencere sahibi
+QLabel *etiket = new QLabel("Merhaba", pencere);
+
+delete pencere;   // Buton ve etiket de silinir
+```
+
+!!! danger "QObject Kopyalanamaz"
+    `QObject` ve türetilmiş sınıflar copy constructor ve copy assignment operatörü **silinmiş** olarak tanımlanır. Nesneyi kopyalamak yerine pointer ile taşıyın.
+
+### MOC (Meta-Object Compiler)
+
+MOC, derleme öncesinde Qt uzantılarını (sinyal/slot, özellik sistemi, RTTI) standart C++'a dönüştüren bir ön işlemci aracıdır.
+
+```mermaid
+graph LR
+    A[myclass.h\nQ_OBJECT içerir] --> B[MOC]
+    B --> C[moc_myclass.cpp\nOtomatik üretilir]
+    C --> D[Derleyici\ng++/clang++]
+    A --> D
+    D --> E[myclass.o]
+```
+
+| Makro / Anahtar Kelime          | Açıklama                                                         |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `Q_OBJECT`                      | Sınıfın MOC tarafından işleneceğini bildirir; sinyal/slot şart   |
+| `signals:`                      | Sinyal bildirimleri bölümü                                       |
+| `slots:` (veya `public slots:`) | Slot bildirimleri bölümü                                         |
+| `emit`                          | Sinyali tetikler                                                 |
+| `QVariant`                      |  Herhangi bir Qt veya kullanıcı tanımlı tipi taşıyan dinamik tip kabı. C++/QML arası veri aktarımında kritik rol oynar  |
+| `Q_PROPERTY(...)`               | QML ve meta-system ile senkron özellik tanımı                    |
+| `Q_INVOKABLE`                   | Metodu QML ve `QMetaObject::invokeMethod` ile çağrılabilir yapar |
+| `Q_GADGET`                      | `QObject` mirası olmayan ancak meta-sistem kullanan sınıf        |
+| `Q_DECLARE_METATYPE`            | Tipi signal/slot ve `QVariant` için kaydeder                     |
+
+```cpp
+class Sayac : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(int deger READ deger WRITE setDeger NOTIFY degerDegisti)
+
+public:
+    explicit Sayac(QObject *parent = nullptr) : QObject(parent) {}
+
+    int deger() const { return m_deger; }
+
+    Q_INVOKABLE void sifirla() { setDeger(0); }
+
+public slots:
+    void setDeger(int yeni) {
+        if (m_deger != yeni) {
+            m_deger = yeni;
+            emit degerDegisti(m_deger);
+        }
+    }
+
+signals:
+    void degerDegisti(int yeniDeger);
+
+private:
+    int m_deger = 0;
+};
+```
+
+!!! note "m_ Prefix - Member Değişken Konvansiyonu"
+    Qt kod stilinde sınıf üye değişkenleri `m_` öneki ile isimlendirilir (ör. `m_deger`). Bu, yerel değişkenlerle karışmayı önler ve getter/setter isimlerinde çakışmayı engeller.
+
+
+### Event Loop
+
+```mermaid
+graph TD
+    A[app.exec\nEvent Loop Başlar] --> B{Olay Kuyruğu}
+    B --> C[Kullanıcı Girişi\nmouse/keyboard]
+    B --> D[Zamanlayıcı\nQTimer]
+    B --> E[Ağ / IO\nAsync]
+    B --> F[Sinyal-Slot\nQueued]
+    C & D & E & F --> G[QObject::event\nHandler Çağrısı]
+    G --> B
+    B --> H[app.quit\nLoop Biter]
+```
+
+```cpp
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+
+    QWidget pencere;
+    pencere.show();
+
+    return app.exec();   // Olay döngüsü başlar; çarpıya basılınca döner
+}
+```
+
+!!! tip "QCoreApplication vs QGuiApplication vs QApplication"
+    | Sınıf              | Kullanım                              |
+    | ------------------ | ------------------------------------- |
+    | `QCoreApplication` | GUI olmayan; terminal uygulamaları    |
+    | `QGuiApplication`  | Pencere sistemi var; Widget yok (QML) |
+    | `QApplication`     | Tam Widget desteği                    |
+
+---
+
+### Signal ve Slot Mekanizması
+
+Nesneler arası **gevşek bağlı (loosely coupled)** iletişim; sinyal gönderen, alıcının kim olduğunu bilmez.
+
+```mermaid
+sequenceDiagram
+    participant G as Gonderen
+    participant Q as Qt Event System
+    participant A as Alici1
+    participant B as Alici2
+
+    G->>Q: emit degerDegisti(42)
+    Q->>A: slot1(42)
+    Q->>B: slot2(42)
+```
+
+
+=== "Modern (Function Pointer) - Önerilen"
+    ```cpp
+    // Derleme zamanı doğrulaması - yanlış imza derleyici hatası verir
+    connect(slider, &QSlider::valueChanged,
+            spinBox, &QSpinBox::setValue);
+
+    // Lambda slot
+    connect(buton, &QPushButton::clicked, this, [this]() {
+        label->setText("Tıklandı!");
+    });
+    ```
+
+=== "SIGNAL/SLOT Makrosu - Eski"
+    ```cpp
+    // Çalışma zamanı doğrulaması - imza hatası derleme geçer, runtime'da uyarı
+    connect(slider, SIGNAL(valueChanged(int)),
+            spinBox, SLOT(setValue(int)));
+    ```
+
+=== "Functor / Lambda (3 parametre)"
+    ```cpp
+    // Context nesnesi verilmezse: Pencere kapanırsa crash riski!
+    connect(buton, &QPushButton::pressed, this, [this]() {
+        label->setText("Güvenli lambda");
+    });
+    // 'this' context olduğunda: this yok edilirse bağlantı otomatik kopar
+    ```
+
+| connect() Parametresi | Açıklama                                                           |
+| --------------------- | ------------------------------------------------------------------ |
+| `sender`              | Sinyali gönderen nesne                                             |
+| `signal`              | `&SınıfAdı::sinyalAdı`                                             |
+| `receiver`            | Sinyali alacak nesne (lambda için context)                         |
+| `slot`                | `&SınıfAdı::slotAdı` veya lambda                                   |
+| `Qt::ConnectionType`  | `DirectConnection`, `QueuedConnection`, `BlockingQueuedConnection` |
+
+!!! note "Bağlantı Türleri"
+    | Tür                            | Açıklama                                                        |
+    | ------------------------------ | --------------------------------------------------------------- |
+    | `Qt::DirectConnection`         | Sinyal ile aynı thread'de anında çağrılır                       |
+    | `Qt::QueuedConnection`         | Slot, alıcının event loop'unda çağrılır (thread arası iletişim) |
+    | `Qt::AutoConnection`           | Aynı thread → Direct; farklı thread → Queued (varsayılan)       |
+    | `Qt::BlockingQueuedConnection` | QueuedConnection + gönderen thread alıcı bitene kadar bekler    |
+
+```cpp
+// disconnect - belirli bağlantıyı kes
+disconnect(slider, &QSlider::valueChanged, spinBox, &QSpinBox::setValue);
+
+// Nesnenin tüm bağlantılarını kes
+disconnect(buton, nullptr, nullptr, nullptr);
+```

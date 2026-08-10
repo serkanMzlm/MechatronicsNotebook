@@ -11,7 +11,6 @@ nav:
       - C: md/programming/c.md
       - C++: md/programming/cpp.md
       - Python: md/programming/python.md
-      - QT: md/programming/qt.md
 
   - Embedded:
       - Concepts: md/embedded/concepts.md

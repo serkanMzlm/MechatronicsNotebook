@@ -87,7 +87,7 @@ theme:
     - content.action.view                       # Sayfayı GitHub'da görüntüleme bağlantısı ekle
     - search.suggest                             # Arama önerileri ekle
     - search.highlight                           # Arama sonuçlarında vurgulama ekle
-    # - toc.integrate                             # İçindekiler tablosunu içeriğe entegre et
+    - toc.integrate                             # İçindekiler tablosunu içeriğe entegre et
     - header.autohide
     - announce.dismiss
     

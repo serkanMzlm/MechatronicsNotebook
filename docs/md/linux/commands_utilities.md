@@ -1,10 +1,5 @@
 # Terminal Komutları
 
-!!! note "Genel Bakış"
-    Linux komut satırı araçlarının kategori bazlı referans kılavuzu. Her komut için açıklama ve en yaygın kullanım örnekleri verilmiştir. Etkileşimli yardım için `man <komut>` veya `<komut> --help` kullanın.
-
----
-
 ## Dosya ve Dizin İşlemleri
 
 | Komut      | Açıklama                                           |
@@ -26,46 +21,32 @@
 | `install`  | Kopyalama + izin + sahip atama birleşimi           |
 
 ```bash
-# cd kullanımı
-cd ~              # Home dizini
-cd -              # Önceki dizin
-cd ../..          # İki üst dizin
+cd ~  # "~" -> Home, "-" -> Önceki, ".." -> Bir üst dizini
 
-# ls bayrakları
-ls -la             # Gizli dahil tüm dosyalar + detay
-ls -lh             # İnsan okunabilir boyut
-ls -lt             # Zamana göre sırala (yeni önce)
-ls -lS             # Boyuta göre sırala (büyük önce)
-ls -R              # Alt dizinleri de listele
+ls -l -a -h -t  # Detaylı listele, gizli dahil, anlaşılabilir birim, zamana göre sırala
+ls -l -S        # Boyuta göre sırala (direkt -lS diye yazılabilir)
+ls -R           # Alt dizinleri de listele
 
-# mkdir
 mkdir -p a/b/c    # İç içe dizin oluşturur
 
-# rm
 rm -rf dizin/     # Zorla sil
 rm -i dosya.txt   # Silmeden önce onay sor
 rm -rf !(a.txt)   # a.txt dışında her şeyi sil
 
-# cp
 cp -r src/ dst/   # Dizini özyinelemeli kopyala
 cp -p dosya dst   # İzin ve tarihleri koru
 cp -l dosya link  # Hard link olarak kopyala
 
-# ln
 ln -s /hedef /link_adı    # Sembolik link
 ln kaynak link             # Hard link
 
-# tree
 tree -d            # Sadece dizinleri göster
 tree -h            # Boyutları göster
 tree -I ".git"     # Belirli kalıbı hariç tut
 
-# install
 install -m 755 app /usr/local/bin/    # İzinli kopyala
 install -d /etc/myapp                  # Dizin oluştur
 ```
-
----
 
 ## Dosya Görüntüleme
 
@@ -98,7 +79,6 @@ wc -w dosya.txt            # Kelime sayısı
 wc -c dosya.txt            # Byte sayısı
 ```
 
----
 
 ## Arama Komutları
 
@@ -139,7 +119,6 @@ grep -v "^#" /etc/ssh/sshd_config    # Yorum satırlarını atla
 grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+" dosya  # Sadece eşleşen kısmı
 ```
 
----
 
 ## Metin İşleme
 
@@ -195,7 +174,6 @@ cat dosya.txt | tr -d '\r'               # Windows satır sonu sil
 cat dosya.txt | tr -s ' '               # Çoklu boşluğu tekleştir
 ```
 
----
 
 ## Arşiv ve Sıkıştırma
 
@@ -229,7 +207,6 @@ gzip -l arsiv.gz           # Bilgi göster
 zcat arsiv.log.gz | grep error  # Açmadan içinde ara
 ```
 
----
 
 ## Process ve Sistem Yönetimi
 
@@ -283,7 +260,6 @@ timeout 30s ping google.com
 timeout 5m ./uzun_betik.sh || echo "Zaman aşıldı!"
 ```
 
----
 
 ## Disk ve Dosya Sistemi
 
@@ -331,7 +307,6 @@ sha256sum /dev/sda /mnt/backup.img
 !!! danger "dd Komutu"
     `dd` kaynak (`if=`) ve hedefi (`of=`) doğrudan silmeden yazar. Hedefi yanlış belirlemek veri kaybına neden olur. Çalıştırmadan önce `if=` ve `of=` değerlerini **iki kez kontrol edin**.
 
----
 
 ## Kullanıcı ve Yetki Yönetimi
 
@@ -370,7 +345,6 @@ setfacl -x u:serkan dosya.txt   # Kaldır
 setfacl -b dosya.txt            # Tümünü kaldır
 ```
 
----
 
 ## Sistem Bilgisi
 
@@ -404,7 +378,6 @@ timedatectl            # Zaman dilimi ve NTP durumu
 timedatectl set-timezone Europe/Istanbul
 ```
 
----
 
 ## Zaman ve Otomasyon
 
@@ -438,7 +411,6 @@ atrm <iş_no>            # İptal et
 time komut               # Gerçek, user, sys süresi
 ```
 
----
 
 ## Ortam Değişkenleri
 
@@ -471,7 +443,6 @@ history | grep apt       # Filtrelenmiş geçmiş
 Ctrl+R                   # Ters arama
 ```
 
----
 
 ## Mesajlaşma ve Bildirim
 
@@ -483,11 +454,10 @@ write serkan pts/1                                # Belirli terminale
 notify-send "Yedekleme" "Tamamlandı!" --icon=dialog-information
 ```
 
----
 
 ## Sistem Debug Araçları
 
-### strace - Sistem Çağrısı İzleme
+### Sistem Çağrısı İzleme `strace`
 
 Bir process'in kernel'e yaptığı tüm sistem çağrılarını (open, read, write, ioctl, mmap...) gösterir. Gömülü sistemlerde sürücü debug'lamanın temel aracıdır.
 
@@ -521,7 +491,7 @@ strace -e trace=open,ioctl,read,write ./sensor_app 2>&1 | grep /dev/
 strace -e trace=all ./app 2>&1 | grep " = -1"
 ```
 
-### ltrace - Kütüphane Çağrısı İzleme
+### Kütüphane Çağrısı İzleme `ltrace`
 
 ```bash
 ltrace ./app              # Dinamik kütüphane çağrıları
@@ -565,7 +535,7 @@ strings ./app | grep -i "error\|config\|version"
 strings -n 8 firmware.bin         # En az 8 karakterlik dizeler
 ```
 
-### perf - Performans Analizi
+### Performans Analizi `perf`
 
 ```bash
 # Temel profil

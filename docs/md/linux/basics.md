@@ -1,64 +1,51 @@
 # Linux Temel Bilgiler
 
-!!! note "Genel Bakış"
-    Linux, **Kernel + Userspace + Toolchain + Konfigürasyon** katmanlarından oluşan özgür ve açık kaynaklı bir işletim sistemi çekirdeğidir. Gömülü cihazlardan sunuculara kadar geniş bir yelpazede kullanılır. Bu bölüm hem masaüstü/sunucu hem de gömülü Linux geliştirme için temel kavramları kapsar.
-
-```mermaid
-graph TD
-    KERNEL[Linux Kernel\nCPU · Bellek · Sürücü · Syscall] --> USER[Userspace\nInit · Shell · Kütüphane · Uygulama]
-    TOOLCHAIN[Toolchain\nGCC · ld · libc] --> KERNEL
-    CONFIG[Konfigürasyon\ndistro · /etc · device tree] --> USER
-
-    style KERNEL fill:#BBDEFB
-    style USER fill:#C8E6C9
-    style TOOLCHAIN fill:#FFE0B2
-    style CONFIG fill:#EDE7F6
-```
-
----
-
-## Temel Kavramlar
-
-| Kavram        | Açıklama                                                                                |
-| ------------- | --------------------------------------------------------------------------------------- |
-| `#`           | Terminalde **root** kullanıcısını simgeler. Shell betiklerinde yorum satırıdır.         |
-| `$`           | Terminalde standart kullanıcıyı simgeler.                                               |
-| **Soft Link** | Hedef dosyanın yoluna referans; asıl dosya silinirse işlevsiz kalır.                    |
-| **Hard Link** | Dosyanın inode'una doğrudan bağlanır; asıl dosya silinse de veri korunur.               |
-| **inode**     | Dosyanın veri bloklarını ve meta bilgilerini (izin, boyut, tarih) tutan benzersiz yapı. |
-| **Daemon**    | Sistem başlangıcında başlayan, arka planda çalışan uzun ömürlü servisler.               |
-| **Process**   | Bellekte yürütülen, belirli bir yaşam döngüsüne sahip aktif program örneği.             |
-| **Scheduler** | CPU zamanını process'ler arasında paylaştıran kernel alt sistemi.                       |
-| **Polling**   | CPU'nun bir donanımın durumunu belirli aralıklarla aktif olarak kontrol etmesi.         |
-
-!!! tip "Büyük/Küçük Harf Duyarlılığı"
-    Linux **büyük/küçük harf duyarlıdır.** `File.txt` ile `file.txt` farklı dosyalardır. `README.md` ≠ `readme.md`
-
----
-
-## Dosya Sistemi Hiyerarşisi (FHS)
-
 ```mermaid
 graph LR
-    ROOT["/"] --> BIN["/bin · /sbin\nTemel komutlar"]
-    ROOT --> ETC["/etc\nSistem yapılandırması"]
-    ROOT --> USR["/usr\nPaylaşılan yazılım"]
-    ROOT --> LIB["/lib · /lib64\nKütüphane + Kernel modülleri"]
-    ROOT --> DEV["/dev\nAygıt düğümleri\nUART · I2C · SPI"]
-    ROOT --> PROC["/proc\nKernel sanal FS\nprocfs"]
-    ROOT --> SYS["/sys\nKernel nesne modeli\nsysfs"]
-    ROOT --> VAR["/var\nLog · DB · State"]
-    ROOT --> TMP["/tmp\nGeçici dosyalar\ntmpfs/RAM"]
-    ROOT --> BOOT["/boot\nKernel · DTB · initramfs"]
-    ROOT --> HOME["/home\nKullanıcı dizinleri"]
-    ROOT --> OPT["/opt\nÜçüncü taraf uygulamalar"]
-    ROOT --> MNT["/mnt · /media\nGeçici mount noktaları"]
-    ROOT --> RUN["/run\nPID · lock dosyaları"]
-
-    style ROOT fill:#F8BBD0
-    style DEV fill:#FFE0B2
-    style PROC fill:#DCEDC8
+    KERNEL["Linux Kernel<br/>CPU · Bellek · Sürücü · Syscall"] --> USER["Userspace<br/>Init · Shell · Kütüphane · Uygulama"]
+    TOOLCHAIN["Toolchain<br/>GCC · ld · libc"] --> KERNEL
+    CONFIG["Konfigürasyon<br/>distro · /etc · device tree"] --> USER
 ```
+
+- Linux, **Kernel + Userspace + Toolchain + Konfigürasyon** katmanlarından oluşan özgür ve açık kaynaklı bir işletim sistemi çekirdeğidir.
+
+-  **Büyük - küçük harfe duyarlıdır.** (`README.md` ≠ `readme.md`)
+- **Soft Link** Hedef dosyanın yoluna referans; asıl dosya silinirse işlevsiz kalır.                    
+- **Hard Link** Dosyanın inode'una doğrudan bağlanır; asıl dosya silinse de veri korunur.               
+- **inode**     Dosyanın veri bloklarını ve meta bilgilerini (izin, boyut, tarih) tutan benzersiz yapı. 
+- **Daemon**    Sistem başlangıcında başlayan, arka planda çalışan uzun ömürlü servisler.               
+- **Process**   Bellekte yürütülen, belirli bir yaşam döngüsüne sahip aktif program örneği.             
+- **Scheduler** CPU zamanını process'ler arasında paylaştıran kernel alt sistemi.                       
+- **Polling**   CPU'nun bir donanımın durumunu belirli aralıklarla aktif olarak kontrol etmesi.         
+- **Gizli Dosyalar:** `.` ile başlayan dosyalar gizlidir; `ls -a` ile görüntülenebilir. `.bashrc`, `.gitconfig`, `.ssh/` gibi yapılandırma dosyaları bu gruptadır.
+
+- `#` Terminalde **root** kullanıcısını simgeler. Shell betiklerinde yorum satırıdır.         
+- `$` Terminalde standart kullanıcıyı simgeler.                                               
+- `>` Stdout'u dosya varsa **üzerine yazar**. `>>` dosyanın **sonuna ekler** mevcut veriyi korur.       
+- `2>` Yalnızca **stderr** (hata mesajları) dosyaya yönlendirir.      
+- `<` Stdin'i klavye yerine **dosyadan alır**.                       
+- `&>` Hem stdout hem stderr'ı aynı dosyaya yönlendirir.              
+- `tee` Çıktıyı hem terminale basar hem dosyaya yazar. `-a` ile ekler. 
+- `;` Komutları sırayla çalıştırır; başarı durumu gözetilmez.        
+- `&&` Sol komut başarılıysa sağdakini çalıştırır.                    
+- `||` Sol komut başarısızsa sağdakini çalıştırır.                    
+- `&` Komutu **arka planda** çalıştırır; terminal serbest kalır.     
+- `|` Bir komutun çıktısını bir sonrakinin girdisine bağlar.         
+
+```bash
+echo "merhaba" > dosya.txt          # Dosyaya yaz (üzerine yazar)
+ls >> dosya.txt                      # Dosyaya ekle
+cat < dosya.txt                      # Dosyadan oku
+telnet localhost 2> hata.txt         # Hataları dosyaya yönlendir
+ls /tmp 2>/dev/null                  # Hata mesajını yok say
+komut &> tum_cikti.txt               # Stdout + stderr → dosya
+echo "merhaba" | tee -a dosya.txt   # Hem ekrana hem dosyaya yaz
+cmd1 && cmd2                         # cmd1 başarılıysa cmd2 çalışır
+cmd1 || cmd2                         # cmd1 başarısızsa cmd2 çalışır
+sleep 10 &                           # Arka planda çalıştır
+```
+
+## Dosya Sistemi ve Dosyalar
 
 | Dizin            | Açıklama                                                                        |
 | ---------------- | ------------------------------------------------------------------------------- |
@@ -84,13 +71,26 @@ graph LR
     | `/proc/<pid>/maps` | Process bellek haritası          |
     | `/proc/<pid>/fd/`  | Açık dosya tanımlayıcıları       |
 
----
 
-## Dosya Türleri ve İzinler
+```bash
+$ ls -l
 
-### Dosya Türleri
+#  Tür     Sahip    Grup     Diğer
+#   d      r w x    r w -    - w -#
+#   r (Read / Okuma)       = 4
+#   w (Write / Yazma)      = 2
+#   x (Execute / Çalıştır) = 1
+#   - (İzin yok)           = 0
 
-`ls -l` çıktısında baştaki karakter dosya türünü belirtir:
+chmod 755 script.sh           # rwxr-xr-x
+chmod +x  script.sh           # Sadece execute ekle
+chmod g-w dosya.txt           # Gruptan yazma kaldır
+chmod u=rw,go=r dosya         # Detaylı format
+
+chown serkan:arge dosya.txt   # Sahip ve grup değiştir
+chgrp arge dizin              # Sadece grup
+```
+
 
 | Karakter | Tür                                          |
 | :------: | -------------------------------------------- |
@@ -102,65 +102,6 @@ graph LR
 |   `s`    | Soket (Socket)                               |
 |   `p`    | Adlandırılmış Boru Hattı (Named Pipe / FIFO) |
 
-!!! tip "Gizli Dosyalar"
-    Adı `.` ile başlayan dosyalar gizlidir; `ls -a` ile görüntülenebilir. `.bashrc`, `.gitconfig`, `.ssh/` gibi yapılandırma dosyaları bu gruptadır.
-
-### Dosya İzinleri
-
-```
-  Tür     Sahip    Grup     Diğer
-   d      r w x    r w -    - w -
-
-   r (Read / Okuma)       = 4
-   w (Write / Yazma)      = 2
-   x (Execute / Çalıştır) = 1
-   - (İzin yok)           = 0
-```
-
-Örnek: `rwxr-x---` → sahip: **7**, grup: **5**, diğer: **0** → `chmod 750`
-
-```bash
-chmod 755 script.sh      # rwxr-xr-x
-chmod +x  script.sh      # Sadece execute ekle
-chmod g-w dosya.txt      # Gruptan yazma kaldır
-chmod u=rw,go=r dosya    # Detaylı format
-
-chown serkan:arge dosya.txt   # Sahip ve grup değiştir
-chgrp arge dizin              # Sadece grup
-```
-
----
-
-## G/Ç Yönlendirme Operatörleri
-
-| Operatör | Açıklama                                                       |
-| -------- | -------------------------------------------------------------- |
-| `>`      | Stdout'u dosyaya yazar; dosya varsa **üzerine yazar**.         |
-| `>>`     | Stdout'u dosyanın **sonuna ekler**; mevcut veriyi korur.       |
-| `<`      | Stdin'i klavye yerine **dosyadan alır**.                       |
-| `2>`     | Yalnızca **stderr** (hata mesajları) dosyaya yönlendirir.      |
-| `&>`     | Hem stdout hem stderr'ı aynı dosyaya yönlendirir.              |
-| `tee`    | Çıktıyı hem terminale basar hem dosyaya yazar. `-a` ile ekler. |
-| `;`      | Komutları sırayla çalıştırır; başarı durumu gözetilmez.        |
-| `&&`     | Sol komut başarılıysa sağdakini çalıştırır.                    |
-| `\|\|`   | Sol komut başarısızsa sağdakini çalıştırır.                    |
-| `&`      | Komutu **arka planda** çalıştırır; terminal serbest kalır.     |
-| `\|`     | Bir komutun çıktısını bir sonrakinin girdisine bağlar.         |
-
-```bash
-echo "merhaba" > dosya.txt          # Dosyaya yaz (üzerine yazar)
-ls >> dosya.txt                      # Dosyaya ekle
-cat < dosya.txt                      # Dosyadan oku
-telnet localhost 2> hata.txt         # Hataları dosyaya yönlendir
-ls /tmp 2>/dev/null                  # Hata mesajını yok say
-komut &> tum_cikti.txt               # Stdout + stderr → dosya
-echo "merhaba" | tee -a dosya.txt   # Hem ekrana hem dosyaya yaz
-cmd1 && cmd2                         # cmd1 başarılıysa cmd2 çalışır
-cmd1 || cmd2                         # cmd1 başarısızsa cmd2 çalışır
-sleep 10 &                           # Arka planda çalıştır
-```
-
----
 
 ## Regular Expression (Regex)
 
@@ -233,7 +174,6 @@ sleep 10 &                           # Arka planda çalıştır
     - **BRE (Basic):** `grep`, `sed` varsayılanı. `+`, `?`, `|`, `()` için `\` gerekir.
     - **ERE (Extended):** `grep -E`, `egrep`, `awk`. Özel karakterler doğrudan kullanılır.
 
----
 
 ## Sistem Günlükleri
 
@@ -257,18 +197,17 @@ dmesg | grep -i error             # Kernel hata mesajlarını filtrele
 dmesg -T                          # İnsan okunabilir timestamp
 ```
 
----
 
 ## Run Levels ve Systemd Targets
 
 ```mermaid
 graph LR
-    BIOS[BIOS/UEFI] --> BOOT[Bootloader\nGRUB2]
-    BOOT --> KERNEL[Kernel\n+ initramfs]
-    KERNEL --> INIT[systemd PID=1]
-    INIT --> TARGET[default.target\ngraphical.target]
-    TARGET --> SVC[Servisler\nSSH · Network · Display]
-    SVC --> LOGIN[Login Prompt / GUI]
+    BIOS["BIOS/UEFI"] --> BOOT["Bootloader<br/>GRUB2"]
+    BOOT --> KERNEL["Kernel<br/>+ initramfs"]
+    KERNEL --> INIT["systemd PID=1"]
+    INIT --> TARGET["default.target<br/>graphical.target"]
+    TARGET --> SVC["Servisler<br/>SSH · Network · Display"]
+    SVC --> LOGIN["Login Prompt / GUI"]
 ```
 
 | Run Level | Anlamı                | systemd Target      |
@@ -286,16 +225,15 @@ systemctl set-default graphical.target # Varsayılan değiştir
 sudo init 3                            # SysV run level değiştir
 ```
 
----
 
 ## Kernel Modülleri ve Sürücüler
 
 ```mermaid
 graph LR
-    HW[Donanım] --> DRV[Kernel Driver\n.ko modülü]
-    DRV --> DEV_NODE[/dev/ttyUSB0\n/dev/i2c-1]
-    DEV_NODE --> APP[Kullanıcı Uygulaması]
-    DRV --> SYSFS[/sys/bus/...\nSysfs arayüzü]
+    HW["Donanım"] --> DRV["Kernel Driver<br/>.ko modülü"]
+    DRV --> DEV_NODE["/dev/ttyUSB0<br/>/dev/i2c-1"]
+    DEV_NODE --> APP["Kullanıcı Uygulaması"]
+    DRV --> SYSFS["/sys/bus/...<br/>Sysfs arayüzü"]
 ```
 
 | Komut               | Açıklama                                                |
@@ -319,10 +257,10 @@ sudo modprobe -r i2c-dev   # Modülü kaldır
 
 ```mermaid
 graph LR
-    APP[Kullanıcı Uygulaması\nC / Python / ...] -->|system call| KERNEL[Linux Kernel]
-    APP -->|ioctl()| DEV[Cihaz Sürücüsü]
-    KERNEL -->|Netlink socket| NL[AF_NETLINK]
-    PROC[/proc · /sys · /dev] <--> KERNEL
+    APP["Kullanıcı Uygulaması<br/>C / Python / ..."] -->|"system call"| KERNEL["Linux Kernel"]
+    APP -->|"ioctl()"| DEV["Cihaz Sürücüsü"]
+    KERNEL -->|"Netlink socket"| NL["AF_NETLINK"]
+    PROC["/proc · /sys · /dev"] <--> KERNEL
     APP <--> PROC
 ```
 
@@ -343,11 +281,11 @@ Sinyaller, process'lere asenkron olay bildirimi gönderen kernel mekanizmasıdı
 
 ```mermaid
 graph LR
-    SRC["Kaynak\nKullanıcı / Kernel / Process"] -->|sinyal| QUEUE["Pending Sinyaller\n(Kernel)"]
-    QUEUE -->|"iletim (deliver)"| HANDLER["Process\nSinyal İşleyici"]
-    HANDLER --> A["Varsayılan Eylem\n(terminate, core, ignore, stop)"]
-    HANDLER --> B["Kullanıcı Handler\nsigaction()"]
-    HANDLER --> C["SIG_IGN\n(Yoksay)"]
+    SRC["Kaynak<br/>Kullanıcı / Kernel / Process"] -->|sinyal| QUEUE["Pending Sinyaller<br/>(Kernel)"]
+    QUEUE -->|"iletim (deliver)"| HANDLER["Process<br/>Sinyal İşleyici"]
+    HANDLER --> A["Varsayılan Eylem<br/>(terminate, core, ignore, stop)"]
+    HANDLER --> B["Kullanıcı Handler<br/>sigaction()"]
+    HANDLER --> C["SIG_IGN<br/>(Yoksay)"]
 ```
 
 | Sinyal      | No    | Varsayılan | Açıklama                                   |
@@ -409,30 +347,6 @@ int main(void) {
 !!! warning "Async-Signal-Safe"
     Sinyal işleyici içinde `printf`, `malloc`, `free` gibi fonksiyonlar çağrılmamalıdır - bu fonksiyonlar async-signal-safe değildir ve kilitlenmeye (deadlock) yol açabilir. İşleyici içinde yalnızca `write()`, `_exit()` veya `sig_atomic_t` işlemleri güvenlidir.
 
----
-
-## Device Tree (Gömülü Linux)
-
-Donanım kaynaklarını (bellek, kesmeler, saatler, GPIO) yazılımdan bağımsız biçimde tanımlayan hiyerarşik veri yapısıdır. Bootloader, DTB'yi RAM'e yükleyerek kernel'e hangi donanımın mevcut olduğunu bildirir.
-
-| Format  | Açıklama                                               |
-| ------- | ------------------------------------------------------ |
-| `.dts`  | Device Tree Source - insan tarafından okunabilir metin |
-| `.dtb`  | Device Tree Blob - derlenmiş ikili format              |
-| `.dtso` | Overlay - temel DTB üzerine eklenti                    |
-
-```bash
-dtc -I dts -O dtb -o output.dtb input.dts   # .dts → .dtb derleme
-dtc -I dtb -O dts -o output.dts input.dtb   # .dtb → .dts tersine çevirme
-dtc -I fs  -O dts /proc/device-tree/        # Aktif DTB'yi okunabilir hale getir
-cat /proc/device-tree/model                 # Kart modeli
-cat /proc/device-tree/compatible            # Uyumluluk listesi
-```
-
-!!! tip "Detaylı Kılavuz"
-    DTS sözdizimi, düğüm özellikleri, overlay sistemi, U-Boot entegrasyonu ve debug teknikleri için [Device Tree (DTS/DTB)](device_tree.md) sayfasına bakın.
-
----
 
 ## Terminal Kısayolları
 

@@ -29,9 +29,6 @@ graph LR
     KS[Kernel Space] <-->|yönetim| NL
     KS <-->|driver control| IOCTL
     P1 <-->|dosya eşleme| MMAP
-
-    style Kernel fill:#E3F2FD,stroke:#1565C0
-    style UDS fill:#E8F5E9,stroke:#2E7D32
 ```
 
 ---

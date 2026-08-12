@@ -6,7 +6,7 @@ site_description: "Teknik dokümantasyon"
 
 nav:
   - Programming:
-      - Software Design: md/programming/software_design.md
+      - Design Pattern: md/programming/design_pattern.md
       - Compiler: md/programming/compiler.md
       - C: md/programming/c.md
       - C++: md/programming/cpp.md

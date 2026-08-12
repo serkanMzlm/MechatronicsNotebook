@@ -57,6 +57,7 @@ nav:
       - GStreamer: md/devops/gstreamer.md
       - Algorithms: md/devops/algorithms.md
       - Vim: md/devops/vim.md
+      - CI / CD: md/devops/ci_cd.md
 
 
 theme:

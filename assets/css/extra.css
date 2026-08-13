@@ -1,0 +1,7 @@
+/* Koyu temada beyaz arka planlı görselleri düzelt */
+[data-md-color-scheme="slate"] img:not([src*=".svg"]) {
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 6px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}

@@ -1,0 +1,2720 @@
+
+<!doctype html>
+<html lang="tr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Teknik dokümantasyon">
+      
+      
+      
+      
+        <link rel="prev" href="../ros2/">
+      
+      
+        <link rel="next" href="../gazebo/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>VIO ve Kalibrasyon (OpenVINS / Kalibr) - Dokümantasyon</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vio-gorsel-atalet-odometri" class="md-skip">
+          Ana içeriğe geç
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Başlık">
+    <a href="../../.." title="Dokümantasyon" class="md-header__button md-logo" aria-label="Dokümantasyon" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 4 16 6.41v.18L18.41 9H22v2h-4.41L16 9.41V12h-1a2 2 0 0 1-2-2V7.5H9.86c-.09.37-.24.72-.44 1.05L15.18 19H20a2 2 0 0 1 2 2v1H2v-1a2 2 0 0 1 2-2h6.61l-4.69-8.5a4.006 4.006 0 0 1-3.81-3A4 4 0 0 1 5 2.63c2.13-.55 4.31.73 4.86 2.87H13V3a2 2 0 0 1 2-2h1v2.59L17.59 2H22v2zM6 4.5a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dokümantasyon
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              VIO ve Kalibrasyon (OpenVINS / Kalibr)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label=""  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label=""  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Ara" placeholder="Ara" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Ara">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Temizle" aria-label="Temizle" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Arama başlatılıyor
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Sekmeler" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../programming/design_pattern/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Programming
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../embedded/concepts/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Embedded
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../linux/basics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Linux
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai/fundamentals/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../communication/ipc/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Communication
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../ros2/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Robotics
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../devops/git/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  DevOps
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigasyon" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Dokümantasyon" class="md-nav__button md-logo" aria-label="Dokümantasyon" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 4 16 6.41v.18L18.41 9H22v2h-4.41L16 9.41V12h-1a2 2 0 0 1-2-2V7.5H9.86c-.09.37-.24.72-.44 1.05L15.18 19H20a2 2 0 0 1 2 2v1H2v-1a2 2 0 0 1 2-2h6.61l-4.69-8.5a4.006 4.006 0 0 1-3.81-3A4 4 0 0 1 5 2.63c2.13-.55 4.31.73 4.86 2.87H13V3a2 2 0 0 1 2-2h1v2.59L17.59 2H22v2zM6 4.5a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2"/></svg>
+
+    </a>
+    Dokümantasyon
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../programming/design_pattern/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Programming
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../embedded/concepts/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../linux/basics/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ai/fundamentals/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../communication/ipc/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Communication
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Robotics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Robotics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ros2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ROS2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VIO ve Kalibrasyon (OpenVINS / Kalibr)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VIO ve Kalibrasyon (OpenVINS / Kalibr)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="İçindekiler">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      İçindekiler
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optical-flow-piksellerin-hareketi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optical Flow - Piksellerin Hareketi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Optical Flow - Piksellerin Hareketi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#temel-fikir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temel Fikir
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optik-aks-denklemi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optik Akış Denklemi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lucas-kanade-seyrek-optik-aks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lucas-Kanade - Seyrek Optik Akış
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lucas-Kanade - Seyrek Optik Akış">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#piramit-lucas-kanade-buyuk-hareketler-icin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Piramit Lucas-Kanade - Büyük Hareketler İçin
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#farneback-yogun-optik-aks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Farneback - Yoğun Optik Akış
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparse-vs-dense-karslastrmas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sparse vs Dense Karşılaştırması
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vio-visual-inertial-odometry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIO - Visual Inertial Odometry
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VIO - Visual Inertial Odometry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vio-neden-gerekli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIO Neden Gerekli?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sistem-bilesenleri" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sistem Bileşenleri
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imu-on-entegrasyon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IMU Ön Entegrasyon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ekf-vs-faktor-graf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EKF vs Faktör Grafı
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msckf-multi-state-constraint-kalman-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MSCKF - Multi-State Constraint Kalman Filter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kayma-penceresi-optimizasyonu-sliding-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kayma Penceresi Optimizasyonu (Sliding Window)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stereo-kamera-vioda-avantajlar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stereo Kamera: VIO'da Avantajları
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openvins-ack-kaynak-vio-sistemi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenVINS - Açık Kaynak VIO Sistemi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OpenVINS - Açık Kaynak VIO Sistemi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kurulum-ros-2-humble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kurulum (ROS 2 Humble)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#temel-konfigurasyon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temel Konfigürasyon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#baslatma-ve-calstrma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Başlatma ve Çalıştırma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaynlanan-topicler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Yayınlanan Topic'ler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performans-degerlendirme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performans Değerlendirme
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kalibr-kamera-ve-imu-kalibrasyonu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kalibr - Kamera ve IMU Kalibrasyonu
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kalibr - Kamera ve IMU Kalibrasyonu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hedef-tipler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hedef Tipler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kurulum-docker-onerilen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kurulum (Docker - Önerilen)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-tek-kamera-intrinsic-kalibrasyonu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Tek Kamera Intrinsic Kalibrasyonu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-stereo-kamera-kalibrasyonu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Stereo Kamera Kalibrasyonu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-kamera-imu-kalibrasyonu-en-onemli-adm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Kamera-IMU Kalibrasyonu (En Önemli Adım)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kalibr-cktsn-openvinse-aktarma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kalibr Çıktısını OpenVINS'e Aktarma
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#allan-varyans-imu-gurultu-parametrelerini-olcmek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allan Varyans - IMU Gürültü Parametrelerini Ölçmek
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tam-kurulum-aks-kamera-imu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tam Kurulum Akışı (Kamera + IMU)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tam Kurulum Akışı (Kamera + IMU)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sk-karslaslan-sorunlar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sık Karşılaşılan Sorunlar
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gazebo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gazebo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Robot Kontrolü
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../devops/git/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="vio-gorsel-atalet-odometri">VIO - Görsel-Atalet Odometri<a class="headerlink" href="#vio-gorsel-atalet-odometri" title="Permanent link">&para;</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Bu Sayfa Ne Anlatıyor?</p>
+<p>Optical Flow'dan başlayarak VIO'nun iç mimarisine, OpenVINS kurulumuna ve Kalibr ile kamera-IMU kalibrasyonuna kadar kapsamlı bir rehber. Her kavram "neden lazım?" sorusuna cevap vererek anlatılır.</p>
+</div>
+<hr />
+<h2 id="optical-flow-piksellerin-hareketi">Optical Flow - Piksellerin Hareketi<a class="headerlink" href="#optical-flow-piksellerin-hareketi" title="Permanent link">&para;</a></h2>
+<h3 id="temel-fikir">Temel Fikir<a class="headerlink" href="#temel-fikir" title="Permanent link">&para;</a></h3>
+<p>Bir videodan iki ardışık kare alın. Her pikselin bir sonraki karede nereye gittiğini bulursanız, kameranın veya sahnedeki nesnelerin nasıl hareket ettiğini anlayabilirsiniz. Bu hesaba <strong>optical flow</strong> (optik akış) denir.</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">5</a></span>
+<span class="normal"><a href="#__codelineno-0-6">6</a></span>
+<span class="normal"><a href="#__codelineno-0-7">7</a></span>
+<span class="normal"><a href="#__codelineno-0-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>Kare 1:          Kare 2:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>┌─────────┐      ┌─────────┐
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>│  ⬤      │  →  │    ⬤    │
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>│         │      │         │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>└─────────┘      └─────────┘
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>Piksel (100,150)  Piksel (115,148)
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a>Hareket vektörü: (+15, -2) piksel
+</span></code></pre></div></td></tr></table></div>
+<h3 id="optik-aks-denklemi">Optik Akış Denklemi<a class="headerlink" href="#optik-aks-denklemi" title="Permanent link">&para;</a></h3>
+<p>İki hipotez:</p>
+<ol>
+<li><strong>Parlaklık sabiti</strong>: Kısa sürede bir pikselin parlaklığı değişmez: <code>I(x, y, t) = I(x+dx, y+dy, t+dt)</code></li>
+<li><strong>Küçük hareket</strong>: Piksel bir sonraki karede çok uzağa gitmez</li>
+</ol>
+<p>Taylor açılımı uygulanırsa:</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>∂I/∂x · u + ∂I/∂y · v + ∂I/∂t = 0
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>u = dx/dt  →  yatay hız
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>v = dy/dt  →  dikey hız
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>Ix, Iy    →  yatay/dikey gradyan (OpenCV&#39;de Sobel ile hesaplanır)
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>It        →  zaman gradyanı (kare 2 - kare 1)
+</span></code></pre></div></td></tr></table></div>
+<p><strong>Problem:</strong> İki bilinmeyene (<code>u</code>, <code>v</code>) karşı tek denklem - <strong>aperture problemi</strong>. Bu yüzden ek kısıt gerekir.</p>
+<pre class="mermaid"><code>graph LR
+    A[Aperture Problemi\n1 denklem, 2 bilinmeyen] --&gt; B[Lucas-Kanade\nYerel düzgünlük varsayımı\nPenceredeki piksel bloğu]
+    A --&gt; C[Horn-Schunck\nGlobal düzgünlük\nTüm görüntü]</code></pre>
+<hr />
+<h3 id="lucas-kanade-seyrek-optik-aks">Lucas-Kanade - Seyrek Optik Akış<a class="headerlink" href="#lucas-kanade-seyrek-optik-aks" title="Permanent link">&para;</a></h3>
+<p><strong>Fikir:</strong> Küçük bir penceredeki (ör. 15×15 piksel) tüm piksellerin aynı hareketi yaptığını varsay. Bu pencerede N piksel varsa N denklem elde edersin → iki bilinmeyen için aşırı belirlenmiş sistem → en küçük kareler (least squares) ile çöz.</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span>
+<span class="normal"><a href="#__codelineno-2-3">3</a></span>
+<span class="normal"><a href="#__codelineno-2-4">4</a></span>
+<span class="normal"><a href="#__codelineno-2-5">5</a></span>
+<span class="normal"><a href="#__codelineno-2-6">6</a></span>
+<span class="normal"><a href="#__codelineno-2-7">7</a></span>
+<span class="normal"><a href="#__codelineno-2-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>N piksel × 1 denklem/piksel:
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>[Ix₁ Iy₁] [u]   [-It₁]
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a>[Ix₂ Iy₂] [v] = [-It₂]
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a>[  ...   ]       [ ... ]
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a>[IxN IyN]        [-ItN]
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a>A · d = b
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a>d = (AᵀA)⁻¹Aᵀb   ← en küçük kareler çözümü
+</span></code></pre></div></td></tr></table></div>
+<p><code>AᵀA</code> matrisinin iyi şartlı olması için noktanın <strong>köşe</strong> olması gerekir - düz kenarlarda (<code>AᵀA</code> tekilleşir) akış hesaplanamaz. Bu yüzden önce iyi noktalar (köşeler) seçilir.</p>
+<h4 id="piramit-lucas-kanade-buyuk-hareketler-icin">Piramit Lucas-Kanade - Büyük Hareketler İçin<a class="headerlink" href="#piramit-lucas-kanade-buyuk-hareketler-icin" title="Permanent link">&para;</a></h4>
+<p>Büyük hareketler "küçük hareket" hipotezini bozar. Çözüm: görüntüyü küçülterek büyük hareketi küçük gibi göster, sonra ince ayar yap.</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>Seviye 3 (1/8 boyut):  büyük hareketi düşük çözünürlükte kaba bul
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>Seviye 2 (1/4 boyut):  tahmini rafine et
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>Seviye 1 (1/2 boyut):  daha ince
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a>Seviye 0 (orijinal):   piksel düzeyinde hassas
+</span></code></pre></div></td></tr></table></div>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">lk_optical_flow.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span>
+<span class="normal"><a href="#__codelineno-4-25">25</a></span>
+<span class="normal"><a href="#__codelineno-4-26">26</a></span>
+<span class="normal"><a href="#__codelineno-4-27">27</a></span>
+<span class="normal"><a href="#__codelineno-4-28">28</a></span>
+<span class="normal"><a href="#__codelineno-4-29">29</a></span>
+<span class="normal"><a href="#__codelineno-4-30">30</a></span>
+<span class="normal"><a href="#__codelineno-4-31">31</a></span>
+<span class="normal"><a href="#__codelineno-4-32">32</a></span>
+<span class="normal"><a href="#__codelineno-4-33">33</a></span>
+<span class="normal"><a href="#__codelineno-4-34">34</a></span>
+<span class="normal"><a href="#__codelineno-4-35">35</a></span>
+<span class="normal"><a href="#__codelineno-4-36">36</a></span>
+<span class="normal"><a href="#__codelineno-4-37">37</a></span>
+<span class="normal"><a href="#__codelineno-4-38">38</a></span>
+<span class="normal"><a href="#__codelineno-4-39">39</a></span>
+<span class="normal"><a href="#__codelineno-4-40">40</a></span>
+<span class="normal"><a href="#__codelineno-4-41">41</a></span>
+<span class="normal"><a href="#__codelineno-4-42">42</a></span>
+<span class="normal"><a href="#__codelineno-4-43">43</a></span>
+<span class="normal"><a href="#__codelineno-4-44">44</a></span>
+<span class="normal"><a href="#__codelineno-4-45">45</a></span>
+<span class="normal"><a href="#__codelineno-4-46">46</a></span>
+<span class="normal"><a href="#__codelineno-4-47">47</a></span>
+<span class="normal"><a href="#__codelineno-4-48">48</a></span>
+<span class="normal"><a href="#__codelineno-4-49">49</a></span>
+<span class="normal"><a href="#__codelineno-4-50">50</a></span>
+<span class="normal"><a href="#__codelineno-4-51">51</a></span>
+<span class="normal"><a href="#__codelineno-4-52">52</a></span>
+<span class="normal"><a href="#__codelineno-4-53">53</a></span>
+<span class="normal"><a href="#__codelineno-4-54">54</a></span>
+<span class="normal"><a href="#__codelineno-4-55">55</a></span>
+<span class="normal"><a href="#__codelineno-4-56">56</a></span>
+<span class="normal"><a href="#__codelineno-4-57">57</a></span>
+<span class="normal"><a href="#__codelineno-4-58">58</a></span>
+<span class="normal"><a href="#__codelineno-4-59">59</a></span>
+<span class="normal"><a href="#__codelineno-4-60">60</a></span>
+<span class="normal"><a href="#__codelineno-4-61">61</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="c1"># Shi-Tomasi köşe tespiti (Lucas-Kanade için iyi noktalar)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="n">feature_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a>    <span class="n">maxCorners</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a>    <span class="n">qualityLevel</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>   <span class="c1"># Bu puandan düşük köşeleri atla</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a>    <span class="n">minDistance</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>       <span class="c1"># Noktalar arası min piksel mesafesi</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a>    <span class="n">blockSize</span><span class="o">=</span><span class="mi">7</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="p">)</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11"></a>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="n">lk_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13"></a>    <span class="n">winSize</span><span class="o">=</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span>      <span class="c1"># Arama penceresi boyutu</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14"></a>    <span class="n">maxLevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>            <span class="c1"># Piramit seviyeleri (3 = 8× küçük en alt)</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15"></a>    <span class="n">criteria</span><span class="o">=</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_EPS</span> <span class="o">|</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_COUNT</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="p">)</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17"></a>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19"></a><span class="n">ret</span><span class="p">,</span> <span class="n">old_frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="n">old_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">old_frame</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="n">p0</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">goodFeaturesToTrack</span><span class="p">(</span><span class="n">old_gray</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_params</span><span class="p">)</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22"></a>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="n">tuval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">old_frame</span><span class="p">)</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24"></a><span class="n">renkler</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25"></a><span class="n">takip_id</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p0</span><span class="p">)))</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26"></a>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27"></a><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28"></a>    <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30"></a>        <span class="k">break</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31"></a>    <span class="n">frame_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32"></a>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33"></a>    <span class="c1"># İleri takip</span>
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34"></a>    <span class="n">p1</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calcOpticalFlowPyrLK</span><span class="p">(</span><span class="n">old_gray</span><span class="p">,</span> <span class="n">frame_gray</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">lk_params</span><span class="p">)</span>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35"></a>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36"></a>    <span class="c1"># Geri takip (doğrulama için)</span>
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37"></a>    <span class="n">p0_geri</span><span class="p">,</span> <span class="n">st_geri</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calcOpticalFlowPyrLK</span><span class="p">(</span><span class="n">frame_gray</span><span class="p">,</span> <span class="n">old_gray</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">lk_params</span><span class="p">)</span>
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38"></a>
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39"></a>    <span class="c1"># İleri-geri hata: geri gelen nokta başlangıca yakınsa güvenilir</span>
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40"></a>    <span class="n">hata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">p0</span> <span class="o">-</span> <span class="n">p0_geri</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41"></a>    <span class="n">iyi</span> <span class="o">=</span> <span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">hata</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span>
+</span><span id="__span-4-42"><a id="__codelineno-4-42" name="__codelineno-4-42"></a>
+</span><span id="__span-4-43"><a id="__codelineno-4-43" name="__codelineno-4-43"></a>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">yeni</span><span class="p">,</span> <span class="n">eski</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="n">iyi</span><span class="p">],</span> <span class="n">p0</span><span class="p">[</span><span class="n">iyi</span><span class="p">])):</span>
+</span><span id="__span-4-44"><a id="__codelineno-4-44" name="__codelineno-4-44"></a>        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">yeni</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</span><span id="__span-4-45"><a id="__codelineno-4-45" name="__codelineno-4-45"></a>        <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">eski</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</span><span id="__span-4-46"><a id="__codelineno-4-46" name="__codelineno-4-46"></a>        <span class="n">idx</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">iyi</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+</span><span id="__span-4-47"><a id="__codelineno-4-47" name="__codelineno-4-47"></a>        <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">tuval</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">renkler</span><span class="p">[</span><span class="n">idx</span> <span class="o">%</span> <span class="mi">300</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-4-48"><a id="__codelineno-4-48" name="__codelineno-4-48"></a>        <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="n">renkler</span><span class="p">[</span><span class="n">idx</span> <span class="o">%</span> <span class="mi">300</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-4-49"><a id="__codelineno-4-49" name="__codelineno-4-49"></a>
+</span><span id="__span-4-50"><a id="__codelineno-4-50" name="__codelineno-4-50"></a>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s2">&quot;LK Optical Flow&quot;</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">tuval</span><span class="p">))</span>
+</span><span id="__span-4-51"><a id="__codelineno-4-51" name="__codelineno-4-51"></a>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span> <span class="o">==</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">):</span>
+</span><span id="__span-4-52"><a id="__codelineno-4-52" name="__codelineno-4-52"></a>        <span class="k">break</span>
+</span><span id="__span-4-53"><a id="__codelineno-4-53" name="__codelineno-4-53"></a>
+</span><span id="__span-4-54"><a id="__codelineno-4-54" name="__codelineno-4-54"></a>    <span class="n">old_gray</span> <span class="o">=</span> <span class="n">frame_gray</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</span><span id="__span-4-55"><a id="__codelineno-4-55" name="__codelineno-4-55"></a>    <span class="n">p0</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="n">iyi</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-4-56"><a id="__codelineno-4-56" name="__codelineno-4-56"></a>
+</span><span id="__span-4-57"><a id="__codelineno-4-57" name="__codelineno-4-57"></a>    <span class="c1"># Nokta sayısı azaldıysa yeni noktalar ekle</span>
+</span><span id="__span-4-58"><a id="__codelineno-4-58" name="__codelineno-4-58"></a>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+</span><span id="__span-4-59"><a id="__codelineno-4-59" name="__codelineno-4-59"></a>        <span class="n">yeni_noktalar</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">goodFeaturesToTrack</span><span class="p">(</span><span class="n">old_gray</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_params</span><span class="p">)</span>
+</span><span id="__span-4-60"><a id="__codelineno-4-60" name="__codelineno-4-60"></a>        <span class="k">if</span> <span class="n">yeni_noktalar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-4-61"><a id="__codelineno-4-61" name="__codelineno-4-61"></a>            <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">p0</span><span class="p">,</span> <span class="n">yeni_noktalar</span><span class="p">])</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="farneback-yogun-optik-aks">Farneback - Yoğun Optik Akış<a class="headerlink" href="#farneback-yogun-optik-aks" title="Permanent link">&para;</a></h3>
+<p>Tüm piksel için hareket vektörü hesaplar. LK'dan yavaş ama tam alan bilgisi verir.</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">farneback.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span>
+<span class="normal"><a href="#__codelineno-5-21">21</a></span>
+<span class="normal"><a href="#__codelineno-5-22">22</a></span>
+<span class="normal"><a href="#__codelineno-5-23">23</a></span>
+<span class="normal"><a href="#__codelineno-5-24">24</a></span>
+<span class="normal"><a href="#__codelineno-5-25">25</a></span>
+<span class="normal"><a href="#__codelineno-5-26">26</a></span>
+<span class="normal"><a href="#__codelineno-5-27">27</a></span>
+<span class="normal"><a href="#__codelineno-5-28">28</a></span>
+<span class="normal"><a href="#__codelineno-5-29">29</a></span>
+<span class="normal"><a href="#__codelineno-5-30">30</a></span>
+<span class="normal"><a href="#__codelineno-5-31">31</a></span>
+<span class="normal"><a href="#__codelineno-5-32">32</a></span>
+<span class="normal"><a href="#__codelineno-5-33">33</a></span>
+<span class="normal"><a href="#__codelineno-5-34">34</a></span>
+<span class="normal"><a href="#__codelineno-5-35">35</a></span>
+<span class="normal"><a href="#__codelineno-5-36">36</a></span>
+<span class="normal"><a href="#__codelineno-5-37">37</a></span>
+<span class="normal"><a href="#__codelineno-5-38">38</a></span>
+<span class="normal"><a href="#__codelineno-5-39">39</a></span>
+<span class="normal"><a href="#__codelineno-5-40">40</a></span>
+<span class="normal"><a href="#__codelineno-5-41">41</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="n">ret</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="n">old_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a>    <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a>    <span class="n">frame_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a>    <span class="n">flow</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calcOpticalFlowFarneback</span><span class="p">(</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a>        <span class="n">old_gray</span><span class="p">,</span> <span class="n">frame_gray</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a>        <span class="n">pyr_scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>   <span class="c1"># Her seviyede boyut oranı</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a>        <span class="n">levels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>        <span class="c1"># Piramit seviyesi</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a>        <span class="n">winsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>      <span class="c1"># Yerelleştirme penceresi</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a>        <span class="n">iterations</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a>        <span class="n">poly_n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>        <span class="c1"># Polinom boyutu</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a>        <span class="n">poly_sigma</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>  <span class="c1"># Gaussian sigma</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a>        <span class="n">flags</span><span class="o">=</span><span class="mi">0</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21"></a>    <span class="p">)</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22"></a>    <span class="c1"># flow[y, x, 0] = dx, flow[y, x, 1] = dy</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23"></a>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24"></a>    <span class="c1"># Görselleştirme: açı=renk, büyüklük=parlaklık</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25"></a>    <span class="n">mag</span><span class="p">,</span> <span class="n">ang</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cartToPolar</span><span class="p">(</span><span class="n">flow</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">flow</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26"></a>    <span class="n">hsv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">old</span><span class="p">)</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27"></a>    <span class="n">hsv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28"></a>    <span class="n">hsv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ang</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29"></a>    <span class="n">hsv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">NORM_MINMAX</span><span class="p">)</span>
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30"></a>    <span class="n">bgr</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">hsv</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_HSV2BGR</span><span class="p">)</span>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31"></a>
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32"></a>    <span class="c1"># Ortalama hareket: kamera mı hareket ediyor?</span>
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33"></a>    <span class="n">ort_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mag</span><span class="p">)</span>
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34"></a>    <span class="k">if</span> <span class="n">ort_mag</span> <span class="o">&gt;</span> <span class="mf">3.0</span><span class="p">:</span>
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35"></a>        <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">bgr</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Hareket: </span><span class="si">{</span><span class="n">ort_mag</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> px/kare&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36"></a>                    <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37"></a>
+</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38"></a>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s2">&quot;Farneback Flow&quot;</span><span class="p">,</span> <span class="n">bgr</span><span class="p">)</span>
+</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39"></a>    <span class="n">old_gray</span> <span class="o">=</span> <span class="n">frame_gray</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40"></a>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span> <span class="o">==</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">):</span>
+</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41"></a>        <span class="k">break</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="sparse-vs-dense-karslastrmas">Sparse vs Dense Karşılaştırması<a class="headerlink" href="#sparse-vs-dense-karslastrmas" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: center;">Lucas-Kanade (Seyrek)</th>
+<th style="text-align: center;">Farneback (Yoğun)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Çıktı</td>
+<td style="text-align: center;">Seçili noktalarda vektör</td>
+<td style="text-align: center;">Her piksel vektör alanı</td>
+</tr>
+<tr>
+<td>Hız</td>
+<td style="text-align: center;">Hızlı (100+ FPS)</td>
+<td style="text-align: center;">Yavaş (10-30 FPS)</td>
+</tr>
+<tr>
+<td>Kullanım</td>
+<td style="text-align: center;">VIO, nesne takibi</td>
+<td style="text-align: center;">Segmentasyon, arka plan çıkarma</td>
+</tr>
+<tr>
+<td>Büyük hareket</td>
+<td style="text-align: center;">Piramit ile çözülür</td>
+<td style="text-align: center;">Zayıf</td>
+</tr>
+<tr>
+<td>Gürültü</td>
+<td style="text-align: center;">İyi (pencere ortalama)</td>
+<td style="text-align: center;">Orta</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="vio-visual-inertial-odometry">VIO - Visual Inertial Odometry<a class="headerlink" href="#vio-visual-inertial-odometry" title="Permanent link">&para;</a></h2>
+<h3 id="vio-neden-gerekli">VIO Neden Gerekli?<a class="headerlink" href="#vio-neden-gerekli" title="Permanent link">&para;</a></h3>
+<p>Sadece kamera (VO) ile robotun nerede olduğunu hesaplamak mümkün ama zor. IMU ekleyince sistem çok daha sağlam hale gelir.</p>
+<table>
+<thead>
+<tr>
+<th>Sorun</th>
+<th style="text-align: center;">Sadece VO</th>
+<th style="text-align: center;">VO + IMU (VIO)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mono kamerada ölçek belirsizliği</td>
+<td style="text-align: center;">✗ Bilinmez</td>
+<td style="text-align: center;">✓ IMU kurtarır</td>
+</tr>
+<tr>
+<td>Hızlı hareket / bulanıklık</td>
+<td style="text-align: center;">✗ Takip bozulur</td>
+<td style="text-align: center;">✓ IMU köprü kurar</td>
+</tr>
+<tr>
+<td>Karanlık / doku yok</td>
+<td style="text-align: center;">✗ Özellik bulunamaz</td>
+<td style="text-align: center;">✓ IMU kısa süre devralır</td>
+</tr>
+<tr>
+<td>Uzun vadeli drift</td>
+<td style="text-align: center;">✗ Hata birikir</td>
+<td style="text-align: center;">Kısmen: IMU bias tahmin edilir</td>
+</tr>
+<tr>
+<td>Başlangıç oryantasyonu</td>
+<td style="text-align: center;">Belirsiz</td>
+<td style="text-align: center;">✓ Yerçekimi vektörü</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IMU'nun kendi sorunu:</strong> Bias (sürüklenme) ve gürültü. Statik dururken bile ivmeölçer ve jiroskop sıfır göstermez - hafif sürüklenme (bias) var. Uzun süre entegre edilince büyük hata birikir. VIO bu bias'ı da tahmin eder.</p>
+<h3 id="sistem-bilesenleri">Sistem Bileşenleri<a class="headerlink" href="#sistem-bilesenleri" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart LR
+    subgraph SENS["Sensörler"]
+        CAM["Kamera\n30-60 Hz\nGörüntü"]
+        IMU["IMU\n200-1000 Hz\nİvme + Açısal Hız"]
+    end
+
+    subgraph FRONT["Ön Yüz (Fast)"]
+        FEAT["Özellik Tespiti\nFAST / ORB"]
+        TRACK["LK Takip\nKareler Arası"]
+        PREINT["IMU Ön Entegrasyon\nHız + Pozisyon"]
+    end
+
+    subgraph BACK["Arka Yüz (Opt.)"]
+        SLIDE["Kayma Penceresi\n(Son N keyframe)"]
+        OPT["Non-linear Optimizer\nCeres / g2o / GTSAM"]
+        MARG["Marjinalizasyon\nEski keyframe özetle"]
+    end
+
+    CAM --&gt; FEAT --&gt; TRACK --&gt; SLIDE
+    IMU --&gt; PREINT --&gt; SLIDE
+    SLIDE --&gt; OPT --&gt; MARG
+    OPT --&gt;|"Konum, Hız\nIMU Bias"| OUT["Durum Tahmini"]</code></pre>
+<h3 id="imu-on-entegrasyon">IMU Ön Entegrasyon<a class="headerlink" href="#imu-on-entegrasyon" title="Permanent link">&para;</a></h3>
+<p>İki kamera karesi arasında IMU 10-100 ölçüm yapabilir. Bu ölçümleri tek bir "delta konum" ve "delta oryantasyon" olarak özetlemek gerekir - buna <strong>IMU preintegration</strong> denir.</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a>Kamera karesi k → Kamera karesi k+1 arasında:
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>IMU 20 ölçüm yaptı: [a₁, ω₁], [a₂, ω₂], ..., [a₂₀, ω₂₀]
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a>Ön entegrasyon:
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a>ΔR_{k,k+1}  = R₁ · R₂ · ... · R₂₀   ← toplam dönüş
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a>Δv_{k,k+1}  = Σ Rᵢ · (aᵢ - bₐ) · dt  ← hız değişimi
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a>Δp_{k,k+1}  = Σ [Δvᵢ · dt + ½Rᵢ · aᵢ · dt²]  ← konum değişimi
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9"></a>bₐ = ivmeölçer bias (sürekli tahmin edilir)
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10"></a>bω = jiroskop bias (sürekli tahmin edilir)
+</span></code></pre></div></td></tr></table></div>
+<p>Ön entegrasyon bias tahminleri değiştiğinde Jacobian ile yeniden hesaplamadan düzeltilebilir - bu büyük hesaplama tasarrufu sağlar.</p>
+<h3 id="ekf-vs-faktor-graf">EKF vs Faktör Grafı<a class="headerlink" href="#ekf-vs-faktor-graf" title="Permanent link">&para;</a></h3>
+<p><strong>EKF (Extended Kalman Filter) yaklaşımı:</strong>
+- Anlık durum tahmini: konum, hız, oryantasyon, IMU bias
+- Ölçüm geldiğinde tahmin güncellenir
+- Hızlı ama yakınsama garanti değil, geçmiş göz ardı edilir
+- Kullanım: MSCKF, ROVIO</p>
+<p><strong>Faktör Grafı + Sliding Window yaklaşımı:</strong>
+- Son N keyframe ve aralarındaki kısıtları tutan bir grafik
+- Her yeni ölçüm, bir kenar (faktör) olarak eklenir
+- Grafik minimize edilir (non-linear least squares)
+- Yavaş ama daha doğru, geçmiş bilgiyi kullanır
+- Kullanım: VINS-Mono, ORB-SLAM3, OpenVINS</p>
+<pre class="mermaid"><code>graph LR
+    subgraph FACTOR["Faktör Grafı"]
+        P0["Pose 0"] --"IMU"--&gt; P1["Pose 1"]
+        P1 --"IMU"--&gt; P2["Pose 2"]
+        P2 --"IMU"--&gt; P3["Pose 3"]
+        LM1[("Nokta 1")] --"Görüntüleme"--&gt; P0
+        LM1 --"Görüntüleme"--&gt; P1
+        LM2[("Nokta 2")] --"Görüntüleme"--&gt; P1
+        LM2 --"Görüntüleme"--&gt; P2
+        LM2 --"Görüntüleme"--&gt; P3
+    end</code></pre>
+<h3 id="msckf-multi-state-constraint-kalman-filter">MSCKF - Multi-State Constraint Kalman Filter<a class="headerlink" href="#msckf-multi-state-constraint-kalman-filter" title="Permanent link">&para;</a></h3>
+<p>MSCKF (Mourikis &amp; Roumeliotis, 2007), VIO'nun temeli olan algoritmadır. Harita noktalarını state'e eklemez - bunun yerine bir özellik noktasının birden fazla kamera pozisyonunda görülmesiyle oluşan geometrik kısıtı kullanır.</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-7-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a>Geleneksel EKF-SLAM:
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>  State = [robot_pozisyonu, tüm harita noktaları]
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a>  N harita noktası → N×3 boyutlu state → çok büyük matris
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a>MSCKF:
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a>  State = [son M kamera pozisyonu, IMU durumu]
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a>  Harita noktaları state&#39;de YOK
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a>  Bir nokta M karede görülünce → M ölçüm → tek kısıt
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10"></a>  Avantaj: Sabit boyutlu state, gerçek zamanlı çalışır
+</span></code></pre></div></td></tr></table></div>
+<h3 id="kayma-penceresi-optimizasyonu-sliding-window">Kayma Penceresi Optimizasyonu (Sliding Window)<a class="headerlink" href="#kayma-penceresi-optimizasyonu-sliding-window" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<span class="normal"><a href="#__codelineno-8-2">2</a></span>
+<span class="normal"><a href="#__codelineno-8-3">3</a></span>
+<span class="normal"><a href="#__codelineno-8-4">4</a></span>
+<span class="normal"><a href="#__codelineno-8-5">5</a></span>
+<span class="normal"><a href="#__codelineno-8-6">6</a></span>
+<span class="normal"><a href="#__codelineno-8-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a>Zaman →
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>│ KF₀ │ KF₁ │ KF₂ │ KF₃ │ KF₄ │ KF₅ │
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a>            ↑ Pencere başlangıcı
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a>Yeni KF₆ gelince:
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a>- Pencere içindeki tüm faktörler yeniden optimize edilir
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a>- KF₀ pencerenin dışına çıkar → marjinalizasyon
+</span></code></pre></div></td></tr></table></div>
+<p><strong>Marjinalizasyon:</strong> KF₀'ı doğrudan silmek bilgi kaybına yol açar. Bunun yerine KF₀'ın kısıtları bir prior faktörüne özetlenerek pencereye eklenir.</p>
+<h3 id="stereo-kamera-vioda-avantajlar">Stereo Kamera: VIO'da Avantajları<a class="headerlink" href="#stereo-kamera-vioda-avantajlar" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Özellik</th>
+<th style="text-align: center;">Mono</th>
+<th style="text-align: center;">Mono+IMU</th>
+<th style="text-align: center;">Stereo</th>
+<th style="text-align: center;">Stereo+IMU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ölçek</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✓ (başlatma sonrası)</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr>
+<td>Derinlik</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">Kısmi</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr>
+<td>Başlatma kolaylığı</td>
+<td style="text-align: center;">Düşük</td>
+<td style="text-align: center;">Orta</td>
+<td style="text-align: center;"><strong>Kolay</strong></td>
+<td style="text-align: center;">Kolay</td>
+</tr>
+<tr>
+<td>Hesaplama</td>
+<td style="text-align: center;">Az</td>
+<td style="text-align: center;">Orta</td>
+<td style="text-align: center;">Çok</td>
+<td style="text-align: center;"><strong>En çok</strong></td>
+</tr>
+<tr>
+<td>Sağlamlık</td>
+<td style="text-align: center;">Düşük</td>
+<td style="text-align: center;">Orta</td>
+<td style="text-align: center;">İyi</td>
+<td style="text-align: center;"><strong>En iyi</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Pratik Öneri</p>
+<ul>
+<li>Küçük drone, ağırlık kritik → <strong>Mono + IMU</strong> (OpenVINS mono)</li>
+<li>Kapalı alan, metrik konum → <strong>Stereo + IMU</strong> (OpenVINS stereo-inertial)</li>
+<li>Derinlik sensörü olarak → <strong>Stereo</strong> veya RGB-D</li>
+</ul>
+</div>
+<hr />
+<h2 id="openvins-ack-kaynak-vio-sistemi">OpenVINS - Açık Kaynak VIO Sistemi<a class="headerlink" href="#openvins-ack-kaynak-vio-sistemi" title="Permanent link">&para;</a></h2>
+<p><strong>OpenVINS</strong>, Wisconsin Üniversitesi tarafından geliştirilen MSCKF bazlı VIO sistemidir. Akademik çevrede referans uygulama sayılır.</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">2</a></span>
+<span class="normal"><a href="#__codelineno-9-3">3</a></span>
+<span class="normal"><a href="#__codelineno-9-4">4</a></span>
+<span class="normal"><a href="#__codelineno-9-5">5</a></span>
+<span class="normal"><a href="#__codelineno-9-6">6</a></span>
+<span class="normal"><a href="#__codelineno-9-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a>Özellikler:
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a>✓ MSCKF + Sliding window hybrid
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a>✓ Mono, Stereo, RGB-D kamera desteği
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a>✓ Çoklu kamera kalibrasyonu (extrinsic online)
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a>✓ ROS 1 ve ROS 2 desteği
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>✓ Kapsamlı parametre dokümantasyonu
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a>✓ EuRoC, TUM-VI dataset&#39;leriyle doğrulanmış
+</span></code></pre></div></td></tr></table></div>
+<h3 id="kurulum-ros-2-humble">Kurulum (ROS 2 Humble)<a class="headerlink" href="#kurulum-ros-2-humble" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-10-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-10-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-10-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-10-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-10-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-10-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-10-10">10</a></span>
+<span class="normal"><a href="#__codelineno-10-11">11</a></span>
+<span class="normal"><a href="#__codelineno-10-12">12</a></span>
+<span class="normal"><a href="#__codelineno-10-13">13</a></span>
+<span class="normal"><a href="#__codelineno-10-14">14</a></span>
+<span class="normal"><a href="#__codelineno-10-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>~/ws_ov/src<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/ws_ov/src
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="c1"># OpenVINS kodu</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/rpng/open_vins.git
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="c1"># Bağımlılıklar</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-humble-eigen3-cmake-module<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="w">                 </span>ros-humble-cv-bridge<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="w">                 </span>ros-humble-image-transport
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10"></a>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11"></a><span class="c1"># Derleme</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12"></a><span class="nb">cd</span><span class="w"> </span>~/ws_ov
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13"></a>colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install<span class="w"> </span>--cmake-args<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14"></a>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15"></a><span class="nb">source</span><span class="w"> </span>install/setup.bash
+</span></code></pre></div></td></tr></table></div>
+<h3 id="temel-konfigurasyon">Temel Konfigürasyon<a class="headerlink" href="#temel-konfigurasyon" title="Permanent link">&para;</a></h3>
+<p>OpenVINS bir YAML konfigürasyon dosyasıyla çalışır. En kritik parametreler:</p>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">config/my_camera_imu.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-11-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-11-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-11-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-11-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-11-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-11-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-11-10">10</a></span>
+<span class="normal"><a href="#__codelineno-11-11">11</a></span>
+<span class="normal"><a href="#__codelineno-11-12">12</a></span>
+<span class="normal"><a href="#__codelineno-11-13">13</a></span>
+<span class="normal"><a href="#__codelineno-11-14">14</a></span>
+<span class="normal"><a href="#__codelineno-11-15">15</a></span>
+<span class="normal"><a href="#__codelineno-11-16">16</a></span>
+<span class="normal"><a href="#__codelineno-11-17">17</a></span>
+<span class="normal"><a href="#__codelineno-11-18">18</a></span>
+<span class="normal"><a href="#__codelineno-11-19">19</a></span>
+<span class="normal"><a href="#__codelineno-11-20">20</a></span>
+<span class="normal"><a href="#__codelineno-11-21">21</a></span>
+<span class="normal"><a href="#__codelineno-11-22">22</a></span>
+<span class="normal"><a href="#__codelineno-11-23">23</a></span>
+<span class="normal"><a href="#__codelineno-11-24">24</a></span>
+<span class="normal"><a href="#__codelineno-11-25">25</a></span>
+<span class="normal"><a href="#__codelineno-11-26">26</a></span>
+<span class="normal"><a href="#__codelineno-11-27">27</a></span>
+<span class="normal"><a href="#__codelineno-11-28">28</a></span>
+<span class="normal"><a href="#__codelineno-11-29">29</a></span>
+<span class="normal"><a href="#__codelineno-11-30">30</a></span>
+<span class="normal"><a href="#__codelineno-11-31">31</a></span>
+<span class="normal"><a href="#__codelineno-11-32">32</a></span>
+<span class="normal"><a href="#__codelineno-11-33">33</a></span>
+<span class="normal"><a href="#__codelineno-11-34">34</a></span>
+<span class="normal"><a href="#__codelineno-11-35">35</a></span>
+<span class="normal"><a href="#__codelineno-11-36">36</a></span>
+<span class="normal"><a href="#__codelineno-11-37">37</a></span>
+<span class="normal"><a href="#__codelineno-11-38">38</a></span>
+<span class="normal"><a href="#__codelineno-11-39">39</a></span>
+<span class="normal"><a href="#__codelineno-11-40">40</a></span>
+<span class="normal"><a href="#__codelineno-11-41">41</a></span>
+<span class="normal"><a href="#__codelineno-11-42">42</a></span>
+<span class="normal"><a href="#__codelineno-11-43">43</a></span>
+<span class="normal"><a href="#__codelineno-11-44">44</a></span>
+<span class="normal"><a href="#__codelineno-11-45">45</a></span>
+<span class="normal"><a href="#__codelineno-11-46">46</a></span>
+<span class="normal"><a href="#__codelineno-11-47">47</a></span>
+<span class="normal"><a href="#__codelineno-11-48">48</a></span>
+<span class="normal"><a href="#__codelineno-11-49">49</a></span>
+<span class="normal"><a href="#__codelineno-11-50">50</a></span>
+<span class="normal"><a href="#__codelineno-11-51">51</a></span>
+<span class="normal"><a href="#__codelineno-11-52">52</a></span>
+<span class="normal"><a href="#__codelineno-11-53">53</a></span>
+<span class="normal"><a href="#__codelineno-11-54">54</a></span>
+<span class="normal"><a href="#__codelineno-11-55">55</a></span>
+<span class="normal"><a href="#__codelineno-11-56">56</a></span>
+<span class="normal"><a href="#__codelineno-11-57">57</a></span>
+<span class="normal"><a href="#__codelineno-11-58">58</a></span>
+<span class="normal"><a href="#__codelineno-11-59">59</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="c1"># Kamera - IMU zaman senkronizasyonu</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="nt">calib_camimu_dt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">        </span><span class="c1"># Kamera-IMU gecikme farkı (saniye)</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="w">                              </span><span class="c1"># Kalibr ile ölçülür</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6"></a>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="c1"># IMU gürültü modeli (IMU datasheet&#39;ten al)</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="nt">imu_noises</span><span class="p">:</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11"></a><span class="w">  </span><span class="nt">gyro_n</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">0.005</span><span class="w">     </span><span class="c1"># Jiroskop gürültü yoğunluğu (rad/s/√Hz)</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12"></a><span class="w">  </span><span class="nt">accel_n</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w">       </span><span class="c1"># İvmeölçer gürültü yoğunluğu (m/s²/√Hz)</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13"></a><span class="w">  </span><span class="nt">gyro_b</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">0.0002</span><span class="w">    </span><span class="c1"># Jiroskop bias değişim hızı (rad/s²/√Hz)</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14"></a><span class="w">  </span><span class="nt">accel_b</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.002</span><span class="w">     </span><span class="c1"># İvmeölçer bias değişim hızı (m/s³/√Hz)</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15"></a>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17"></a><span class="c1"># Başlangıç ayarları</span>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19"></a><span class="nt">init_window_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w">      </span><span class="c1"># Başlangıç için bekleme süresi (s)</span>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20"></a><span class="nt">init_imu_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span><span class="w">       </span><span class="c1"># Başlamak için minimum hareket eşiği (m/s²)</span>
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21"></a><span class="nt">gravity_mag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9.81</span><span class="w">          </span><span class="c1"># Yerçekimi ivmesi (m/s²)</span>
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22"></a>
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24"></a><span class="c1"># Özellik takip ayarları</span>
+</span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-26"><a id="__codelineno-11-26" name="__codelineno-11-26"></a><span class="nt">num_pts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span><span class="w">               </span><span class="c1"># Takip edilecek nokta sayısı</span>
+</span><span id="__span-11-27"><a id="__codelineno-11-27" name="__codelineno-11-27"></a><span class="nt">fast_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span><span class="w">         </span><span class="c1"># FAST köşe tespiti eşiği</span>
+</span><span id="__span-11-28"><a id="__codelineno-11-28" name="__codelineno-11-28"></a><span class="nt">grid_x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">                  </span><span class="c1"># Görüntüyü 5×5 ızgaraya böl (uniform dağılım)</span>
+</span><span id="__span-11-29"><a id="__codelineno-11-29" name="__codelineno-11-29"></a><span class="nt">grid_y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</span><span id="__span-11-30"><a id="__codelineno-11-30" name="__codelineno-11-30"></a><span class="nt">min_px_dist</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">            </span><span class="c1"># Takip noktaları arası min piksel</span>
+</span><span id="__span-11-31"><a id="__codelineno-11-31" name="__codelineno-11-31"></a><span class="nt">knn_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.70</span><span class="w">            </span><span class="c1"># Lowe ratio test eşiği</span>
+</span><span id="__span-11-32"><a id="__codelineno-11-32" name="__codelineno-11-32"></a>
+</span><span id="__span-11-33"><a id="__codelineno-11-33" name="__codelineno-11-33"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-34"><a id="__codelineno-11-34" name="__codelineno-11-34"></a><span class="c1"># Durum tahmini</span>
+</span><span id="__span-11-35"><a id="__codelineno-11-35" name="__codelineno-11-35"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-36"><a id="__codelineno-11-36" name="__codelineno-11-36"></a><span class="nt">max_cameras</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">             </span><span class="c1"># 1=Mono, 2=Stereo</span>
+</span><span id="__span-11-37"><a id="__codelineno-11-37" name="__codelineno-11-37"></a><span class="nt">use_stereo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-11-38"><a id="__codelineno-11-38" name="__codelineno-11-38"></a><span class="nt">max_clones</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">11</span><span class="w">             </span><span class="c1"># Sliding window boyutu (state&#39;teki max kamera sayısı)</span>
+</span><span id="__span-11-39"><a id="__codelineno-11-39" name="__codelineno-11-39"></a><span class="nt">max_slam</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w">               </span><span class="c1"># SLAM noktası sayısı (MSCKF + SLAM hybrid)</span>
+</span><span id="__span-11-40"><a id="__codelineno-11-40" name="__codelineno-11-40"></a>
+</span><span id="__span-11-41"><a id="__codelineno-11-41" name="__codelineno-11-41"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-42"><a id="__codelineno-11-42" name="__codelineno-11-42"></a><span class="c1"># Kamera intrinsic parametreleri (Kalibr&#39;den al)</span>
+</span><span id="__span-11-43"><a id="__codelineno-11-43" name="__codelineno-11-43"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-44"><a id="__codelineno-11-44" name="__codelineno-11-44"></a><span class="nt">camera_config</span><span class="p">:</span>
+</span><span id="__span-11-45"><a id="__codelineno-11-45" name="__codelineno-11-45"></a><span class="w">  </span><span class="nt">cam0</span><span class="p">:</span>
+</span><span id="__span-11-46"><a id="__codelineno-11-46" name="__codelineno-11-46"></a><span class="w">    </span><span class="nt">camera_model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pinhole&quot;</span>
+</span><span id="__span-11-47"><a id="__codelineno-11-47" name="__codelineno-11-47"></a><span class="w">    </span><span class="nt">distortion_model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;radtan&quot;</span><span class="w">    </span><span class="c1"># radyal-teğetsel</span>
+</span><span id="__span-11-48"><a id="__codelineno-11-48" name="__codelineno-11-48"></a><span class="w">    </span><span class="nt">intrinsics</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">458.654</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">457.296</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">367.215</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">248.375</span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># fx fy cx cy</span>
+</span><span id="__span-11-49"><a id="__codelineno-11-49" name="__codelineno-11-49"></a><span class="w">    </span><span class="nt">distortion_coeffs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-0.28340811</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.07395907</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.00019359</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.76187114e-05</span><span class="p p-Indicator">]</span>
+</span><span id="__span-11-50"><a id="__codelineno-11-50" name="__codelineno-11-50"></a><span class="w">    </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">752</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">480</span><span class="p p-Indicator">]</span>
+</span><span id="__span-11-51"><a id="__codelineno-11-51" name="__codelineno-11-51"></a>
+</span><span id="__span-11-52"><a id="__codelineno-11-52" name="__codelineno-11-52"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-53"><a id="__codelineno-11-53" name="__codelineno-11-53"></a><span class="c1"># Kamera - IMU extrinsic (Kalibr&#39;den al)</span>
+</span><span id="__span-11-54"><a id="__codelineno-11-54" name="__codelineno-11-54"></a><span class="c1"># ──────────────────────────────────────────</span>
+</span><span id="__span-11-55"><a id="__codelineno-11-55" name="__codelineno-11-55"></a><span class="nt">T_cam_imu</span><span class="p">:</span><span class="w">                 </span><span class="c1"># Kameranın IMU çerçevesindeki dönüşümü</span>
+</span><span id="__span-11-56"><a id="__codelineno-11-56" name="__codelineno-11-56"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0148655</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.999880</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.00414695</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.0216401</span><span class="p p-Indicator">]</span>
+</span><span id="__span-11-57"><a id="__codelineno-11-57" name="__codelineno-11-57"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.999557</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0149672</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.025715</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">-0.064677</span><span class="w"> </span><span class="p p-Indicator">]</span>
+</span><span id="__span-11-58"><a id="__codelineno-11-58" name="__codelineno-11-58"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-0.025719</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.003756</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.999661</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.00981073</span><span class="p p-Indicator">]</span>
+</span><span id="__span-11-59"><a id="__codelineno-11-59" name="__codelineno-11-59"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">        </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">       </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">         </span><span class="nv">1.0</span><span class="w">       </span><span class="p p-Indicator">]</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="baslatma-ve-calstrma">Başlatma ve Çalıştırma<a class="headerlink" href="#baslatma-ve-calstrma" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-12-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-12-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-12-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-12-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-12-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-12-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-12-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-12-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-12-10">10</a></span>
+<span class="normal"><a href="#__codelineno-12-11">11</a></span>
+<span class="normal"><a href="#__codelineno-12-12">12</a></span>
+<span class="normal"><a href="#__codelineno-12-13">13</a></span>
+<span class="normal"><a href="#__codelineno-12-14">14</a></span>
+<span class="normal"><a href="#__codelineno-12-15">15</a></span>
+<span class="normal"><a href="#__codelineno-12-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="c1"># EuRoC dataset ile test</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a>ros2<span class="w"> </span>launch<span class="w"> </span>ov_msckf<span class="w"> </span>subscribe.launch.py<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="w">    </span>config:<span class="o">=</span>euroc_mav<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="w">    </span>bag:<span class="o">=</span>/path/to/MH_01_easy.bag
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="c1"># Kendi sensörünüzle</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7"></a>ros2<span class="w"> </span>launch<span class="w"> </span>ov_msckf<span class="w"> </span>subscribe.launch.py<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="w">    </span>config:<span class="o">=</span>my_camera_imu<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="w">    </span>max_cameras:<span class="o">=</span><span class="m">1</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10"></a>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11"></a><span class="c1"># Parametrelerle doğrudan</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12"></a>ros2<span class="w"> </span>run<span class="w"> </span>ov_msckf<span class="w"> </span>run_subscribe_msckf<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13"></a><span class="w">    </span>--ros-args<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14"></a><span class="w">    </span>-p<span class="w"> </span>config_path:<span class="o">=</span>/home/user/ws_ov/src/open_vins/config/my_camera_imu.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15"></a><span class="w">    </span>-p<span class="w"> </span>use_stereo:<span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16"></a><span class="w">    </span>-p<span class="w"> </span>num_pts:<span class="o">=</span><span class="m">150</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="yaynlanan-topicler">Yayınlanan Topic'ler<a class="headerlink" href="#yaynlanan-topicler" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-13-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-13-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-13-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-13-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-13-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-13-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-13-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="c1"># Durum tahmini</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/ov_msckf/odometry<span class="w">          </span><span class="c1"># Pozisyon + Oryantasyon + Hız</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="c1"># Görselleştirme</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/ov_msckf/pathimu<span class="w">           </span><span class="c1"># IMU odometry yolu</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6"></a>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/ov_msckf/points_slam<span class="w">       </span><span class="c1"># SLAM nokta bulutu</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7"></a>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/ov_msckf/tracking_image<span class="w">    </span><span class="c1"># Takip edilen noktalar (görüntü)</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="c1"># Kovaryans: belirsizlik büyük → tahmin güvenilir değil</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10"></a>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/ov_msckf/odometry<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>covariance
+</span></code></pre></div></td></tr></table></div>
+<h3 id="performans-degerlendirme">Performans Değerlendirme<a class="headerlink" href="#performans-degerlendirme" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span>
+<span class="normal"><a href="#__codelineno-14-2">2</a></span>
+<span class="normal"><a href="#__codelineno-14-3">3</a></span>
+<span class="normal"><a href="#__codelineno-14-4">4</a></span>
+<span class="normal"><a href="#__codelineno-14-5">5</a></span>
+<span class="normal"><a href="#__codelineno-14-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="c1"># EuRoC üzerinde karşılaştırma</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="c1"># Başarı metriği: ATE (Absolute Trajectory Error) - gerçek yol ile tahmini yol farkı</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4"></a>ros2<span class="w"> </span>launch<span class="w"> </span>ov_eval<span class="w"> </span>comparison.launch.py<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="w">    </span>path_gt:<span class="o">=</span>/path/to/ground_truth.csv<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="w">    </span>path_est:<span class="o">=</span>/path/to/estimated_traj.csv
+</span></code></pre></div></td></tr></table></div>
+<hr />
+<h2 id="kalibr-kamera-ve-imu-kalibrasyonu">Kalibr - Kamera ve IMU Kalibrasyonu<a class="headerlink" href="#kalibr-kamera-ve-imu-kalibrasyonu" title="Permanent link">&para;</a></h2>
+<p><strong>Kalibr</strong>, ETH Zürich'in geliştirdiği kapsamlı kalibrasyon araç setidir.</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
+<span class="normal"><a href="#__codelineno-15-2">2</a></span>
+<span class="normal"><a href="#__codelineno-15-3">3</a></span>
+<span class="normal"><a href="#__codelineno-15-4">4</a></span>
+<span class="normal"><a href="#__codelineno-15-5">5</a></span>
+<span class="normal"><a href="#__codelineno-15-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a>Kalibr ile neler yapılır?
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2"></a>✓ Tek kamera intrinsic kalibrasyonu
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3"></a>✓ Stereo extrinsic kalibrasyonu (sol-sağ kamera arası)
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4"></a>✓ Kamera-IMU extrinsic kalibrasyonu (T_cam_imu)
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5"></a>✓ Kamera-IMU zaman gecikmesi (temporal offset)
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6"></a>✓ Çoklu kamera kalibrasyonu
+</span></code></pre></div></td></tr></table></div>
+<h3 id="hedef-tipler">Hedef Tipler<a class="headerlink" href="#hedef-tipler" title="Permanent link">&para;</a></h3>
+<p>Kalibr üç farklı kalibrasyon hedefi destekler:</p>
+<table>
+<thead>
+<tr>
+<th>Hedef</th>
+<th>Avantaj</th>
+<th>Dezavantaj</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Satranç tahtası</strong></td>
+<td>Ucuz, kolay yazdır</td>
+<td>Kenar noktaları az → az kısıt</td>
+</tr>
+<tr>
+<td><strong>AprilGrid</strong> (önerilen)</td>
+<td>Her kare benzersiz tanımlı → eksik görüşte çalışır</td>
+<td>Daha zor baskı</td>
+</tr>
+<tr>
+<td><strong>CircleGrid</strong></td>
+<td>Daha fazla merkez noktası</td>
+<td>Perspektifle özellik kayması</td>
+</tr>
+</tbody>
+</table>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">april_grid_olustur.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
+<span class="normal"><a href="#__codelineno-16-2">2</a></span>
+<span class="normal"><a href="#__codelineno-16-3">3</a></span>
+<span class="normal"><a href="#__codelineno-16-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="c1"># AprilGrid PDF oluştur (Kalibr ile birlikte gelir)</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="c1"># rosrun kalibr kalibr_create_target_pdf --type aprilgrid \</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3"></a><span class="c1">#   --nx 6 --ny 6 --size 0.088 --spacing 0.3 \</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4"></a><span class="c1">#   --output april_grid_6x6.pdf</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">april_target.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1">1</a></span>
+<span class="normal"><a href="#__codelineno-17-2">2</a></span>
+<span class="normal"><a href="#__codelineno-17-3">3</a></span>
+<span class="normal"><a href="#__codelineno-17-4">4</a></span>
+<span class="normal"><a href="#__codelineno-17-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="nt">target_type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;aprilgrid&#39;</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="nt">tagCols</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">6</span><span class="w">        </span><span class="c1"># Yatay etiket sayısı</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3"></a><span class="nt">tagRows</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">6</span><span class="w">        </span><span class="c1"># Dikey etiket sayısı</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4"></a><span class="nt">tagSize</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">0.088</span><span class="w">    </span><span class="c1"># Etiket boyutu (metre cinsinden)</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5"></a><span class="nt">tagSpacing</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">0.3</span><span class="w">      </span><span class="c1"># Etiketler arası boşluk oranı (tagSize&#39;a göre)</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="kurulum-docker-onerilen">Kurulum (Docker - Önerilen)<a class="headerlink" href="#kurulum-docker-onerilen" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-18-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-18-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-18-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-18-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-18-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-18-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-18-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-18-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-18-10">10</a></span>
+<span class="normal"><a href="#__codelineno-18-11">11</a></span>
+<span class="normal"><a href="#__codelineno-18-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="c1"># Kalibr&#39;i Docker ile çalıştır (bağımlılık sorunları olmadan)</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a>docker<span class="w"> </span>pull<span class="w"> </span>stereolabs/kalibr:latest
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4"></a><span class="c1"># Veya kaynak koddan derleme (ROS 1 Noetic)</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-setuptools<span class="w"> </span>python3-rosinstall<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6"></a><span class="w">                 </span>ipython3<span class="w"> </span>libeigen3-dev<span class="w"> </span>libboost-all-dev<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7"></a><span class="w">                 </span>libsuitesparse-dev
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8"></a>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9"></a><span class="nb">cd</span><span class="w"> </span>~/catkin_ws/src
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ethz-asl/kalibr.git
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11"></a><span class="nb">cd</span><span class="w"> </span>~/catkin_ws
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12"></a>catkin<span class="w"> </span>build<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-j<span class="k">$(</span>nproc<span class="k">)</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="1-tek-kamera-intrinsic-kalibrasyonu">1. Tek Kamera Intrinsic Kalibrasyonu<a class="headerlink" href="#1-tek-kamera-intrinsic-kalibrasyonu" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-19-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-19-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-19-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-19-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-19-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-19-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-19-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-19-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-19-10">10</a></span>
+<span class="normal"><a href="#__codelineno-19-11">11</a></span>
+<span class="normal"><a href="#__codelineno-19-12">12</a></span>
+<span class="normal"><a href="#__codelineno-19-13">13</a></span>
+<span class="normal"><a href="#__codelineno-19-14">14</a></span>
+<span class="normal"><a href="#__codelineno-19-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="c1"># ROS bag hazırla: kamerayı yavaş hareket ettirerek kayıt al</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2"></a><span class="c1"># Yaklaşık 60-120 saniye, farklı açılar ve mesafeler</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="c1"># Kalibrasyon</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5"></a>rosrun<span class="w"> </span>kalibr<span class="w"> </span>kalibr_calibrate_cameras<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6"></a><span class="w">    </span>--bag<span class="w"> </span>~/kalibrasyon.bag<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7"></a><span class="w">    </span>--topics<span class="w"> </span>/camera/image_raw<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8"></a><span class="w">    </span>--models<span class="w"> </span>pinhole-radtan<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9"></a><span class="w">    </span>--target<span class="w"> </span>~/april_target.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10"></a><span class="w">    </span>--dont-show-report
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11"></a>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12"></a><span class="c1"># Çıktı dosyaları:</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13"></a><span class="c1"># kalibrasyon-camchain.yaml  ← intrinsic parametreler</span>
+</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14"></a><span class="c1"># kalibrasyon-results.txt    ← hata istatistikleri</span>
+</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15"></a><span class="c1"># kalibrasyon-report.pdf     ← görsel rapor</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">camchain.yaml (örnek çıktı)</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1">1</a></span>
+<span class="normal"><a href="#__codelineno-20-2">2</a></span>
+<span class="normal"><a href="#__codelineno-20-3">3</a></span>
+<span class="normal"><a href="#__codelineno-20-4">4</a></span>
+<span class="normal"><a href="#__codelineno-20-5">5</a></span>
+<span class="normal"><a href="#__codelineno-20-6">6</a></span>
+<span class="normal"><a href="#__codelineno-20-7">7</a></span>
+<span class="normal"><a href="#__codelineno-20-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="nt">cam0</span><span class="p">:</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2"></a><span class="w">  </span><span class="nt">camera_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pinhole</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3"></a><span class="w">  </span><span class="nt">intrinsics</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">460.12</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">459.45</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">365.23</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">244.82</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># fx, fy, cx, cy (piksel)</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4"></a><span class="w">  </span><span class="nt">distortion_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">radtan</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5"></a><span class="w">  </span><span class="nt">distortion_coeffs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-0.284</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.074</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0001</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.00002</span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># k1, k2, p1, p2</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6"></a><span class="w">  </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">752</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">480</span><span class="p p-Indicator">]</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7"></a><span class="w">  </span><span class="nt">timeshift_cam_imu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">   </span><span class="c1"># Kamera-IMU zaman farkı (henüz IMU yok)</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8"></a><span class="w">  </span><span class="nt">rostopic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/camera/image_raw</span>
+</span></code></pre></div></td></tr></table></div>
+<p><strong>Reprojection error &lt; 0.5 piksel</strong> → iyi kalibrasyon.</p>
+<h3 id="2-stereo-kamera-kalibrasyonu">2. Stereo Kamera Kalibrasyonu<a class="headerlink" href="#2-stereo-kamera-kalibrasyonu" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-21-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-21-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-21-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-21-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-21-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-21-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-21-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-21-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-21-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1"></a><span class="c1"># İki kamera aynı anda kayıt</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2"></a>rosbag<span class="w"> </span>record<span class="w"> </span>-O<span class="w"> </span>stereo_kalib.bag<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3"></a><span class="w">    </span>/cam0/image_raw<span class="w"> </span>/cam1/image_raw
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4"></a>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5"></a><span class="c1"># Kalibrasyon</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6"></a>rosrun<span class="w"> </span>kalibr<span class="w"> </span>kalibr_calibrate_cameras<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7"></a><span class="w">    </span>--bag<span class="w"> </span>stereo_kalib.bag<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8"></a><span class="w">    </span>--topics<span class="w"> </span>/cam0/image_raw<span class="w"> </span>/cam1/image_raw<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9"></a><span class="w">    </span>--models<span class="w"> </span>pinhole-radtan<span class="w"> </span>pinhole-radtan<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10"></a><span class="w">    </span>--target<span class="w"> </span>~/april_target.yaml
+</span></code></pre></div></td></tr></table></div>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">stereo-camchain.yaml (örnek çıktı)</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-22-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-22-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-22-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-22-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-22-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-22-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-22-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-22-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-22-10">10</a></span>
+<span class="normal"><a href="#__codelineno-22-11">11</a></span>
+<span class="normal"><a href="#__codelineno-22-12">12</a></span>
+<span class="normal"><a href="#__codelineno-22-13">13</a></span>
+<span class="normal"><a href="#__codelineno-22-14">14</a></span>
+<span class="normal"><a href="#__codelineno-22-15">15</a></span>
+<span class="normal"><a href="#__codelineno-22-16">16</a></span>
+<span class="normal"><a href="#__codelineno-22-17">17</a></span>
+<span class="normal"><a href="#__codelineno-22-18">18</a></span>
+<span class="normal"><a href="#__codelineno-22-19">19</a></span>
+<span class="normal"><a href="#__codelineno-22-20">20</a></span>
+<span class="normal"><a href="#__codelineno-22-21">21</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="nt">cam0</span><span class="p">:</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2"></a><span class="w">  </span><span class="nt">camera_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pinhole</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3"></a><span class="w">  </span><span class="nt">intrinsics</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">458.654</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">457.296</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">367.215</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">248.375</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4"></a><span class="w">  </span><span class="nt">distortion_coeffs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-0.28340811</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.07395907</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.00019359</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.76187114e-05</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5"></a><span class="w">  </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">752</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">480</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6"></a><span class="w">  </span><span class="nt">T_cn_cnm1</span><span class="p">:</span><span class="w">    </span><span class="c1"># cam0&#39;ın kendi çerçevesi (referans)</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">1</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11"></a>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12"></a><span class="nt">cam1</span><span class="p">:</span>
+</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13"></a><span class="w">  </span><span class="nt">camera_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pinhole</span>
+</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14"></a><span class="w">  </span><span class="nt">intrinsics</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">457.587</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">456.134</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">379.999</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">255.238</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15"></a><span class="w">  </span><span class="nt">distortion_coeffs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-0.28368365</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.07451284</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.00010473</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-3.555e-05</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-16"><a id="__codelineno-22-16" name="__codelineno-22-16"></a><span class="w">  </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">752</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">480</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17"></a><span class="w">  </span><span class="nt">T_cn_cnm1</span><span class="p">:</span><span class="w">    </span><span class="c1"># cam1&#39;in cam0&#39;a göre dönüşümü (extrinsic)</span>
+</span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">0.99997</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.00699</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.00337</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">-0.11002</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># Taban çizgisi ~11 cm</span>
+</span><span id="__span-22-19"><a id="__codelineno-22-19" name="__codelineno-22-19"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-0.00701</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.99997</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.00208</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.00003</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-20"><a id="__codelineno-22-20" name="__codelineno-22-20"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">0.00336</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.00210</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.99999</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.00013</span><span class="p p-Indicator">]</span>
+</span><span id="__span-22-21"><a id="__codelineno-22-21" name="__codelineno-22-21"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">       </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">      </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">       </span><span class="nv">1.0</span><span class="w">    </span><span class="p p-Indicator">]</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="3-kamera-imu-kalibrasyonu-en-onemli-adm">3. Kamera-IMU Kalibrasyonu (En Önemli Adım)<a class="headerlink" href="#3-kamera-imu-kalibrasyonu-en-onemli-adm" title="Permanent link">&para;</a></h3>
+<p>Bu adım, kameranın IMU çerçevesine göre tam konumunu ve yönünü ölçer. Ayrıca kamera-IMU zaman gecikmesini de tahmin eder.</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-23-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-23-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-23-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-23-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-23-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-23-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-23-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-23-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-23-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-23-10">10</a></span>
+<span class="normal"><a href="#__codelineno-23-11">11</a></span>
+<span class="normal"><a href="#__codelineno-23-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1"></a><span class="c1"># IMU mesajını kayıt kapsamına ekle</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2"></a>rosbag<span class="w"> </span>record<span class="w"> </span>-O<span class="w"> </span>cam_imu_kalib.bag<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3"></a><span class="w">    </span>/camera/image_raw<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4"></a><span class="w">    </span>/imu/data
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5"></a>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6"></a><span class="c1"># Kayıt sırasında nasıl hareket etmeli?</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7"></a><span class="c1"># ✓ Tüm eksenler boyunca döndür (roll, pitch, yaw)</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8"></a><span class="c1"># ✓ Tüm eksenler boyunca ötelemeli hareket</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9"></a><span class="c1"># ✓ Hedefi her zaman görünür tut</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10"></a><span class="c1"># ✓ Yaklaşık 2-5 dakika</span>
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11"></a><span class="c1"># ✗ Çok hızlı hareket etme (blur)</span>
+</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12"></a><span class="c1"># ✗ Çok yavaş hareket etme (IMU gürültüsü dominant)</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-24-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-24-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-24-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-24-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-24-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-24-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-24-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-24-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-24-10">10</a></span>
+<span class="normal"><a href="#__codelineno-24-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1"></a><span class="c1"># Kalibrasyon (önceki camchain.yaml gerekli)</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2"></a>rosrun<span class="w"> </span>kalibr<span class="w"> </span>kalibr_calibrate_imu_camera<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3"></a><span class="w">    </span>--bag<span class="w"> </span>~/cam_imu_kalib.bag<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4"></a><span class="w">    </span>--cam<span class="w"> </span>~/camchain.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5"></a><span class="w">    </span>--imu<span class="w"> </span>~/imu_params.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6"></a><span class="w">    </span>--target<span class="w"> </span>~/april_target.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7"></a><span class="w">    </span>--dont-show-report
+</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8"></a>
+</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9"></a><span class="c1"># Çıktı:</span>
+</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10"></a><span class="c1"># cam_imu_kalib-results-imucam.txt</span>
+</span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11"></a><span class="c1"># cam_imu_kalib-camchain.yaml  ← T_cam_imu dahil</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">imu_params.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span>
+<span class="normal"><a href="#__codelineno-25-2">2</a></span>
+<span class="normal"><a href="#__codelineno-25-3">3</a></span>
+<span class="normal"><a href="#__codelineno-25-4">4</a></span>
+<span class="normal"><a href="#__codelineno-25-5">5</a></span>
+<span class="normal"><a href="#__codelineno-25-6">6</a></span>
+<span class="normal"><a href="#__codelineno-25-7">7</a></span>
+<span class="normal"><a href="#__codelineno-25-8">8</a></span>
+<span class="normal"><a href="#__codelineno-25-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="c1"># IMU gürültü modeli - datasheet veya Allan varyans&#39;tan al</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="nt">rostopic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/imu/data</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3"></a><span class="nt">update_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200.0</span><span class="w">    </span><span class="c1"># Hz</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4"></a>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5"></a><span class="c1"># Gürültü yoğunlukları (continuous time)</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6"></a><span class="nt">accelerometer_noise_density</span><span class="p">:</span><span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">0.01</span><span class="w">    </span><span class="c1"># m/s²/√Hz</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7"></a><span class="nt">accelerometer_random_walk</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">0.001</span><span class="w">   </span><span class="c1"># m/s³/√Hz</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8"></a><span class="nt">gyroscope_noise_density</span><span class="p">:</span><span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">0.005</span><span class="w">   </span><span class="c1"># rad/s/√Hz</span>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9"></a><span class="nt">gyroscope_random_walk</span><span class="p">:</span><span class="w">         </span><span class="l l-Scalar l-Scalar-Plain">0.0001</span><span class="w">  </span><span class="c1"># rad/s²/√Hz</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">cam_imu_kalib-camchain.yaml (örnek çıktı)</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-26-1">1</a></span>
+<span class="normal"><a href="#__codelineno-26-2">2</a></span>
+<span class="normal"><a href="#__codelineno-26-3">3</a></span>
+<span class="normal"><a href="#__codelineno-26-4">4</a></span>
+<span class="normal"><a href="#__codelineno-26-5">5</a></span>
+<span class="normal"><a href="#__codelineno-26-6">6</a></span>
+<span class="normal"><a href="#__codelineno-26-7">7</a></span>
+<span class="normal"><a href="#__codelineno-26-8">8</a></span>
+<span class="normal"><a href="#__codelineno-26-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1"></a><span class="nt">cam0</span><span class="p">:</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2"></a><span class="w">  </span><span class="nt">T_cam_imu</span><span class="p">:</span><span class="w">          </span><span class="c1"># Kameranın IMU çerçevesindeki yeri</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">0.01486</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">-0.99988</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.00415</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">-0.02164</span><span class="p p-Indicator">]</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">0.99956</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.01497</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.02572</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">-0.06468</span><span class="p p-Indicator">]</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-0.02572</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.00376</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.99966</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.00981</span><span class="p p-Indicator">]</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">       </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">       </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">       </span><span class="nv">1.0</span><span class="w">    </span><span class="p p-Indicator">]</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7"></a><span class="w">  </span><span class="nt">timeshift_cam_imu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-0.00246</span><span class="w">    </span><span class="c1"># saniye - kamera IMU&#39;dan 2.46ms önce geliyor</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8"></a><span class="w">  </span><span class="nt">intrinsics</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">458.654</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">457.296</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">367.215</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">248.375</span><span class="p p-Indicator">]</span>
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9"></a><span class="w">  </span><span class="nt">distortion_coeffs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-0.28340811</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.07395907</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.00019359</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.76187114e-05</span><span class="p p-Indicator">]</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="kalibr-cktsn-openvinse-aktarma">Kalibr Çıktısını OpenVINS'e Aktarma<a class="headerlink" href="#kalibr-cktsn-openvinse-aktarma" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">kalibr_to_openvins.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-27-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-27-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-27-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-27-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-27-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-27-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-27-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-27-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-27-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-27-10">10</a></span>
+<span class="normal"><a href="#__codelineno-27-11">11</a></span>
+<span class="normal"><a href="#__codelineno-27-12">12</a></span>
+<span class="normal"><a href="#__codelineno-27-13">13</a></span>
+<span class="normal"><a href="#__codelineno-27-14">14</a></span>
+<span class="normal"><a href="#__codelineno-27-15">15</a></span>
+<span class="normal"><a href="#__codelineno-27-16">16</a></span>
+<span class="normal"><a href="#__codelineno-27-17">17</a></span>
+<span class="normal"><a href="#__codelineno-27-18">18</a></span>
+<span class="normal"><a href="#__codelineno-27-19">19</a></span>
+<span class="normal"><a href="#__codelineno-27-20">20</a></span>
+<span class="normal"><a href="#__codelineno-27-21">21</a></span>
+<span class="normal"><a href="#__codelineno-27-22">22</a></span>
+<span class="normal"><a href="#__codelineno-27-23">23</a></span>
+<span class="normal"><a href="#__codelineno-27-24">24</a></span>
+<span class="normal"><a href="#__codelineno-27-25">25</a></span>
+<span class="normal"><a href="#__codelineno-27-26">26</a></span>
+<span class="normal"><a href="#__codelineno-27-27">27</a></span>
+<span class="normal"><a href="#__codelineno-27-28">28</a></span>
+<span class="normal"><a href="#__codelineno-27-29">29</a></span>
+<span class="normal"><a href="#__codelineno-27-30">30</a></span>
+<span class="normal"><a href="#__codelineno-27-31">31</a></span>
+<span class="normal"><a href="#__codelineno-27-32">32</a></span>
+<span class="normal"><a href="#__codelineno-27-33">33</a></span>
+<span class="normal"><a href="#__codelineno-27-34">34</a></span>
+<span class="normal"><a href="#__codelineno-27-35">35</a></span>
+<span class="normal"><a href="#__codelineno-27-36">36</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2"></a><span class="sd">Kalibr YAML → OpenVINS YAML dönüşüm yardımcısı</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3"></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6"></a>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7"></a><span class="k">def</span><span class="w"> </span><span class="nf">kalibr_to_openvins</span><span class="p">(</span><span class="n">kalibr_yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cikis_yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">kalibr_yaml</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-27-9"><a id="__codelineno-27-9" name="__codelineno-27-9"></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</span><span id="__span-27-10"><a id="__codelineno-27-10" name="__codelineno-27-10"></a>
+</span><span id="__span-27-11"><a id="__codelineno-27-11" name="__codelineno-27-11"></a>    <span class="n">cam0</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;cam0&quot;</span><span class="p">]</span>
+</span><span id="__span-27-12"><a id="__codelineno-27-12" name="__codelineno-27-12"></a>    <span class="n">T_cam_imu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cam0</span><span class="p">[</span><span class="s2">&quot;T_cam_imu&quot;</span><span class="p">])</span>
+</span><span id="__span-27-13"><a id="__codelineno-27-13" name="__codelineno-27-13"></a>    <span class="n">T_imu_cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">T_cam_imu</span><span class="p">)</span>   <span class="c1"># OpenVINS T_imu_cam bekler</span>
+</span><span id="__span-27-14"><a id="__codelineno-27-14" name="__codelineno-27-14"></a>
+</span><span id="__span-27-15"><a id="__codelineno-27-15" name="__codelineno-27-15"></a>    <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">cam0</span><span class="p">[</span><span class="s2">&quot;intrinsics&quot;</span><span class="p">]</span>
+</span><span id="__span-27-16"><a id="__codelineno-27-16" name="__codelineno-27-16"></a>    <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">cam0</span><span class="p">[</span><span class="s2">&quot;distortion_coeffs&quot;</span><span class="p">]</span>
+</span><span id="__span-27-17"><a id="__codelineno-27-17" name="__codelineno-27-17"></a>
+</span><span id="__span-27-18"><a id="__codelineno-27-18" name="__codelineno-27-18"></a>    <span class="n">ov_config</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-27-19"><a id="__codelineno-27-19" name="__codelineno-27-19"></a>        <span class="s2">&quot;camera_config&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-27-20"><a id="__codelineno-27-20" name="__codelineno-27-20"></a>            <span class="s2">&quot;cam0&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-27-21"><a id="__codelineno-27-21" name="__codelineno-27-21"></a>                <span class="s2">&quot;camera_model&quot;</span><span class="p">:</span> <span class="s2">&quot;pinhole&quot;</span><span class="p">,</span>
+</span><span id="__span-27-22"><a id="__codelineno-27-22" name="__codelineno-27-22"></a>                <span class="s2">&quot;distortion_model&quot;</span><span class="p">:</span> <span class="s2">&quot;radtan&quot;</span><span class="p">,</span>
+</span><span id="__span-27-23"><a id="__codelineno-27-23" name="__codelineno-27-23"></a>                <span class="s2">&quot;intrinsics&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">],</span>
+</span><span id="__span-27-24"><a id="__codelineno-27-24" name="__codelineno-27-24"></a>                <span class="s2">&quot;distortion_coeffs&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">],</span>
+</span><span id="__span-27-25"><a id="__codelineno-27-25" name="__codelineno-27-25"></a>                <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="n">cam0</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">],</span>
+</span><span id="__span-27-26"><a id="__codelineno-27-26" name="__codelineno-27-26"></a>            <span class="p">}</span>
+</span><span id="__span-27-27"><a id="__codelineno-27-27" name="__codelineno-27-27"></a>        <span class="p">},</span>
+</span><span id="__span-27-28"><a id="__codelineno-27-28" name="__codelineno-27-28"></a>        <span class="s2">&quot;T_cam_imu&quot;</span><span class="p">:</span> <span class="n">T_cam_imu</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+</span><span id="__span-27-29"><a id="__codelineno-27-29" name="__codelineno-27-29"></a>        <span class="s2">&quot;calib_camimu_dt&quot;</span><span class="p">:</span> <span class="n">cam0</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timeshift_cam_imu&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</span><span id="__span-27-30"><a id="__codelineno-27-30" name="__codelineno-27-30"></a>    <span class="p">}</span>
+</span><span id="__span-27-31"><a id="__codelineno-27-31" name="__codelineno-27-31"></a>
+</span><span id="__span-27-32"><a id="__codelineno-27-32" name="__codelineno-27-32"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cikis_yaml</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-27-33"><a id="__codelineno-27-33" name="__codelineno-27-33"></a>        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">ov_config</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="__span-27-34"><a id="__codelineno-27-34" name="__codelineno-27-34"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OpenVINS config yazıldı: </span><span class="si">{</span><span class="n">cikis_yaml</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-27-35"><a id="__codelineno-27-35" name="__codelineno-27-35"></a>
+</span><span id="__span-27-36"><a id="__codelineno-27-36" name="__codelineno-27-36"></a><span class="n">kalibr_to_openvins</span><span class="p">(</span><span class="s2">&quot;cam_imu_kalib-camchain.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;openvins_config.yaml&quot;</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<hr />
+<h2 id="allan-varyans-imu-gurultu-parametrelerini-olcmek">Allan Varyans - IMU Gürültü Parametrelerini Ölçmek<a class="headerlink" href="#allan-varyans-imu-gurultu-parametrelerini-olcmek" title="Permanent link">&para;</a></h2>
+<p>IMU datasheet'teki değerler her sensörde farklı. Kendi ölçümünüzü yapın.</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-28-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-28-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-28-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-28-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-28-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-28-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-28-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-28-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-28-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-28-10">10</a></span>
+<span class="normal"><a href="#__codelineno-28-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="c1"># IMU&#39;yu sabit tut, 1-2 saat veri kaydet</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2"></a>rosbag<span class="w"> </span>record<span class="w"> </span>-O<span class="w"> </span>imu_static.bag<span class="w"> </span>/imu/data<span class="w"> </span>-d<span class="w"> </span><span class="m">3600</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3"></a>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4"></a><span class="c1"># Allan varyans analizi</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5"></a><span class="c1"># pip install imu_utils  veya MATLAB/Python araçlarıyla</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6"></a>python3<span class="w"> </span>imu_allan.py<span class="w"> </span>--bag<span class="w"> </span>imu_static.bag<span class="w"> </span>--imu_topic<span class="w"> </span>/imu/data
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7"></a>
+</span><span id="__span-28-8"><a id="__codelineno-28-8" name="__codelineno-28-8"></a><span class="c1"># Çıktı grafik:</span>
+</span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9"></a><span class="c1"># - Eğim -½ bölgesi → Angle/Velocity Random Walk (gürültü yoğunluğu)</span>
+</span><span id="__span-28-10"><a id="__codelineno-28-10" name="__codelineno-28-10"></a><span class="c1"># - Minimum nokta → Bias instability</span>
+</span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11"></a><span class="c1"># - Eğim +½ bölgesi → Rate/Acceleration Random Walk (bias sürüklenme)</span>
+</span></code></pre></div></td></tr></table></div>
+<hr />
+<h2 id="tam-kurulum-aks-kamera-imu">Tam Kurulum Akışı (Kamera + IMU)<a class="headerlink" href="#tam-kurulum-aks-kamera-imu" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+    A["1. Donanım\nKamera + IMU fiziksel monte"] --&gt; B
+    B["2. ROS Sürücüler\nKamera driver + IMU driver"] --&gt; C
+    C["3. Senkronizasyon\nZaman damgaları senkron mu?"] --&gt; D
+    D["4. Allan Varyans\nIMU gürültü parametrelerini ölç"] --&gt; E
+    E["5. Kamera Intrinsic\nKalibr ile satranç tahtası"] --&gt; F
+    F["6. Kamera-IMU Extrinsic\nKalibr ile AprilGrid + hareket"] --&gt; G
+    G["7. OpenVINS Konfigürasyonu\nKalibr çıktısını OpenVINS'e aktar"] --&gt; H
+    H["8. Test\nEuRoC veya kendi dataset"] --&gt; I{ATE &lt; 5 cm?}
+    I --&gt;|Evet| J["✓ Sistem hazır"]
+    I --&gt;|Hayır| K["Kalibrasyon tekrarla\nveya parametre ayarla"]
+    K --&gt; F</code></pre>
+<h3 id="sk-karslaslan-sorunlar">Sık Karşılaşılan Sorunlar<a class="headerlink" href="#sk-karslaslan-sorunlar" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Kamera-IMU Senkronizasyon</p>
+<p>Zaman damgaları hatalıysa VIO asla doğru çalışmaz. <code>timeshift_cam_imu</code> doğru tahmin edilmeli.</p>
+<p>Test: <code>ros2 topic echo /camera/image_raw --field header.stamp</code> ve <code>/imu/data --field header.stamp</code> karşılaştır - fark sabit ve küçük (&lt; 10ms) olmalı.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Kamera Titremeye Karşı Hassas</p>
+<p>Stereo kameranın iki kafası arasındaki extrinsic, titreme veya ısıl genleşmeyle değişir. Saha öncesi kalibrasyon yenile.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Hızlı Parametre Tahmini</p>
+<p>IMU datasheet değerleri başlangıç için yeterli. Gerçek Allan varyans yoksa <code>gyro_n</code> ve <code>accel_n</code> için datasheet değerini 10× büyütün - aşırı güvensiz başlamak, çok güvenli başlamaktan iyidir.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">OpenVINS Başlatma</p>
+<p>Sistem başlarken <strong>2-3 saniye sabit tut</strong> → IMU bias başlangıç tahmini için. Ardından <strong>her eksende yavaş hareket et</strong> → ölçek ve extrinsic hızlı yakınsar.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Başa dön
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Altbilgi" >
+        
+          
+          <a href="../ros2/" class="md-footer__link md-footer__link--prev" aria-label="Önceki: ROS2">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Önceki
+              </span>
+              <div class="md-ellipsis">
+                ROS2
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../gazebo/" class="md-footer__link md-footer__link--next" aria-label="Sonraki: Gazebo">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Sonraki
+              </span>
+              <div class="md-ellipsis">
+                Gazebo
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.prune", "navigation.indexes", "content.code.copy", "content.code.annotate", "content.tabs.linked", "content.code.select", "content.code.wrap", "content.action.view", "search.suggest", "search.highlight", "toc.integrate", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Kopyaland\u0131", "clipboard.copy": "Kopyala", "search.result.more.one": "Bu sayfada 1 tane daha", "search.result.more.other": "Bu sayfada # tane daha", "search.result.none": "E\u015fle\u015fen dok\u00fcman bulunamad\u0131", "search.result.one": "1 dok\u00fcman bulundu", "search.result.other": "# dok\u00fcman bulundu", "search.result.placeholder": "Aramaya ba\u015flamak i\u00e7in yaz\u0131n", "search.result.term.missing": "Eksik", "select.version": "Versiyon se\u00e7"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../assets/js/extra.js"></script>
+      
+        <script src="../../../assets/js/mathjax-config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

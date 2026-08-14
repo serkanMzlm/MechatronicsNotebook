@@ -150,7 +150,7 @@ sudo apt update
 pip install numpy
 pip install numpy==1.25.0       # Belirli sürüm
 pip install "numpy>=1.20,<2.0"  # Sürüm aralığı
-pip install -r requirements.txt  # Dosyadan toplu kur
+pip install -r requirements.txt   # Dosyadan toplu kur (Ortamı içe aktar)
 pip install -e .                  # Geliştirme (editable) modu
 
 # Güncelleme
@@ -162,7 +162,7 @@ pip install --upgrade pip         # pip'i güncelle
 pip show numpy                    # Paket bilgisi
 pip list                          # Kurulu paketler
 pip freeze                        # requirements.txt formatında
-pip freeze > requirements.txt
+pip freeze > requirements.txt     # Ortamı dışa aktar
 
 # Kaldırma
 pip uninstall numpy
@@ -175,6 +175,9 @@ pip search numpy                  # Eski pypi API kaldırıldı; pip index kulla
 !!! warning "pip ile Sistem Python'u Değiştirme"
     Ubuntu/Debian'da `sudo pip install ...` sistem Python paketlerini bozabilir. `python3 -m pip install --user ...` (kullanıcı bazlı) veya sanal ortam kullanın.
 
+
+!!! note "pyproject.toml (Modern Yol)"
+    `requirements.txt` yerine modern projeler `pyproject.toml` (PEP 517/518) kullanır. `pip install .` veya `pip install -e .` (editable) ile proje yüklenir.
 
 ```bash title="Sanal Oram"
 # Oluştur

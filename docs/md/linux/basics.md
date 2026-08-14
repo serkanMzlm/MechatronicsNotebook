@@ -1,4 +1,4 @@
-# Linux Temel Bilgiler
+# Temel Linux 
 
 ```mermaid
 graph LR
@@ -10,36 +10,36 @@ graph LR
 - Linux, **Kernel + Userspace + Toolchain + Konfigürasyon** katmanlarından oluşan özgür ve açık kaynaklı bir işletim sistemi çekirdeğidir.
 
 -  **Büyük - küçük harfe duyarlıdır.** (`README.md` ≠ `readme.md`)
+- **inode**     Dosyanın veri bloklarını ve meta bilgilerini (izin, boyut, tarih) tutan benzersiz yapı. 
 - **Soft Link** Hedef dosyanın yoluna referans; asıl dosya silinirse işlevsiz kalır.                    
 - **Hard Link** Dosyanın inode'una doğrudan bağlanır; asıl dosya silinse de veri korunur.               
-- **inode**     Dosyanın veri bloklarını ve meta bilgilerini (izin, boyut, tarih) tutan benzersiz yapı. 
 - **Daemon**    Sistem başlangıcında başlayan, arka planda çalışan uzun ömürlü servisler.               
-- **Process**   Bellekte yürütülen, belirli bir yaşam döngüsüne sahip aktif program örneği.             
 - **Scheduler** CPU zamanını process'ler arasında paylaştıran kernel alt sistemi.                       
 - **Polling**   CPU'nun bir donanımın durumunu belirli aralıklarla aktif olarak kontrol etmesi.         
-- **Gizli Dosyalar:** `.` ile başlayan dosyalar gizlidir; `ls -a` ile görüntülenebilir. `.bashrc`, `.gitconfig`, `.ssh/` gibi yapılandırma dosyaları bu gruptadır.
+- **Gizli Dosyalar:** `.` ile başlayan dosyalar gizlidir. (`.bashrc`, `.gitconfig`, `.ssh/`)
 
-- `#` Terminalde **root** kullanıcısını simgeler. Shell betiklerinde yorum satırıdır.         
-- `$` Terminalde standart kullanıcıyı simgeler.                                               
+- Terminalde `#` **root** kullanıcı (Shell'de yorum satırı) `$` standart kullanıcı simgesidir.                                               
 - `>` Stdout'u dosya varsa **üzerine yazar**. `>>` dosyanın **sonuna ekler** mevcut veriyi korur.       
 - `2>` Yalnızca **stderr** (hata mesajları) dosyaya yönlendirir.      
 - `<` Stdin'i klavye yerine **dosyadan alır**.                       
 - `&>` Hem stdout hem stderr'ı aynı dosyaya yönlendirir.              
-- `tee` Çıktıyı hem terminale basar hem dosyaya yazar. `-a` ile ekler. 
-- `;` Komutları sırayla çalıştırır; başarı durumu gözetilmez.        
-- `&&` Sol komut başarılıysa sağdakini çalıştırır.                    
-- `||` Sol komut başarısızsa sağdakini çalıştırır.                    
-- `&` Komutu **arka planda** çalıştırır; terminal serbest kalır.     
+- `tee` Çıktıyı hem terminale hem dosyaya yazar.  
+- `;` Komutları sırayla çalıştırır. (Başarı durumu gözetilmez)        
+- `&&` Sol komut başarılıysa sağdakini çalıştırır. `||` Sol komut başarısızsa sağdakini çalıştırır.                    
+- `&` Komutu **arka planda** çalıştırır.     
 - `|` Bir komutun çıktısını bir sonrakinin girdisine bağlar.         
 
 ```bash
 echo "merhaba" > dosya.txt          # Dosyaya yaz (üzerine yazar)
+
 ls >> dosya.txt                      # Dosyaya ekle
 cat < dosya.txt                      # Dosyadan oku
 telnet localhost 2> hata.txt         # Hataları dosyaya yönlendir
 ls /tmp 2>/dev/null                  # Hata mesajını yok say
 komut &> tum_cikti.txt               # Stdout + stderr → dosya
+
 echo "merhaba" | tee -a dosya.txt   # Hem ekrana hem dosyaya yaz
+
 cmd1 && cmd2                         # cmd1 başarılıysa cmd2 çalışır
 cmd1 || cmd2                         # cmd1 başarısızsa cmd2 çalışır
 sleep 10 &                           # Arka planda çalıştır
@@ -49,34 +49,47 @@ sleep 10 &                           # Arka planda çalıştır
 
 | Dizin            | Açıklama                                                                        |
 | ---------------- | ------------------------------------------------------------------------------- |
-| `/`              | Tüm dosya sisteminin kökü.                                                      |
+| `/`              | Tüm dosya sisteminin kökü (`root`)                                              |
 | `/bin`, `/sbin`  | Kritik sistem komutları. Modern distro'larda `/usr/bin`'e symlink.              |
 | `/etc`           | Statik sistem yapılandırma dosyaları (ağ, kullanıcı, güvenlik).                 |
 | `/usr`           | Paylaşılan kullanıcı programları ve kütüphaneler (salt okunur).                 |
 | `/lib`, `/lib64` | Dinamik kütüphaneler ve kernel modülleri (`/lib/modules/<versiyon>/`).          |
 | `/dev`           | Donanım aygıt düğümleri - UART, I2C, SPI, disk vb. kernel'in userspace arayüzü. |
-| `/proc`          | Kernel runtime durumunun sanal görünümü (procfs).                               |
 | `/sys`           | Kernel nesne modelinin userspace arayüzü (sysfs).                               |
 | `/var`           | Çalışma zamanında değişen kalıcı veriler - loglar, state.                       |
 | `/tmp`           | Geçici dosyalar; genellikle RAM'de (tmpfs). Yeniden başlatmada silinir.         |
 | `/boot`          | Kernel image, DTB, initramfs gibi önyükleme dosyaları.                          |
-
-!!! info "/proc - Debug İçin Kullanışlı Dosyalar"
-    | Dosya              | İçerik                           |
-    | ------------------ | -------------------------------- |
-    | `/proc/cmdline`    | Kernel başlatma parametreleri    |
-    | `/proc/meminfo`    | Bellek kullanım bilgisi          |
-    | `/proc/cpuinfo`    | İşlemci bilgisi                  |
-    | `/proc/<pid>/`     | Belirli bir process'in detayları |
-    | `/proc/<pid>/maps` | Process bellek haritası          |
-    | `/proc/<pid>/fd/`  | Açık dosya tanımlayıcıları       |
+| `/proc`          | Kernel runtime durumunun sanal görünümü (procfs).                               |
+|                  | `/proc/cmdline`     ->  Kernel başlatma parametreleri                           |
+|                  | `/proc/meminfo`     ->  Bellek kullanım bilgisi                                 |
+|                  | `/proc/cpuinfo`     ->  İşlemci bilgisi                                         |
+|                  | `/proc/<pid>/`      ->  Belirli bir process'in detayları                        |
+|                  | `/proc/<pid>/maps`  ->  Process bellek haritası                                 |
+|                  | `/proc/<pid>/fd/`   ->  Açık dosya tanımlayıcıları                              |
 
 
 ```bash
 $ ls -l
+total 28
+drwxrwxr-x  4 serkan serkan 4096 Ağu  6 16:32 docs
+-rw-rw-r--  1 serkan serkan 5676 Ağu 12 16:41 mkdocs.yml
+-rw-rw-r--  1 serkan serkan   24 Ağu 10 15:58 README.md
 
 #  Tür     Sahip    Grup     Diğer
-#   d      r w x    r w -    - w -#
+#   d      r w x    r w -    - w 
+
+
+# Tür:
+# `-`: Düzenli dosya (Regular File)                
+# `d`: Dizin (Directory)                           
+# `l`: Sembolik Link                               
+# `c`: Karakter Aygıtı (terminal, seri port)       
+# `b`: Blok Aygıtı (disk, USB)                     
+# `s`: Soket (Socket)                              
+# `p`: Adlandırılmış Boru Hattı (Named Pipe / FIFO)
+
+
+#   İzinler: 
 #   r (Read / Okuma)       = 4
 #   w (Write / Yazma)      = 2
 #   x (Execute / Çalıştır) = 1
@@ -92,87 +105,69 @@ chgrp arge dizin              # Sadece grup
 ```
 
 
-| Karakter | Tür                                          |
-| :------: | -------------------------------------------- |
-|   `-`    | Düzenli dosya (Regular File)                 |
-|   `d`    | Dizin (Directory)                            |
-|   `l`    | Sembolik Link                                |
-|   `c`    | Karakter Aygıtı (terminal, seri port)        |
-|   `b`    | Blok Aygıtı (disk, USB)                      |
-|   `s`    | Soket (Socket)                               |
-|   `p`    | Adlandırılmış Boru Hattı (Named Pipe / FIFO) |
-
-
 ## Regular Expression (Regex)
 
-=== "Temel Karakterler"
+- **BRE (Basic):** `grep`, `sed` varsayılanı. `+`, `?`, `|`, `()` için `\` gerekir.
+- **ERE (Extended):** `grep -E`, `egrep`, `awk`. Özel karakterler doğrudan kullanılır.
 
-    | Karakter | Anlamı                             | Örnek         | Eşleşen                      |
-    | -------- | ---------------------------------- | ------------- | ---------------------------- |
-    | `.`      | Herhangi bir karakter              | `a.c`         | `abc`, `axc`, `a1c`          |
-    | `*`      | Öncekinden 0 veya daha fazla       | `ab*c`        | `ac`, `abc`, `abbc`          |
-    | `+`      | Öncekinden 1 veya daha fazla (ERE) | `ab+c`        | `abc`, `abbc`                |
-    | `?`      | Önceki opsiyonel (ERE)             | `colou?r`     | `color`, `colour`            |
-    | `^`      | Satır başı                         | `^Hata`       | "Hata" ile başlayan satırlar |
-    | `$`      | Satır sonu                         | `Hata$`       | "Hata" ile biten satırlar    |
-    | `[]`     | Karakter sınıfı                    | `[abc]`       | `a`, `b` veya `c`            |
-    | `[^]`    | Hariç tutma                        | `[^0-9]`      | Rakam olmayan her karakter   |
-    | `{n,m}`  | n ile m arası tekrar               | `a{2,4}`      | `aa`, `aaa`, `aaaa`          |
-    | `()`     | Gruplama                           | `(ab)+`       | `ab`, `abab`, `ababab`       |
-    | `\|`     | Alternatif (veya)                  | `kedi\|köpek` | `kedi` veya `köpek`          |
-    | `\d`     | Rakam                              | `\d{3}`       | `123`                        |
-    | `\w`     | Kelime karakteri                   | `\w+`         | `merhaba_123`                |
-    | `\s`     | Boşluk karakteri                   | `\s+`         | boşluk, tab                  |
+| Karakter | Anlamı                             | Örnek         | Eşleşen                      |
+| -------- | ---------------------------------- | ------------- | ---------------------------- |
+| `.`      | Herhangi bir karakter              | `a.c`         | `abc`, `axc`, `a1c`          |
+| `*`      | Öncekinden 0 veya daha fazla       | `ab*c`        | `ac`, `abc`, `abbc`          |
+| `+`      | Öncekinden 1 veya daha fazla (ERE) | `ab+c`        | `abc`, `abbc`                |
+| `?`      | Önceki opsiyonel (ERE)             | `colou?r`     | `color`, `colour`            |
+| `^`      | Satır başı                         | `^Hata`       | "Hata" ile başlayan satırlar |
+| `$`      | Satır sonu                         | `Hata$`       | "Hata" ile biten satırlar    |
+| `[]`     | Karakter sınıfı                    | `[abc]`       | `a`, `b` veya `c`            |
+| `[^]`    | Hariç tutma                        | `[^0-9]`      | Rakam olmayan her karakter   |
+| `{n,m}`  | n ile m arası tekrar               | `a{2,4}`      | `aa`, `aaa`, `aaaa`          |
+| `()`     | Gruplama                           | `(ab)+`       | `ab`, `abab`, `ababab`       |
+| `\|`     | Alternatif (veya)                  | `kedi\|köpek` | `kedi` veya `köpek`          |
+| `\d`     | Rakam                              | `\d{3}`       | `123`                        |
+| `\w`     | Kelime karakteri                   | `\w+`         | `merhaba_123`                |
+| `\s`     | Boşluk karakteri                   | `\s+`         | boşluk, tab                  |
 
-=== "POSIX Sınıfları"
 
-    | Sınıf         | Anlamı               |
-    | ------------- | -------------------- |
-    | `[[:digit:]]` | Rakamlar (0–9)       |
-    | `[[:alpha:]]` | Harfler              |
-    | `[[:alnum:]]` | Harf ve rakamlar     |
-    | `[[:space:]]` | Boşluk karakterleri  |
-    | `[[:upper:]]` | Büyük harfler        |
-    | `[[:lower:]]` | Küçük harfler        |
-    | `[[:punct:]]` | Noktalama işaretleri |
+| POSIX Sınıf   | Anlamı               |
+| ------------- | -------------------- |
+| `[[:digit:]]` | Rakamlar (0–9)       |
+| `[[:alpha:]]` | Harfler              |
+| `[[:alnum:]]` | Harf ve rakamlar     |
+| `[[:space:]]` | Boşluk karakterleri  |
+| `[[:upper:]]` | Büyük harfler        |
+| `[[:lower:]]` | Küçük harfler        |
+| `[[:punct:]]` | Noktalama işaretleri |
 
-=== "grep Örnekleri"
 
-    ```bash
-    grep "hata" dosya.log                                          # Tam eşleşme
-    grep -i "hata" dosya.log                                       # Büyük/küçük harf duyarsız
-    grep "^Error" dosya.log                                        # Satır başı
-    grep "failed$" dosya.log                                       # Satır sonu
-    grep -E "[0-9]+" dosya.log                                     # ERE ile rakam ara
-    grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" dosya.log              # IP adresi
-    grep -E "hata|uyarı" dosya.log                                 # Birden fazla kalıp
-    grep -v "debug" dosya.log                                      # Eşleşmeyenleri göster
-    grep -r -E "TODO|FIXME" /proje/                                # Özyinelemeli arama
-    grep -o -E "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" dosya.txt
-    ```
+```bash title="grep Örnekleri"
+grep "hata" dosya.log                                          # Tam eşleşme
+grep -i "hata" dosya.log                                       # Büyük/küçük harf duyarsız
+grep "^Error" dosya.log                                        # Satır başı
+grep "failed$" dosya.log                                       # Satır sonu
+grep -E "[0-9]+" dosya.log                                     # ERE ile rakam ara
+grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" dosya.log              # IP adresi
+grep -E "hata|uyarı" dosya.log                                 # Birden fazla kalıp
+grep -v "debug" dosya.log                                      # Eşleşmeyenleri göster
+grep -r -E "TODO|FIXME" /proje/                                # Özyinelemeli arama
+grep -o -E "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" dosya.txt
+```
 
-=== "Yaygın Kalıplar"
+```text title="Yaygın Kalıplar"
+# E-posta
+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
 
-    ```text
-    # E-posta
-    [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
+# IPv4 adresi
+^([0-9]{1,3}\.){3}[0-9]{1,3}$
 
-    # IPv4 adresi
-    ^([0-9]{1,3}\.){3}[0-9]{1,3}$
+# Tarih (YYYY-MM-DD)
+^[0-9]{4}-[0-9]{2}-[0-9]{2}$
 
-    # Tarih (YYYY-MM-DD)
-    ^[0-9]{4}-[0-9]{2}-[0-9]{2}$
+# URL
+^https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/\S*)?$
 
-    # URL
-    ^https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/\S*)?$
-
-    # Türkiye telefon (05XX XXX XX XX)
-    ^0[0-9]{3}[ ]?[0-9]{3}[ ]?[0-9]{2}[ ]?[0-9]{2}$
-    ```
-
-!!! note "BRE vs ERE"
-    - **BRE (Basic):** `grep`, `sed` varsayılanı. `+`, `?`, `|`, `()` için `\` gerekir.
-    - **ERE (Extended):** `grep -E`, `egrep`, `awk`. Özel karakterler doğrudan kullanılır.
+# Türkiye telefon (05XX XXX XX XX)
+^0[0-9]{3}[ ]?[0-9]{3}[ ]?[0-9]{2}[ ]?[0-9]{2}$
+```
 
 
 ## Sistem Günlükleri
@@ -199,16 +194,6 @@ dmesg -T                          # İnsan okunabilir timestamp
 
 
 ## Run Levels ve Systemd Targets
-
-```mermaid
-graph LR
-    BIOS["BIOS/UEFI"] --> BOOT["Bootloader<br/>GRUB2"]
-    BOOT --> KERNEL["Kernel<br/>+ initramfs"]
-    KERNEL --> INIT["systemd PID=1"]
-    INIT --> TARGET["default.target<br/>graphical.target"]
-    TARGET --> SVC["Servisler<br/>SSH · Network · Display"]
-    SVC --> LOGIN["Login Prompt / GUI"]
-```
 
 | Run Level | Anlamı                | systemd Target      |
 | :-------: | --------------------- | ------------------- |

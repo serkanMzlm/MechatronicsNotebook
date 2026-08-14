@@ -1,18 +1,96 @@
 # C Programlama
 
-## Temel Kavramlar
+- **File Scope (Global):** Tüm dosya genelinde görünürdür                      
+- **Block Scope (Local):** Yalnızca tanımlandığı `{ }` bloğu içinde geçerlidir 
+- **Döngü Yapıları:** `for`, `while`, `do-while` (`break` döngüyü sonlandırır, `continue` bir sonraki iterasyona geçer, `return` fonksiyondan çıkar.)
+- **Koşul Yapıları:** `if-else`, `switch-case`, `? :`, `goto`    
 
-| Kapsam (Scope)          | Açıklama                                            |
-| ----------------------- | --------------------------------------------------- |
-| **File Scope (Global)** | Tüm dosya genelinde görünürdür                      |
-| **Block Scope (Local)** | Yalnızca tanımlandığı `{ }` bloğu içinde geçerlidir |
+    !!! note "Jump Table Nasıl Çalışır?"
+        1. `case` değerleri ardışık ve düzenli olduğunda derleyici gizli bir pointer dizisi (**jump table**) oluşturur. 
+        2. Kontrol değişkeni doğrudan bu dizinin indeksi olarak kullanılır (İşlemci `O(1)` karmaşıklıkla doğrudan ilgili bloğa atlar)
+        3. Eğer `case` değerleri çok dağınıksa (`case 1:`, `case 1500:`) derleyici tablo oluşturamaz ve arka planda yavaş `if-else` mantığına döner.
+        4. **Fall-Through:** `case` bloğunda `break;` koyulmazsa, kod bir sonraki `case`'in içine de girer.
+
+- **Bit-Field:** `struct` içinde `:` kullanılarak bir değişkenin bellekte **tam olarak kaç bit** kaplayacağı belirlenir.
+    - İşlemciler belleği en az **byte** seviyesinde adresler. Dolayısıyla bit alanlarının adresi alınamaz (`&araba.led_durumu` → `cannot take address of bit-field` hatası).
+    - Bit alanlarından oluşan dizi oluşturulamaz (`led_durumu[5]` geçersiz).
+    - Bitlerin yerleşim sırası (Big/Little-Endian) derleyiciye ve mimariye bağlıdır. Ham paketleri doğrudan Bit-Field struct'ına `memcpy` etmek tehlikelidir.
+
+    !!! danger "Bit-Field Overflow ve İşaret Tuzağı"
+
+        Bit alanı `unsigned` yerine `int` (signed) seçilirse MSB işaret biti olur bu yüzden Donanım register'ları için kesinlikle `unsigned int` veya `uint8_t` / `uint32_t` kullanılmalıdır.
+
+        ```c
+        struct Tehlikeli { int durum : 1; };  // 1 bitlik signed alan
+        struct Tehlikeli t;
+        t.durum = 1;
+        printf("%d\n", t.durum);  // Çıktı: 1 değil, -1 !
+        ```
+
+- **Endianness:** Birden fazla byte kaplayan bir verinin bellekte hangi byte sırasıyla yazılacağını belirleyen mimari kuraldır.
+    - **MSB** (Most Significant Byte) En yüksek değeri taşıyan byte
+    - **LSB** (Least Significant Byte) En düşük değeri taşıyan byte 
+
+    !!! example "4 byte'lık `int sayi = 0x12345678;`"
+        | Adres  | Little-Endian | Big-Endian |
+        | ------ | :-----------: | :--------: |
+        | `0x00` |   `78` (LSB)  | `12` (MSB) |
+        | `0x01` |      `56`     |    `34`    |
+        | `0x02` |      `34`     |    `56`    |
+        | `0x03` |   `12` (MSB)  | `78` (LSB) |
+
+    ```c title="Sistemin Endianness'ini tespit etme"
+    unsigned int test = 1;    // Bellekte: 0x00000001
+    char *p = (char *)&test;
+
+    if (*p == 1)
+        printf("Little-Endian\n");  // [01 00 00 00]
+    else
+        printf("Big-Endian\n");     // [00 00 00 01]
+    ```
+
+- **Two's Complement:** Signed tam sayıların bellekte negatif değerlerini temsil etmek için kullanılan yöntemdir. Bir sayının negatifini almak için tüm bitleri tersine çevirip sonuca `1` eklenir. En anlamlı bit (MSB) işaret bitidir: `0` pozitif, `1` negatiftir. Bu yöntem donanımda toplama ve çıkarma işlemlerinin **aynı devreyle** yapılabilmesini sağlar;
+
+    !!! example "`-5` sayısını 8 bit ile temsil etmek"
+
+        1. Pozitif halini yaz:         `5      = 0000 0101`
+        2. Bitleri ters çevir (tümle): `~5     = 1111 1010`
+        3. 1 ekle:                     `~5 + 1 = 11111011` → `0xFB`
+
+        Doğrulama - `5 + (-5)`:
+        ```
+          00000101  (+5)
+        + 11111011  (-5)
+        ----------
+        100000000  ← 9. bit taşar ve dışarı atılır → sonuç: 00000000 = 0 ✓
+        ```
+
+| Durum                      | Açıklama                                                               |
+| -------------------------- | ---------------------------------------------------------------------- |
+| `signed char`: `127 + 1`   | **Signed Overflow** → Undefined Behavior (UB); pratikte `-128` görülür |
+| `unsigned char`: `255 + 1` | Tanımlı davranış: `0`'a döner (modular arithmetic)                     |
 
 
-| Tür Dönüşümü               | Açıklama                           | Örnek                     |
-| -------------------------- | ---------------------------------- | ------------------------- |
-| **Implicit (Örtük)**       | Derleyicinin otomatik dönüştürmesi | `int x = 3.14;` → `x = 3` |
-| **Explicit (Açık / Cast)** | Geliştiricinin manuel dönüştürmesi | `int x = (int)y;`         |
+- **Dosya Türleri**: C'de dosyalar açılış moduna göre ikiye ayrılır; aynı dosya içeriği hangi modla açıldığına göre farklı işlenir.
+    - **Text** (`"r"`, `"w"`): Satır sonu karakterleri işletim sistemine göre otomatik dönüştürülür; insan tarafından doğrudan okunup düzenlenebilir olması en büyük avantajıdır.
+    - **Binary** (`"rb"`, `"wb"`): Byte'lara dokunulmaz; gömülü sistemlerde tercih edilir, çünkü dönüşüm yapılmadığı için hem daha hızlıdır hem de veri boyutunu değiştirmez.
+    - `fseek` konumlanma sabitleri: `SEEK_SET` baştan, `SEEK_CUR` bulunulan yerden, `SEEK_END` sondan `offset` kadar ilerler.
 
+- **Tür Dönüşümü:** Bir değerin bir veri tipinden başka bir veri tipine çevrilmesidir
+    - **Implicit:** Derleyicinin otomatik dönüştürmesi (`int x = 3.14;` → `x = 3`).
+    - **Explicit / Cast:** Geliştiricinin manuel dönüştürmesi (`int x = (int)y;`).
+
+---
+
+- **Prefix:** `++i` Hemen artırır, nesnenin referansını döndürür; geçici nesne oluşturmaz.
+- **Postfix:** `i++` Kopyayı alır, ardından artırır, kopyayı döndürür; geçici nesne oluşturduğu için maliyetlidir.
+
+- `sizeof` Veri tipi veya değişkenin bellekte kapladığı boyutu **byte** cinsinden döndürür. Fonksiyon değil, derleme zamanı operatörüdür (`sizeof(a++)` ifadesinde `a++` çalıştırılmaz)
+- `const` Verinin değerini sabitler; yanlışlıkla değiştirilmeye karşı koruma sağlar.
+- `typedef` Mevcut bir veri tipine takma isim verir; gerçek bir C deyimidir, tip güvenliği sağlar.
+- `sprintf(buf, fmt, ...)` Formatlanmış veriyi ekrana değil, `char` dizisine yazar.        
+- `sscanf(str, fmt, ...)` Karakter dizisini belirtilen formatla analiz edip veri çıkarır.
+- `__attribute__((packed))` hizalama boşluklarını (padding) engelleyerek yapının bellekte tam ihtiyaç duyduğu boyutta yer kaplamasını sağlar. Gömülü sistemlerde donanım register haritalarına doğrudan map etmek için kullanılır.
 
 | Depolama Sınıfları | Yaşam Süresi | Kapsam | Açıklama                                                           |
 | -------------------| ------------ | ------ | ------------------------------------------------------------------ |
@@ -24,119 +102,17 @@
 | `volatile`         | Block        | Local  | Derleyici optimizasyonunu engeller; doğrudan bellekten okur        |
 
 
-| Operatör  | Açıklama                                                                                                                                                                     |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sizeof`  | Veri tipi veya değişkenin bellekte kapladığı boyutu **byte** cinsinden döndürür. Fonksiyon değil, derleme zamanı operatörüdür (`sizeof(a++)` ifadesinde `a++` çalıştırılmaz) |
-| `const`   | Verinin değerini sabitler; yanlışlıkla değiştirilmeye karşı koruma sağlar                                                                                                    |
-| `typedef` | Mevcut bir veri tipine takma isim (alias) verir; gerçek bir C deyimidir, tip güvenliği sağlar                                                                                |
+| Veri Türleri      | Boyut                        | Açıklama                                                |
+| ----------------- | -----------------------------| ------------------------------------------------------- |
+| `char`            | 1 byte                       | Karakter veya küçük tam sayı                            |
+| `int`             | 2 veya 4 byte                | Tam sayı (mimariye bağlı)                               |
+| `float`           | 4 byte                       | Tek hassasiyetli ondalık                                |
+| `double`          | 8 byte                       | Çift hassasiyetli ondalık                               |
+| `void`            | -                            | Tip yok; fonksiyon dönüş tipi veya generic pointer için |
+| `enum`            | `int` boyutu                 | Numaralandırma; varsayılan olarak `0`'dan başlar        |
+| `struct`          | Üyelerin toplamı (+ padding) | Her üye kendi bellek alanına sahiptir                   |
+| `union`           | En büyük üye kadar           | Tüm üyeler aynı bellek alanını paylaşır                 |
 
-
-| Fonksiyon                | Açıklama                                                       |
-| ------------------------ | -------------------------------------------------------------- |
-| `sprintf(buf, fmt, ...)` | Formatlanmış veriyi ekrana değil, `char` dizisine yazar        |
-| `sscanf(str, fmt, ...)`  | Karakter dizisini belirtilen formatla analiz edip veri çıkarır |
-
-
-| Dosya Mod  | Flagler        | Açıklama                                                             |
-| ---------- | -------------- | -------------------------------------------------------------------- |
-| **Text**   | `"r"`, `"w"`   | Satır sonu karakterleri işletim sistemine göre otomatik dönüştürülür |
-| **Binary** | `"rb"`, `"wb"` | Diskteki byte'lara hiç dokunulmaz; gömülü sistemlerde tercih edilir  |
-
-
-| fseek Sabiti | Açıklama                                        |
-| ------------ | ----------------------------------------------- |
-| `SEEK_SET`   | Dosyanın en başından `offset` kadar ilerler     |
-| `SEEK_CUR`   | İmlecin bulunduğu yerden `offset` kadar ilerler |
-| `SEEK_END`   | Dosyanın sonundan geriye/ileriye gider          |
-
-
-!!! tip "Not"
-    1. **`static`:** Bir global değişken veya fonksiyonun başına `static` koyulursa, o sembol yalnızca tanımlandığı `.c` dosyasına özel (private) hale gelir. Başka bir dosya onu `extern` ile bile çağıramaz. İsim çakışmalarını önlemek için etkili bir yöntemdir.
-
-    2. **`volatile`:** Donanım register'ları, ISR içinde değiştirilen değişkenler veya paylaşılan bellek alanları `volatile` ile işaretlenmelidir. Aksi hâlde derleyici optimizasyon aşamasında bu değişkene yapılan erişimleri kaldırabilir.
-
-
-!!! example "#define vs typedef"
-    ```c
-    #define PTR_INT int*
-    typedef int* t_ptr_int;
-
-    PTR_INT  p1, p2;      // p1: pointer, p2: int  ← yanlış davranış!
-    t_ptr_int p3, p4;     // p3 ve p4: ikisi de pointer ← doğru
-    ```
-
-
-## Koşul ve Döngüler
-
-- **Koşul Yapıları:** `if-else`, `switch-case`, `? :`, `goto`
-- **Döngü Yapıları:** `for`, `while`, `do-while` (`break` döngüyü sonlandırır, `continue` bir sonraki iterasyona geçer, `return` fonksiyondan çıkar.)
-
-!!! note "Jump Table Nasıl Çalışır?"
-    `case` değerleri ardışık ve düzenli olduğunda derleyici gizli bir pointer dizisi (jump table) oluşturur. Kontrol değişkeni doğrudan bu dizinin indeksi olarak kullanılır; işlemci `O(1)` karmaşıklıkla doğrudan ilgili bloğa atlar. Eğer `case` değerleri çok dağınıksa (`case 1:`, `case 1500:`) derleyici tablo oluşturamaz ve arka planda yavaş `if-else` mantığına döner.
-
-!!! danger "break Unutma Tuzağı (Fall-Through)"
-    Bir `case` bloğunun sonuna `break;` koyulmazsa, kod bir sonraki `case`'in içine de girer. Bu bilinçli yapılıyorsa, derleyici uyarısından kaçınmak için `[[fallthrough]];` (C23) özniteliği kullanılmalıdır.
-
-!!! example "`;` kullanmadan çıktı alma"
-
-    ```c
-    if (printf("Hello World")) {}  // bir kez
-    while (printf("Hello World"))  // sonsuz
-    ```
-
-!!! tip "Cache Locality ve Döngü Sırası"
-    C dilinde çok boyutlu diziler bellekte **satır satır (Row-Major Order)** saklanır. Döngülerin sırası performansı ciddi ölçüde etkiler.
-
-    ```c
-    // DOĞRU: Cache Friendly - yan yana bellek hücrelerine sıralı erişim
-    for (int i = 0; i < 1000; i++)
-        for (int j = 0; j < 1000; j++)
-            matris[i][j] = 0;
-
-    // YANLIŞ: Cache Miss - bellekte sürekli uzak adreslere atlanır
-    for (int j = 0; j < 1000; j++)
-        for (int i = 0; i < 1000; i++)
-            matris[i][j] = 0;
-    ```
-
----
-
-## Veri Türleri
-
-
-| Tip      | Boyut                        | Açıklama                                                |
-| -------- | -----------------------------| ------------------------------------------------------- |
-| `char`   | 1 byte                       | Karakter veya küçük tam sayı                            |
-| `int`    | 2 veya 4 byte                | Tam sayı (mimariye bağlı)                               |
-| `float`  | 4 byte                       | Tek hassasiyetli ondalık                                |
-| `double` | 8 byte                       | Çift hassasiyetli ondalık                               |
-| `void`   | -                            | Tip yok; fonksiyon dönüş tipi veya generic pointer için |
-| `enum`   | `int` boyutu                 | Numaralandırma; varsayılan olarak `0`'dan başlar        |
-| `struct` | Üyelerin toplamı (+ padding) | Her üye kendi bellek alanına sahiptir                   |
-| `union`  | En büyük üye kadar           | Tüm üyeler aynı bellek alanını paylaşır                 |
-
-
-!!! note "Sabit Boyutlu Tipler"
-    Veri boyutları derleyici ve mimariye göre değişkendir. Pointer'lar **32-bit** sistemlerde 4 byte, **64-bit** sistemlerde 8 byte kaplar. Sabit boyut için `<stdint.h>` kütüphanesi (`int8_t`, `uint8_t`, `uint32_t` vb.) kullanılmalıdır.
-
-
-!!! tip "__attribute__((packed))"
-    `__attribute__((packed))` hizalama boşluklarını (padding) engelleyerek yapının bellekte tam ihtiyaç duyduğu boyutta yer kaplamasını sağlar. Gömülü sistemlerde donanım register haritalarına doğrudan map etmek için kullanılır.
-
-```c
-typedef struct {            // packed sayesinde 48 byte yerine 40 byte olur
-    uint8_t  a;
-    uint16_t b;
-    uint16_t c;
-} __attribute__((packed)) Foo;
-
-typedef unsigned char BYTE;
-typedef unsigned int  WORD;
-
-int snake_case_variable;   // Snake Case
-int camelCaseVariable;     // Camel Case
-int PascalCaseVariable;    // Pascal Case
-```
 
 !!! note "Flexible Array Member (FAM)"
     Bir `struct` içinde tutulacak veri miktarı derleme zamanında bilinmiyorsa **FAM** kullanılır. Boyutsuz dizi yalnızca struct'ın **son elemanı** olabilir.
@@ -149,14 +125,61 @@ int PascalCaseVariable;    // Pascal Case
 
     int n = 50;
     Packet *p = malloc(sizeof(Packet) + n);  // data artık 50 byte olur
-    ```
+    ```     
 
 
-## Bit-Field
 
-`struct` içinde `:` kullanılarak bir değişkenin bellekte **tam olarak kaç bit** kaplayacağı belirlenir.
+!!! danger "Cache Locality ve Döngü Sırası"
+    C dilinde çok boyutlu diziler bellekte **satır satır (Row-Major Order)** saklanır. Döngülerin sırası performansı ciddi ölçüde etkiler.
 
-```c
+!!! danger "Sabit Boyutlu Tipler"
+    Veri boyutları derleyici ve mimariye göre değişkendir. Pointer'lar **32-bit** sistemlerde 4 byte, **64-bit** sistemlerde 8 byte kaplar. Sabit boyut için `<stdint.h>` kütüphanesi (`int8_t`, `uint8_t`, `uint32_t` vb.) kullanılmalıdır.
+
+
+```c title=""
+// #define vs typedef
+#define PTR_INT int*
+typedef int* t_ptr_int;
+
+typedef unsigned char BYTE;
+typedef unsigned int  WORD;
+
+PTR_INT  p1, p2;      // p1: pointer, p2: int  ← yanlış davranış!
+t_ptr_int p3, p4;     // p3 ve p4: ikisi de pointer ← doğru
+
+
+// `;` kullanmadan çıktı alma
+if (printf("Hello World")) {}  // bir kez
+while (printf("Hello World"))  // sonsuz
+
+
+// Cache Locality ve Döngü Sırası
+// DOĞRU: Cache Friendly - yan yana bellek hücrelerine sıralı erişim
+for (int i = 0; i < 1000; i++)
+    for (int j = 0; j < 1000; j++)
+        matris[i][j] = 0;
+
+// YANLIŞ: Cache Miss - bellekte sürekli uzak adreslere atlanır
+for (int j = 0; j < 1000; j++)
+    for (int i = 0; i < 1000; i++)
+        matris[i][j] = 0;
+
+
+// __attribute__
+typedef struct {            // packed sayesinde 48 byte yerine 40 byte olur
+    uint8_t  a;
+    uint16_t b;
+    uint16_t c;
+} __attribute__((packed)) Foo;
+
+
+// İsimlendirme
+int snake_case_variable;   // Snake Case
+int camelCaseVariable;     // Camel Case
+int PascalCaseVariable;    // Pascal Case
+
+
+// Bit Field
 struct Register {
     uint8_t active : 1;
     uint8_t        : 3;  // İsimsiz 3 bitlik padding (rezerve alan)
@@ -171,82 +194,14 @@ struct AracKontrol {
 // sizeof(AracKontrol) = 2 byte
 // led_durumu + far_modu = 3 bit → ilk byte'a sığar
 // sicaklik 7 bit → bölünmemek için tamamen ikinci byte'a taşınır
+
+struct AracKontrol araba;
+araba.far_modu = 4;     // 4 = 0b100 → 2 bitlik alana sığmaz
+                        // Derleyici yalnızca ilk 2 biti alır (00) → sonuç: 0
+
 ```
 
-!!! tip "Bit-Field Kısıtlamaları"
-    1. İşlemciler belleği en az **byte** seviyesinde adresler. Dolayısıyla bit alanlarının adresi alınamaz (`&araba.led_durumu` → `cannot take address of bit-field` hatası).
-    2. Bit alanlarından oluşan dizi oluşturulamaz (`led_durumu[5]` geçersiz).
-    3. Bitlerin yerleşim sırası (Big/Little-Endian) derleyiciye ve mimariye bağlıdır. Ham paketleri doğrudan Bit-Field struct'ına `memcpy` etmek tehlikelidir.
-
-!!! danger "Bit-Field Overflow ve İşaret Tuzağı"
-    ```c
-    struct AracKontrol araba;
-    araba.far_modu = 4;  // 4 = 0b100 → 2 bitlik alana sığmaz
-                         // Derleyici yalnızca ilk 2 biti alır (00) → sonuç: 0
-    ```
-
-    Bit alanı `unsigned` yerine `int` (signed) seçilirse MSB işaret biti olur:
-
-    ```c
-    struct Tehlikeli { int durum : 1; };  // 1 bitlik signed alan
-    struct Tehlikeli t;
-    t.durum = 1;
-    printf("%d\n", t.durum);  // Çıktı: 1 değil, -1 !
-    ```
-
-    Donanım register'ları için kesinlikle `unsigned int` veya `uint8_t` / `uint32_t` kullanılmalıdır.
-
-
-- **Endianness:** Birden fazla byte kaplayan bir verinin bellekte hangi byte sırasıyla yazılacağını belirleyen mimari kuraldır.
-
-| Terim                            | Açıklama                      |
-| -------------------------------- | ----------------------------- |
-| **MSB** (Most Significant Byte)  | En yüksek değeri taşıyan byte |
-| **LSB** (Least Significant Byte) | En düşük değeri taşıyan byte  |
-
-!!! example "4 byte'lık `int sayi = 0x12345678;`"
-    | Adres  | Little-Endian | Big-Endian |
-    | ------ | :-----------: | :--------: |
-    | `0x00` |   `78` (LSB)  | `12` (MSB) |
-    | `0x01` |      `56`     |    `34`    |
-    | `0x02` |      `34`     |    `56`    |
-    | `0x03` |   `12` (MSB)  | `78` (LSB) |
-
-```c
-// Sistemin Endianness'ini tespit etme
-unsigned int test = 1;    // Bellekte: 0x00000001
-char *p = (char *)&test;
-
-if (*p == 1)
-    printf("Little-Endian\n");  // [01 00 00 00]
-else
-    printf("Big-Endian\n");     // [00 00 00 01]
-```
-
-- **Two's Complement:** Bilgisayarlar negatif sayıları **Two's Complement** yöntemiyle saklar. Bu sayede toplama ve çıkarma işlemleri **aynı donanım** (toplama devresi) ile gerçekleştirilebilir; `5 - 3` yerine `5 + (-3)` hesaplanır.
-
-!!! tip "Neden Two's Complement Yöntemi?"
-    `-5` sayısını 8 bit ile temsil etmek:
-
-    1. Pozitif halini yaz: `+5` → `00000101`
-    2. Bitleri ters çevir (One's Complement): `11111010`
-    3. 1 ekle (Two's Complement): `11111011` → `0xFB`
-
-    Doğrulama - `5 + (-5)`:
-    ```
-      00000101  (+5)
-    + 11111011  (-5)
-    ----------
-     100000000  ← 9. bit taşar ve dışarı atılır → sonuç: 00000000 = 0 ✓
-    ```
-
-| Durum                      | Açıklama                                                               |
-| -------------------------- | ---------------------------------------------------------------------- |
-| `signed char`: `127 + 1`   | **Signed Overflow** → Undefined Behavior (UB); pratikte `-128` görülür |
-| `unsigned char`: `255 + 1` | Tanımlı davranış: `0`'a döner (modular arithmetic)                     |
-
-
-## Bellek Hizalaması (Memory Alignment ve Padding)
+## Memory Alignment ve Padding
 
 İşlemciler bellekten **bloklar halinde** veri okur. Değişkenlerin kendi boyutlarının katı olan adreslere yerleşmesi, **Alignment** olarak adlandırılır. (32-bit işlemci 4 byte, 64-bit işlemci 8 byte)
 
@@ -271,35 +226,16 @@ struct Data2 {
 
 ## Bellek Yönetimi
 
-```mermaid
-graph TD
-    subgraph "Sanal Bellek Düzeni"
-        A["Stack\n(Yerel değişkenler, parametreler)"]
-        B["↕ Boş Alan"]
-        C["Heap\n(Dinamik bellek)"]
-        D["BSS Segment\n(Sıfırlanan global/static)"]
-        E["Data Segment\n(İlk değer verilen global/static)"]
-        F["Text Segment\n(Program kodu - Read-Only)"]
-    end
-    A --> B --> C --> D --> E --> F
-```
+- **Stack:** LIFO (Last In, First Out). İşlemci tarafından doğrudan yönetilir; çok hızlıdır. Fonksiyon çağrıları, parametreler ve yerel değişkenler burada tutulur. Fonksiyon return ettiğinde bellek otomatik temizlenir.
+    - **Risk:** Boyutu sınırlıdır. Aşırı büyük yerel diziler veya kontrolsüz recursive fonksiyonlar **Stack Overflow** hatasına yol açar.
 
-### Stack
-
-- **Çalışma Mantığı:** LIFO (Last In, First Out). İşlemci tarafından doğrudan yönetilir; çok hızlıdır.
-- **Kapsam:** Fonksiyon çağrıları, parametreler ve yerel değişkenler burada tutulur. Fonksiyon return ettiğinde bellek otomatik temizlenir.
-- **Risk:** Boyutu sınırlıdır. Aşırı büyük yerel diziler veya kontrolsüz özyinelemeli (recursive) fonksiyonlar **Stack Overflow** hatasına yol açar.
-
-### Heap
-
-- **Çalışma Mantığı:** Dinamik bellek bölgesidir. `malloc()`, `calloc()`, `realloc()` ile çalışma zamanında tahsis edilir.
-- **Kapsam:** Verilerin ömrü fonksiyonlara bağlı değildir; `free()` edilene kadar bellekte kalır.
-- **Risk:** Yönetim programcıdadır. **Memory Leak** (serbest bırakılmayan bellek) ve **Dangling Pointer** (serbest bırakılmış alana erişim) temel riskleridir.
+- **Heap:** Dinamik bellek bölgesidir. `malloc()`, `calloc()`, `realloc()` ile çalışma zamanında tahsis edilir. Verilerin ömrü fonksiyonlara bağlı değildir; `free()` edilene kadar bellekte kalır.
+    - **Risk:** Yönetim programcıdadır. **Memory Leak** (serbest bırakılmayan bellek) ve **Dangling Pointer** (serbest bırakılmış alana erişim) temel riskleridir.
 
 
 | Fonksiyon             | Başlangıç Değeri | Açıklama                                           |
 | --------------------- | :--------------: | -------------------------------------------------- |
-| `malloc(n)`           |  Garbage (çöp)   | `n` byte ayırır; içeriği sıfırlamaz                |
+| `malloc(n)`           |  Garbage         | `n` byte ayırır; içeriği sıfırlamaz                |
 | `calloc(count, size)` |       `0`        | `count * size` byte ayırır; tüm byte'ları sıfırlar |
 | `realloc(ptr, n)`     |     Korunur      | Mevcut bloğu `n` byte'a yeniden boyutlandırır      |
 | `free(ptr)`           |        -         | Ayrılan belleği işletim sistemine iade eder        |
@@ -357,7 +293,7 @@ graph LR
     1. **Zinciri Koparmak (Memory Leak):** Bir düğüm `free()` edilmeden önce sonraki düğümün adresi yedeklenmezse, tüm sonraki elemanlara erişim kalıcı olarak kaybolur.
     2. **Döngüsel Tuzak (Infinite Loop):** Bir düğümün `next` pointer'ı yanlışlıkla önceki bir düğüme bağlanırsa, listeyi gezen fonksiyonlar **sonsuz döngüye** girer.
 
-### Queue (Kuyruk)
+### Queue
 
 - **Çalışma Mantığı:** FIFO (First In, First Out).
 - **Operasyonlar:** Eleman ekleme kuyruğun **arkasından (Rear/Enqueue)**, çıkarma ise **önünden (Front/Dequeue)** yapılır.
@@ -376,10 +312,9 @@ graph LR
 | `&&`     | Logical AND | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |                                  |                                                               |
 | `        |             | `                                                             | Logical OR                       | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |
 
-!!! tip "Terimler"
+!!! tip "Not"
     - **Short-Circuit Evaluation:** `if(a && 5/a)` ifadesinde `a = 0` ise sol taraf `false` olduğu için sağ taraf (`5/a`) hiç değerlendirilmez. Bu sayede `division by zero` hatası önlenmiş olur.
-    - **Postfix** (`i++`): Mevcut değeri kullan, sonra artır.
-    - **Prefix** (`++i`): Önce artır, sonra kullan.
+
 
 
 ## Pointer
@@ -539,7 +474,7 @@ int main(void) {
 
     | Özel Operatör | Açıklama                                                                 |
     | --------------| ------------------------------------------------------------------------ |
-    | `#`           | Argümanı **string literal**'e dönüştürür (Stringification)               |
+    | `#`           | Argümanı **string literal**'e dönüştürür (Stringification - Sonuç string "" olur)      |
     | `##`          | İki sembolü birleştirerek yeni bir tanımlayıcı oluşturur (Token Pasting) |
 
     | Önceden Tanımlı Makro  | Açıklama                     |
@@ -642,7 +577,7 @@ sequenceDiagram
 ```mermaid
 graph TD
     P["Parent Process\n(PID: 100)"] -->|fork| C["Child Process\n(PID: 101)"]
-    P --> P1["Parent fork dönüş: PID 101"]
+    P --> P1["Parent fork dönüş:\n PID 101"]
     C --> C1["Child fork dönüş: 0"]
 ```
 

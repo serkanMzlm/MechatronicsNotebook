@@ -1,15 +1,10 @@
 # C++ Programlama
 
-- C'de bulunan bütün veri türleriyle koşul ve döngü yapıları geçerlidir; genel syntax da C ile büyük ölçüde aynıdır. C++ bu temelin üzerine OOP, generic programlama ve modern soyutlamalar ekler. **"zero-overhead abstraction"** ilkesi (kullanmadığın şey için bedel ödemezsin).
+- C'de bulunan bütün veri türleriyle koşul ve döngü yapıları geçerlidir. C++ OOP, generic programlama ve modern soyutlamalar vardır. **"zero-overhead abstraction"** ilkesi (kullanmadığın şey için bedel ödemezsin).
 
-- List Initialization ile değişken başlatmanın avantajları:
-    - **Narrowing conversion izin vermez.** `int x{3.14}` derleme hatası verir; `int x = 3.14` ise sessizce `3` atar.
-    - **Aggregate ve container initialization** üye/eleman listesiyle doğrudan başlatma yapabilir, diğerleri yapamaz.
-    - **Zero/value initialization tutarlılığı** her tipte tutarlı biçimde sıfır/varsayılan değer verir.
+- Dosya işlemlerinde manuel kapatmak (`.close()`) şart değildir. Sınıfın destructor'ı scope dışına çıkıldığında dosyayı otomatik kapatır.
 
-- Dosya işlemlerinde `.close()` ile manuel kapatmak şart değildir. Sınıfın destructor'ı scope dışına çıkıldığında dosyayı otomatik kapatır (RAII).
-
-- `explicit` Tek parametreli constructor'ların örtük (implicit) tip dönüşümü yapmasını engeller; çağrı sadece açıkça belirtilerek yapılabilir.
+- `explicit` constructor'ların implicit tip dönüşümü yapmasını engeller; çağrı sadece açıkça belirtilerek yapılabilir.
 - `constexpr` derleme zamanında kesin sabit; `const`'tan güçlüdür (`const` runtime'da da değer alabilir)
 - `consteval` her çağrısı derleme zamanında zorunlu olarak değerlendirilir (C++20)    
 - `[[maybe_unused]]` Kullanılmayan değişken için derleyici uyarısını bastırır (C++17)   
@@ -25,8 +20,8 @@
 - `mutable` **const-correctness**'in bir parçasıdır. Bir sınıf üyesi `mutable` işaretlenirse, o üye `const` bir member fonksiyon içinde bile değiştirilebilir. Bu, nesnenin gözlemlenebilir durumunu değiştirmeyen ama teknik olarak bir alanı güncelleyen durumlar için kullanılır en yaygın örnek `std::mutex`
 
 - `<=>` Spaceship operatörü (C++20) tek bir satırda iki değerin küçüklük, büyüklük ve eşitlik durumunu analiz eder; `std::strong_ordering` veya `std::partial_ordering` döner.
-- `<<` Insertion - veriyi akışa gönderir.
-- `>>` Extraction - akıştan veri çeker; boşluk/tab/newline'da durur.
+- `<<` Insertion, veriyi akışa gönderir.
+- `>>` Extraction, akıştan veri çeker; boşluk/tab/newline'da durur.
 - `::` (Scope Resolution) Önünde isim yoksa global kapsamı ifade eder; ayrıca namespace, sınıf üyesi, base class ve `enum class` erişiminde kullanılır.
 
 - `++i` (Prefix) Hemen artırır, nesnenin referansını döndürür; geçici nesne oluşturmaz.
@@ -44,7 +39,7 @@
 | Özellik                | C                                     | C++                                |
 | ---------------------- | ------------------------------------- | ---------------------------------- |
 | `struct` tanımlama     | `struct Adi var;` veya `typedef` şart | `Adi var;` doğrudan kullanılabilir |
-| `struct` içi fonksiyon | Yasak                                 | Tam destekli                       |
+| `struct` içi fonksiyon | ✗                                     |  ✓                                 |
 | `enum` tip güvenliği   | Zayıf; `int`'e karışabilir            | `enum class` ile tamamen izole     |
 | `enum` kapsam          | Tanımlandığı kapsama sızar            | `enum class` ile kendi kapsamı     |
 | `enum` boyutu          | Derleyiciye bağlı                     | `: type` ile yazılımcı belirler    |
@@ -64,6 +59,10 @@
 
     - **`std::string_view` Ömür Riski:** Metnin kendisine değil, bellekteki yerine işaret eder. İşaret ettiği orijinal metin bellekten silinirse `std::string_view` geçersiz hale gelir (dangling pointer). Bu yüzden `std::string_view` veriyi saklamak için değil, genellikle fonksiyon parametrelerinde okuma yapmak için tasarlanmıştır
 
+!!! note "Initialization Avantajları"
+    - **Narrowing conversion izin vermez.** `int x{3.14}` derleme hatası verir; `int x = 3.14` ise sessizce `3` atar.
+    - **Aggregate ve container initialization** üye/eleman listesiyle doğrudan başlatma yapabilir, diğerleri yapamaz.
+    - **Zero/value initialization tutarlılığı** her tipte tutarlı biçimde sıfır/varsayılan değer verir.
 
 ```cpp 
 // Değişken Başlatma Yöntemi 
@@ -110,7 +109,7 @@ public:
 
 ## Type Casting
 
-C-Style Cast tehlikelidir çünkü arka planda const kaldırma, alakasız pointer dönüşümü ve sayısal dönüşüm işlemlerini ayırt etmeksizin uygular; niyeti derleyiciye aktaramaz.
+**C-Style Cast tehlikelidir** çünkü arka planda const kaldırma, alakasız pointer dönüşümü ve sayısal dönüşüm işlemlerini ayırt etmeksizin uygular; niyeti derleyiciye aktaramaz.
 
 ```cpp
 const int sabit = 10;
@@ -862,27 +861,7 @@ T topla(T a, T b) { return a + b; }
 
 ## QT 
 
-Qt, C++ tabanlı, çapraz platform uygulama geliştirme çerçevesidir. Grafik arayüz (Widgets, QML/Quick), ağ, veri tabanı, dosya sistemi ve thread yönetimini kapsayan kapsamlı bir standart kütüphane sunar. **Meta-Object System (MOC)**, C++'ın statik tip sistemini genişleterek çalışma zamanı yansıma, sinyal-slot mekanizması ve dinamik özellik sistemini mümkün kılar.
-
-### QObject ve Parent-Child Hiyerarşisi
-
-Qt'nin bellek yönetiminin temeli parent-child ilişkisine dayanır: **bir parent silindiğinde tüm child'ları da otomatik silinir.**
-
-```cpp
-// Parent verildiğinde Qt belleği yönetir - delete gerekmez
-QWidget *pencere = new QWidget(nullptr);         // Root - sahibi yok
-QPushButton *buton = new QPushButton("Tamam", pencere);  // Pencere sahibi
-QLabel *etiket = new QLabel("Merhaba", pencere);
-
-delete pencere;   // Buton ve etiket de silinir
-```
-
-!!! danger "QObject Kopyalanamaz"
-    `QObject` ve türetilmiş sınıflar copy constructor ve copy assignment operatörü **silinmiş** olarak tanımlanır. Nesneyi kopyalamak yerine pointer ile taşıyın.
-
-### MOC (Meta-Object Compiler)
-
-MOC, derleme öncesinde Qt uzantılarını (sinyal/slot, özellik sistemi, RTTI) standart C++'a dönüştüren bir ön işlemci aracıdır.
+- **MOC (Meta-Object Compiler):** Derleme öncesinde Qt uzantılarını (sinyal/slot, özellik sistemi, RTTI) standart C++'a dönüştüren bir ön işlemci aracıdır.
 
 ```mermaid
 graph LR
@@ -905,33 +884,6 @@ graph LR
 | `Q_GADGET`                      | `QObject` mirası olmayan ancak meta-sistem kullanan sınıf        |
 | `Q_DECLARE_METATYPE`            | Tipi signal/slot ve `QVariant` için kaydeder                     |
 
-```cpp
-class Sayac : public QObject {
-    Q_OBJECT
-    Q_PROPERTY(int deger READ deger WRITE setDeger NOTIFY degerDegisti)
-
-public:
-    explicit Sayac(QObject *parent = nullptr) : QObject(parent) {}
-
-    int deger() const { return m_deger; }
-
-    Q_INVOKABLE void sifirla() { setDeger(0); }
-
-public slots:
-    void setDeger(int yeni) {
-        if (m_deger != yeni) {
-            m_deger = yeni;
-            emit degerDegisti(m_deger);
-        }
-    }
-
-signals:
-    void degerDegisti(int yeniDeger);
-
-private:
-    int m_deger = 0;
-};
-```
 
 !!! note "m_ Prefix - Member Değişken Konvansiyonu"
     Qt kod stilinde sınıf üye değişkenleri `m_` öneki ile isimlendirilir (ör. `m_deger`). Bu, yerel değişkenlerle karışmayı önler ve getter/setter isimlerinde çakışmayı engeller.
@@ -1031,11 +983,3 @@ sequenceDiagram
     | `Qt::QueuedConnection`         | Slot, alıcının event loop'unda çağrılır (thread arası iletişim) |
     | `Qt::AutoConnection`           | Aynı thread → Direct; farklı thread → Queued (varsayılan)       |
     | `Qt::BlockingQueuedConnection` | QueuedConnection + gönderen thread alıcı bitene kadar bekler    |
-
-```cpp
-// disconnect - belirli bağlantıyı kes
-disconnect(slider, &QSlider::valueChanged, spinBox, &QSpinBox::setValue);
-
-// Nesnenin tüm bağlantılarını kes
-disconnect(buton, nullptr, nullptr, nullptr);
-```

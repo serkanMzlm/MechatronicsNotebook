@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -594,10 +594,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#bellek-hizalamas-memory-alignment-ve-padding" class="md-nav__link">
+  <a href="#memory-alignment-ve-padding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Bellek Hizalaması (Memory Alignment ve Padding)
+        Memory Alignment ve Padding
       
     </span>
   </a>
@@ -612,34 +612,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Bellek Yönetimi">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#stack" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Stack
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#heap" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Heap
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -667,10 +639,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#queue-kuyruk" class="md-nav__link">
+  <a href="#queue" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Queue (Kuyruk)
+        Queue
       
     </span>
   </a>
@@ -1023,14 +995,6 @@
       
         
       
-        
-      
-        
-      
-        
-      
-        
-      
     
     
     
@@ -1364,13 +1328,14 @@
 <li><strong>Block Scope (Local):</strong> Yalnızca tanımlandığı <code>{ }</code> bloğu içinde geçerlidir </li>
 <li><strong>Döngü Yapıları:</strong> <code>for</code>, <code>while</code>, <code>do-while</code> (<code>break</code> döngüyü sonlandırır, <code>continue</code> bir sonraki iterasyona geçer, <code>return</code> fonksiyondan çıkar.)</li>
 <li>
-<p><strong>Koşul Yapıları:</strong> <code>if-else</code>, <code>switch-case</code>, <code>? :</code>, <code>goto</code></p>
+<p><strong>Koşul Yapıları:</strong> <code>if-else</code>, <code>switch-case</code>, <code>? :</code>, <code>goto</code>    </p>
 <div class="admonition note">
 <p class="admonition-title">Jump Table Nasıl Çalışır?</p>
 <ol>
 <li><code>case</code> değerleri ardışık ve düzenli olduğunda derleyici gizli bir pointer dizisi (<strong>jump table</strong>) oluşturur. </li>
 <li>Kontrol değişkeni doğrudan bu dizinin indeksi olarak kullanılır (İşlemci <code>O(1)</code> karmaşıklıkla doğrudan ilgili bloğa atlar)</li>
 <li>Eğer <code>case</code> değerleri çok dağınıksa (<code>case 1:</code>, <code>case 1500:</code>) derleyici tablo oluşturamaz ve arka planda yavaş <code>if-else</code> mantığına döner.</li>
+<li><strong>Fall-Through:</strong> <code>case</code> bloğunda <code>break;</code> koyulmazsa, kod bir sonraki <code>case</code>'in içine de girer.</li>
 </ol>
 </div>
 </li>
@@ -1390,7 +1355,7 @@
 <span class="normal"><a href="#__codelineno-0-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">Tehlikeli</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">durum</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">};</span><span class="w">  </span><span class="c1">// 1 bitlik signed alan</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="k">struct</span><span class="w"> </span><span class="nc">Tehlikeli</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="n">t</span><span class="p">.</span><span class="n">durum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">durum</span><span class="p">);</span><span class="w">  </span><span class="c1">// Çıktı: 1 değil, -1 !</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">durum</span><span class="p">);</span><span class="w">  </span><span class="c1">// Çıktı: 1 değil, -1 !</span>
 </span></code></pre></div></td></tr></table></div>
 </div>
 </li>
@@ -1434,7 +1399,7 @@
 </tbody>
 </table>
 </div>
-<div class="language-c highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Sistemin Endianness'ini tespit etme</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<div class="language-c highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Sistemin Endianness&#x27;ini tespit etme</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
 <span class="normal"><a href="#__codelineno-1-2">2</a></span>
 <span class="normal"><a href="#__codelineno-1-3">3</a></span>
 <span class="normal"><a href="#__codelineno-1-4">4</a></span>
@@ -1444,34 +1409,76 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">test</span><span class="p">;</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Little-Endian</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// [01 00 00 00]</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Little-Endian</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w">  </span><span class="c1">// [01 00 00 00]</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="k">else</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Big-Endian</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w">     </span><span class="c1">// [00 00 00 01]</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Big-Endian</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w">     </span><span class="c1">// [00 00 00 01]</span>
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p><strong>Dosya Türleri</strong>: </p>
-<ul>
-<li>
-<p><strong>Text Dosyaları</strong>, Satır sonu karakterleri işletim sistemine göre otomatik dönüştürülür (<code>"r"</code>, <code>"w"</code>)</p>
-</li>
-<li>
-<p><strong>Binary</strong>, Diskteki byte'lara hiç dokunulmaz; gömülü sistemlerde tercih edilir (<code>"rb"</code>, <code>"wb"</code>)</p>
-</li>
-</ul>
-<div class="admonition tip">
-<p class="admonition-title">fseek Sabiti</p>
-<ul>
-<li><code>SEEK_SET</code> Dosyanın en başından <code>offset</code> kadar ilerler     </li>
-<li><code>SEEK_CUR</code> İmlecin bulunduğu yerden <code>offset</code> kadar ilerler </li>
-<li><code>SEEK_END</code> Dosyanın sonundan geriye/ileriye gider   </li>
-</ul>
+<p><strong>Two's Complement:</strong> Signed tam sayıların bellekte negatif değerlerini temsil etmek için kullanılan yöntemdir. Bir sayının negatifini almak için tüm bitleri tersine çevirip sonuca <code>1</code> eklenir. En anlamlı bit (MSB) işaret bitidir: <code>0</code> pozitif, <code>1</code> negatiftir. Bu yöntem donanımda toplama ve çıkarma işlemlerinin <strong>aynı devreyle</strong> yapılabilmesini sağlar;</p>
+<div class="admonition example">
+<p class="admonition-title"><code>-5</code> sayısını 8 bit ile temsil etmek</p>
+<ol>
+<li>Pozitif halini yaz:         <code>5      = 0000 0101</code></li>
+<li>Bitleri ters çevir (tümle): <code>~5     = 1111 1010</code></li>
+<li>1 ekle:                     <code>~5 + 1 = 11111011</code> → <code>0xFB</code></li>
+</ol>
+<p>Doğrulama - <code>5 + (-5)</code>:
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span>
+<span class="normal"><a href="#__codelineno-2-3">3</a></span>
+<span class="normal"><a href="#__codelineno-2-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>  00000101  (+5)
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>+ 11111011  (-5)
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a>----------
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a>100000000  ← 9. bit taşar ve dışarı atılır → sonuç: 00000000 = 0 ✓
+</span></code></pre></div></td></tr></table></div></p>
 </div>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Durum</th>
+<th>Açıklama</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>signed char</code>: <code>127 + 1</code></td>
+<td><strong>Signed Overflow</strong> → Undefined Behavior (UB); pratikte <code>-128</code> görülür</td>
+</tr>
+<tr>
+<td><code>unsigned char</code>: <code>255 + 1</code></td>
+<td>Tanımlı davranış: <code>0</code>'a döner (modular arithmetic)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>Dosya Türleri</strong>: C'de dosyalar açılış moduna göre ikiye ayrılır; aynı dosya içeriği hangi modla açıldığına göre farklı işlenir.</p>
+<ul>
+<li><strong>Text</strong> (<code>"r"</code>, <code>"w"</code>): Satır sonu karakterleri işletim sistemine göre otomatik dönüştürülür; insan tarafından doğrudan okunup düzenlenebilir olması en büyük avantajıdır.</li>
+<li><strong>Binary</strong> (<code>"rb"</code>, <code>"wb"</code>): Byte'lara dokunulmaz; gömülü sistemlerde tercih edilir, çünkü dönüşüm yapılmadığı için hem daha hızlıdır hem de veri boyutunu değiştirmez.</li>
+<li><code>fseek</code> konumlanma sabitleri: <code>SEEK_SET</code> baştan, <code>SEEK_CUR</code> bulunulan yerden, <code>SEEK_END</code> sondan <code>offset</code> kadar ilerler.</li>
+</ul>
+</li>
+<li>
+<p><strong>Tür Dönüşümü:</strong> Bir değerin bir veri tipinden başka bir veri tipine çevrilmesidir</p>
+<ul>
+<li><strong>Implicit:</strong> Derleyicinin otomatik dönüştürmesi (<code>int x = 3.14;</code> → <code>x = 3</code>).</li>
+<li><strong>Explicit / Cast:</strong> Geliştiricinin manuel dönüştürmesi (<code>int x = (int)y;</code>).</li>
+</ul>
 </li>
 </ul>
 <hr />
 <ul>
-<li><code>sizeof</code> Veri tipi veya değişkenin bellekte kapladığı boyutu <strong>byte</strong> cinsinden döndürür. Fonksiyon değil, derleme zamanı operatörüdür (<code>sizeof(a++)</code> ifadesinde <code>a++</code> çalıştırılmaz)</li>
+<li><strong>Prefix:</strong> <code>++i</code> Hemen artırır, nesnenin referansını döndürür; geçici nesne oluşturmaz.</li>
+<li>
+<p><strong>Postfix:</strong> <code>i++</code> Kopyayı alır, ardından artırır, kopyayı döndürür; geçici nesne oluşturduğu için maliyetlidir.</p>
+</li>
+<li>
+<p><code>sizeof</code> Veri tipi veya değişkenin bellekte kapladığı boyutu <strong>byte</strong> cinsinden döndürür. Fonksiyon değil, derleme zamanı operatörüdür (<code>sizeof(a++)</code> ifadesinde <code>a++</code> çalıştırılmaz)</p>
+</li>
 <li><code>const</code> Verinin değerini sabitler; yanlışlıkla değiştirilmeye karşı koruma sağlar.</li>
 <li><code>typedef</code> Mevcut bir veri tipine takma isim verir; gerçek bir C deyimidir, tip güvenliği sağlar.</li>
 <li><code>sprintf(buf, fmt, ...)</code> Formatlanmış veriyi ekrana değil, <code>char</code> dizisine yazar.        </li>
@@ -1578,197 +1585,154 @@
 </tbody>
 </table>
 <div class="admonition note">
-<p class="admonition-title">Tür Dönüşümü</p>
-<ul>
-<li><strong>Implicit</strong> Derleyicinin otomatik dönüştürmesi (<code>int x = 3.14;</code> → <code>x = 3</code>)</li>
-<li><strong>Explicit / Cast</strong> Geliştiricinin manuel dönüştürmesi <code>int x = (int)y;</code></li>
-</ul>
-</div>
-<div class="admonition note">
 <p class="admonition-title">Flexible Array Member (FAM)</p>
 <p>Bir <code>struct</code> içinde tutulacak veri miktarı derleme zamanında bilinmiyorsa <strong>FAM</strong> kullanılır. Boyutsuz dizi yalnızca struct'ın <strong>son elemanı</strong> olabilir.</p>
-<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
-<span class="normal"><a href="#__codelineno-2-2">2</a></span>
-<span class="normal"><a href="#__codelineno-2-3">3</a></span>
-<span class="normal"><a href="#__codelineno-2-4">4</a></span>
-<span class="normal"><a href="#__codelineno-2-5">5</a></span>
-<span class="normal"><a href="#__codelineno-2-6">6</a></span>
-<span class="normal"><a href="#__codelineno-2-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">    </span><span class="kt">int</span><span class="w">  </span><span class="n">len</span><span class="p">;</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">data</span><span class="p">[];</span><span class="w">   </span><span class="c1">// Flexible Array Member</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="p">}</span><span class="w"> </span><span class="n">Packet</span><span class="p">;</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="n">Packet</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Packet</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w">  </span><span class="c1">// data artık 50 byte olur</span>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">5</a></span>
+<span class="normal"><a href="#__codelineno-3-6">6</a></span>
+<span class="normal"><a href="#__codelineno-3-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">    </span><span class="kt">int</span><span class="w">  </span><span class="n">len</span><span class="p">;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">data</span><span class="p">[];</span><span class="w">   </span><span class="c1">// Flexible Array Member</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="p">}</span><span class="w"> </span><span class="n">Packet</span><span class="p">;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="n">Packet</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Packet</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w">  </span><span class="c1">// data artık 50 byte olur</span>
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="admonition danger">
-<p class="admonition-title">Önemli</p>
-<ol>
-<li><strong>Fall-Through:</strong> <code>case</code> bloğunda <code>break;</code> koyulmazsa, kod bir sonraki <code>case</code>'in içine de girer.</li>
-<li><strong>Cache Locality ve Döngü Sırası:</strong> C dilinde çok boyutlu diziler bellekte <strong>satır satır (Row-Major Order)</strong> saklanır. Döngülerin sırası performansı ciddi ölçüde etkiler.</li>
-<li><strong>Sabit Boyutlu Tipler:</strong> Veri boyutları derleyici ve mimariye göre değişkendir. Pointer'lar <strong>32-bit</strong> sistemlerde 4 byte, <strong>64-bit</strong> sistemlerde 8 byte kaplar. Sabit boyut için <code>&lt;stdint.h&gt;</code> kütüphanesi (<code>int8_t</code>, <code>uint8_t</code>, <code>uint32_t</code> vb.) kullanılmalıdır.</li>
-</ol>
+<p class="admonition-title">Cache Locality ve Döngü Sırası</p>
+<p>C dilinde çok boyutlu diziler bellekte <strong>satır satır (Row-Major Order)</strong> saklanır. Döngülerin sırası performansı ciddi ölçüde etkiler.</p>
 </div>
-<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-3-10">10</a></span>
-<span class="normal"><a href="#__codelineno-3-11">11</a></span>
-<span class="normal"><a href="#__codelineno-3-12">12</a></span>
-<span class="normal"><a href="#__codelineno-3-13">13</a></span>
-<span class="normal"><a href="#__codelineno-3-14">14</a></span>
-<span class="normal"><a href="#__codelineno-3-15">15</a></span>
-<span class="normal"><a href="#__codelineno-3-16">16</a></span>
-<span class="normal"><a href="#__codelineno-3-17">17</a></span>
-<span class="normal"><a href="#__codelineno-3-18">18</a></span>
-<span class="normal"><a href="#__codelineno-3-19">19</a></span>
-<span class="normal"><a href="#__codelineno-3-20">20</a></span>
-<span class="normal"><a href="#__codelineno-3-21">21</a></span>
-<span class="normal"><a href="#__codelineno-3-22">22</a></span>
-<span class="normal"><a href="#__codelineno-3-23">23</a></span>
-<span class="normal"><a href="#__codelineno-3-24">24</a></span>
-<span class="normal"><a href="#__codelineno-3-25">25</a></span>
-<span class="normal"><a href="#__codelineno-3-26">26</a></span>
-<span class="normal"><a href="#__codelineno-3-27">27</a></span>
-<span class="normal"><a href="#__codelineno-3-28">28</a></span>
-<span class="normal"><a href="#__codelineno-3-29">29</a></span>
-<span class="normal"><a href="#__codelineno-3-30">30</a></span>
-<span class="normal"><a href="#__codelineno-3-31">31</a></span>
-<span class="normal"><a href="#__codelineno-3-32">32</a></span>
-<span class="normal"><a href="#__codelineno-3-33">33</a></span>
-<span class="normal"><a href="#__codelineno-3-34">34</a></span>
-<span class="normal"><a href="#__codelineno-3-35">35</a></span>
-<span class="normal"><a href="#__codelineno-3-36">36</a></span>
-<span class="normal"><a href="#__codelineno-3-37">37</a></span>
-<span class="normal"><a href="#__codelineno-3-38">38</a></span>
-<span class="normal"><a href="#__codelineno-3-39">39</a></span>
-<span class="normal"><a href="#__codelineno-3-40">40</a></span>
-<span class="normal"><a href="#__codelineno-3-41">41</a></span>
-<span class="normal"><a href="#__codelineno-3-42">42</a></span>
-<span class="normal"><a href="#__codelineno-3-43">43</a></span>
-<span class="normal"><a href="#__codelineno-3-44">44</a></span>
-<span class="normal"><a href="#__codelineno-3-45">45</a></span>
-<span class="normal"><a href="#__codelineno-3-46">46</a></span>
-<span class="normal"><a href="#__codelineno-3-47">47</a></span>
-<span class="normal"><a href="#__codelineno-3-48">48</a></span>
-<span class="normal"><a href="#__codelineno-3-49">49</a></span>
-<span class="normal"><a href="#__codelineno-3-50">50</a></span>
-<span class="normal"><a href="#__codelineno-3-51">51</a></span>
-<span class="normal"><a href="#__codelineno-3-52">52</a></span>
-<span class="normal"><a href="#__codelineno-3-53">53</a></span>
-<span class="normal"><a href="#__codelineno-3-54">54</a></span>
-<span class="normal"><a href="#__codelineno-3-55">55</a></span>
-<span class="normal"><a href="#__codelineno-3-56">56</a></span>
-<span class="normal"><a href="#__codelineno-3-57">57</a></span>
-<span class="normal"><a href="#__codelineno-3-58">58</a></span>
-<span class="normal"><a href="#__codelineno-3-59">59</a></span>
-<span class="normal"><a href="#__codelineno-3-60">60</a></span>
-<span class="normal"><a href="#__codelineno-3-61">61</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">// #define vs typedef</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="cp">#define PTR_INT int*</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="k">typedef</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">t_ptr_int</span><span class="p">;</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="k">typedef</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">BYTE</span><span class="p">;</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="k">typedef</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">  </span><span class="n">WORD</span><span class="p">;</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="n">PTR_INT</span><span class="w">  </span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span><span class="w">      </span><span class="c1">// p1: pointer, p2: int  ← yanlış davranış!</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="n">t_ptr_int</span><span class="w"> </span><span class="n">p3</span><span class="p">,</span><span class="w"> </span><span class="n">p4</span><span class="p">;</span><span class="w">     </span><span class="c1">// p3 ve p4: ikisi de pointer ← doğru</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="c1">// `;` kullanmadan çıktı alma</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello World&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{}</span><span class="w">  </span><span class="c1">// bir kez</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello World&quot;</span><span class="p">))</span><span class="w">  </span><span class="c1">// sonsuz</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="c1">// Cache Locality ve Döngü Sırası</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="c1">// DOĞRU: Cache Friendly - yan yana bellek hücrelerine sıralı erişim</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="w">        </span><span class="n">matris</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22"></a>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23"></a><span class="c1">// YANLIŞ: Cache Miss - bellekte sürekli uzak adreslere atlanır</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26"></a><span class="w">        </span><span class="n">matris</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27"></a>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28"></a>
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29"></a><span class="c1">// __attribute__</span>
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span><span class="w">            </span><span class="c1">// packed sayesinde 48 byte yerine 40 byte olur</span>
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">a</span><span class="p">;</span>
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32"></a><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
-</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33"></a><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
-</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34"></a><span class="p">}</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">))</span><span class="w"> </span><span class="n">Foo</span><span class="p">;</span>
-</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35"></a>
-</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36"></a>
-</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37"></a><span class="c1">// İsimlendirme</span>
-</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38"></a><span class="kt">int</span><span class="w"> </span><span class="n">snake_case_variable</span><span class="p">;</span><span class="w">   </span><span class="c1">// Snake Case</span>
-</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39"></a><span class="kt">int</span><span class="w"> </span><span class="n">camelCaseVariable</span><span class="p">;</span><span class="w">     </span><span class="c1">// Camel Case</span>
-</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40"></a><span class="kt">int</span><span class="w"> </span><span class="n">PascalCaseVariable</span><span class="p">;</span><span class="w">    </span><span class="c1">// Pascal Case</span>
-</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41"></a>
-</span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42"></a>
-</span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43"></a><span class="c1">// Bit Field</span>
-</span><span id="__span-3-44"><a id="__codelineno-3-44" name="__codelineno-3-44"></a><span class="k">struct</span><span class="w"> </span><span class="nc">Register</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-45"><a id="__codelineno-3-45" name="__codelineno-3-45"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">active</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-</span><span id="__span-3-46"><a id="__codelineno-3-46" name="__codelineno-3-46"></a><span class="w">    </span><span class="nl">uint8_t</span><span class="w">        </span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">  </span><span class="c1">// İsimsiz 3 bitlik padding (rezerve alan)</span>
-</span><span id="__span-3-47"><a id="__codelineno-3-47" name="__codelineno-3-47"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">mode</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
-</span><span id="__span-3-48"><a id="__codelineno-3-48" name="__codelineno-3-48"></a><span class="p">};</span>
-</span><span id="__span-3-49"><a id="__codelineno-3-49" name="__codelineno-3-49"></a>
-</span><span id="__span-3-50"><a id="__codelineno-3-50" name="__codelineno-3-50"></a><span class="k">struct</span><span class="w"> </span><span class="nc">AracKontrol</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-51"><a id="__codelineno-3-51" name="__codelineno-3-51"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">led_durumu</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">  </span><span class="c1">// Açık/Kapalı - 1 bit</span>
-</span><span id="__span-3-52"><a id="__codelineno-3-52" name="__codelineno-3-52"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">far_modu</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">  </span><span class="c1">// 00, 01, 10, 11 - 2 bit</span>
-</span><span id="__span-3-53"><a id="__codelineno-3-53" name="__codelineno-3-53"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sicaklik</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w">  </span><span class="c1">// 0-120 derece - 7 bit</span>
-</span><span id="__span-3-54"><a id="__codelineno-3-54" name="__codelineno-3-54"></a><span class="p">};</span>
-</span><span id="__span-3-55"><a id="__codelineno-3-55" name="__codelineno-3-55"></a><span class="c1">// sizeof(AracKontrol) = 2 byte</span>
-</span><span id="__span-3-56"><a id="__codelineno-3-56" name="__codelineno-3-56"></a><span class="c1">// led_durumu + far_modu = 3 bit → ilk byte&#39;a sığar</span>
-</span><span id="__span-3-57"><a id="__codelineno-3-57" name="__codelineno-3-57"></a><span class="c1">// sicaklik 7 bit → bölünmemek için tamamen ikinci byte&#39;a taşınır</span>
-</span><span id="__span-3-58"><a id="__codelineno-3-58" name="__codelineno-3-58"></a>
-</span><span id="__span-3-59"><a id="__codelineno-3-59" name="__codelineno-3-59"></a><span class="k">struct</span><span class="w"> </span><span class="nc">AracKontrol</span><span class="w"> </span><span class="n">araba</span><span class="p">;</span>
-</span><span id="__span-3-60"><a id="__codelineno-3-60" name="__codelineno-3-60"></a><span class="n">araba</span><span class="p">.</span><span class="n">far_modu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">     </span><span class="c1">// 4 = 0b100 → 2 bitlik alana sığmaz</span>
-</span><span id="__span-3-61"><a id="__codelineno-3-61" name="__codelineno-3-61"></a><span class="w">                        </span><span class="c1">// Derleyici yalnızca ilk 2 biti alır (00) → sonuç: 0</span>
+<div class="admonition danger">
+<p class="admonition-title">Sabit Boyutlu Tipler</p>
+<p>Veri boyutları derleyici ve mimariye göre değişkendir. Pointer'lar <strong>32-bit</strong> sistemlerde 4 byte, <strong>64-bit</strong> sistemlerde 8 byte kaplar. Sabit boyut için <code>&lt;stdint.h&gt;</code> kütüphanesi (<code>int8_t</code>, <code>uint8_t</code>, <code>uint32_t</code> vb.) kullanılmalıdır.</p>
+</div>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span>
+<span class="normal"><a href="#__codelineno-4-25">25</a></span>
+<span class="normal"><a href="#__codelineno-4-26">26</a></span>
+<span class="normal"><a href="#__codelineno-4-27">27</a></span>
+<span class="normal"><a href="#__codelineno-4-28">28</a></span>
+<span class="normal"><a href="#__codelineno-4-29">29</a></span>
+<span class="normal"><a href="#__codelineno-4-30">30</a></span>
+<span class="normal"><a href="#__codelineno-4-31">31</a></span>
+<span class="normal"><a href="#__codelineno-4-32">32</a></span>
+<span class="normal"><a href="#__codelineno-4-33">33</a></span>
+<span class="normal"><a href="#__codelineno-4-34">34</a></span>
+<span class="normal"><a href="#__codelineno-4-35">35</a></span>
+<span class="normal"><a href="#__codelineno-4-36">36</a></span>
+<span class="normal"><a href="#__codelineno-4-37">37</a></span>
+<span class="normal"><a href="#__codelineno-4-38">38</a></span>
+<span class="normal"><a href="#__codelineno-4-39">39</a></span>
+<span class="normal"><a href="#__codelineno-4-40">40</a></span>
+<span class="normal"><a href="#__codelineno-4-41">41</a></span>
+<span class="normal"><a href="#__codelineno-4-42">42</a></span>
+<span class="normal"><a href="#__codelineno-4-43">43</a></span>
+<span class="normal"><a href="#__codelineno-4-44">44</a></span>
+<span class="normal"><a href="#__codelineno-4-45">45</a></span>
+<span class="normal"><a href="#__codelineno-4-46">46</a></span>
+<span class="normal"><a href="#__codelineno-4-47">47</a></span>
+<span class="normal"><a href="#__codelineno-4-48">48</a></span>
+<span class="normal"><a href="#__codelineno-4-49">49</a></span>
+<span class="normal"><a href="#__codelineno-4-50">50</a></span>
+<span class="normal"><a href="#__codelineno-4-51">51</a></span>
+<span class="normal"><a href="#__codelineno-4-52">52</a></span>
+<span class="normal"><a href="#__codelineno-4-53">53</a></span>
+<span class="normal"><a href="#__codelineno-4-54">54</a></span>
+<span class="normal"><a href="#__codelineno-4-55">55</a></span>
+<span class="normal"><a href="#__codelineno-4-56">56</a></span>
+<span class="normal"><a href="#__codelineno-4-57">57</a></span>
+<span class="normal"><a href="#__codelineno-4-58">58</a></span>
+<span class="normal"><a href="#__codelineno-4-59">59</a></span>
+<span class="normal"><a href="#__codelineno-4-60">60</a></span>
+<span class="normal"><a href="#__codelineno-4-61">61</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="c1">// #define vs typedef</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="cp">#define PTR_INT int*</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="k">typedef</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">t_ptr_int</span><span class="p">;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="k">typedef</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">BYTE</span><span class="p">;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="k">typedef</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w">  </span><span class="n">WORD</span><span class="p">;</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="n">PTR_INT</span><span class="w">  </span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span><span class="w">      </span><span class="c1">// p1: pointer, p2: int  ← yanlış davranış!</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="n">t_ptr_int</span><span class="w"> </span><span class="n">p3</span><span class="p">,</span><span class="w"> </span><span class="n">p4</span><span class="p">;</span><span class="w">     </span><span class="c1">// p3 ve p4: ikisi de pointer ← doğru</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11"></a>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="c1">// `;` kullanmadan çıktı alma</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">printf</span><span class="p">(</span><span class="s">"Hello World"</span><span class="p">))</span><span class="w"> </span><span class="p">{}</span><span class="w">  </span><span class="c1">// bir kez</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">printf</span><span class="p">(</span><span class="s">"Hello World"</span><span class="p">))</span><span class="w">  </span><span class="c1">// sonsuz</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15"></a>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16"></a>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="c1">// Cache Locality ve Döngü Sırası</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="c1">// DOĞRU: Cache Friendly - yan yana bellek hücrelerine sıralı erişim</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="w">        </span><span class="n">matris</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22"></a>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="c1">// YANLIŞ: Cache Miss - bellekte sürekli uzak adreslere atlanır</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26"></a><span class="w">        </span><span class="n">matris</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27"></a>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28"></a>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29"></a><span class="c1">// __attribute__</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span><span class="w">            </span><span class="c1">// packed sayesinde 48 byte yerine 40 byte olur</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">a</span><span class="p">;</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32"></a><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33"></a><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34"></a><span class="p">}</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">))</span><span class="w"> </span><span class="n">Foo</span><span class="p">;</span>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35"></a>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36"></a>
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37"></a><span class="c1">// İsimlendirme</span>
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38"></a><span class="kt">int</span><span class="w"> </span><span class="n">snake_case_variable</span><span class="p">;</span><span class="w">   </span><span class="c1">// Snake Case</span>
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39"></a><span class="kt">int</span><span class="w"> </span><span class="n">camelCaseVariable</span><span class="p">;</span><span class="w">     </span><span class="c1">// Camel Case</span>
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40"></a><span class="kt">int</span><span class="w"> </span><span class="n">PascalCaseVariable</span><span class="p">;</span><span class="w">    </span><span class="c1">// Pascal Case</span>
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41"></a>
+</span><span id="__span-4-42"><a id="__codelineno-4-42" name="__codelineno-4-42"></a>
+</span><span id="__span-4-43"><a id="__codelineno-4-43" name="__codelineno-4-43"></a><span class="c1">// Bit Field</span>
+</span><span id="__span-4-44"><a id="__codelineno-4-44" name="__codelineno-4-44"></a><span class="k">struct</span><span class="w"> </span><span class="nc">Register</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-45"><a id="__codelineno-4-45" name="__codelineno-4-45"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">active</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-4-46"><a id="__codelineno-4-46" name="__codelineno-4-46"></a><span class="w">    </span><span class="nl">uint8_t</span><span class="w">        </span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">  </span><span class="c1">// İsimsiz 3 bitlik padding (rezerve alan)</span>
+</span><span id="__span-4-47"><a id="__codelineno-4-47" name="__codelineno-4-47"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">mode</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+</span><span id="__span-4-48"><a id="__codelineno-4-48" name="__codelineno-4-48"></a><span class="p">};</span>
+</span><span id="__span-4-49"><a id="__codelineno-4-49" name="__codelineno-4-49"></a>
+</span><span id="__span-4-50"><a id="__codelineno-4-50" name="__codelineno-4-50"></a><span class="k">struct</span><span class="w"> </span><span class="nc">AracKontrol</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-51"><a id="__codelineno-4-51" name="__codelineno-4-51"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">led_durumu</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">  </span><span class="c1">// Açık/Kapalı - 1 bit</span>
+</span><span id="__span-4-52"><a id="__codelineno-4-52" name="__codelineno-4-52"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">far_modu</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">  </span><span class="c1">// 00, 01, 10, 11 - 2 bit</span>
+</span><span id="__span-4-53"><a id="__codelineno-4-53" name="__codelineno-4-53"></a><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sicaklik</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w">  </span><span class="c1">// 0-120 derece - 7 bit</span>
+</span><span id="__span-4-54"><a id="__codelineno-4-54" name="__codelineno-4-54"></a><span class="p">};</span>
+</span><span id="__span-4-55"><a id="__codelineno-4-55" name="__codelineno-4-55"></a><span class="c1">// sizeof(AracKontrol) = 2 byte</span>
+</span><span id="__span-4-56"><a id="__codelineno-4-56" name="__codelineno-4-56"></a><span class="c1">// led_durumu + far_modu = 3 bit → ilk byte'a sığar</span>
+</span><span id="__span-4-57"><a id="__codelineno-4-57" name="__codelineno-4-57"></a><span class="c1">// sicaklik 7 bit → bölünmemek için tamamen ikinci byte'a taşınır</span>
+</span><span id="__span-4-58"><a id="__codelineno-4-58" name="__codelineno-4-58"></a>
+</span><span id="__span-4-59"><a id="__codelineno-4-59" name="__codelineno-4-59"></a><span class="k">struct</span><span class="w"> </span><span class="nc">AracKontrol</span><span class="w"> </span><span class="n">araba</span><span class="p">;</span>
+</span><span id="__span-4-60"><a id="__codelineno-4-60" name="__codelineno-4-60"></a><span class="n">araba</span><span class="p">.</span><span class="n">far_modu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">     </span><span class="c1">// 4 = 0b100 → 2 bitlik alana sığmaz</span>
+</span><span id="__span-4-61"><a id="__codelineno-4-61" name="__codelineno-4-61"></a><span class="w">                        </span><span class="c1">// Derleyici yalnızca ilk 2 biti alır (00) → sonuç: 0</span>
 </span></code></pre></div></td></tr></table></div>
-<div class="admonition tip">
-<p class="admonition-title">Neden Two's Complement Yöntemi?</p>
-<p><code>-5</code> sayısını 8 bit ile temsil etmek:</p>
-<ol>
-<li>Pozitif halini yaz: <code>+5</code> → <code>00000101</code></li>
-<li>Bitleri ters çevir (One's Complement): <code>11111010</code></li>
-<li>1 ekle (Two's Complement): <code>11111011</code> → <code>0xFB</code></li>
-</ol>
-<p>Doğrulama - <code>5 + (-5)</code>:
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
-<span class="normal"><a href="#__codelineno-4-2">2</a></span>
-<span class="normal"><a href="#__codelineno-4-3">3</a></span>
-<span class="normal"><a href="#__codelineno-4-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>  00000101  (+5)
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a>+ 11111011  (-5)
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a>----------
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a> 100000000  ← 9. bit taşar ve dışarı atılır → sonuç: 00000000 = 0 ✓
-</span></code></pre></div></td></tr></table></div></p>
-</div>
-<table>
-<thead>
-<tr>
-<th>Durum</th>
-<th>Açıklama</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>signed char</code>: <code>127 + 1</code></td>
-<td><strong>Signed Overflow</strong> → Undefined Behavior (UB); pratikte <code>-128</code> görülür</td>
-</tr>
-<tr>
-<td><code>unsigned char</code>: <code>255 + 1</code></td>
-<td>Tanımlı davranış: <code>0</code>'a döner (modular arithmetic)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="bellek-hizalamas-memory-alignment-ve-padding">Bellek Hizalaması (Memory Alignment ve Padding)<a class="headerlink" href="#bellek-hizalamas-memory-alignment-ve-padding" title="Permanent link">&para;</a></h2>
+<h2 id="memory-alignment-ve-padding">Memory Alignment ve Padding<a class="headerlink" href="#memory-alignment-ve-padding" title="Permanent link">&para;</a></h2>
 <p>İşlemciler bellekten <strong>bloklar halinde</strong> veri okur. Değişkenlerin kendi boyutlarının katı olan adreslere yerleşmesi, <strong>Alignment</strong> olarak adlandırılır. (32-bit işlemci 4 byte, 64-bit işlemci 8 byte)</p>
 <ul>
 <li><code>struct</code> üyelerini büyükten küçüğe sıralamak padding'i minimize eder ve bellek kullanımını optimize eder.</li>
@@ -1800,27 +1764,19 @@
 </span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="p">};</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="bellek-yonetimi">Bellek Yönetimi<a class="headerlink" href="#bellek-yonetimi" title="Permanent link">&para;</a></h2>
-<pre class="mermaid"><code>graph TD
-    subgraph "Sanal Bellek Düzeni"
-        A["Stack\n(Yerel değişkenler, parametreler)"]
-        B["↕ Boş Alan"]
-        C["Heap\n(Dinamik bellek)"]
-        D["BSS Segment\n(Sıfırlanan global/static)"]
-        E["Data Segment\n(İlk değer verilen global/static)"]
-        F["Text Segment\n(Program kodu - Read-Only)"]
-    end
-    A --&gt; B --&gt; C --&gt; D --&gt; E --&gt; F</code></pre>
-<h3 id="stack">Stack<a class="headerlink" href="#stack" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Çalışma Mantığı:</strong> LIFO (Last In, First Out). İşlemci tarafından doğrudan yönetilir; çok hızlıdır.</li>
-<li><strong>Kapsam:</strong> Fonksiyon çağrıları, parametreler ve yerel değişkenler burada tutulur. Fonksiyon return ettiğinde bellek otomatik temizlenir.</li>
-<li><strong>Risk:</strong> Boyutu sınırlıdır. Aşırı büyük yerel diziler veya kontrolsüz özyinelemeli (recursive) fonksiyonlar <strong>Stack Overflow</strong> hatasına yol açar.</li>
+<li>
+<p><strong>Stack:</strong> LIFO (Last In, First Out). İşlemci tarafından doğrudan yönetilir; çok hızlıdır. Fonksiyon çağrıları, parametreler ve yerel değişkenler burada tutulur. Fonksiyon return ettiğinde bellek otomatik temizlenir.</p>
+<ul>
+<li><strong>Risk:</strong> Boyutu sınırlıdır. Aşırı büyük yerel diziler veya kontrolsüz recursive fonksiyonlar <strong>Stack Overflow</strong> hatasına yol açar.</li>
 </ul>
-<h3 id="heap">Heap<a class="headerlink" href="#heap" title="Permanent link">&para;</a></h3>
+</li>
+<li>
+<p><strong>Heap:</strong> Dinamik bellek bölgesidir. <code>malloc()</code>, <code>calloc()</code>, <code>realloc()</code> ile çalışma zamanında tahsis edilir. Verilerin ömrü fonksiyonlara bağlı değildir; <code>free()</code> edilene kadar bellekte kalır.</p>
 <ul>
-<li><strong>Çalışma Mantığı:</strong> Dinamik bellek bölgesidir. <code>malloc()</code>, <code>calloc()</code>, <code>realloc()</code> ile çalışma zamanında tahsis edilir.</li>
-<li><strong>Kapsam:</strong> Verilerin ömrü fonksiyonlara bağlı değildir; <code>free()</code> edilene kadar bellekte kalır.</li>
 <li><strong>Risk:</strong> Yönetim programcıdadır. <strong>Memory Leak</strong> (serbest bırakılmayan bellek) ve <strong>Dangling Pointer</strong> (serbest bırakılmış alana erişim) temel riskleridir.</li>
+</ul>
+</li>
 </ul>
 <table>
 <thead>
@@ -1833,7 +1789,7 @@
 <tbody>
 <tr>
 <td><code>malloc(n)</code></td>
-<td style="text-align: center;">Garbage (çöp)</td>
+<td style="text-align: center;">Garbage</td>
 <td><code>n</code> byte ayırır; içeriği sıfırlamaz</td>
 </tr>
 <tr>
@@ -1915,7 +1871,7 @@
 <li><strong>Döngüsel Tuzak (Infinite Loop):</strong> Bir düğümün <code>next</code> pointer'ı yanlışlıkla önceki bir düğüme bağlanırsa, listeyi gezen fonksiyonlar <strong>sonsuz döngüye</strong> girer.</li>
 </ol>
 </div>
-<h3 id="queue-kuyruk">Queue (Kuyruk)<a class="headerlink" href="#queue-kuyruk" title="Permanent link">&para;</a></h3>
+<h3 id="queue">Queue<a class="headerlink" href="#queue" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Çalışma Mantığı:</strong> FIFO (First In, First Out).</li>
 <li><strong>Operasyonlar:</strong> Eleman ekleme kuyruğun <strong>arkasından (Rear/Enqueue)</strong>, çıkarma ise <strong>önünden (Front/Dequeue)</strong> yapılır.</li>
@@ -1927,8 +1883,6 @@
 <th>Operatör</th>
 <th>Tür</th>
 <th>Açıklama</th>
-<th></th>
-<th></th>
 </tr>
 </thead>
 <tbody>
@@ -1936,66 +1890,48 @@
 <td><code>&amp;</code></td>
 <td>Bitwise AND</td>
 <td>Her iki bitte de 1 ise sonuç 1</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
-<td><code>|</code></td>
+<td><code>\|</code></td>
 <td>Bitwise OR</td>
 <td>Herhangi bir bitte 1 ise sonuç 1</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td><code>^</code></td>
 <td>Bitwise XOR</td>
 <td>Bitler farklıysa sonuç 1</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td><code>~</code></td>
 <td>Bitwise NOT</td>
 <td>Tüm bitleri tersine çevirir</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td><code>&lt;&lt;</code></td>
 <td>Left Shift</td>
 <td>Sola kaydırma; <code>n</code> kez kaydırmak <code>2^n</code> ile çarpmaktır</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td><code>&gt;&gt;</code></td>
 <td>Right Shift</td>
 <td>Sağa kaydırma; <code>n</code> kez kaydırmak <code>2^n</code>'e bölmektir</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td><code>&amp;&amp;</code></td>
 <td>Logical AND</td>
 <td>Sonuç yalnızca <code>true</code>/<code>false</code>; <strong>Short-Circuit</strong> özelliği var</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
-<td><code>|             |</code></td>
+<td><code>\|\|</code></td>
 <td>Logical OR</td>
 <td>Sonuç yalnızca <code>true</code>/<code>false</code>; <strong>Short-Circuit</strong> özelliği var</td>
-<td></td>
-<td></td>
 </tr>
 </tbody>
 </table>
 <div class="admonition tip">
-<p class="admonition-title">Terimler</p>
+<p class="admonition-title">Not</p>
 <ul>
 <li><strong>Short-Circuit Evaluation:</strong> <code>if(a &amp;&amp; 5/a)</code> ifadesinde <code>a = 0</code> ise sol taraf <code>false</code> olduğu için sağ taraf (<code>5/a</code>) hiç değerlendirilmez. Bu sayede <code>division by zero</code> hatası önlenmiş olur.</li>
-<li><strong>Postfix</strong> (<code>i++</code>): Mevcut değeri kullan, sonra artır.</li>
-<li><strong>Prefix</strong> (<code>++i</code>): Önce artır, sonra kullan.</li>
 </ul>
 </div>
 <h2 id="pointer">Pointer<a class="headerlink" href="#pointer" title="Permanent link">&para;</a></h2>
@@ -2023,7 +1959,7 @@
 <div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
 <span class="normal"><a href="#__codelineno-8-2">2</a></span>
 <span class="normal"><a href="#__codelineno-8-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="kt">int</span><span class="w">  </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="p">;</span><span class="w">   </span><span class="c1">// p, x&#39;in adresini tutuyor</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="p">;</span><span class="w">   </span><span class="c1">// p, x'in adresini tutuyor</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">       </span><span class="c1">// x artık 20</span>
 </span></code></pre></div></td></tr></table></div>
 <div class="admonition note">
@@ -2050,15 +1986,15 @@
 <span class="normal"><a href="#__codelineno-10-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">dizi</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">};</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dizi</span><span class="p">;</span><span class="w">                       </span><span class="c1">// &amp;dizi[0] ile eşdeğer</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d - %d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dizi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="mi">2</span><span class="p">[</span><span class="n">dizi</span><span class="p">]);</span><span class="w">  </span><span class="c1">// *(dizi + 2) = *(2 + dizi)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="n">printf</span><span class="p">(</span><span class="s">"%d - %d"</span><span class="p">,</span><span class="w"> </span><span class="n">dizi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="mi">2</span><span class="p">[</span><span class="n">dizi</span><span class="p">]);</span><span class="w">  </span><span class="c1">// *(dizi + 2) = *(2 + dizi)</span>
 </span></code></pre></div></td></tr></table></div>
 <h3 id="string-metin">String (Metin)<a class="headerlink" href="#string-metin" title="Permanent link">&para;</a></h3>
 <p>C'de yerleşik string tipi yoktur bunun yerine <code>char</code> dizileri olarak tutulur ve sonları <code>\0</code> (Null Terminator) ile belirtilir.</p>
 <div class="admonition danger">
 <p class="admonition-title">Stack vs Read-Only Data</p>
 <p><div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
-<span class="normal"><a href="#__codelineno-11-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="kt">char</span><span class="w">  </span><span class="n">str1</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">;</span><span class="w">   </span><span class="c1">// Stack - değiştirilebilir</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str2</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">;</span><span class="w">   </span><span class="c1">// Read-Only Data Segment - değiştirilemez!</span>
+<span class="normal"><a href="#__codelineno-11-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="kt">char</span><span class="w">  </span><span class="n">str1</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Hello"</span><span class="p">;</span><span class="w">   </span><span class="c1">// Stack - değiştirilebilir</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str2</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s">"Hello"</span><span class="p">;</span><span class="w">   </span><span class="c1">// Read-Only Data Segment - değiştirilemez!</span>
 </span></code></pre></div></td></tr></table></div>
 <code>str2[0] = 'M';</code> → <strong>Segmentation Fault</strong>. String literal pointer'ı için mutlaka <code>const char *str2</code> kullanılmalıdır.</p>
 </div>
@@ -2098,9 +2034,9 @@
 </table>
 <div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
 <span class="normal"><a href="#__codelineno-12-2">2</a></span>
-<span class="normal"><a href="#__codelineno-12-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="kt">char</span><span class="w"> </span><span class="n">text</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;C Language&quot;</span><span class="p">;</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%zu</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">text</span><span class="p">));</span><span class="w">  </span><span class="c1">// 100 - bellekte ayrılan alan</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%zu</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">text</span><span class="p">));</span><span class="w">  </span><span class="c1">// 10  - görünen karakter sayısı</span>
+<span class="normal"><a href="#__codelineno-12-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="kt">char</span><span class="w"> </span><span class="n">text</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"C Language"</span><span class="p">;</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="n">printf</span><span class="p">(</span><span class="s">"%zu</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">text</span><span class="p">));</span><span class="w">  </span><span class="c1">// 100 - bellekte ayrılan alan</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="n">printf</span><span class="p">(</span><span class="s">"%zu</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">text</span><span class="p">));</span><span class="w">  </span><span class="c1">// 10  - görünen karakter sayısı</span>
 </span></code></pre></div></td></tr></table></div>
 <div class="admonition note">
 <p class="admonition-title">Generic Pointer (<code>void*</code>)</p>
@@ -2112,8 +2048,8 @@
 <span class="normal"><a href="#__codelineno-13-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="kt">int</span><span class="w">   </span><span class="n">a</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">vptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">;</span><span class="w">  </span><span class="c1">// Her tipten adres atanabilir</span>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="c1">// printf(&quot;%d&quot;, *vptr);        // HATA! Tip bilinmiyor</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">vptr</span><span class="p">);</span><span class="w">    </span><span class="c1">// DOĞRU: önce int*&#39;a cast et</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="c1">// printf("%d", *vptr);        // HATA! Tip bilinmiyor</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="n">printf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">vptr</span><span class="p">);</span><span class="w">    </span><span class="c1">// DOĞRU: önce int*'a cast et</span>
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="admonition note">
@@ -2178,8 +2114,8 @@
 <span class="normal"><a href="#__codelineno-15-3">3</a></span>
 <span class="normal"><a href="#__codelineno-15-4">4</a></span>
 <span class="normal"><a href="#__codelineno-15-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="kt">int</span><span class="w">  </span><span class="n">x</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="p">;</span><span class="w">   </span><span class="c1">// p  → x&#39;in adresi</span>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">pp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">p</span><span class="p">;</span><span class="w">  </span><span class="c1">// pp → p pointer&#39;ının adresi</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="p">;</span><span class="w">   </span><span class="c1">// p  → x'in adresi</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">pp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">p</span><span class="p">;</span><span class="w">  </span><span class="c1">// pp → p pointer'ının adresi</span>
 </span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4"></a>
 </span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5"></a><span class="c1">// **pp == 5, *pp == p, pp == &amp;p</span>
 </span></code></pre></div></td></tr></table></div>
@@ -2222,15 +2158,15 @@
 </span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">fp</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">topla</span><span class="p">;</span><span class="w">  </span><span class="c1">// İmza: (int, int) → int</span>
 </span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13"></a>
-</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fp</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span><span class="w">        </span><span class="c1">// 8</span>
-</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">fp</span><span class="p">)(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">));</span><span class="w">   </span><span class="c1">// 30 - iki yöntem de geçerli</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">fp</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span><span class="w">        </span><span class="c1">// 8</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">fp</span><span class="p">)(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">));</span><span class="w">   </span><span class="c1">// 30 - iki yöntem de geçerli</span>
 </span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16"></a>
 </span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17"></a><span class="w">    </span><span class="c1">// Fonksiyon tablosu - switch-case gerektirmez</span>
 </span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18"></a><span class="w">    </span><span class="n">IslemPtr</span><span class="w"> </span><span class="n">tablo</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">topla</span><span class="p">,</span><span class="w"> </span><span class="n">cikar</span><span class="p">,</span><span class="w"> </span><span class="n">carp</span><span class="p">};</span>
-</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tablo</span><span class="p">[</span><span class="mi">2</span><span class="p">](</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">));</span><span class="w"> </span><span class="c1">// 50 - carp</span>
+</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">tablo</span><span class="p">[</span><span class="mi">2</span><span class="p">](</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">));</span><span class="w"> </span><span class="c1">// 50 - carp</span>
 </span><span id="__span-16-20"><a id="__codelineno-16-20" name="__codelineno-16-20"></a>
-</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">compute</span><span class="p">(</span><span class="n">topla</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span>
-</span><span id="__span-16-22"><a id="__codelineno-16-22" name="__codelineno-16-22"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">compute</span><span class="p">(</span><span class="n">cikar</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span>
+</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">compute</span><span class="p">(</span><span class="n">topla</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span>
+</span><span id="__span-16-22"><a id="__codelineno-16-22" name="__codelineno-16-22"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">compute</span><span class="p">(</span><span class="n">cikar</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">));</span>
 </span><span id="__span-16-23"><a id="__codelineno-16-23" name="__codelineno-16-23"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 </span><span id="__span-16-24"><a id="__codelineno-16-24" name="__codelineno-16-24"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
@@ -2274,7 +2210,7 @@
 <tbody>
 <tr>
 <td><code>#</code></td>
-<td>Argümanı <strong>string literal</strong>'e dönüştürür (Stringification)</td>
+<td>Argümanı <strong>string literal</strong>'e dönüştürür (Stringification - Sonuç string "" olur)</td>
 </tr>
 <tr>
 <td><code>##</code></td>
@@ -2355,13 +2291,13 @@
 </span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7"></a><span class="cp">#define __MUTLAK_SONUC__   </span><span class="c1">// boş define - belge amacıyla kullanılır</span>
 </span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8"></a>
 </span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9"></a><span class="cp">#define PRINT_DEBUG(var) \</span>
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10"></a><span class="cp">    printf(#var &quot; = %d\n&quot;, var)</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10"></a><span class="cp">    printf(#var " = %d\n", var)</span>
 </span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11"></a>
 </span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12"></a><span class="cp">#define DEGISKEN_YARAT(id) \</span>
 </span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13"></a><span class="cp">    int kullanici_##id = id</span>
 </span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14"></a>
 </span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15"></a><span class="cp">#define LOG_ERROR(msg) \</span>
-</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16"></a><span class="cp">    printf(&quot;[HATA] %s:%d -&gt; %s\n&quot;, __FILE__, __LINE__, msg)</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16"></a><span class="cp">    printf("[HATA] %s:%d -&gt; %s\n", __FILE__, __LINE__, msg)</span>
 </span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17"></a>
 </span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18"></a><span class="kt">int</span><span class="w"> </span><span class="n">__MUTLAK_SONUC__</span><span class="w"> </span><span class="n">degisken</span><span class="p">;</span>
 </span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19"></a>
@@ -2370,9 +2306,9 @@
 </span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22"></a><span class="w">    </span><span class="n">PRINT_DEBUG</span><span class="p">(</span><span class="n">sensor_isi</span><span class="p">);</span><span class="w">           </span><span class="c1">// sensor_isi = 45</span>
 </span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23"></a>
 </span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24"></a><span class="w">    </span><span class="n">DEGISKEN_YARAT</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span><span class="w">                 </span><span class="c1">// → int kullanici_5 = 5;</span>
-</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">kullanici_5</span><span class="p">);</span><span class="w">       </span><span class="c1">// 5</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">kullanici_5</span><span class="p">);</span><span class="w">       </span><span class="c1">// 5</span>
 </span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26"></a>
-</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27"></a><span class="w">    </span><span class="n">LOG_ERROR</span><span class="p">(</span><span class="s">&quot;Kritik donanim eksik!&quot;</span><span class="p">);</span>
+</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27"></a><span class="w">    </span><span class="n">LOG_ERROR</span><span class="p">(</span><span class="s">"Kritik donanim eksik!"</span><span class="p">);</span>
 </span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28"></a><span class="p">}</span>
 </span><span id="__span-18-29"><a id="__codelineno-18-29" name="__codelineno-18-29"></a>
 </span><span id="__span-18-30"><a id="__codelineno-18-30" name="__codelineno-18-30"></a><span class="cp">#endif  </span><span class="c1">// DONANIM_H</span>
@@ -2491,7 +2427,7 @@
 <p><code>fork()</code> çağrıldığında işletim sistemi, mevcut sürecin birebir kopyasını oluşturur. Hem parent hem de child <code>fork()</code> satırından itibaren çalışmaya devam eder.</p>
 <pre class="mermaid"><code>graph TD
     P["Parent Process\n(PID: 100)"] --&gt;|fork| C["Child Process\n(PID: 101)"]
-    P --&gt; P1["Parent fork dönüş: PID 101"]
+    P --&gt; P1["Parent fork dönüş:\n PID 101"]
     C --&gt; C1["Child fork dönüş: 0"]</code></pre>
 <div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-19-2"> 2</a></span>
@@ -2515,16 +2451,16 @@
 </span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                    </span><span class="c1">// fork başarısız</span>
 </span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">           </span><span class="c1">// Child süreci</span>
 </span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Child çalışıyor... i = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"Child çalışıyor... i = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
 </span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8"></a><span class="w">        </span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">                         </span><span class="c1">// Parent süreci</span>
 </span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Parent çalışıyor... i = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"Parent çalışıyor... i = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
 </span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13"></a><span class="w">        </span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15"></a><span class="w">    </span><span class="n">wait</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span><span class="w">  </span><span class="c1">// Zombi süreç oluşmasını önle</span>
-</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Parent: Child bitti, kapanıyorum.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Parent: Child bitti, kapanıyorum.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
 </span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
 <h3 id="multi-threading-pthread">Multi-threading (<code>pthread</code>)<a class="headerlink" href="#multi-threading-pthread" title="Permanent link">&para;</a></h3>
@@ -2558,7 +2494,7 @@
 <span class="normal"><a href="#__codelineno-20-27">27</a></span>
 <span class="normal"><a href="#__codelineno-20-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">thread_func_1</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Thread 1 çalışıyor... i = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"Thread 1 çalışıyor... i = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
 </span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4"></a><span class="w">        </span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
@@ -2566,7 +2502,7 @@
 </span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8"></a>
 </span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9"></a><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">thread_func_2</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Thread 2 çalışıyor... i = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">"Thread 2 çalışıyor... i = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
 </span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12"></a><span class="w">        </span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
@@ -2578,10 +2514,10 @@
 </span><span id="__span-20-20"><a id="__codelineno-20-20" name="__codelineno-20-20"></a><span class="w">    </span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">thread_func_1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
 </span><span id="__span-20-21"><a id="__codelineno-20-21" name="__codelineno-20-21"></a><span class="w">    </span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t2</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">thread_func_2</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
 </span><span id="__span-20-22"><a id="__codelineno-20-22" name="__codelineno-20-22"></a>
-</span><span id="__span-20-23"><a id="__codelineno-20-23" name="__codelineno-20-23"></a><span class="w">    </span><span class="n">pthread_join</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w">  </span><span class="c1">// t1 bitene kadar main&#39;i bloke et</span>
+</span><span id="__span-20-23"><a id="__codelineno-20-23" name="__codelineno-20-23"></a><span class="w">    </span><span class="n">pthread_join</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w">  </span><span class="c1">// t1 bitene kadar main'i bloke et</span>
 </span><span id="__span-20-24"><a id="__codelineno-20-24" name="__codelineno-20-24"></a><span class="w">    </span><span class="n">pthread_join</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
 </span><span id="__span-20-25"><a id="__codelineno-20-25" name="__codelineno-20-25"></a>
-</span><span id="__span-20-26"><a id="__codelineno-20-26" name="__codelineno-20-26"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Tüm thread&#39;ler bitti.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span id="__span-20-26"><a id="__codelineno-20-26" name="__codelineno-20-26"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"Tüm thread'ler bitti.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
 </span><span id="__span-20-27"><a id="__codelineno-20-27" name="__codelineno-20-27"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 </span><span id="__span-20-28"><a id="__codelineno-20-28" name="__codelineno-20-28"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
@@ -2822,7 +2758,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.prune", "navigation.indexes", "content.code.copy", "content.code.annotate", "content.tabs.linked", "content.code.select", "content.code.wrap", "content.action.view", "search.suggest", "search.highlight", "toc.integrate", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Kopyaland\u0131", "clipboard.copy": "Kopyala", "search.result.more.one": "Bu sayfada 1 tane daha", "search.result.more.other": "Bu sayfada # tane daha", "search.result.none": "E\u015fle\u015fen dok\u00fcman bulunamad\u0131", "search.result.one": "1 dok\u00fcman bulundu", "search.result.other": "# dok\u00fcman bulundu", "search.result.placeholder": "Aramaya ba\u015flamak i\u00e7in yaz\u0131n", "search.result.term.missing": "Eksik", "select.version": "Versiyon se\u00e7"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="../../../assets/js/extra.js"></script>
       

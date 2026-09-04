@@ -5,3 +5,21 @@
   padding: 6px;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
+
+[data-md-color-scheme="default"] .md-typeset table:not([class]) th {
+  background-color: #45526640 !important;
+  color: var(--md-default-fg-color) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
+  background-color: #94a3b840 !important;
+  color: var(--md-default-fg-color) !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset table:not([class]) tr:nth-child(even) {
+  background-color: rgba(2, 6, 23, 0.045);
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}

@@ -14,14 +14,14 @@
         <link rel="prev" href="../jetson/">
       
       
-        <link rel="next" href="../problems_and_solutions/">
+        <link rel="next" href="../../ai/fundamentals/">
       
       
         
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -553,14 +553,6 @@
       
         
       
-        
-      
-        
-      
-        
-      
-        
-      
     
     
     
@@ -646,34 +638,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../package_management/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Package Management
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../commands_utilities/" class="md-nav__link">
         
   
@@ -710,62 +674,6 @@
     
   
     Shell Scripting
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../networking/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Networking
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../services_daemons/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Services & Daemons
   
 
     
@@ -1259,34 +1167,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../problems_and_solutions/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Problems & Solutions
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1620,23 +1500,23 @@
 <span class="normal"><a href="#__codelineno-0-20">20</a></span>
 <span class="normal"><a href="#__codelineno-0-21">21</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="cp">/dts-v1/</span><span class="p">;</span><span class="w">               </span><span class="c1">// DTS versiyon etiketi - zorunlu</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="cp">#include</span><span class="cm"> </span><span class="cpf">&quot;bcm2835.dtsi&quot;  // SoC tanımını dahil et</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="cp">#include</span><span class="cm"> </span><span class="cpf">"bcm2835.dtsi"  // SoC tanımını dahil et</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="nf">/</span><span class="cm"> </span><span class="p">{</span><span class="w">                      </span><span class="c1">// Kök düğüm</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">    </span><span class="kr">#address-cells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span><span class="w">    </span><span class="c1">// Alt düğümlerin reg adres alanı (kelime sayısı)</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="kr">#size-cells</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span><span class="w">    </span><span class="c1">// Alt düğümlerin reg boyut alanı</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;raspberrypi,3-model-b&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;brcm,bcm2837&quot;</span><span class="p">;</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">    </span><span class="kr">model</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Raspberry Pi 3 Model B&quot;</span><span class="p">;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"raspberrypi,3-model-b"</span><span class="p">,</span><span class="w"> </span><span class="s">"brcm,bcm2837"</span><span class="p">;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">    </span><span class="kr">model</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s">"Raspberry Pi 3 Model B"</span><span class="p">;</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">    </span><span class="nf">memory</span><span class="o">@</span><span class="mi">0</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">        </span><span class="kr">device_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;memory&quot;</span><span class="p">;</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">        </span><span class="kr">device_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"memory"</span><span class="p">;</span>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">        </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x0</span><span class="w"> </span><span class="mh">0x40000000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">     </span><span class="c1">// başlangıç=0x0, boyut=1 GiB</span>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">    </span><span class="p">};</span>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>
 </span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w">    </span><span class="nf">chosen</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">        </span><span class="n">bootargs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;console=ttyS0,115200 root=/dev/mmcblk0p2 rootwait&quot;</span><span class="p">;</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w">        </span><span class="n">stdout-path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;serial0:115200n8&quot;</span><span class="p">;</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">        </span><span class="n">bootargs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"console=ttyS0,115200 root=/dev/mmcblk0p2 rootwait"</span><span class="p">;</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w">        </span><span class="n">stdout-path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"serial0:115200n8"</span><span class="p">;</span>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="w">    </span><span class="p">};</span>
 </span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="p">};</span>
 </span></code></pre></div></td></tr></table></div>
@@ -1676,24 +1556,24 @@
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">    </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x20000000</span><span class="w"> </span><span class="mh">0x10000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">       </span><span class="c1">// adres + boyut</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">    </span><span class="c1">// String</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;vendor,chip-name&quot;</span><span class="p">;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"vendor,chip-name"</span><span class="p">;</span>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">    </span><span class="c1">// String listesi (önce özele, sonra genele)</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;fsl,imx6ul-uart&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;fsl,imx6q-uart&quot;</span><span class="p">;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"fsl,imx6ul-uart"</span><span class="p">,</span><span class="w"> </span><span class="s">"fsl,imx6q-uart"</span><span class="p">;</span>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">    </span><span class="c1">// Boolean (sadece varlığı anlamlıdır)</span>
 </span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">    </span><span class="n">interrupt-controller</span><span class="p">;</span>
 </span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a>
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">    </span><span class="c1">// Byte dizisi (MAC adresi vb.)</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">    </span><span class="n">local-mac-address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="na">DE</span><span class="w"> </span><span class="na">AD</span><span class="w"> </span><span class="na">BE</span><span class="w"> </span><span class="na">EF</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="mi">34</span><span class="p">];</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">    </span><span class="n">local-mac-address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mh">DE</span><span class="w"> </span><span class="mh">AD</span><span class="w"> </span><span class="mh">BE</span><span class="w"> </span><span class="mh">EF</span><span class="w"> </span><span class="mh">12</span><span class="w"> </span><span class="mh">34</span><span class="p">];</span>
 </span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a>
 </span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="w">    </span><span class="c1">// Phandle - başka düğüme referans</span>
 </span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="w">    </span><span class="n">clocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">clk_ctrl</span><span class="w"> </span><span class="mi">5</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a>
 </span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="w">    </span><span class="c1">// Boş bırakma</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">;</span>
 </span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="w">    </span><span class="c1">// Özellik silme (overlay&#39;lerde)</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="w">    </span><span class="c1">// Özellik silme (overlay'lerde)</span>
 </span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a><span class="w">    </span><span class="cp">/delete-property/</span><span class="cm"> </span><span class="cp">some-property</span><span class="p">;</span>
 </span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="p">};</span>
 </span></code></pre></div></td></tr></table></div>
@@ -1703,7 +1583,7 @@
 <p>Kernel'in hangi sürücüyü yükleyeceğini belirleyen <strong>en önemli özelliktir.</strong></p>
 <div class="language-dts highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
 <span class="normal"><a href="#__codelineno-2-2">2</a></span>
-<span class="normal"><a href="#__codelineno-2-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;vendor,specific-chip&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;vendor,generic-family&quot;</span><span class="p">;</span>
+<span class="normal"><a href="#__codelineno-2-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"vendor,specific-chip"</span><span class="p">,</span><span class="w"> </span><span class="s">"vendor,generic-family"</span><span class="p">;</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="c1">//            ^^                      ^^</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="c1">//            Özel eşleşme (önce)    Genel geri dönüş (sonra)</span>
 </span></code></pre></div></td></tr></table></div>
@@ -1719,8 +1599,8 @@
 <span class="normal"><a href="#__codelineno-3-6">6</a></span>
 <span class="normal"><a href="#__codelineno-3-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">// Kernel sürücüsü tarafında</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">of_device_id</span><span class="w"> </span><span class="n">my_ids</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;vendor,specific-chip&quot;</span><span class="w"> </span><span class="p">},</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;vendor,generic-family&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"vendor,specific-chip"</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"vendor,generic-family"</span><span class="w"> </span><span class="p">},</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="p">};</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="n">MODULE_DEVICE_TABLE</span><span class="p">(</span><span class="n">of</span><span class="p">,</span><span class="w"> </span><span class="n">my_ids</span><span class="p">);</span>
@@ -1784,7 +1664,7 @@
 <span class="normal"><a href="#__codelineno-5-20">20</a></span>
 <span class="normal"><a href="#__codelineno-5-21">21</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1">// Kesme kontrolörü tanımı</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="nl">gic</span><span class="p">:</span><span class="w"> </span><span class="nf">interrupt-controller</span><span class="o">@</span><span class="mi">1c81000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;arm,gic-400&quot;</span><span class="p">;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"arm,gic-400"</span><span class="p">;</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">    </span><span class="n">interrupt-controller</span><span class="p">;</span><span class="w">           </span><span class="c1">// Bu düğüm bir kesme kontrolörüdür</span>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">    </span><span class="o">#</span><span class="n">interrupt-cells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">;</span><span class="w">         </span><span class="c1">// Her kesme için 3 hücre gerekli</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">    </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x1c81000</span><span class="w"> </span><span class="mh">0x1000</span>
@@ -1856,7 +1736,7 @@
 <span class="normal"><a href="#__codelineno-6-13">13</a></span>
 <span class="normal"><a href="#__codelineno-6-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1">// Saat kontrolörü</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="nl">clk_ctrl</span><span class="p">:</span><span class="w"> </span><span class="nf">clock</span><span class="o">@</span><span class="mi">7e101000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;brcm,bcm2835-cprman&quot;</span><span class="p">;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"brcm,bcm2835-cprman"</span><span class="p">;</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">    </span><span class="o">#</span><span class="n">clock-cells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span><span class="w">              </span><span class="c1">// Her referans için 1 hücre</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">    </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x7e101000</span><span class="w"> </span><span class="mh">0x2000</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">    </span><span class="n">clocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">osc</span><span class="o">&gt;</span><span class="p">;</span><span class="w">                 </span><span class="c1">// Kristal osilatör kaynağı</span>
@@ -1866,7 +1746,7 @@
 </span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="nl">uart0</span><span class="p">:</span><span class="w"> </span><span class="nf">serial</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
 </span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">    </span><span class="n">clocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">clk_ctrl</span><span class="w"> </span><span class="na">BCM2835_CLOCK_UART</span><span class="o">&gt;</span><span class="p">,</span><span class="w">   </span><span class="c1">// UART saati</span>
 </span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">             </span><span class="o">&lt;&amp;</span><span class="na">clk_ctrl</span><span class="w"> </span><span class="na">BCM2835_CLOCK_VPU</span><span class="o">&gt;</span><span class="p">;</span><span class="w">    </span><span class="c1">// APB veri yolu</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">    </span><span class="n">clock-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;uartclk&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;apb_pclk&quot;</span><span class="p">;</span><span class="w">       </span><span class="c1">// İsimlendirme</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">    </span><span class="n">clock-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"uartclk"</span><span class="p">,</span><span class="w"> </span><span class="s">"apb_pclk"</span><span class="p">;</span><span class="w">       </span><span class="c1">// İsimlendirme</span>
 </span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="p">};</span>
 </span></code></pre></div></td></tr></table></div>
 <h3 id="pinctrl-pin-cogullama">pinctrl - Pin Çoğullama<a class="headerlink" href="#pinctrl-pin-cogullama" title="Permanent link">&para;</a></h3>
@@ -1897,7 +1777,7 @@
 <span class="normal"><a href="#__codelineno-7-24">24</a></span>
 <span class="normal"><a href="#__codelineno-7-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c1">// Pin kontrolörü tanımı</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="nl">pinctrl</span><span class="p">:</span><span class="w"> </span><span class="nf">pinctrl</span><span class="o">@</span><span class="mi">7e200000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;brcm,bcm2835-gpio&quot;</span><span class="p">;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"brcm,bcm2835-gpio"</span><span class="p">;</span>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="w">    </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x7e200000</span><span class="w"> </span><span class="mh">0xb4</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="w">    </span><span class="c1">// I2C-1 pin konfigürasyonu</span>
@@ -1917,8 +1797,8 @@
 </span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20"></a>
 </span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21"></a><span class="c1">// Kullanım - cihaz kendi pinlerini belirtir</span>
 </span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22"></a><span class="nl">uart0</span><span class="p">:</span><span class="w"> </span><span class="nf">serial</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23"></a><span class="w">    </span><span class="n">pinctrl-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;default&quot;</span><span class="p">;</span>
-</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24"></a><span class="w">    </span><span class="n">pinctrl-0</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">uart0_pins</span><span class="o">&gt;</span><span class="p">;</span><span class="w"> </span><span class="c1">// &quot;default&quot; durumunda bu konfigürasyon</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23"></a><span class="w">    </span><span class="n">pinctrl-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"default"</span><span class="p">;</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24"></a><span class="w">    </span><span class="n">pinctrl-0</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">uart0_pins</span><span class="o">&gt;</span><span class="p">;</span><span class="w"> </span><span class="c1">// "default" durumunda bu konfigürasyon</span>
 </span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25"></a><span class="p">};</span>
 </span></code></pre></div></td></tr></table></div>
 <h3 id="status-etkinlestirme-devre-ds">status - Etkinleştirme / Devre Dışı<a class="headerlink" href="#status-etkinlestirme-devre-ds" title="Permanent link">&para;</a></h3>
@@ -1932,15 +1812,15 @@
 <span class="normal"><a href="#__codelineno-8-8"> 8</a></span>
 <span class="normal"><a href="#__codelineno-8-9"> 9</a></span>
 <span class="normal"><a href="#__codelineno-8-10">10</a></span>
-<span class="normal"><a href="#__codelineno-8-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="c1">// Temel DTB&#39;de devre dışı (SoC default)</span>
+<span class="normal"><a href="#__codelineno-8-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="c1">// Temel DTB'de devre dışı (SoC default)</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="nl">i2c1</span><span class="p">:</span><span class="w"> </span><span class="nf">i2c</span><span class="o">@</span><span class="mi">7e804000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;brcm,bcm2835-i2c&quot;</span><span class="p">;</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;disabled&quot;</span><span class="p">;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"brcm,bcm2835-i2c"</span><span class="p">;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"disabled"</span><span class="p">;</span>
 </span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="p">};</span>
 </span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="c1">// Board DTS&#39;de etkinleştirme</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="c1">// Board DTS'de etkinleştirme</span>
 </span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="o">&amp;</span><span class="nf">i2c1</span><span class="cm"> </span><span class="p">{</span><span class="w">           </span><span class="c1">// &amp; ile mevcut düğümü referans alır</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;okay&quot;</span><span class="p">;</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"okay"</span><span class="p">;</span>
 </span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10"></a><span class="w">    </span><span class="n">clock-frequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">400000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">   </span><span class="c1">// 400 kHz Fast Mode</span>
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="p">};</span>
 </span></code></pre></div></td></tr></table></div>
@@ -1996,12 +1876,12 @@
 <span class="normal"><a href="#__codelineno-9-21">21</a></span>
 <span class="normal"><a href="#__codelineno-9-22">22</a></span>
 <span class="normal"><a href="#__codelineno-9-23">23</a></span>
-<span class="normal"><a href="#__codelineno-9-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="o">&amp;</span><span class="na">i2c1</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;okay&quot;</span><span class="p">;</span>
+<span class="normal"><a href="#__codelineno-9-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="o">&amp;</span><span class="nf">i2c1</span><span class="cm"> </span><span class="p">{</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"okay"</span><span class="p">;</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="w">    </span><span class="n">clock-frequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">400000</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a>
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="w">    </span><span class="nl">mpu6050</span><span class="p">:</span><span class="w"> </span><span class="nf">imu</span><span class="o">@</span><span class="mi">68</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;invensense,mpu6050&quot;</span><span class="p">;</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"invensense,mpu6050"</span><span class="p">;</span>
 </span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="w">        </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x68</span><span class="o">&gt;</span><span class="p">;</span><span class="w">               </span><span class="c1">// I2C 7-bit adresi</span>
 </span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="w">        </span><span class="n">interrupt-parent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">gpio</span><span class="o">&gt;</span><span class="p">;</span>
@@ -2009,14 +1889,14 @@
 </span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11"></a>
 </span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12"></a><span class="w">        </span><span class="c1">// Sensör montaj matrisi (koordinat sistemi dönüşümü)</span>
 </span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13"></a><span class="w">        </span><span class="n">mount-matrix</span><span class="w"> </span><span class="o">=</span>
-</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="w">            </span><span class="s">&quot;1&quot;</span><span class="p">,</span><span class="w">  </span><span class="s">&quot;0&quot;</span><span class="p">,</span><span class="w">  </span><span class="s">&quot;0&quot;</span><span class="p">,</span>
-</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="w">            </span><span class="s">&quot;0&quot;</span><span class="p">,</span><span class="w">  </span><span class="s">&quot;1&quot;</span><span class="p">,</span><span class="w">  </span><span class="s">&quot;0&quot;</span><span class="p">,</span>
-</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16"></a><span class="w">            </span><span class="s">&quot;0&quot;</span><span class="p">,</span><span class="w">  </span><span class="s">&quot;0&quot;</span><span class="p">,</span><span class="w">  </span><span class="s">&quot;1&quot;</span><span class="p">;</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="w">            </span><span class="s">"1"</span><span class="p">,</span><span class="w">  </span><span class="s">"0"</span><span class="p">,</span><span class="w">  </span><span class="s">"0"</span><span class="p">,</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="w">            </span><span class="s">"0"</span><span class="p">,</span><span class="w">  </span><span class="s">"1"</span><span class="p">,</span><span class="w">  </span><span class="s">"0"</span><span class="p">,</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16"></a><span class="w">            </span><span class="s">"0"</span><span class="p">,</span><span class="w">  </span><span class="s">"0"</span><span class="p">,</span><span class="w">  </span><span class="s">"1"</span><span class="p">;</span>
 </span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17"></a><span class="w">    </span><span class="p">};</span>
 </span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18"></a>
-</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19"></a><span class="w">    </span><span class="c1">// Aynı bus&#39;ta ikinci sensör</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19"></a><span class="w">    </span><span class="c1">// Aynı bus'ta ikinci sensör</span>
 </span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20"></a><span class="w">    </span><span class="nl">bmp280</span><span class="p">:</span><span class="w"> </span><span class="nf">pressure</span><span class="o">@</span><span class="mi">76</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bosch,bmp280&quot;</span><span class="p">;</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"bosch,bmp280"</span><span class="p">;</span>
 </span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22"></a><span class="w">        </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x76</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23"></a><span class="w">    </span><span class="p">};</span>
 </span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24"></a><span class="p">};</span>
@@ -2050,12 +1930,12 @@
 <span class="normal"><a href="#__codelineno-10-26">26</a></span>
 <span class="normal"><a href="#__codelineno-10-27">27</a></span>
 <span class="normal"><a href="#__codelineno-10-28">28</a></span>
-<span class="normal"><a href="#__codelineno-10-29">29</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="o">&amp;</span><span class="na">spi0</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;okay&quot;</span><span class="p">;</span>
+<span class="normal"><a href="#__codelineno-10-29">29</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="o">&amp;</span><span class="nf">spi0</span><span class="cm"> </span><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"okay"</span><span class="p">;</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="w">    </span><span class="n">cs-gpios</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">gpio</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="na">GPIO_ACTIVE_LOW</span><span class="o">&gt;</span><span class="p">;</span><span class="w">   </span><span class="c1">// Manuel CS kontrolü</span>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a>
 </span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="w">    </span><span class="nf">flash</span><span class="o">@</span><span class="mi">0</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;winbond,w25q128&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;jedec,spi-nor&quot;</span><span class="p">;</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"winbond,w25q128"</span><span class="p">,</span><span class="w"> </span><span class="s">"jedec,spi-nor"</span><span class="p">;</span>
 </span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="w">        </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span><span class="w">                            </span><span class="c1">// CS0</span>
 </span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="w">        </span><span class="n">spi-max-frequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">50000000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">       </span><span class="c1">// 50 MHz</span>
 </span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="w">        </span><span class="n">spi-rx-bus-width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">4</span><span class="o">&gt;</span><span class="p">;</span><span class="w">              </span><span class="c1">// Quad-SPI okuma</span>
@@ -2063,17 +1943,17 @@
 </span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11"></a>
 </span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12"></a><span class="w">        </span><span class="c1">// Bölümleme tablosu</span>
 </span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13"></a><span class="w">        </span><span class="nf">partitions</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14"></a><span class="w">            </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;fixed-partitions&quot;</span><span class="p">;</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14"></a><span class="w">            </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"fixed-partitions"</span><span class="p">;</span>
 </span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15"></a><span class="w">            </span><span class="kr">#address-cells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16"></a><span class="w">            </span><span class="kr">#size-cells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17"></a>
 </span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18"></a><span class="w">            </span><span class="nf">bootloader</span><span class="o">@</span><span class="mi">0</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19"></a><span class="w">                </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bootloader&quot;</span><span class="p">;</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19"></a><span class="w">                </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"bootloader"</span><span class="p">;</span>
 </span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20"></a><span class="w">                </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x0</span><span class="w"> </span><span class="mh">0x40000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">          </span><span class="c1">// 256 KB</span>
 </span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21"></a><span class="w">                </span><span class="n">read-only</span><span class="p">;</span>
 </span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22"></a><span class="w">            </span><span class="p">};</span>
 </span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23"></a><span class="w">            </span><span class="nf">firmware</span><span class="o">@</span><span class="mi">40000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24"></a><span class="w">                </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;firmware&quot;</span><span class="p">;</span>
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24"></a><span class="w">                </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"firmware"</span><span class="p">;</span>
 </span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25"></a><span class="w">                </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x40000</span><span class="w"> </span><span class="mh">0xfc0000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">     </span><span class="c1">// ~15.75 MB</span>
 </span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26"></a><span class="w">            </span><span class="p">};</span>
 </span><span id="__span-10-27"><a id="__codelineno-10-27" name="__codelineno-10-27"></a><span class="w">        </span><span class="p">};</span>
@@ -2120,12 +2000,12 @@
 <span class="normal"><a href="#__codelineno-11-37">37</a></span>
 <span class="normal"><a href="#__codelineno-11-38">38</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="w">    </span><span class="nf">gpio-keys</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gpio-keys&quot;</span><span class="p">;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"gpio-keys"</span><span class="p">;</span>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="w">        </span><span class="kr">#address-cells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="w">        </span><span class="kr">#size-cells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6"></a>
 </span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7"></a><span class="w">        </span><span class="nf">button</span><span class="o">@</span><span class="mi">0</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="w">            </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;User Button&quot;</span><span class="p">;</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="w">            </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"User Button"</span><span class="p">;</span>
 </span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="w">            </span><span class="n">linux</span><span class="p">,</span><span class="n">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="na">KEY_ENTER</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="w">            </span><span class="n">gpios</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">gpio</span><span class="w"> </span><span class="mi">22</span><span class="w"> </span><span class="na">GPIO_ACTIVE_LOW</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11"></a><span class="w">            </span><span class="n">debounce-interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">50</span><span class="o">&gt;</span><span class="p">;</span><span class="w">   </span><span class="c1">// ms</span>
@@ -2134,25 +2014,25 @@
 </span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14"></a><span class="w">    </span><span class="p">};</span>
 </span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15"></a>
 </span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16"></a><span class="w">    </span><span class="nf">gpio-leds</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gpio-leds&quot;</span><span class="p">;</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"gpio-leds"</span><span class="p">;</span>
 </span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18"></a>
 </span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19"></a><span class="w">        </span><span class="nf">led_green</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20"></a><span class="w">            </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;status:green&quot;</span><span class="p">;</span>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20"></a><span class="w">            </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"status:green"</span><span class="p">;</span>
 </span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21"></a><span class="w">            </span><span class="n">gpios</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">gpio</span><span class="w"> </span><span class="mi">27</span><span class="w"> </span><span class="na">GPIO_ACTIVE_HIGH</span><span class="o">&gt;</span><span class="p">;</span>
-</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22"></a><span class="w">            </span><span class="n">linux</span><span class="p">,</span><span class="n">default-trigger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;heartbeat&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// 1 Hz yanıp sönme</span>
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22"></a><span class="w">            </span><span class="n">linux</span><span class="p">,</span><span class="n">default-trigger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"heartbeat"</span><span class="p">;</span><span class="w">  </span><span class="c1">// 1 Hz yanıp sönme</span>
 </span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23"></a><span class="w">        </span><span class="p">};</span>
 </span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24"></a>
 </span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25"></a><span class="w">        </span><span class="nf">led_red</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-11-26"><a id="__codelineno-11-26" name="__codelineno-11-26"></a><span class="w">            </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;status:red&quot;</span><span class="p">;</span>
+</span><span id="__span-11-26"><a id="__codelineno-11-26" name="__codelineno-11-26"></a><span class="w">            </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"status:red"</span><span class="p">;</span>
 </span><span id="__span-11-27"><a id="__codelineno-11-27" name="__codelineno-11-27"></a><span class="w">            </span><span class="n">gpios</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">gpio</span><span class="w"> </span><span class="mi">17</span><span class="w"> </span><span class="na">GPIO_ACTIVE_HIGH</span><span class="o">&gt;</span><span class="p">;</span>
-</span><span id="__span-11-28"><a id="__codelineno-11-28" name="__codelineno-11-28"></a><span class="w">            </span><span class="n">linux</span><span class="p">,</span><span class="n">default-trigger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;none&quot;</span><span class="p">;</span>
-</span><span id="__span-11-29"><a id="__codelineno-11-29" name="__codelineno-11-29"></a><span class="w">            </span><span class="n">default-state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;off&quot;</span><span class="p">;</span>
+</span><span id="__span-11-28"><a id="__codelineno-11-28" name="__codelineno-11-28"></a><span class="w">            </span><span class="n">linux</span><span class="p">,</span><span class="n">default-trigger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"none"</span><span class="p">;</span>
+</span><span id="__span-11-29"><a id="__codelineno-11-29" name="__codelineno-11-29"></a><span class="w">            </span><span class="n">default-state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"off"</span><span class="p">;</span>
 </span><span id="__span-11-30"><a id="__codelineno-11-30" name="__codelineno-11-30"></a><span class="w">        </span><span class="p">};</span>
 </span><span id="__span-11-31"><a id="__codelineno-11-31" name="__codelineno-11-31"></a>
 </span><span id="__span-11-32"><a id="__codelineno-11-32" name="__codelineno-11-32"></a><span class="w">        </span><span class="nf">led_blue</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-11-33"><a id="__codelineno-11-33" name="__codelineno-11-33"></a><span class="w">            </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;status:blue&quot;</span><span class="p">;</span>
+</span><span id="__span-11-33"><a id="__codelineno-11-33" name="__codelineno-11-33"></a><span class="w">            </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"status:blue"</span><span class="p">;</span>
 </span><span id="__span-11-34"><a id="__codelineno-11-34" name="__codelineno-11-34"></a><span class="w">            </span><span class="n">gpios</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">gpio</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="na">GPIO_ACTIVE_HIGH</span><span class="o">&gt;</span><span class="p">;</span>
-</span><span id="__span-11-35"><a id="__codelineno-11-35" name="__codelineno-11-35"></a><span class="w">            </span><span class="n">linux</span><span class="p">,</span><span class="n">default-trigger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;mmc0&quot;</span><span class="p">;</span><span class="w">       </span><span class="c1">// SD kart etkinliği</span>
+</span><span id="__span-11-35"><a id="__codelineno-11-35" name="__codelineno-11-35"></a><span class="w">            </span><span class="n">linux</span><span class="p">,</span><span class="n">default-trigger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"mmc0"</span><span class="p">;</span><span class="w">       </span><span class="c1">// SD kart etkinliği</span>
 </span><span id="__span-11-36"><a id="__codelineno-11-36" name="__codelineno-11-36"></a><span class="w">        </span><span class="p">};</span>
 </span><span id="__span-11-37"><a id="__codelineno-11-37" name="__codelineno-11-37"></a><span class="w">    </span><span class="p">};</span>
 </span><span id="__span-11-38"><a id="__codelineno-11-38" name="__codelineno-11-38"></a><span class="p">};</span>
@@ -2182,28 +2062,28 @@
 <span class="normal"><a href="#__codelineno-12-22">22</a></span>
 <span class="normal"><a href="#__codelineno-12-23">23</a></span>
 <span class="normal"><a href="#__codelineno-12-24">24</a></span>
-<span class="normal"><a href="#__codelineno-12-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="c1">// SoC DTSI&#39;de temel tanım (devre dışı)</span>
+<span class="normal"><a href="#__codelineno-12-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="c1">// SoC DTSI'de temel tanım (devre dışı)</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="nl">uart0</span><span class="p">:</span><span class="w"> </span><span class="nf">serial</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;arm,pl011&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;arm,primecell&quot;</span><span class="p">;</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"arm,pl011"</span><span class="p">,</span><span class="w"> </span><span class="s">"arm,primecell"</span><span class="p">;</span>
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="w">    </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x7e201000</span><span class="w"> </span><span class="mh">0x200</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="w">    </span><span class="n">interrupts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="na">GIC_SPI</span><span class="w"> </span><span class="mi">57</span><span class="w"> </span><span class="na">IRQ_TYPE_LEVEL_HIGH</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="w">    </span><span class="n">clocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">clocks</span><span class="w"> </span><span class="na">BCM2835_CLOCK_UART</span><span class="o">&gt;</span><span class="p">,</span>
 </span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7"></a><span class="w">             </span><span class="o">&lt;&amp;</span><span class="na">clocks</span><span class="w"> </span><span class="na">BCM2835_CLOCK_VPU</span><span class="o">&gt;</span><span class="p">;</span>
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="w">    </span><span class="n">clock-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;uartclk&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;apb_pclk&quot;</span><span class="p">;</span>
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;disabled&quot;</span><span class="p">;</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="w">    </span><span class="n">clock-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"uartclk"</span><span class="p">,</span><span class="w"> </span><span class="s">"apb_pclk"</span><span class="p">;</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"disabled"</span><span class="p">;</span>
 </span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10"></a><span class="p">};</span>
 </span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11"></a>
-</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12"></a><span class="c1">// Board DTS&#39;de etkinleştirme</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12"></a><span class="c1">// Board DTS'de etkinleştirme</span>
 </span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13"></a><span class="o">&amp;</span><span class="nf">uart0</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;okay&quot;</span><span class="p">;</span>
-</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15"></a><span class="w">    </span><span class="n">pinctrl-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;default&quot;</span><span class="p">;</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"okay"</span><span class="p">;</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15"></a><span class="w">    </span><span class="n">pinctrl-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"default"</span><span class="p">;</span>
 </span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16"></a><span class="w">    </span><span class="n">pinctrl-0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">uart0_pins</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17"></a><span class="p">};</span>
 </span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18"></a>
-</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19"></a><span class="c1">// Kernel konsolunu UART0&#39;a yönlendir</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19"></a><span class="c1">// Kernel konsolunu UART0'a yönlendir</span>
 </span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20"></a><span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
 </span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21"></a><span class="w">    </span><span class="nf">chosen</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22"></a><span class="w">        </span><span class="n">stdout-path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;serial0:115200n8&quot;</span><span class="p">;</span>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22"></a><span class="w">        </span><span class="n">stdout-path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"serial0:115200n8"</span><span class="p">;</span>
 </span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23"></a><span class="w">        </span><span class="c1">// n8 = no parity, 8 data bits</span>
 </span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24"></a><span class="w">    </span><span class="p">};</span>
 </span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25"></a><span class="p">};</span>
@@ -2243,9 +2123,9 @@
 <span class="normal"><a href="#__codelineno-13-32">32</a></span>
 <span class="normal"><a href="#__codelineno-13-33">33</a></span>
 <span class="normal"><a href="#__codelineno-13-34">34</a></span>
-<span class="normal"><a href="#__codelineno-13-35">35</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="o">&amp;</span><span class="na">pwm</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;okay&quot;</span><span class="p">;</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">    </span><span class="n">pinctrl-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;default&quot;</span><span class="p">;</span>
+<span class="normal"><a href="#__codelineno-13-35">35</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="o">&amp;</span><span class="nf">pwm</span><span class="cm"> </span><span class="p">{</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="w">    </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"okay"</span><span class="p">;</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">    </span><span class="n">pinctrl-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"default"</span><span class="p">;</span>
 </span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="w">    </span><span class="n">pinctrl-0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">pwm0_gpio18</span><span class="o">&gt;</span><span class="p">;</span><span class="w">   </span><span class="c1">// GPIO18 = PWM0</span>
 </span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="w">    </span><span class="n">assigned-clocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">clocks</span><span class="w"> </span><span class="na">BCM2835_CLOCK_PWM</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="w">    </span><span class="n">assigned-clock-rates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">10000000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">  </span><span class="c1">// 10 MHz kaynak saat</span>
@@ -2253,7 +2133,7 @@
 </span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a>
 </span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
 </span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="w">    </span><span class="nl">fan0</span><span class="p">:</span><span class="w"> </span><span class="nf">pwm-fan</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pwm-fan&quot;</span><span class="p">;</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11"></a><span class="w">        </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"pwm-fan"</span><span class="p">;</span>
 </span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12"></a><span class="w">        </span><span class="o">#</span><span class="n">cooling-cells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13"></a><span class="w">        </span><span class="n">pwms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">pwm</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">25000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">          </span><span class="c1">// Kanal 0, periyot 25µs (40 kHz)</span>
 </span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14"></a><span class="w">        </span><span class="n">cooling-levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">0</span><span class="w"> </span><span class="mi">64</span><span class="w"> </span><span class="mi">128</span><span class="w"> </span><span class="mi">192</span><span class="w"> </span><span class="mi">255</span><span class="o">&gt;</span><span class="p">;</span><span class="w">  </span><span class="c1">// 0%,25%,50%,75%,100%</span>
@@ -2263,9 +2143,9 @@
 </span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18"></a><span class="w">            </span><span class="nf">cpu-thermal</span><span class="cm"> </span><span class="p">{</span>
 </span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19"></a><span class="w">                </span><span class="nf">trips</span><span class="cm"> </span><span class="p">{</span>
 </span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20"></a><span class="w">                    </span><span class="nl">fan_on</span><span class="p">:</span><span class="w"> </span><span class="nf">fan-on</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21"></a><span class="w">                        </span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">55000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">   </span><span class="c1">// 55°C&#39;de başla</span>
-</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22"></a><span class="w">                        </span><span class="n">hysteresis</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">5000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">    </span><span class="c1">// 50°C&#39;nin altında dur</span>
-</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23"></a><span class="w">                        </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;active&quot;</span><span class="p">;</span>
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21"></a><span class="w">                        </span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">55000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">   </span><span class="c1">// 55°C'de başla</span>
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22"></a><span class="w">                        </span><span class="n">hysteresis</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">5000</span><span class="o">&gt;</span><span class="p">;</span><span class="w">    </span><span class="c1">// 50°C'nin altında dur</span>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23"></a><span class="w">                        </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"active"</span><span class="p">;</span>
 </span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24"></a><span class="w">                    </span><span class="p">};</span>
 </span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25"></a><span class="w">                </span><span class="p">};</span>
 </span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26"></a><span class="w">                </span><span class="nf">cooling-maps</span><span class="cm"> </span><span class="p">{</span>
@@ -2323,17 +2203,17 @@
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="cp">/plugin/</span><span class="p">;</span><span class="w">       </span><span class="c1">// Overlay olduğunu belirtir</span>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3"></a>
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;brcm,bcm2835&quot;</span><span class="p">;</span><span class="w">    </span><span class="c1">// Hangi platform için geçerli</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"brcm,bcm2835"</span><span class="p">;</span><span class="w">    </span><span class="c1">// Hangi platform için geçerli</span>
 </span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6"></a>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7"></a><span class="w">    </span><span class="c1">// Fragment 0: I2C&#39;yi etkinleştir ve sensör ekle</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7"></a><span class="w">    </span><span class="c1">// Fragment 0: I2C'yi etkinleştir ve sensör ekle</span>
 </span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8"></a><span class="w">    </span><span class="nf">fragment</span><span class="o">@</span><span class="mi">0</span><span class="cm"> </span><span class="p">{</span>
 </span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9"></a><span class="w">        </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">i2c1</span><span class="o">&gt;</span><span class="p">;</span><span class="w">           </span><span class="c1">// Mevcut düğümü hedef al</span>
 </span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10"></a><span class="w">        </span><span class="nf">__overlay__</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11"></a><span class="w">            </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;okay&quot;</span><span class="p">;</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11"></a><span class="w">            </span><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"okay"</span><span class="p">;</span>
 </span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12"></a><span class="w">            </span><span class="n">clock-frequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">400000</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13"></a>
 </span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14"></a><span class="w">            </span><span class="nf">bmp280</span><span class="o">@</span><span class="mi">76</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15"></a><span class="w">                </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bosch,bmp280&quot;</span><span class="p">;</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15"></a><span class="w">                </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"bosch,bmp280"</span><span class="p">;</span>
 </span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16"></a><span class="w">                </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x76</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17"></a><span class="w">            </span><span class="p">};</span>
 </span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18"></a><span class="w">        </span><span class="p">};</span>
@@ -2351,115 +2231,66 @@
 </span><span id="__span-14-30"><a id="__codelineno-14-30" name="__codelineno-14-30"></a><span class="w">        </span><span class="p">};</span>
 </span><span id="__span-14-31"><a id="__codelineno-14-31" name="__codelineno-14-31"></a><span class="w">    </span><span class="p">};</span>
 </span><span id="__span-14-32"><a id="__codelineno-14-32" name="__codelineno-14-32"></a>
-</span><span id="__span-14-33"><a id="__codelineno-14-33" name="__codelineno-14-33"></a><span class="w">    </span><span class="c1">// Parametre tanımı - config.txt&#39;ten kullanıcı özelleştirebilir</span>
+</span><span id="__span-14-33"><a id="__codelineno-14-33" name="__codelineno-14-33"></a><span class="w">    </span><span class="c1">// Parametre tanımı - config.txt'ten kullanıcı özelleştirebilir</span>
 </span><span id="__span-14-34"><a id="__codelineno-14-34" name="__codelineno-14-34"></a><span class="w">    </span><span class="nf">__overrides__</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-14-35"><a id="__codelineno-14-35" name="__codelineno-14-35"></a><span class="w">        </span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">bmp280</span><span class="err">@</span><span class="mi">76</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;reg:0&quot;</span><span class="p">;</span><span class="w">         </span><span class="c1">// I2C adres parametresi</span>
-</span><span id="__span-14-36"><a id="__codelineno-14-36" name="__codelineno-14-36"></a><span class="w">        </span><span class="n">speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">i2c1</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;clock-frequency:0&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// Hız parametresi</span>
+</span><span id="__span-14-35"><a id="__codelineno-14-35" name="__codelineno-14-35"></a><span class="w">        </span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">bmp280</span><span class="err">@</span><span class="mi">76</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">"reg:0"</span><span class="p">;</span><span class="w">         </span><span class="c1">// I2C adres parametresi</span>
+</span><span id="__span-14-36"><a id="__codelineno-14-36" name="__codelineno-14-36"></a><span class="w">        </span><span class="n">speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">i2c1</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">"clock-frequency:0"</span><span class="p">;</span><span class="w"> </span><span class="c1">// Hız parametresi</span>
 </span><span id="__span-14-37"><a id="__codelineno-14-37" name="__codelineno-14-37"></a><span class="w">    </span><span class="p">};</span>
 </span><span id="__span-14-38"><a id="__codelineno-14-38" name="__codelineno-14-38"></a><span class="p">};</span>
 </span></code></pre></div></td></tr></table></div>
 <div class="language-ini highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">/boot/firmware/config.txt</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
-<span class="normal"><a href="#__codelineno-15-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="c1"># Overlay&#39;i parametrelerle yükle</span>
+<span class="normal"><a href="#__codelineno-15-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="c1"># Overlay'i parametrelerle yükle</span>
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">bmp280,addr=0x77,speed=100000</span>
 </span></code></pre></div></td></tr></table></div>
 <hr />
-<p>Donanım kaynaklarını (bellek, kesmeler, saatler, GPIO) yazılımdan bağımsız biçimde tanımlayan hiyerarşik veri yapısıdır. Bootloader, DTB'yi RAM'e yükleyerek kernel'e hangi donanımın mevcut olduğunu bildirir.</p>
-<table>
-<thead>
-<tr>
-<th>Format</th>
-<th>Açıklama</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>.dts</code></td>
-<td>Device Tree Source - insan tarafından okunabilir metin</td>
-</tr>
-<tr>
-<td><code>.dtb</code></td>
-<td>Device Tree Blob - derlenmiş ikili format</td>
-</tr>
-<tr>
-<td><code>.dtso</code></td>
-<td>Overlay - temel DTB üzerine eklenti</td>
-</tr>
-</tbody>
-</table>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
-<span class="normal"><a href="#__codelineno-16-2">2</a></span>
-<span class="normal"><a href="#__codelineno-16-3">3</a></span>
-<span class="normal"><a href="#__codelineno-16-4">4</a></span>
-<span class="normal"><a href="#__codelineno-16-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a>dtc<span class="w"> </span>-I<span class="w"> </span>dts<span class="w"> </span>-O<span class="w"> </span>dtb<span class="w"> </span>-o<span class="w"> </span>output.dtb<span class="w"> </span>input.dts<span class="w">   </span><span class="c1"># .dts → .dtb derleme</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2"></a>dtc<span class="w"> </span>-I<span class="w"> </span>dtb<span class="w"> </span>-O<span class="w"> </span>dts<span class="w"> </span>-o<span class="w"> </span>output.dts<span class="w"> </span>input.dtb<span class="w">   </span><span class="c1"># .dtb → .dts tersine çevirme</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3"></a>dtc<span class="w"> </span>-I<span class="w"> </span>fs<span class="w">  </span>-O<span class="w"> </span>dts<span class="w"> </span>/proc/device-tree/<span class="w">        </span><span class="c1"># Aktif DTB&#39;yi okunabilir hale getir</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4"></a>cat<span class="w"> </span>/proc/device-tree/model<span class="w">                 </span><span class="c1"># Kart modeli</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5"></a>cat<span class="w"> </span>/proc/device-tree/compatible<span class="w">            </span><span class="c1"># Uyumluluk listesi</span>
-</span></code></pre></div></td></tr></table></div>
-<div class="admonition tip">
-<p class="admonition-title">Detaylı Kılavuz</p>
-<p>DTS sözdizimi, düğüm özellikleri, overlay sistemi, U-Boot entegrasyonu ve debug teknikleri için <a href="./">Device Tree (DTS/DTB)</a> sayfasına bakın.</p>
-</div>
 <h2 id="dtc-device-tree-compiler">DTC - Device Tree Compiler<a class="headerlink" href="#dtc-device-tree-compiler" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-17-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-17-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-17-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-17-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-17-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-17-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-17-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-17-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-17-10">10</a></span>
-<span class="normal"><a href="#__codelineno-17-11">11</a></span>
-<span class="normal"><a href="#__codelineno-17-12">12</a></span>
-<span class="normal"><a href="#__codelineno-17-13">13</a></span>
-<span class="normal"><a href="#__codelineno-17-14">14</a></span>
-<span class="normal"><a href="#__codelineno-17-15">15</a></span>
-<span class="normal"><a href="#__codelineno-17-16">16</a></span>
-<span class="normal"><a href="#__codelineno-17-17">17</a></span>
-<span class="normal"><a href="#__codelineno-17-18">18</a></span>
-<span class="normal"><a href="#__codelineno-17-19">19</a></span>
-<span class="normal"><a href="#__codelineno-17-20">20</a></span>
-<span class="normal"><a href="#__codelineno-17-21">21</a></span>
-<span class="normal"><a href="#__codelineno-17-22">22</a></span>
-<span class="normal"><a href="#__codelineno-17-23">23</a></span>
-<span class="normal"><a href="#__codelineno-17-24">24</a></span>
-<span class="normal"><a href="#__codelineno-17-25">25</a></span>
-<span class="normal"><a href="#__codelineno-17-26">26</a></span>
-<span class="normal"><a href="#__codelineno-17-27">27</a></span>
-<span class="normal"><a href="#__codelineno-17-28">28</a></span>
-<span class="normal"><a href="#__codelineno-17-29">29</a></span>
-<span class="normal"><a href="#__codelineno-17-30">30</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1"></a>dtc<span class="w"> </span>-I<span class="w"> </span>dts<span class="w"> </span>-O<span class="w"> </span>dtb<span class="w"> </span>-o<span class="w"> </span>output.dtb<span class="w"> </span>input.dts<span class="w">   </span><span class="c1"># .dts → .dtb derleme</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2"></a>dtc<span class="w"> </span>-I<span class="w"> </span>dtb<span class="w"> </span>-O<span class="w"> </span>dts<span class="w"> </span>-o<span class="w"> </span>output.dts<span class="w"> </span>input.dtb<span class="w">   </span><span class="c1"># .dtb → .dts tersine çevirme</span>
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3"></a>dtc<span class="w"> </span>-I<span class="w"> </span>fs<span class="w">  </span>-O<span class="w"> </span>dts<span class="w"> </span>/proc/device-tree/<span class="w">        </span><span class="c1"># Aktif DTB&#39;yi okunabilir hale getir</span>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4"></a>cat<span class="w"> </span>/proc/device-tree/model<span class="w">                 </span><span class="c1"># Kart modeli</span>
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5"></a>cat<span class="w"> </span>/proc/device-tree/compatible<span class="w">            </span><span class="c1"># Uyumluluk listesi</span>
-</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6"></a>
-</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7"></a><span class="c1"># Derleme: .dts → .dtb</span>
-</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8"></a>dtc<span class="w"> </span>-I<span class="w"> </span>dts<span class="w"> </span>-O<span class="w"> </span>dtb<span class="w"> </span>-o<span class="w"> </span>output.dtb<span class="w"> </span>input.dts
-</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9"></a>
-</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10"></a><span class="c1"># Tersine çevirme: .dtb → .dts (analiz/debug)</span>
-</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11"></a>dtc<span class="w"> </span>-I<span class="w"> </span>dtb<span class="w"> </span>-O<span class="w"> </span>dts<span class="w"> </span>-o<span class="w"> </span>output.dts<span class="w"> </span>input.dtb
-</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12"></a>
-</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13"></a><span class="c1"># Overlay derleme (-@ sembol tablosu ekler)</span>
-</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14"></a>dtc<span class="w"> </span>-I<span class="w"> </span>dts<span class="w"> </span>-O<span class="w"> </span>dtb<span class="w"> </span>-@<span class="w"> </span>-o<span class="w"> </span>overlay.dtbo<span class="w"> </span>overlay.dts
-</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15"></a>
-</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16"></a><span class="c1"># Uyarılarla derleme</span>
-</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17"></a>dtc<span class="w"> </span>-W<span class="w"> </span>no-unit_address_vs_reg<span class="w"> </span>-I<span class="w"> </span>dts<span class="w"> </span>-O<span class="w"> </span>dtb<span class="w"> </span>-o<span class="w"> </span>out.dtb<span class="w"> </span><span class="k">in</span>.dts
-</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18"></a>
-</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19"></a><span class="c1"># fdtdump - ham blob görüntüleme</span>
-</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20"></a>fdtdump<span class="w"> </span>output.dtb<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-100
-</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21"></a>
-</span><span id="__span-17-22"><a id="__codelineno-17-22" name="__codelineno-17-22"></a><span class="c1"># fdtget - belirli özelliği oku</span>
-</span><span id="__span-17-23"><a id="__codelineno-17-23" name="__codelineno-17-23"></a>fdtget<span class="w"> </span>output.dtb<span class="w"> </span>/soc/serial@7e201000<span class="w"> </span>compatible
-</span><span id="__span-17-24"><a id="__codelineno-17-24" name="__codelineno-17-24"></a>fdtget<span class="w"> </span>-t<span class="w"> </span>s<span class="w"> </span>output.dtb<span class="w"> </span>/<span class="w"> </span>model
-</span><span id="__span-17-25"><a id="__codelineno-17-25" name="__codelineno-17-25"></a>
-</span><span id="__span-17-26"><a id="__codelineno-17-26" name="__codelineno-17-26"></a><span class="c1"># fdtput - özellik değiştir (binary içinde)</span>
-</span><span id="__span-17-27"><a id="__codelineno-17-27" name="__codelineno-17-27"></a>fdtput<span class="w"> </span>-t<span class="w"> </span>s<span class="w"> </span>output.dtb<span class="w"> </span>/soc/serial@7e201000<span class="w"> </span>status<span class="w"> </span><span class="s2">&quot;okay&quot;</span>
-</span><span id="__span-17-28"><a id="__codelineno-17-28" name="__codelineno-17-28"></a>
-</span><span id="__span-17-29"><a id="__codelineno-17-29" name="__codelineno-17-29"></a><span class="c1"># fdtoverlay - overlay uygula</span>
-</span><span id="__span-17-30"><a id="__codelineno-17-30" name="__codelineno-17-30"></a>fdtoverlay<span class="w"> </span>-i<span class="w"> </span>base.dtb<span class="w"> </span>-o<span class="w"> </span>result.dtb<span class="w"> </span>overlay.dtbo
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-16-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-16-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-16-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-16-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-16-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-16-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-16-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-16-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-16-10">10</a></span>
+<span class="normal"><a href="#__codelineno-16-11">11</a></span>
+<span class="normal"><a href="#__codelineno-16-12">12</a></span>
+<span class="normal"><a href="#__codelineno-16-13">13</a></span>
+<span class="normal"><a href="#__codelineno-16-14">14</a></span>
+<span class="normal"><a href="#__codelineno-16-15">15</a></span>
+<span class="normal"><a href="#__codelineno-16-16">16</a></span>
+<span class="normal"><a href="#__codelineno-16-17">17</a></span>
+<span class="normal"><a href="#__codelineno-16-18">18</a></span>
+<span class="normal"><a href="#__codelineno-16-19">19</a></span>
+<span class="normal"><a href="#__codelineno-16-20">20</a></span>
+<span class="normal"><a href="#__codelineno-16-21">21</a></span>
+<span class="normal"><a href="#__codelineno-16-22">22</a></span>
+<span class="normal"><a href="#__codelineno-16-23">23</a></span>
+<span class="normal"><a href="#__codelineno-16-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="c1"># Derleme: .dts → .dtb</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2"></a>dtc<span class="w"> </span>-I<span class="w"> </span>dts<span class="w"> </span>-O<span class="w"> </span>dtb<span class="w"> </span>-o<span class="w"> </span>output.dtb<span class="w"> </span>input.dts
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3"></a>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4"></a><span class="c1"># Tersine çevirme: .dtb → .dts (analiz/debug)</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5"></a>dtc<span class="w"> </span>-I<span class="w"> </span>dtb<span class="w"> </span>-O<span class="w"> </span>dts<span class="w"> </span>-o<span class="w"> </span>output.dts<span class="w"> </span>input.dtb
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6"></a>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7"></a><span class="c1"># Overlay derleme (-@ sembol tablosu ekler)</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8"></a>dtc<span class="w"> </span>-I<span class="w"> </span>dts<span class="w"> </span>-O<span class="w"> </span>dtb<span class="w"> </span>-@<span class="w"> </span>-o<span class="w"> </span>overlay.dtbo<span class="w"> </span>overlay.dts
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9"></a>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10"></a><span class="c1"># Uyarılarla derleme</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11"></a>dtc<span class="w"> </span>-W<span class="w"> </span>no-unit_address_vs_reg<span class="w"> </span>-I<span class="w"> </span>dts<span class="w"> </span>-O<span class="w"> </span>dtb<span class="w"> </span>-o<span class="w"> </span>out.dtb<span class="w"> </span><span class="k">in</span>.dts
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12"></a>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13"></a><span class="c1"># fdtdump - ham blob görüntüleme</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14"></a>fdtdump<span class="w"> </span>output.dtb<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-100
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15"></a>
+</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16"></a><span class="c1"># fdtget - belirli özelliği oku</span>
+</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17"></a>fdtget<span class="w"> </span>output.dtb<span class="w"> </span>/soc/serial@7e201000<span class="w"> </span>compatible
+</span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18"></a>fdtget<span class="w"> </span>-t<span class="w"> </span>s<span class="w"> </span>output.dtb<span class="w"> </span>/<span class="w"> </span>model
+</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19"></a>
+</span><span id="__span-16-20"><a id="__codelineno-16-20" name="__codelineno-16-20"></a><span class="c1"># fdtput - özellik değiştir (binary içinde)</span>
+</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21"></a>fdtput<span class="w"> </span>-t<span class="w"> </span>s<span class="w"> </span>output.dtb<span class="w"> </span>/soc/serial@7e201000<span class="w"> </span>status<span class="w"> </span><span class="s2">"okay"</span>
+</span><span id="__span-16-22"><a id="__codelineno-16-22" name="__codelineno-16-22"></a>
+</span><span id="__span-16-23"><a id="__codelineno-16-23" name="__codelineno-16-23"></a><span class="c1"># fdtoverlay - overlay uygula</span>
+</span><span id="__span-16-24"><a id="__codelineno-16-24" name="__codelineno-16-24"></a>fdtoverlay<span class="w"> </span>-i<span class="w"> </span>base.dtb<span class="w"> </span>-o<span class="w"> </span>result.dtb<span class="w"> </span>overlay.dtbo
 </span></code></pre></div></td></tr></table></div>
 <hr />
 <h2 id="boot-sureci-dtb-nasl-yuklenir">Boot Süreci - DTB Nasıl Yüklenir?<a class="headerlink" href="#boot-sureci-dtb-nasl-yuklenir" title="Permanent link">&para;</a></h2>
@@ -2478,6 +2309,40 @@
     K-&gt;&gt;K: Her düğüm için of_match_table ile sürücü eşleştir
     K-&gt;&gt;K: Sürücü probe() çağır</code></pre>
 <h3 id="u-boot-komutlar">U-Boot Komutları<a class="headerlink" href="#u-boot-komutlar" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-17-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-17-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-17-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-17-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-17-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-17-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-17-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-17-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-17-10">10</a></span>
+<span class="normal"><a href="#__codelineno-17-11">11</a></span>
+<span class="normal"><a href="#__codelineno-17-12">12</a></span>
+<span class="normal"><a href="#__codelineno-17-13">13</a></span>
+<span class="normal"><a href="#__codelineno-17-14">14</a></span>
+<span class="normal"><a href="#__codelineno-17-15">15</a></span>
+<span class="normal"><a href="#__codelineno-17-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="c1"># U-Boot shell - DTB yükle ve kernel başlat</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2"></a>load<span class="w"> </span>mmc<span class="w"> </span><span class="m">0</span>:1<span class="w"> </span><span class="si">${</span><span class="nv">fdt_addr_r</span><span class="si">}</span><span class="w">    </span>bcm2711-rpi-4-b.dtb
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3"></a>load<span class="w"> </span>mmc<span class="w"> </span><span class="m">0</span>:1<span class="w"> </span><span class="si">${</span><span class="nv">kernel_addr_r</span><span class="si">}</span><span class="w"> </span>Image
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4"></a>booti<span class="w"> </span><span class="si">${</span><span class="nv">kernel_addr_r</span><span class="si">}</span><span class="w"> </span>-<span class="w"> </span><span class="si">${</span><span class="nv">fdt_addr_r</span><span class="si">}</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5"></a>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6"></a><span class="c1"># Overlay uygulama (U-Boot 2018.01+)</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7"></a>load<span class="w"> </span>mmc<span class="w"> </span><span class="m">0</span>:1<span class="w"> </span>0x3000000<span class="w"> </span>overlays/uart1.dtbo
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8"></a>fdt<span class="w"> </span>addr<span class="w">  </span><span class="si">${</span><span class="nv">fdt_addr_r</span><span class="si">}</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9"></a>fdt<span class="w"> </span>resize<span class="w"> </span><span class="m">65536</span><span class="w">                   </span><span class="c1"># DTB boyutunu büyüt</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10"></a>fdt<span class="w"> </span>apply<span class="w"> </span>0x3000000<span class="w">               </span><span class="c1"># Overlay uygula</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11"></a>booti<span class="w"> </span><span class="si">${</span><span class="nv">kernel_addr_r</span><span class="si">}</span><span class="w"> </span>-<span class="w"> </span><span class="si">${</span><span class="nv">fdt_addr_r</span><span class="si">}</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12"></a>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13"></a><span class="c1"># FDT komutları ile inceleme</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14"></a>fdt<span class="w"> </span>print<span class="w"> </span>/<span class="w">                        </span><span class="c1"># Kök düğümü göster</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15"></a>fdt<span class="w"> </span>print<span class="w"> </span>/soc/serial@7e201000<span class="w">    </span><span class="c1"># UART düğümü</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16"></a>fdt<span class="w"> </span>list<span class="w">  </span>/soc<span class="w">                     </span><span class="c1"># Alt düğümleri listele</span>
+</span></code></pre></div></td></tr></table></div>
+<hr />
+<h2 id="calsma-zaman-debug">Çalışma Zamanı Debug<a class="headerlink" href="#calsma-zaman-debug" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-18-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-18-3"> 3</a></span>
@@ -2493,26 +2358,46 @@
 <span class="normal"><a href="#__codelineno-18-13">13</a></span>
 <span class="normal"><a href="#__codelineno-18-14">14</a></span>
 <span class="normal"><a href="#__codelineno-18-15">15</a></span>
-<span class="normal"><a href="#__codelineno-18-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="c1"># U-Boot shell - DTB yükle ve kernel başlat</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a>load<span class="w"> </span>mmc<span class="w"> </span><span class="m">0</span>:1<span class="w"> </span><span class="si">${</span><span class="nv">fdt_addr_r</span><span class="si">}</span><span class="w">    </span>bcm2711-rpi-4-b.dtb
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3"></a>load<span class="w"> </span>mmc<span class="w"> </span><span class="m">0</span>:1<span class="w"> </span><span class="si">${</span><span class="nv">kernel_addr_r</span><span class="si">}</span><span class="w"> </span>Image
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4"></a>booti<span class="w"> </span><span class="si">${</span><span class="nv">kernel_addr_r</span><span class="si">}</span><span class="w"> </span>-<span class="w"> </span><span class="si">${</span><span class="nv">fdt_addr_r</span><span class="si">}</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5"></a>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6"></a><span class="c1"># Overlay uygulama (U-Boot 2018.01+)</span>
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7"></a>load<span class="w"> </span>mmc<span class="w"> </span><span class="m">0</span>:1<span class="w"> </span>0x3000000<span class="w"> </span>overlays/uart1.dtbo
-</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8"></a>fdt<span class="w"> </span>addr<span class="w">  </span><span class="si">${</span><span class="nv">fdt_addr_r</span><span class="si">}</span>
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9"></a>fdt<span class="w"> </span>resize<span class="w"> </span><span class="m">65536</span><span class="w">                   </span><span class="c1"># DTB boyutunu büyüt</span>
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10"></a>fdt<span class="w"> </span>apply<span class="w"> </span>0x3000000<span class="w">               </span><span class="c1"># Overlay uygula</span>
-</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11"></a>booti<span class="w"> </span><span class="si">${</span><span class="nv">kernel_addr_r</span><span class="si">}</span><span class="w"> </span>-<span class="w"> </span><span class="si">${</span><span class="nv">fdt_addr_r</span><span class="si">}</span>
-</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12"></a>
-</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13"></a><span class="c1"># FDT komutları ile inceleme</span>
-</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14"></a>fdt<span class="w"> </span>print<span class="w"> </span>/<span class="w">                        </span><span class="c1"># Kök düğümü göster</span>
-</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15"></a>fdt<span class="w"> </span>print<span class="w"> </span>/soc/serial@7e201000<span class="w">    </span><span class="c1"># UART düğümü</span>
-</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16"></a>fdt<span class="w"> </span>list<span class="w">  </span>/soc<span class="w">                     </span><span class="c1"># Alt düğümleri listele</span>
+<span class="normal"><a href="#__codelineno-18-16">16</a></span>
+<span class="normal"><a href="#__codelineno-18-17">17</a></span>
+<span class="normal"><a href="#__codelineno-18-18">18</a></span>
+<span class="normal"><a href="#__codelineno-18-19">19</a></span>
+<span class="normal"><a href="#__codelineno-18-20">20</a></span>
+<span class="normal"><a href="#__codelineno-18-21">21</a></span>
+<span class="normal"><a href="#__codelineno-18-22">22</a></span>
+<span class="normal"><a href="#__codelineno-18-23">23</a></span>
+<span class="normal"><a href="#__codelineno-18-24">24</a></span>
+<span class="normal"><a href="#__codelineno-18-25">25</a></span>
+<span class="normal"><a href="#__codelineno-18-26">26</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="c1"># Aktif DTB'yi procfs üzerinden oku</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a>ls<span class="w"> </span>/proc/device-tree/
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3"></a>cat<span class="w"> </span>/proc/device-tree/model<span class="w">                        </span><span class="c1"># Kart modeli</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4"></a>cat<span class="w"> </span>/proc/device-tree/compatible<span class="w">                   </span><span class="c1"># Platform uyumluluk</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5"></a>xxd<span class="w"> </span>/proc/device-tree/soc/serial@7e201000/reg<span class="w">     </span><span class="c1"># Kayıt adresi</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6"></a>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7"></a><span class="c1"># Tam DTB'yi okunabilir formata dönüştür</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8"></a>dtc<span class="w"> </span>-I<span class="w"> </span>fs<span class="w"> </span>-O<span class="w"> </span>dts<span class="w"> </span>/proc/device-tree/<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>less
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9"></a>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10"></a><span class="c1"># sysfs üzerinden sürücü durumu</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11"></a>ls<span class="w"> </span>-la<span class="w"> </span>/sys/bus/platform/devices/<span class="w">               </span><span class="c1"># Platform cihazları</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12"></a>ls<span class="w"> </span>-la<span class="w"> </span>/sys/bus/i2c/devices/<span class="w">                   </span><span class="c1"># I2C cihazları</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13"></a>ls<span class="w"> </span>-la<span class="w"> </span>/sys/bus/spi/devices/<span class="w">                   </span><span class="c1"># SPI cihazları</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14"></a>cat<span class="w"> </span>/sys/bus/i2c/devices/1-0068/name<span class="w">           </span><span class="c1"># Sürücünün tanıdığı isim</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15"></a>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16"></a><span class="c1"># Kernel mesajları - DT ve sürücü hataları</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"OF:"</span><span class="w">       </span><span class="c1"># Open Firmware / Device Tree mesajları</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"DT:"</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"pinctrl"</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"probe"</span><span class="w">     </span><span class="c1"># Sürücü probe sonuçları</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21"></a>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22"></a><span class="c1"># Raspberry Pi - overlay yönetimi</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23"></a>dtoverlay<span class="w"> </span>my_overlay.dtbo<span class="w">          </span><span class="c1"># Overlay yükle</span>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24"></a>dtoverlay<span class="w"> </span>-l<span class="w">                       </span><span class="c1"># Yüklü overlay'leri listele</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25"></a>dtoverlay<span class="w"> </span>-r<span class="w"> </span>my_overlay<span class="w">            </span><span class="c1"># Overlay kaldır</span>
+</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26"></a>dtoverlay<span class="w"> </span>-h<span class="w"> </span>i2c1<span class="w">                  </span><span class="c1"># Overlay parametrelerini göster</span>
 </span></code></pre></div></td></tr></table></div>
 <hr />
-<h2 id="calsma-zaman-debug">Çalışma Zamanı Debug<a class="headerlink" href="#calsma-zaman-debug" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1"> 1</a></span>
+<h2 id="raspberry-pi-overlay-referans">Raspberry Pi Overlay Referansı<a class="headerlink" href="#raspberry-pi-overlay-referans" title="Permanent link">&para;</a></h2>
+<div class="language-ini highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">/boot/firmware/config.txt</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-19-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-19-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-19-4"> 4</a></span>
@@ -2537,36 +2422,49 @@
 <span class="normal"><a href="#__codelineno-19-23">23</a></span>
 <span class="normal"><a href="#__codelineno-19-24">24</a></span>
 <span class="normal"><a href="#__codelineno-19-25">25</a></span>
-<span class="normal"><a href="#__codelineno-19-26">26</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="c1"># Aktif DTB&#39;yi procfs üzerinden oku</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2"></a>ls<span class="w"> </span>/proc/device-tree/
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3"></a>cat<span class="w"> </span>/proc/device-tree/model<span class="w">                        </span><span class="c1"># Kart modeli</span>
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4"></a>cat<span class="w"> </span>/proc/device-tree/compatible<span class="w">                   </span><span class="c1"># Platform uyumluluk</span>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5"></a>xxd<span class="w"> </span>/proc/device-tree/soc/serial@7e201000/reg<span class="w">     </span><span class="c1"># Kayıt adresi</span>
+<span class="normal"><a href="#__codelineno-19-26">26</a></span>
+<span class="normal"><a href="#__codelineno-19-27">27</a></span>
+<span class="normal"><a href="#__codelineno-19-28">28</a></span>
+<span class="normal"><a href="#__codelineno-19-29">29</a></span>
+<span class="normal"><a href="#__codelineno-19-30">30</a></span>
+<span class="normal"><a href="#__codelineno-19-31">31</a></span>
+<span class="normal"><a href="#__codelineno-19-32">32</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="c1"># --- Arayüz Overlay'leri ---</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">i2c0</span><span class="w">                          </span><span class="c1"># I2C-0 (GPIO0/1)</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">i2c1</span><span class="w">                          </span><span class="c1"># I2C-1 (GPIO2/3) - varsayılan</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">i2c6</span><span class="w">                          </span><span class="c1"># I2C-6 (Pi 4+)</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5"></a><span class="na">dtparam</span><span class="o">=</span><span class="s">i2c_arm_baudrate=400000</span><span class="w">         </span><span class="c1"># I2C hızı 400 kHz</span>
 </span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6"></a>
-</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7"></a><span class="c1"># Tam DTB&#39;yi okunabilir formata dönüştür</span>
-</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8"></a>dtc<span class="w"> </span>-I<span class="w"> </span>fs<span class="w"> </span>-O<span class="w"> </span>dts<span class="w"> </span>/proc/device-tree/<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>less
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">spi0-1cs</span><span class="w">                      </span><span class="c1"># SPI0 (GPIO7-11), 1 CS hattı</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">spi0-2cs</span><span class="w">                      </span><span class="c1"># SPI0, 2 CS hattı (GPIO7, GPIO8)</span>
 </span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9"></a>
-</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10"></a><span class="c1"># sysfs üzerinden sürücü durumu</span>
-</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11"></a>ls<span class="w"> </span>-la<span class="w"> </span>/sys/bus/platform/devices/<span class="w">               </span><span class="c1"># Platform cihazları</span>
-</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12"></a>ls<span class="w"> </span>-la<span class="w"> </span>/sys/bus/i2c/devices/<span class="w">                   </span><span class="c1"># I2C cihazları</span>
-</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13"></a>ls<span class="w"> </span>-la<span class="w"> </span>/sys/bus/spi/devices/<span class="w">                   </span><span class="c1"># SPI cihazları</span>
-</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14"></a>cat<span class="w"> </span>/sys/bus/i2c/devices/1-0068/name<span class="w">           </span><span class="c1"># Sürücünün tanıdığı isim</span>
-</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15"></a>
-</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16"></a><span class="c1"># Kernel mesajları - DT ve sürücü hataları</span>
-</span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;OF:&quot;</span><span class="w">       </span><span class="c1"># Open Firmware / Device Tree mesajları</span>
-</span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;DT:&quot;</span>
-</span><span id="__span-19-19"><a id="__codelineno-19-19" name="__codelineno-19-19"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;pinctrl&quot;</span>
-</span><span id="__span-19-20"><a id="__codelineno-19-20" name="__codelineno-19-20"></a>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;probe&quot;</span><span class="w">     </span><span class="c1"># Sürücü probe sonuçları</span>
-</span><span id="__span-19-21"><a id="__codelineno-19-21" name="__codelineno-19-21"></a>
-</span><span id="__span-19-22"><a id="__codelineno-19-22" name="__codelineno-19-22"></a><span class="c1"># Raspberry Pi - overlay yönetimi</span>
-</span><span id="__span-19-23"><a id="__codelineno-19-23" name="__codelineno-19-23"></a>dtoverlay<span class="w"> </span>my_overlay.dtbo<span class="w">          </span><span class="c1"># Overlay yükle</span>
-</span><span id="__span-19-24"><a id="__codelineno-19-24" name="__codelineno-19-24"></a>dtoverlay<span class="w"> </span>-l<span class="w">                       </span><span class="c1"># Yüklü overlay&#39;leri listele</span>
-</span><span id="__span-19-25"><a id="__codelineno-19-25" name="__codelineno-19-25"></a>dtoverlay<span class="w"> </span>-r<span class="w"> </span>my_overlay<span class="w">            </span><span class="c1"># Overlay kaldır</span>
-</span><span id="__span-19-26"><a id="__codelineno-19-26" name="__codelineno-19-26"></a>dtoverlay<span class="w"> </span>-h<span class="w"> </span>i2c1<span class="w">                  </span><span class="c1"># Overlay parametrelerini göster</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">uart0</span><span class="w">                         </span><span class="c1"># UART0 (GPIO14/15)</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">uart1</span><span class="w">                         </span><span class="c1"># UART1 (GPIO14/15)</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">uart2</span><span class="w">                         </span><span class="c1"># UART2 (GPIO0/1)</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13"></a>
+</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14"></a><span class="c1"># --- Donanım PWM ---</span>
+</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">pwm,pin=18,func=2</span><span class="w">             </span><span class="c1"># GPIO18 = PWM0</span>
+</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">pwm-2chan,pin=18,func=2,pin2=19,func2=2</span>
+</span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17"></a>
+</span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18"></a><span class="c1"># --- Kamera Overlay'leri ---</span>
+</span><span id="__span-19-19"><a id="__codelineno-19-19" name="__codelineno-19-19"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">imx219</span><span class="w">                        </span><span class="c1"># Pi Kamera V2 (Sony IMX219)</span>
+</span><span id="__span-19-20"><a id="__codelineno-19-20" name="__codelineno-19-20"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">imx477</span><span class="w">                        </span><span class="c1"># Pi Kamera HQ (Sony IMX477)</span>
+</span><span id="__span-19-21"><a id="__codelineno-19-21" name="__codelineno-19-21"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">imx708</span><span class="w">                        </span><span class="c1"># Pi Kamera Module 3</span>
+</span><span id="__span-19-22"><a id="__codelineno-19-22" name="__codelineno-19-22"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">ov5647</span><span class="w">                        </span><span class="c1"># Pi Kamera V1</span>
+</span><span id="__span-19-23"><a id="__codelineno-19-23" name="__codelineno-19-23"></a>
+</span><span id="__span-19-24"><a id="__codelineno-19-24" name="__codelineno-19-24"></a><span class="c1"># --- GPIO ---</span>
+</span><span id="__span-19-25"><a id="__codelineno-19-25" name="__codelineno-19-25"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">gpio-fan,gpiopin=14,temp=60000</span><span class="w">   </span><span class="c1"># GPIO14 fan, 60°C eşiği</span>
+</span><span id="__span-19-26"><a id="__codelineno-19-26" name="__codelineno-19-26"></a><span class="na">dtoverlay=gpio-key,gpio=17,keycode=28,label</span><span class="o">=</span><span class="s">"ENTER"</span>
+</span><span id="__span-19-27"><a id="__codelineno-19-27" name="__codelineno-19-27"></a>
+</span><span id="__span-19-28"><a id="__codelineno-19-28" name="__codelineno-19-28"></a><span class="c1"># --- Diğer ---</span>
+</span><span id="__span-19-29"><a id="__codelineno-19-29" name="__codelineno-19-29"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">disable-bt</span><span class="w">                    </span><span class="c1"># Bluetooth'u devre dışı bırak</span>
+</span><span id="__span-19-30"><a id="__codelineno-19-30" name="__codelineno-19-30"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">disable-wifi</span><span class="w">                  </span><span class="c1"># Wi-Fi'ı devre dışı bırak</span>
+</span><span id="__span-19-31"><a id="__codelineno-19-31" name="__codelineno-19-31"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">watchdog</span><span class="w">                      </span><span class="c1"># Donanım watchdog etkinleştir</span>
+</span><span id="__span-19-32"><a id="__codelineno-19-32" name="__codelineno-19-32"></a><span class="na">dtparam</span><span class="o">=</span><span class="s">watchdog=on</span>
 </span></code></pre></div></td></tr></table></div>
 <hr />
-<h2 id="raspberry-pi-overlay-referans">Raspberry Pi Overlay Referansı<a class="headerlink" href="#raspberry-pi-overlay-referans" title="Permanent link">&para;</a></h2>
-<div class="language-ini highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">/boot/firmware/config.txt</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1"> 1</a></span>
+<h2 id="yaygn-hatalar-ve-cozumleri">Yaygın Hatalar ve Çözümleri<a class="headerlink" href="#yaygn-hatalar-ve-cozumleri" title="Permanent link">&para;</a></h2>
+<h3 id="address-cells-size-cells-uyumsuzlugu">address-cells / size-cells Uyumsuzluğu<a class="headerlink" href="#address-cells-size-cells-uyumsuzlugu" title="Permanent link">&para;</a></h3>
+<div class="language-dts highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-20-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-20-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-20-4"> 4</a></span>
@@ -2579,60 +2477,22 @@
 <span class="normal"><a href="#__codelineno-20-11">11</a></span>
 <span class="normal"><a href="#__codelineno-20-12">12</a></span>
 <span class="normal"><a href="#__codelineno-20-13">13</a></span>
-<span class="normal"><a href="#__codelineno-20-14">14</a></span>
-<span class="normal"><a href="#__codelineno-20-15">15</a></span>
-<span class="normal"><a href="#__codelineno-20-16">16</a></span>
-<span class="normal"><a href="#__codelineno-20-17">17</a></span>
-<span class="normal"><a href="#__codelineno-20-18">18</a></span>
-<span class="normal"><a href="#__codelineno-20-19">19</a></span>
-<span class="normal"><a href="#__codelineno-20-20">20</a></span>
-<span class="normal"><a href="#__codelineno-20-21">21</a></span>
-<span class="normal"><a href="#__codelineno-20-22">22</a></span>
-<span class="normal"><a href="#__codelineno-20-23">23</a></span>
-<span class="normal"><a href="#__codelineno-20-24">24</a></span>
-<span class="normal"><a href="#__codelineno-20-25">25</a></span>
-<span class="normal"><a href="#__codelineno-20-26">26</a></span>
-<span class="normal"><a href="#__codelineno-20-27">27</a></span>
-<span class="normal"><a href="#__codelineno-20-28">28</a></span>
-<span class="normal"><a href="#__codelineno-20-29">29</a></span>
-<span class="normal"><a href="#__codelineno-20-30">30</a></span>
-<span class="normal"><a href="#__codelineno-20-31">31</a></span>
-<span class="normal"><a href="#__codelineno-20-32">32</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="c1"># --- Arayüz Overlay&#39;leri ---</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">i2c0</span><span class="w">                          </span><span class="c1"># I2C-0 (GPIO0/1)</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">i2c1</span><span class="w">                          </span><span class="c1"># I2C-1 (GPIO2/3) - varsayılan</span>
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">i2c6</span><span class="w">                          </span><span class="c1"># I2C-6 (Pi 4+)</span>
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5"></a><span class="na">dtparam</span><span class="o">=</span><span class="s">i2c_arm_baudrate=400000</span><span class="w">         </span><span class="c1"># I2C hızı 400 kHz</span>
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6"></a>
-</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">spi0-1cs</span><span class="w">                      </span><span class="c1"># SPI0 (GPIO7-11), 1 CS hattı</span>
-</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">spi0-2cs</span><span class="w">                      </span><span class="c1"># SPI0, 2 CS hattı (GPIO7, GPIO8)</span>
-</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9"></a>
-</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">uart0</span><span class="w">                         </span><span class="c1"># UART0 (GPIO14/15)</span>
-</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">uart1</span><span class="w">                         </span><span class="c1"># UART1 (GPIO14/15)</span>
-</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">uart2</span><span class="w">                         </span><span class="c1"># UART2 (GPIO0/1)</span>
-</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13"></a>
-</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14"></a><span class="c1"># --- Donanım PWM ---</span>
-</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">pwm,pin=18,func=2</span><span class="w">             </span><span class="c1"># GPIO18 = PWM0</span>
-</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">pwm-2chan,pin=18,func=2,pin2=19,func2=2</span>
-</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17"></a>
-</span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18"></a><span class="c1"># --- Kamera Overlay&#39;leri ---</span>
-</span><span id="__span-20-19"><a id="__codelineno-20-19" name="__codelineno-20-19"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">imx219</span><span class="w">                        </span><span class="c1"># Pi Kamera V2 (Sony IMX219)</span>
-</span><span id="__span-20-20"><a id="__codelineno-20-20" name="__codelineno-20-20"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">imx477</span><span class="w">                        </span><span class="c1"># Pi Kamera HQ (Sony IMX477)</span>
-</span><span id="__span-20-21"><a id="__codelineno-20-21" name="__codelineno-20-21"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">imx708</span><span class="w">                        </span><span class="c1"># Pi Kamera Module 3</span>
-</span><span id="__span-20-22"><a id="__codelineno-20-22" name="__codelineno-20-22"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">ov5647</span><span class="w">                        </span><span class="c1"># Pi Kamera V1</span>
-</span><span id="__span-20-23"><a id="__codelineno-20-23" name="__codelineno-20-23"></a>
-</span><span id="__span-20-24"><a id="__codelineno-20-24" name="__codelineno-20-24"></a><span class="c1"># --- GPIO ---</span>
-</span><span id="__span-20-25"><a id="__codelineno-20-25" name="__codelineno-20-25"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">gpio-fan,gpiopin=14,temp=60000</span><span class="w">   </span><span class="c1"># GPIO14 fan, 60°C eşiği</span>
-</span><span id="__span-20-26"><a id="__codelineno-20-26" name="__codelineno-20-26"></a><span class="na">dtoverlay=gpio-key,gpio=17,keycode=28,label</span><span class="o">=</span><span class="s">&quot;ENTER&quot;</span>
-</span><span id="__span-20-27"><a id="__codelineno-20-27" name="__codelineno-20-27"></a>
-</span><span id="__span-20-28"><a id="__codelineno-20-28" name="__codelineno-20-28"></a><span class="c1"># --- Diğer ---</span>
-</span><span id="__span-20-29"><a id="__codelineno-20-29" name="__codelineno-20-29"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">disable-bt</span><span class="w">                    </span><span class="c1"># Bluetooth&#39;u devre dışı bırak</span>
-</span><span id="__span-20-30"><a id="__codelineno-20-30" name="__codelineno-20-30"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">disable-wifi</span><span class="w">                  </span><span class="c1"># Wi-Fi&#39;ı devre dışı bırak</span>
-</span><span id="__span-20-31"><a id="__codelineno-20-31" name="__codelineno-20-31"></a><span class="na">dtoverlay</span><span class="o">=</span><span class="s">watchdog</span><span class="w">                      </span><span class="c1"># Donanım watchdog etkinleştir</span>
-</span><span id="__span-20-32"><a id="__codelineno-20-32" name="__codelineno-20-32"></a><span class="na">dtparam</span><span class="o">=</span><span class="s">watchdog=on</span>
+<span class="normal"><a href="#__codelineno-20-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="c1">// HATALI - üst 2 address-cell tanımlıyor, alt 1 cell veriyor</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2"></a><span class="nf">soc</span><span class="cm"> </span><span class="p">{</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3"></a><span class="w">    </span><span class="kr">#address-cells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4"></a><span class="w">    </span><span class="kr">#size-cells</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5"></a>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6"></a><span class="w">    </span><span class="nf">uart</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7"></a><span class="w">        </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x7e201000</span><span class="w"> </span><span class="mh">0x200</span><span class="o">&gt;</span><span class="p">;</span><span class="w">        </span><span class="c1">// HATA: 3 hücre olmalı</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8"></a><span class="w">    </span><span class="p">};</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9"></a><span class="p">};</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10"></a>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11"></a><span class="c1">// DOĞRU</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12"></a><span class="w">    </span><span class="nf">uart</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13"></a><span class="w">        </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x0</span><span class="w"> </span><span class="mh">0x7e201000</span><span class="w"> </span><span class="mh">0x200</span><span class="o">&gt;</span><span class="p">;</span><span class="w">    </span><span class="c1">// hi=0, lo=0x7e201000, size=0x200</span>
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14"></a><span class="w">    </span><span class="p">};</span>
 </span></code></pre></div></td></tr></table></div>
-<hr />
-<h2 id="yaygn-hatalar-ve-cozumleri">Yaygın Hatalar ve Çözümleri<a class="headerlink" href="#yaygn-hatalar-ve-cozumleri" title="Permanent link">&para;</a></h2>
-<h3 id="address-cells-size-cells-uyumsuzlugu">address-cells / size-cells Uyumsuzluğu<a class="headerlink" href="#address-cells-size-cells-uyumsuzlugu" title="Permanent link">&para;</a></h3>
+<h3 id="eksik-interrupt-controller-tanm">Eksik interrupt-controller Tanımı<a class="headerlink" href="#eksik-interrupt-controller-tanm" title="Permanent link">&para;</a></h3>
 <div class="language-dts highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-21-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-21-3"> 3</a></span>
@@ -2643,79 +2503,50 @@
 <span class="normal"><a href="#__codelineno-21-8"> 8</a></span>
 <span class="normal"><a href="#__codelineno-21-9"> 9</a></span>
 <span class="normal"><a href="#__codelineno-21-10">10</a></span>
-<span class="normal"><a href="#__codelineno-21-11">11</a></span>
-<span class="normal"><a href="#__codelineno-21-12">12</a></span>
-<span class="normal"><a href="#__codelineno-21-13">13</a></span>
-<span class="normal"><a href="#__codelineno-21-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1"></a><span class="c1">// HATALI - üst 2 address-cell tanımlıyor, alt 1 cell veriyor</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2"></a><span class="nf">soc</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3"></a><span class="w">    </span><span class="kr">#address-cells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4"></a><span class="w">    </span><span class="kr">#size-cells</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5"></a>
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6"></a><span class="w">    </span><span class="nf">uart</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7"></a><span class="w">        </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x7e201000</span><span class="w"> </span><span class="mh">0x200</span><span class="o">&gt;</span><span class="p">;</span><span class="w">        </span><span class="c1">// HATA: 3 hücre olmalı</span>
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8"></a><span class="w">    </span><span class="p">};</span>
-</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9"></a><span class="p">};</span>
-</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10"></a>
-</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11"></a><span class="c1">// DOĞRU</span>
-</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12"></a><span class="w">    </span><span class="nf">uart</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13"></a><span class="w">        </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x0</span><span class="w"> </span><span class="mh">0x7e201000</span><span class="w"> </span><span class="mh">0x200</span><span class="o">&gt;</span><span class="p">;</span><span class="w">    </span><span class="c1">// hi=0, lo=0x7e201000, size=0x200</span>
-</span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14"></a><span class="w">    </span><span class="p">};</span>
-</span></code></pre></div></td></tr></table></div>
-<h3 id="eksik-interrupt-controller-tanm">Eksik interrupt-controller Tanımı<a class="headerlink" href="#eksik-interrupt-controller-tanm" title="Permanent link">&para;</a></h3>
-<div class="language-dts highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-22-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-22-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-22-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-22-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-22-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-22-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-22-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-22-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-22-10">10</a></span>
-<span class="normal"><a href="#__codelineno-22-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="c1">// HATALI</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2"></a><span class="nl">gpio</span><span class="p">:</span><span class="w"> </span><span class="nf">gpio</span><span class="o">@</span><span class="mi">7e200000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;brcm,bcm2835-gpio&quot;</span><span class="p">;</span>
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4"></a><span class="w">    </span><span class="c1">// interrupt-controller;   ← eksik</span>
-</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5"></a><span class="w">    </span><span class="c1">// #interrupt-cells = &lt;2&gt;; ← eksik</span>
-</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6"></a><span class="p">};</span>
-</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7"></a>
-</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8"></a><span class="nl">uart0</span><span class="p">:</span><span class="w"> </span><span class="nf">serial</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9"></a><span class="w">    </span><span class="n">interrupt-parent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">gpio</span><span class="o">&gt;</span><span class="p">;</span><span class="w">     </span><span class="c1">// gpio kontrolör değil → sürücü çalışmaz</span>
-</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10"></a><span class="w">    </span><span class="n">interrupts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">57</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
-</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11"></a><span class="p">};</span>
+<span class="normal"><a href="#__codelineno-21-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1"></a><span class="c1">// HATALI</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2"></a><span class="nl">gpio</span><span class="p">:</span><span class="w"> </span><span class="nf">gpio</span><span class="o">@</span><span class="mi">7e200000</span><span class="cm"> </span><span class="p">{</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3"></a><span class="w">    </span><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"brcm,bcm2835-gpio"</span><span class="p">;</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4"></a><span class="w">    </span><span class="c1">// interrupt-controller;   ← eksik</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5"></a><span class="w">    </span><span class="c1">// #interrupt-cells = &lt;2&gt;; ← eksik</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6"></a><span class="p">};</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7"></a>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8"></a><span class="nl">uart0</span><span class="p">:</span><span class="w"> </span><span class="nf">serial</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9"></a><span class="w">    </span><span class="n">interrupt-parent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&amp;</span><span class="na">gpio</span><span class="o">&gt;</span><span class="p">;</span><span class="w">     </span><span class="c1">// gpio kontrolör değil → sürücü çalışmaz</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10"></a><span class="w">    </span><span class="n">interrupts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">57</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11"></a><span class="p">};</span>
 </span></code></pre></div></td></tr></table></div>
 <h3 id="hatal-compatible-format">Hatalı compatible Formatı<a class="headerlink" href="#hatal-compatible-format" title="Permanent link">&para;</a></h3>
+<div class="language-dts highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1">1</a></span>
+<span class="normal"><a href="#__codelineno-22-2">2</a></span>
+<span class="normal"><a href="#__codelineno-22-3">3</a></span>
+<span class="normal"><a href="#__codelineno-22-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Broadcom,BCM2835"</span><span class="p">;</span><span class="w">    </span><span class="c1">// HATALI - büyük harf yasak</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2"></a><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"brcm,bcm2835"</span><span class="p">;</span><span class="w">        </span><span class="c1">// DOĞRU - her zaman küçük harf, tire ile</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3"></a>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4"></a><span class="c1">// vendor,device formatı: vendor kısa kod (brcm, fsl, ti, snps, nxp...)</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="dugum-adresi-ve-reg-uyumsuzlugu">Düğüm Adresi ve reg Uyumsuzluğu<a class="headerlink" href="#dugum-adresi-ve-reg-uyumsuzlugu" title="Permanent link">&para;</a></h3>
 <div class="language-dts highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-23-1">1</a></span>
 <span class="normal"><a href="#__codelineno-23-2">2</a></span>
 <span class="normal"><a href="#__codelineno-23-3">3</a></span>
-<span class="normal"><a href="#__codelineno-23-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1"></a><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Broadcom,BCM2835&quot;</span><span class="p">;</span><span class="w">    </span><span class="c1">// HATALI - büyük harf yasak</span>
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2"></a><span class="kr">compatible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;brcm,bcm2835&quot;</span><span class="p">;</span><span class="w">        </span><span class="c1">// DOĞRU - her zaman küçük harf, tire ile</span>
-</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3"></a>
-</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4"></a><span class="c1">// vendor,device formatı: vendor kısa kod (brcm, fsl, ti, snps, nxp...)</span>
-</span></code></pre></div></td></tr></table></div>
-<h3 id="dugum-adresi-ve-reg-uyumsuzlugu">Düğüm Adresi ve reg Uyumsuzluğu<a class="headerlink" href="#dugum-adresi-ve-reg-uyumsuzlugu" title="Permanent link">&para;</a></h3>
-<div class="language-dts highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1">1</a></span>
-<span class="normal"><a href="#__codelineno-24-2">2</a></span>
-<span class="normal"><a href="#__codelineno-24-3">3</a></span>
-<span class="normal"><a href="#__codelineno-24-4">4</a></span>
-<span class="normal"><a href="#__codelineno-24-5">5</a></span>
-<span class="normal"><a href="#__codelineno-24-6">6</a></span>
-<span class="normal"><a href="#__codelineno-24-7">7</a></span>
-<span class="normal"><a href="#__codelineno-24-8">8</a></span>
-<span class="normal"><a href="#__codelineno-24-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1"></a><span class="c1">// HATALI - düğüm adresindeki @ADRES, reg ile eşleşmeli</span>
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2"></a><span class="nf">uart</span><span class="o">@</span><span class="mi">20000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3"></a><span class="w">    </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x7e201000</span><span class="w"> </span><span class="mh">0x200</span><span class="o">&gt;</span><span class="p">;</span><span class="w">   </span><span class="c1">// HATA: 0x20000 ≠ 0x7e201000</span>
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4"></a><span class="p">};</span>
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5"></a>
-</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6"></a><span class="c1">// DOĞRU</span>
-</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7"></a><span class="nf">uart</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
-</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8"></a><span class="w">    </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x7e201000</span><span class="w"> </span><span class="mh">0x200</span><span class="o">&gt;</span><span class="p">;</span>
-</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9"></a><span class="p">};</span>
+<span class="normal"><a href="#__codelineno-23-4">4</a></span>
+<span class="normal"><a href="#__codelineno-23-5">5</a></span>
+<span class="normal"><a href="#__codelineno-23-6">6</a></span>
+<span class="normal"><a href="#__codelineno-23-7">7</a></span>
+<span class="normal"><a href="#__codelineno-23-8">8</a></span>
+<span class="normal"><a href="#__codelineno-23-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1"></a><span class="c1">// HATALI - düğüm adresindeki @ADRES, reg ile eşleşmeli</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2"></a><span class="nf">uart</span><span class="o">@</span><span class="mi">20000</span><span class="cm"> </span><span class="p">{</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3"></a><span class="w">    </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x7e201000</span><span class="w"> </span><span class="mh">0x200</span><span class="o">&gt;</span><span class="p">;</span><span class="w">   </span><span class="c1">// HATA: 0x20000 ≠ 0x7e201000</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4"></a><span class="p">};</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5"></a>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6"></a><span class="c1">// DOĞRU</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7"></a><span class="nf">uart</span><span class="o">@</span><span class="mi">7e201000</span><span class="cm"> </span><span class="p">{</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8"></a><span class="w">    </span><span class="kr">reg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="mh">0x7e201000</span><span class="w"> </span><span class="mh">0x200</span><span class="o">&gt;</span><span class="p">;</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9"></a><span class="p">};</span>
 </span></code></pre></div></td></tr></table></div>
 <h3 id="status-ok-hatal-yazm">status = "ok" Hatalı Yazım<a class="headerlink" href="#status-ok-hatal-yazm" title="Permanent link">&para;</a></h3>
-<div class="language-dts highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span>
-<span class="normal"><a href="#__codelineno-25-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ok&quot;</span><span class="p">;</span><span class="w">      </span><span class="c1">// HATALI - &quot;ok&quot; kernel tarafından tanınmaz</span>
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;okay&quot;</span><span class="p">;</span><span class="w">    </span><span class="c1">// DOĞRU</span>
+<div class="language-dts highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1">1</a></span>
+<span class="normal"><a href="#__codelineno-24-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1"></a><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"ok"</span><span class="p">;</span><span class="w">      </span><span class="c1">// HATALI - "ok" kernel tarafından tanınmaz</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2"></a><span class="kr">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"okay"</span><span class="p">;</span><span class="w">    </span><span class="c1">// DOĞRU</span>
 </span></code></pre></div></td></tr></table></div>
 <hr />
 <h2 id="sk-kullanlan-referanslar">Sık Kullanılan Referanslar<a class="headerlink" href="#sk-kullanlan-referanslar" title="Permanent link">&para;</a></h2>
@@ -2750,23 +2581,23 @@
 </tr>
 </tbody>
 </table>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-26-1">1</a></span>
-<span class="normal"><a href="#__codelineno-26-2">2</a></span>
-<span class="normal"><a href="#__codelineno-26-3">3</a></span>
-<span class="normal"><a href="#__codelineno-26-4">4</a></span>
-<span class="normal"><a href="#__codelineno-26-5">5</a></span>
-<span class="normal"><a href="#__codelineno-26-6">6</a></span>
-<span class="normal"><a href="#__codelineno-26-7">7</a></span>
-<span class="normal"><a href="#__codelineno-26-8">8</a></span>
-<span class="normal"><a href="#__codelineno-26-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1"></a><span class="c1"># Mevcut binding belgelerini incele</span>
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2"></a>ls<span class="w"> </span>/usr/share/doc/device-tree-compiler/
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3"></a>
-</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4"></a><span class="c1"># Kernel kaynaklarında bağlama belgeleri</span>
-</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5"></a>ls<span class="w"> </span>Documentation/devicetree/bindings/
-</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6"></a>
-</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7"></a><span class="c1"># Spesifik binding</span>
-</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8"></a>cat<span class="w"> </span>Documentation/devicetree/bindings/i2c/i2c.yaml
-</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9"></a>cat<span class="w"> </span>Documentation/devicetree/bindings/spi/spi-controller.yaml
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span>
+<span class="normal"><a href="#__codelineno-25-2">2</a></span>
+<span class="normal"><a href="#__codelineno-25-3">3</a></span>
+<span class="normal"><a href="#__codelineno-25-4">4</a></span>
+<span class="normal"><a href="#__codelineno-25-5">5</a></span>
+<span class="normal"><a href="#__codelineno-25-6">6</a></span>
+<span class="normal"><a href="#__codelineno-25-7">7</a></span>
+<span class="normal"><a href="#__codelineno-25-8">8</a></span>
+<span class="normal"><a href="#__codelineno-25-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="c1"># Mevcut binding belgelerini incele</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2"></a>ls<span class="w"> </span>/usr/share/doc/device-tree-compiler/
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3"></a>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4"></a><span class="c1"># Kernel kaynaklarında bağlama belgeleri</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5"></a>ls<span class="w"> </span>Documentation/devicetree/bindings/
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6"></a>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7"></a><span class="c1"># Spesifik binding</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8"></a>cat<span class="w"> </span>Documentation/devicetree/bindings/i2c/i2c.yaml
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9"></a>cat<span class="w"> </span>Documentation/devicetree/bindings/spi/spi-controller.yaml
 </span></code></pre></div></td></tr></table></div>
 
 
@@ -2820,13 +2651,13 @@
         
         
           
-          <a href="../problems_and_solutions/" class="md-footer__link md-footer__link--next" aria-label="Sonraki: Problems &amp; Solutions">
+          <a href="../../ai/fundamentals/" class="md-footer__link md-footer__link--next" aria-label="Sonraki: Temel Kavramlar">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Sonraki
               </span>
               <div class="md-ellipsis">
-                Problems & Solutions
+                Temel Kavramlar
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2868,7 +2699,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.prune", "navigation.indexes", "content.code.copy", "content.code.annotate", "content.tabs.linked", "content.code.select", "content.code.wrap", "content.action.view", "search.suggest", "search.highlight", "toc.integrate", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Kopyaland\u0131", "clipboard.copy": "Kopyala", "search.result.more.one": "Bu sayfada 1 tane daha", "search.result.more.other": "Bu sayfada # tane daha", "search.result.none": "E\u015fle\u015fen dok\u00fcman bulunamad\u0131", "search.result.one": "1 dok\u00fcman bulundu", "search.result.other": "# dok\u00fcman bulundu", "search.result.placeholder": "Aramaya ba\u015flamak i\u00e7in yaz\u0131n", "search.result.term.missing": "Eksik", "select.version": "Versiyon se\u00e7"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="../../../assets/js/extra.js"></script>
       

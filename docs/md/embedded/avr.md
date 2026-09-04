@@ -189,9 +189,10 @@ ISR(PCINT0_vect) {
 ### CTC Modu - Frekans Hesabı
 
 ```
-F_OUT = F_CPU / (2 × Prescaler × (OCRnA + 1))
+F_INT = F_CPU / (Prescaler × (OCRnA + 1))     # Kesme (interrupt) frekansı
+F_OUT = F_CPU / (2 × Prescaler × (OCRnA + 1)) # OC pinini toggle ederek çıkış üretiliyorsa (×2 gerekir)
 
-Örnek: F_CPU=16MHz, Prescaler=64, 10 ms kesme:
+Örnek: F_CPU=16MHz, Prescaler=64, 1 ms kesme (F_INT=1000 Hz):
 OCRnA = (16_000_000 / (64 × 1000)) - 1 = 249
 ```
 

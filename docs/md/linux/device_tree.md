@@ -480,35 +480,9 @@ dtoverlay=bmp280,addr=0x77,speed=100000
 
 ---
 
-Donanım kaynaklarını (bellek, kesmeler, saatler, GPIO) yazılımdan bağımsız biçimde tanımlayan hiyerarşik veri yapısıdır. Bootloader, DTB'yi RAM'e yükleyerek kernel'e hangi donanımın mevcut olduğunu bildirir.
-
-| Format  | Açıklama                                               |
-| ------- | ------------------------------------------------------ |
-| `.dts`  | Device Tree Source - insan tarafından okunabilir metin |
-| `.dtb`  | Device Tree Blob - derlenmiş ikili format              |
-| `.dtso` | Overlay - temel DTB üzerine eklenti                    |
-
-```bash
-dtc -I dts -O dtb -o output.dtb input.dts   # .dts → .dtb derleme
-dtc -I dtb -O dts -o output.dts input.dtb   # .dtb → .dts tersine çevirme
-dtc -I fs  -O dts /proc/device-tree/        # Aktif DTB'yi okunabilir hale getir
-cat /proc/device-tree/model                 # Kart modeli
-cat /proc/device-tree/compatible            # Uyumluluk listesi
-```
-
-!!! tip "Detaylı Kılavuz"
-    DTS sözdizimi, düğüm özellikleri, overlay sistemi, U-Boot entegrasyonu ve debug teknikleri için [Device Tree (DTS/DTB)](device_tree.md) sayfasına bakın.
-
 ## DTC - Device Tree Compiler
 
 ```bash
-
-dtc -I dts -O dtb -o output.dtb input.dts   # .dts → .dtb derleme
-dtc -I dtb -O dts -o output.dts input.dtb   # .dtb → .dts tersine çevirme
-dtc -I fs  -O dts /proc/device-tree/        # Aktif DTB'yi okunabilir hale getir
-cat /proc/device-tree/model                 # Kart modeli
-cat /proc/device-tree/compatible            # Uyumluluk listesi
-
 # Derleme: .dts → .dtb
 dtc -I dts -O dtb -o output.dtb input.dts
 

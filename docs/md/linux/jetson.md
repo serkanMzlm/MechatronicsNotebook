@@ -1,8 +1,5 @@
 # NVIDIA Jetson
 
-!!! abstract "Tanım"
-    NVIDIA Jetson, uç cihazlarda (edge) yapay zeka ve gömülü Linux uygulamaları için tasarlanmış SoC tabanlı bilgisayar modül serisidir. CUDA çekirdekleri, Tensor Core'lar ve Video Encoder/Decoder donanımı ile görüntü işleme, robot algısı ve derin öğrenme çıkarımı iş yüklerinde yüksek verim sağlar.
-
 ```mermaid
 flowchart LR
     subgraph MOD["Modül (SOM)"]
@@ -18,15 +15,6 @@ flowchart LR
     end
     MOD <--> CARRIER
 ```
-
-| Modül      | CPU               | GPU                   | RAM      | L4T Desteği         |
-| ---------- | ----------------- | --------------------- | -------- | ------------------- |
-| Nano       | 4× Cortex-A57     | 128 CUDA              | 4 GB     | R32.x (JetPack 4.x) |
-| Xavier NX  | 6× Carmel ARMv8.2 | 384 CUDA + 48 Tensor  | 8/16 GB  | R32.x, R35.x        |
-| AGX Xavier | 8× Carmel ARMv8.2 | 512 CUDA + 64 Tensor  | 32 GB    | R32.x, R35.x        |
-| AGX Orin   | 12× Cortex-A78AE  | 2048 CUDA + 64 Tensor | 32/64 GB | R35.x (JetPack 5.x) |
-
----
 
 ## L4T - Linux for Tegra
 
@@ -49,9 +37,7 @@ nvidia-smi   # Xavier/Orin
 tegrastats   # Tüm Jetson modelleri için daha ayrıntılı
 ```
 
-### tegrastats - Gerçek Zamanlı İzleme
-
-```bash
+```bash title="tegrastats - Gerçek Zamanlı İzleme"
 sudo tegrastats                        # Gerçek zamanlı izleme
 sudo tegrastats --interval 2000       # 2 saniyede bir
 sudo tegrastats --logfile /tmp/stats.log --start  # Arka planda logla
@@ -63,9 +49,7 @@ sudo tegrastats --stop                 # Durdu
 # AO@35.5C CPU@42.5C GPU@40C PLL@39C
 ```
 
-### nvpmodel - Güç Modu
-
-```bash
+```bash title="nvpmodel - Güç Modu"
 sudo nvpmodel -q verbose   # Aktif mod ve detaylar
 sudo nvpmodel -m 0         # MAXN - maksimum performans
 sudo nvpmodel -m 1         # 5W / 10W - düşük güç
@@ -89,8 +73,6 @@ sudo jetson_clocks --restore  # Varsayılana dön
 ---
 
 ## Önyükleme Yapılandırması
-
-### extlinux.conf
 
 Jetson, GRUB yerine `extlinux.conf` kullanır. Bu dosya, `flash.sh` tarafından eMMC birinci bölümüne (`mmcblk0p1`) yazılır.
 
@@ -125,8 +107,6 @@ sudo nano /mnt/boot/extlinux/extlinux.conf   # FDT satırını güncelle
 sudo sync && sudo umount /mnt && sudo reboot
 ```
 
-### Önyükleme Sırası
-
 ```mermaid
 sequenceDiagram
     participant HW as Donanım (SoC)
@@ -141,12 +121,6 @@ sequenceDiagram
     EXT->>K: Kernel + DTB + Initrd yükle
     K->>K: rootfs bağla, systemd başlat
 ```
-
----
-
-## Kernel Derleme
-
-Özel sürücü eklemek, kernel seçenekleri değiştirmek veya DTS güncellemek için kernel kaynak kodundan derleme yapmak gerekir.
 
 ### 1. Kaynak Kodu İndir
 
@@ -239,483 +213,6 @@ ssh ${JETSON} "sudo depmod -a && sudo reboot"
     make -C /path/to/kernel-source M=$(pwd) modules
     make -C /path/to/kernel-source M=$(pwd) INSTALL_MOD_PATH=/tmp/mods modules_install
     ```
-
----
-
-## Docker - Jetson'da Konteyner
-
-NVIDIA, Jetson için GPU hızlandırması destekleyen `nvidia-docker2` sunmaktadır.
-
-### Kurulum
-
-```bash
-# Docker kurulumu
-sudo apt install docker.io
-sudo usermod -aG docker $USER
-
-# NVIDIA Container Runtime
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | \
-    sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-
-sudo apt update && sudo apt install nvidia-docker2
-sudo systemctl restart docker
-```
-
-### Kullanım
-
-```bash
-# NVIDIA Docker ile GPU erişimli konteyner çalıştır
-sudo docker run --runtime nvidia --rm -it \
-    nvcr.io/nvidia/l4t-base:r32.7.1 bash
-
-# Konteyner içinde GPU doğrulama
-nvidia-smi        # Xavier/AGX
-tegrastats        # Nano
-
-# CUDA örnek çalıştırma
-docker run --runtime nvidia --rm nvcr.io/nvidia/l4t-base:r32.7.1 \
-    /usr/local/cuda/samples/1_Utilities/deviceQuery/deviceQuery
-```
-
-### docker-compose ile GPU
-
-```yaml title="docker-compose.yml"
-version: '3.8'
-services:
-  inference:
-    image: nvcr.io/nvidia/l4t-pytorch:r32.7.1-pth1.10-py3
-    runtime: nvidia
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=all
-    volumes:
-      - ./models:/models
-      - /tmp/argus_socket:/tmp/argus_socket   # Kamera erişimi
-    devices:
-      - /dev/video0:/dev/video0               # V4L2 kamera
-```
-
-```bash
-docker-compose up -d
-```
-
----
-
-## TensorRT - Çıkarım Hızlandırma
-
-TensorRT, NVIDIA'nın derin öğrenme modellerini Jetson GPU'sunda optimize eden ve hızlandıran kütüphanedir. JetPack ile birlikte gelir.
-
-### TensorRT Sürümü
-
-```bash
-dpkg -l | grep tensorrt
-python3 -c "import tensorrt; print(tensorrt.__version__)"
-
-# TRT kütüphane konumu
-ls /usr/lib/aarch64-linux-gnu/libTRT*
-ls /usr/include/aarch64-linux-gnu/NvInfer.h
-```
-
-### ONNX Modeli TensorRT'ye Dönüştürme
-
-```bash
-# trtexec - komut satırı dönüştürücü
-trtexec --onnx=model.onnx --saveEngine=model.trt
-
-# FP16 hassasiyetle (daha hızlı, biraz daha az doğru)
-trtexec --onnx=model.onnx --fp16 --saveEngine=model_fp16.trt
-
-# INT8 kalibrasyonlu (en hızlı)
-trtexec --onnx=model.onnx --int8 \
-    --calib=calibration_data/ \
-    --saveEngine=model_int8.trt
-
-# Performans testi
-trtexec --loadEngine=model.trt --iterations=100
-```
-
-### Python ile TensorRT Çıkarım
-
-```python
-import tensorrt as trt
-import numpy as np
-import pycuda.driver as cuda
-import pycuda.autoinit
-
-TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
-
-def load_engine(engine_path: str) -> trt.ICudaEngine:
-    with open(engine_path, "rb") as f, \
-         trt.Runtime(TRT_LOGGER) as runtime:
-        return runtime.deserialize_cuda_engine(f.read())
-
-def infer(engine: trt.ICudaEngine, input_data: np.ndarray) -> np.ndarray:
-    context = engine.create_execution_context()
-
-    # Bellek tahsisi
-    h_input  = cuda.pagelocked_empty(trt.volume(engine.get_binding_shape(0)), np.float32)
-    h_output = cuda.pagelocked_empty(trt.volume(engine.get_binding_shape(1)), np.float32)
-    d_input  = cuda.mem_alloc(h_input.nbytes)
-    d_output = cuda.mem_alloc(h_output.nbytes)
-
-    stream = cuda.Stream()
-
-    # Giriş verisini kopyala ve çalıştır
-    np.copyto(h_input, input_data.ravel())
-    cuda.memcpy_htod_async(d_input, h_input, stream)
-    context.execute_async_v2([int(d_input), int(d_output)], stream.handle)
-    cuda.memcpy_dtoh_async(h_output, d_output, stream)
-    stream.synchronize()
-
-    return h_output
-
-# Kullanım
-engine = load_engine("model.trt")
-result = infer(engine, np.random.randn(1, 3, 224, 224).astype(np.float32))
-```
-
-### DeepStream
-
-```bash
-# DeepStream versiyon kontrolü
-deepstream-app --version
-
-# Örnek pipeline çalıştırma
-deepstream-app -c /opt/nvidia/deepstream/deepstream/samples/configs/deepstream-app/source1_usb_dec_infer_resnet_int8.txt
-```
-
----
-
-## CAN Bus - SocketCAN
-
-Robotic ve endüstriyel uygulamalarda yaygın kullanılan CAN protokolü, Jetson'da SocketCAN çerçevesi ile yönetilir.
-
-### CAN Arayüzü Etkinleştirme
-
-```bash
-# Yüklü CAN modüllerini kontrol et
-lsmod | grep can
-
-# CAN modüllerini yükle
-sudo modprobe can
-sudo modprobe can_raw
-sudo modprobe mttcan    # NVIDIA Tegra native CAN (Xavier+)
-
-# veya USB-CAN adaptörü için
-sudo modprobe can_dev
-sudo modprobe gs_usb    # Geschwister Schneider USB/CAN
-
-# Kalıcı yükleme
-echo -e "can\ncan_raw\nmttcan" | sudo tee /etc/modules-load.d/can.conf
-```
-
-### CAN Arayüzü Yapılandırma
-
-```bash
-# Hızı ayarla ve arayüzü başlat
-sudo ip link set can0 type can bitrate 500000
-sudo ip link set can0 up
-
-# Loopback test modu
-sudo ip link set can0 type can bitrate 500000 loopback on
-sudo ip link set can0 up
-
-# Hata toleranslı mod (gürültülü hatlarda)
-sudo ip link set can0 type can bitrate 500000 \
-    restart-ms 100 \
-    berr-reporting on
-
-# Arayüz durumu
-ip -details -statistics link show can0
-```
-
-### can-utils ile Test
-
-```bash
-# can-utils kurulumu
-sudo apt install can-utils
-
-# CAN mesajlarını dinle
-candump can0
-
-# Belirli ID filtreleme
-candump can0,100:7FF     # 0x100-0x7FF aralığı
-candump can0 -l          # Loga kaydet
-
-# CAN mesajı gönder (ID=0x123, 8 byte veri)
-cansend can0 123#DEADBEEF01020304
-
-# CAN bus istatistikleri
-canbusload can0@500000
-
-# Periyodik mesaj gönderme
-cangen can0 -g 10 -I 0x100 -L 8 -D i
-#            ^10ms  ^ID      ^8byte ^artan sayı
-```
-
-### Python ile CAN
-
-```python
-import can
-import time
-
-# Bus oluştur
-bus = can.interface.Bus(channel='can0', bustype='socketcan')
-
-# Mesaj gönder
-msg = can.Message(
-    arbitration_id=0x123,
-    data=[0xDE, 0xAD, 0xBE, 0xEF, 0x01, 0x02, 0x03, 0x04],
-    is_extended_id=False
-)
-bus.send(msg)
-
-# Mesaj al (bloklu)
-message = bus.recv(timeout=1.0)
-if message:
-    print(f"ID: 0x{message.arbitration_id:X}, Veri: {message.data.hex()}")
-
-# Periyodik dinleyici
-def on_message(msg):
-    print(f"[{msg.timestamp:.3f}] ID=0x{msg.arbitration_id:03X} "
-          f"DLC={msg.dlc} DATA={msg.data.hex()}")
-
-notifier = can.Notifier(bus, [can.Printer()])
-time.sleep(10)
-notifier.stop()
-bus.shutdown()
-```
-
-### DTS - Tegra Native CAN
-
-```dts
-/* Jetson Xavier NX - mttcan */
-mttcan@c310000 {
-    status = "okay";
-};
-
-&mttcan0 {
-    status = "okay";
-    pinctrl-names = "default";
-    pinctrl-0 = <&can0_state>;
-};
-```
-
-```bash
-# Tegra native CAN'ı sysfs ile kontrol et
-ls /sys/class/net/ | grep can
-ethtool -i can0   # Sürücü: mttcan
-```
-
----
-
-## Watchdog - Donanım İzleme
-
-Watchdog timer, sistem kilitlenmesinde veya yazılım takılmasında otomatik sıfırlama yapar.
-
-### Kernel Watchdog
-
-```bash
-# Watchdog aygıtını kontrol et
-ls -la /dev/watchdog*
-dmesg | grep -i watchdog
-
-# Watchdog bilgisi
-wdctl /dev/watchdog0
-
-# Basit test - 10 saniye içinde beslenmezse sıfırlar
-sudo bash -c "exec 3>/dev/watchdog; sleep 20"
-# ^^^ tehlikeli! test için loopback modda kullan
-
-# watchdog daemon
-sudo apt install watchdog
-
-# /etc/watchdog.conf
-# watchdog-device = /dev/watchdog
-# interval = 10
-# max-load-1 = 24
-# min-memory = 1
-```
-
-```ini title="/etc/watchdog.conf"
-watchdog-device     = /dev/watchdog
-watchdog-timeout    = 30      # Sıfırlama eşiği (saniye)
-interval            = 10      # Besleme aralığı (saniye)
-max-load-1          = 24      # 1 dakika ortalama yük eşiği
-min-memory          = 1024    # KB cinsinden minimum serbest RAM
-ping                = 8.8.8.8 # Ağ bağlantısı kontrolü (isteğe bağlı)
-```
-
-```bash
-sudo systemctl enable --now watchdog
-sudo systemctl status watchdog
-```
-
-### Programatik Watchdog Besleme (C)
-
-```c
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-#include <linux/watchdog.h>
-#include <pthread.h>
-
-static int wdt_fd = -1;
-static volatile int running = 1;
-
-static void *watchdog_thread(void *arg) {
-    int timeout = 10;
-    ioctl(wdt_fd, WDIOC_SETTIMEOUT, &timeout);
-
-    while (running) {
-        ioctl(wdt_fd, WDIOC_KEEPALIVE, NULL);  // Watchdog besle
-        sleep(5);
-    }
-    return NULL;
-}
-
-int main(void) {
-    wdt_fd = open("/dev/watchdog", O_WRONLY);
-
-    pthread_t tid;
-    pthread_create(&tid, NULL, watchdog_thread, NULL);
-
-    // Ana uygulama kodu...
-
-    running = 0;
-    pthread_join(tid, NULL);
-
-    // Watchdog'u güvenli kapat (magic close)
-    write(wdt_fd, "V", 1);
-    close(wdt_fd);
-    return 0;
-}
-```
-
----
-
-## SPI - Ayrıntılı Kullanım
-
-```bash
-# spidev modülü yüklü mü?
-lsmod | grep spidev
-ls /dev/spidev*
-
-# Kalıcı yükleme
-echo spidev | sudo tee -a /etc/modules
-
-# spi-tools ile test
-sudo apt install spi-tools
-spi-config -d /dev/spidev0.0 -q    # Mevcut yapılandırma
-
-# SPI parametrelerini ayarla
-spi-config -d /dev/spidev0.0 \
-    -m 0 \              # Mode 0 (CPOL=0, CPHA=0)
-    -s 1000000 \        # 1 MHz
-    -b 8                # 8 bit/word
-```
-
-```python
-import spidev
-import time
-
-spi = spidev.SpiDev()
-spi.open(0, 0)          # Bus 0, CS 0
-
-spi.max_speed_hz  = 1_000_000  # 1 MHz
-spi.mode          = 0b00        # Mode 0
-spi.bits_per_word = 8
-
-# Veri gönder ve al (full-duplex)
-response = spi.xfer2([0x01, 0x02, 0x03])
-print(f"Yanıt: {response}")
-
-# Sadece gönder (MISO'yu yoksay)
-spi.writebytes([0xFF, 0x00])
-
-# Tek byte oku
-data = spi.readbytes(4)
-
-spi.close()
-```
-
----
-
-## UART / Seri Haberleşme Debug
-
-```bash
-# Mevcut seri portlar
-ls /dev/ttyTHS* /dev/ttyS* /dev/ttyUSB* 2>/dev/null
-
-# Jetson Nano - UART2 = debug konsol (/dev/ttyS0)
-# Jetson Xavier NX - UART1 = /dev/ttyTHS0
-
-# Port yapılandırması
-sudo stty -F /dev/ttyTHS0 raw speed 115200
-
-# minicom ile bağlan
-sudo minicom -D /dev/ttyTHS0 -b 115200
-
-# picocom - daha hafif alternatif
-sudo picocom -b 115200 /dev/ttyTHS0
-
-# Python ile seri okuma
-python3 - << 'EOF'
-import serial
-port = serial.Serial('/dev/ttyTHS0', baudrate=115200, timeout=1)
-while True:
-    line = port.readline()
-    if line:
-        print(line.decode('utf-8', errors='replace').strip())
-EOF
-
-# UART loopback testi (TX'i RX'e bağla)
-sudo python3 -c "
-import serial
-s = serial.Serial('/dev/ttyTHS0', 115200, timeout=1)
-s.write(b'Loopback testi\n')
-print(s.readline())
-s.close()
-"
-```
-
-```bash
-# RS-485 için flow control (DE/RE pini GPIO ile)
-# /etc/systemd/system/rs485.service örneği:
-# ExecStartPre=/usr/bin/gpio-rs485-enable.sh
-```
-
----
-
-## Sistem Debug ve Tanılama
-
-```bash
-# Kernel oops / panic geçmişi
-sudo cat /var/log/kern.log | grep -i "oops\|panic\|BUG"
-journalctl -k --since "1 hour ago"
-
-# Bellek sızıntısı tespiti
-sudo dmesg | grep -i "oom\|out of memory\|kill process"
-cat /proc/meminfo | grep -E "MemFree|Cached|Slab"
-
-# I/O durumu
-iostat -x 1 5             # Disk I/O istatistikleri
-sudo iotop                # Process bazlı I/O izleme
-
-# CPU gecikme analizi
-sudo perf sched record -- sleep 5
-sudo perf sched latency --sort max
-
-# Termal log
-watch -n 2 'cat /sys/class/thermal/thermal_zone*/temp \
-    | paste - /sys/class/thermal/thermal_zone*/type'
-
-# GPU kullanımı (Xavier+)
-cat /sys/devices/gpu.0/load   # % olarak GPU yükü
-```
-
----
 
 ## Kamera Hızlı Referans
 
@@ -837,36 +334,6 @@ pwdn-gpios  = <&gpio TEGRA_GPIO(T, 0) GPIO_ACTIVE_HIGH>;
 pwdn-gpios  = <0x5b 0x98 0x0>;
 //             ^phandle ^sysfs_no ^flags
 ```
-
-### Python - Jetson.GPIO
-
-```python
-import Jetson.GPIO as GPIO
-import time
-
-GPIO.setmode(GPIO.BCM)  # veya GPIO.BOARD (fiziksel pin)
-
-# Çıkış pini
-GPIO.setup(18, GPIO.OUT, initial=GPIO.LOW)
-GPIO.output(18, GPIO.HIGH)
-time.sleep(0.5)
-GPIO.output(18, GPIO.LOW)
-
-# Giriş pini + interrupt
-def button_callback(channel):
-    print(f"Pin {channel} tetiklendi!")
-
-GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(11, GPIO.FALLING, callback=button_callback, bouncetime=200)
-
-try:
-    while True:
-        time.sleep(1)
-except KeyboardInterrupt:
-    GPIO.cleanup()
-```
-
----
 
 ## BSP - Kısa Hazırlık Rehberi
 

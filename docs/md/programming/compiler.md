@@ -129,11 +129,11 @@ graph LR
 | `+=`     | Ekleme - Mevcut değerin sonuna yeni değer ekler                                                   |
 
 !!! example "Örnek"
-    ```bash 
-    `make -s`    # Silent mode; komutların kendisini terminale basmaz                               
-    `make -k`    # Hata olsa bile bağımsız diğer target'lar derlemeye devam eder                    
-    `make -i`    # Hataları yok sayarak sona kadar devam eder                                       
-    `make -j<n>` # `n` paralel iş parçacığıyla derler - `make -j$(nproc)` tüm çekirdekleri kullanır 
+    ```bash
+    make -s      # Silent mode; komutların kendisini terminale basmaz
+    make -k      # Hata olsa bile bağımsız diğer target'lar derlemeye devam eder
+    make -i      # Hataları yok sayarak sona kadar devam eder
+    make -j<n>   # n paralel iş parçacığıyla derler - make -j$(nproc) tüm çekirdekleri kullanır
     ```
 
 

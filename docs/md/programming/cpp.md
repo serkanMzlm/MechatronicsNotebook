@@ -498,10 +498,6 @@ public:
     Vec2 operator+(const Vec2& rhs) const {
         return {x + rhs.x, y + rhs.y};
     }
-};
-
-class Vec2 {
-    float x, y;
     friend std::ostream& operator<<(std::ostream& os, const Vec2& v);
 };
 std::ostream& operator<<(std::ostream& os, const Vec2& v) {
@@ -732,7 +728,7 @@ void consumer() {
 
 - **`std::future<T>`:** Henüz hazır olmayan, ileride bir thread tarafından üretilecek bir `T` değerine tutulan "bilet" gibidir. `f.get()` çağrıldığında, değer hazırsa hemen döner; hazır değilse değer üretilene kadar çağıran thread'i bloke eder.
 - **`std::async`:** Bir fonksiyonu (genellikle ayrı bir thread'de) arka planda çalıştırıp, sonucunu almak için otomatik olarak bir `std::future` döndüren **yüksek seviye** bir araçtır. Thread'i, senkronizasyonu veya sonucun nasıl taşınacağını elle yönetmeniz gerekmez; sadece çalıştırılacak fonksiyonu verirsiniz.
-- **`std::promise` / `std::future` çifti:** `std::async`'in aksine, sonucun nasıl ve ne zaman üretileceğini **manuel** kontrol etmek istediğinizde kullanılır. `std::promise<T>`, değeri üretecek tarafta tutulur ve iş bitince `.set_value(...)` ile değeri "vaat edilen yere koyar"; bu değeri bekleyen taraf ise `promise`'den alınan eşleşen `std::future<T>` üzerinden `.get()` ile o değeri okur. Yani `promise` **yazma ucu**, `future` ise **okuma ucudur** — aralarında tek yönlü, tek seferlik bir veri kanalı kurarlar.
+- **`std::promise` / `std::future` çifti:** `std::async`'in aksine, sonucun nasıl ve ne zaman üretileceğini **manuel** kontrol etmek istediğinizde kullanılır. `std::promise<T>`, değeri üretecek tarafta tutulur ve iş bitince `.set_value(...)` ile değeri "vaat edilen yere koyar"; bu değeri bekleyen taraf ise `promise`'den alınan eşleşen `std::future<T>` üzerinden `.get()` ile o değeri okur. Yani `promise` **yazma ucu**, `future` ise **okuma ucudur** - aralarında tek yönlü, tek seferlik bir veri kanalı kurarlar.
 
 ```cpp
 // std::async - arka planda çalıştır, sonucu future ile al

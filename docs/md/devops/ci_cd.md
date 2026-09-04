@@ -113,14 +113,25 @@ graph LR
 
 
 !!! example "GitHub Actions ile CD (Staging'e Otomatik Deploy)"
+    `needs:` yalnızca **aynı workflow dosyası** içindeki job'ları referans alabilir; bu yüzden CI ve CD job'ları tek dosyada tanımlanır (ayrı dosyalardaki job'lar arası tetikleme için `workflow_run` gerekir).
     ```yaml
-    name: CD - Staging Deploy
+    name: CI-CD Pipeline
 
     on:
       push:
         branches: [ main ]
 
     jobs:
+      build-and-test:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - name: Derle ve Test Et
+            run: |
+              cmake -B build -DCMAKE_BUILD_TYPE=Release
+              cmake --build build
+              cd build && ctest --output-on-failure
+
       deploy-staging:
         runs-on: ubuntu-latest
         needs: build-and-test       # CI job'ı başarılıysa çalışır

@@ -301,16 +301,16 @@ graph LR
 
 ## Bitwise Operatörler
 
-| Operatör | Tür         | Açıklama                                                      |                                  |                                                               |
-| -------- | ----------- | ------------------------------------------------------------- | -------------------------------- | ------------------------------------------------------------- |
-| `&`      | Bitwise AND | Her iki bitte de 1 ise sonuç 1                                |                                  |                                                               |
-| `        | `           | Bitwise OR                                                    | Herhangi bir bitte 1 ise sonuç 1 |                                                               |
-| `^`      | Bitwise XOR | Bitler farklıysa sonuç 1                                      |                                  |                                                               |
-| `~`      | Bitwise NOT | Tüm bitleri tersine çevirir                                   |                                  |                                                               |
-| `<<`     | Left Shift  | Sola kaydırma; `n` kez kaydırmak `2^n` ile çarpmaktır         |                                  |                                                               |
-| `>>`     | Right Shift | Sağa kaydırma; `n` kez kaydırmak `2^n`'e bölmektir            |                                  |                                                               |
-| `&&`     | Logical AND | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |                                  |                                                               |
-| `        |             | `                                                             | Logical OR                       | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |
+| Operatör | Tür         | Açıklama                                                      |
+| -------- | ----------- | -------------------------------------------------------------- |
+| `&`      | Bitwise AND | Her iki bitte de 1 ise sonuç 1                                |
+| `\|`     | Bitwise OR  | Herhangi bir bitte 1 ise sonuç 1                               |
+| `^`      | Bitwise XOR | Bitler farklıysa sonuç 1                                      |
+| `~`      | Bitwise NOT | Tüm bitleri tersine çevirir                                   |
+| `<<`     | Left Shift  | Sola kaydırma; `n` kez kaydırmak `2^n` ile çarpmaktır         |
+| `>>`     | Right Shift | Sağa kaydırma; `n` kez kaydırmak `2^n`'e bölmektir            |
+| `&&`     | Logical AND | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |
+| `\|\|`   | Logical OR  | Sonuç yalnızca `true`/`false`; **Short-Circuit** özelliği var |
 
 !!! tip "Not"
     - **Short-Circuit Evaluation:** `if(a && 5/a)` ifadesinde `a = 0` ise sol taraf `false` olduğu için sağ taraf (`5/a`) hiç değerlendirilmez. Bu sayede `division by zero` hatası önlenmiş olur.

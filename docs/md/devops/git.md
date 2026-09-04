@@ -64,7 +64,7 @@ build/
 .env
 *.png
 resimler/**
-resimler/!deneme.png    # Bu dosya hariç
+!resimler/deneme.png    # Bu dosya hariç
 ```
 
 ---

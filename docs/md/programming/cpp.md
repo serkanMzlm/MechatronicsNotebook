@@ -498,10 +498,6 @@ public:
     Vec2 operator+(const Vec2& rhs) const {
         return {x + rhs.x, y + rhs.y};
     }
-};
-
-class Vec2 {
-    float x, y;
     friend std::ostream& operator<<(std::ostream& os, const Vec2& v);
 };
 std::ostream& operator<<(std::ostream& os, const Vec2& v) {

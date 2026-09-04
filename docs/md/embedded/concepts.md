@@ -160,7 +160,7 @@ graph LR
 | **HSE** | Harici kristal         | < 100 ppm  | USB, CAN, hassas UART        |
 | **LSI** | Dahili RC, 32 kHz      |   Düşük    | IWDG, RTC (düşük hassasiyet) |
 | **LSE** | Harici 32.768 kHz      | Çok yüksek | RTC (yüksek hassasiyet)      |
-| **PLL** | HSI/HSE tabanlı çarpan | HSE kadar  | Yüksek sistem frekansı       |
+| **PLL** | HSI/HSE tabanlı çarpan | Kaynağına bağlı (HSE ile beslenirse daha kararlı) | Yüksek sistem frekansı       |
 
 ---
 

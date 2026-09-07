@@ -1,771 +1,191 @@
 # VIO - Görsel-Atalet Odometri
 
 !!! note "Bu Sayfa Ne Anlatıyor?"
-    Optical Flow'dan başlayarak VIO'nun iç mimarisine, OpenVINS kurulumuna ve Kalibr ile kamera-IMU kalibrasyonuna kadar kapsamlı bir rehber. Her kavram "neden lazım?" sorusuna cevap vererek anlatılır.
+    Optical flow'dan başlayarak VIO'nun iç mimarisine, filtre/optimizasyon tabanlı yaklaşımların karşılaştırmasına, OpenVINS'e ve Kalibr ile kamera-IMU kalibrasyonuna kadar kavramsal bir rehber. Amaç kod yazmak değil, "neden böyle tasarlanmış?" sorusuna cevap vermektir.
 
 ---
 
-## Optical Flow - Piksellerin Hareketi
+## Optik Akış (Optical Flow)
 
-### Temel Fikir
+Bir videodan iki ardışık kare alıp her pikselin bir sonraki karede nereye gittiğini bulursanız, kameranın veya sahnedeki nesnelerin nasıl hareket ettiğini çıkarabilirsiniz - buna **optik akış** denir. Bu hesap iki varsayıma dayanır: kısa sürede bir pikselin parlaklığının değişmediği (**parlaklık sabitliği**) ve pikselin bir sonraki karede çok uzağa gitmediği (**küçük hareket**). Bu iki varsayım Taylor açılımıyla birleştirildiğinde tek bir kısıt denklemi ortaya çıkar:
 
-Bir videodan iki ardışık kare alın. Her pikselin bir sonraki karede nereye gittiğini bulursanız, kameranın veya sahnedeki nesnelerin nasıl hareket ettiğini anlayabilirsiniz. Bu hesaba **optical flow** (optik akış) denir.
+$$I_x u + I_y v + I_t = 0$$
 
-```
-Kare 1:          Kare 2:
-┌─────────┐      ┌─────────┐
-│  ⬤      │  →  │    ⬤    │
-│         │      │         │
-└─────────┘      └─────────┘
-Piksel (100,150)  Piksel (115,148)
+Burada `I_x`, `I_y` görüntünün yatay/dikey gradyanı, `I_t` zaman içindeki parlaklık değişimi, `u`, `v` ise aranan yatay/dikey piksel hızıdır. Sorun şu ki bu tek denklemde iki bilinmeyen (`u`, `v`) vardır - buna **aperture problemi** denir: bir kenar parçasına dar bir pencereden bakıldığında, kenara paralel yöndeki hareket görülemez. Bu belirsizliği çözmek için iki farklı ek varsayım/yaklaşım geliştirilmiştir:
 
-Hareket vektörü: (+15, -2) piksel
-```
+| Yöntem              | Ek Varsayım                                      | Çıktı                          | Hız              | Tipik Kullanım                     |
+| --------------------- | ---------------------------------------------------- | ---------------------------------- | ------------------- | -------------------------------------- |
+| **Lucas-Kanade** (seyrek) | Küçük bir pencerede (örn. 15×15 piksel) tüm pikseller aynı hareketi yapar | Seçili (köşe) noktalarda vektör    | Hızlı (100+ FPS)     | VIO, nesne takibi                       |
+| **Farneback** (yoğun)     | Global düzgünlük (Horn-Schunck ailesi)                | Görüntüdeki her piksel için vektör | Yavaş (10-30 FPS)     | Segmentasyon, arka plan çıkarma          |
 
-### Optik Akış Denklemi
+**Lucas-Kanade** yaklaşımında, seçilen penceredeki her piksel kendi denklemini katkı olarak verir; N pikselli bir pencere iki bilinmeyene karşı N denklem üretir (aşırı belirlenmiş sistem) ve çözüm en küçük kareler yöntemiyle bulunur:
 
-İki hipotez:
+$$\mathbf{d} = (A^\top A)^{-1} A^\top \mathbf{b}$$
 
-1. **Parlaklık sabiti**: Kısa sürede bir pikselin parlaklığı değişmez: `I(x, y, t) = I(x+dx, y+dy, t+dt)`
-2. **Küçük hareket**: Piksel bir sonraki karede çok uzağa gitmez
+Bu çözümün sağlıklı olması için seçilen noktanın **köşe** özelliği taşıması gerekir - düz bir kenar veya tekdüze bir yüzeyde `AᵀA` matrisi tekilleşir ve akış hesaplanamaz; bu yüzden takip öncesi mutlaka "iyi" (köşe niteliğinde) noktalar seçilir.
 
-Taylor açılımı uygulanırsa:
+Büyük hareketler "küçük hareket" varsayımını bozar; bunun çözümü **piramit** yaklaşımıdır: görüntü önce birkaç kez küçültülür (büyük hareket, küçük çözünürlükte küçük hareket gibi görünür), en düşük çözünürlükte kaba bir tahmin yapılır, sonra her piramit seviyesinde tahmin kademeli olarak inceltilerek orijinal çözünürlüğe kadar rafine edilir.
 
-```
-∂I/∂x · u + ∂I/∂y · v + ∂I/∂t = 0
-
-u = dx/dt  →  yatay hız
-v = dy/dt  →  dikey hız
-Ix, Iy    →  yatay/dikey gradyan (OpenCV'de Sobel ile hesaplanır)
-It        →  zaman gradyanı (kare 2 - kare 1)
-```
-
-**Problem:** İki bilinmeyene (`u`, `v`) karşı tek denklem - **aperture problemi**. Bu yüzden ek kısıt gerekir.
-
-```mermaid
-graph LR
-    A[Aperture Problemi\n1 denklem, 2 bilinmeyen] --> B[Lucas-Kanade\nYerel düzgünlük varsayımı\nPenceredeki piksel bloğu]
-    A --> C[Horn-Schunck\nGlobal düzgünlük\nTüm görüntü]
-```
+!!! tip "Neden VIO Lucas-Kanade Tercih Eder?"
+    VIO gerçek zamanlı çalışmak zorundadır ve tüm görüntü yerine yalnızca birkaç yüz iyi özellik noktasının takibiyle ilgilenir - bu yüzden hızlı, seyrek Lucas-Kanade neredeyse tüm VIO sistemlerinin (MSCKF, VINS-Mono, OpenVINS) ön yüzünde (frontend) kullanılır. Farneback gibi yoğun yöntemler VIO için gereksiz hesaplama yükü getirir.
 
 ---
 
-### Lucas-Kanade - Seyrek Optik Akış
+## VIO Nedir ve Neden IMU Gerekli?
 
-**Fikir:** Küçük bir penceredeki (ör. 15×15 piksel) tüm piksellerin aynı hareketi yaptığını varsay. Bu pencerede N piksel varsa N denklem elde edersin → iki bilinmeyen için aşırı belirlenmiş sistem → en küçük kareler (least squares) ile çöz.
+Yalnızca kamerayla (Visual Odometry, VO) konum kestirmek mümkündür ama kırılgandır. IMU eklenmesi (Visual **Inertial** Odometry), sistemin zayıf noktalarını doğrudan telafi eder:
 
-```
-N piksel × 1 denklem/piksel:
-[Ix₁ Iy₁] [u]   [-It₁]
-[Ix₂ Iy₂] [v] = [-It₂]
-[  ...   ]       [ ... ]
-[IxN IyN]        [-ItN]
+| Sorun                              |      Sadece VO       |         VO + IMU (VIO)          |
+| ------------------------------------- | :----------------------: | :----------------------------------: |
+| Tek kamerada (mono) ölçek belirsizliği |       ✗ Bilinmez          |          ✓ IMU kurtarır               |
+| Hızlı hareket / bulanıklık             |    ✗ Takip bozulur        |        ✓ IMU köprü kurar               |
+| Karanlık / doku yok                    |  ✗ Özellik bulunamaz      |     ✓ IMU kısa süre devralır            |
+| Uzun vadeli drift                      |     ✗ Hata birikir        |  Kısmen: IMU bias tahmin edilerek azaltılır |
+| Başlangıç oryantasyonu                 |        Belirsiz            |       ✓ Yerçekimi vektöründen çıkarılır   |
 
-A · d = b
-d = (AᵀA)⁻¹Aᵀb   ← en küçük kareler çözümü
-```
+Mono kamerada ölçek neden belirsizdir? Çünkü bir görüntüden, sahnenin "1 metre uzaklıkta 1 metre büyüklüğünde" mi yoksa "10 metre uzaklıkta 10 metre büyüklüğünde" mi olduğunu ayırt etmek mümkün değildir - iki durum da aynı görüntüyü üretir. IMU'nun ivme ölçümleri gerçek fiziksel birimlerde (m/s²) olduğundan, bu ölçeği sabitlemek için kullanılabilir.
 
-`AᵀA` matrisinin iyi şartlı olması için noktanın **köşe** olması gerekir - düz kenarlarda (`AᵀA` tekilleşir) akış hesaplanamaz. Bu yüzden önce iyi noktalar (köşeler) seçilir.
-
-#### Piramit Lucas-Kanade - Büyük Hareketler İçin
-
-Büyük hareketler "küçük hareket" hipotezini bozar. Çözüm: görüntüyü küçülterek büyük hareketi küçük gibi göster, sonra ince ayar yap.
-
-```
-Seviye 3 (1/8 boyut):  büyük hareketi düşük çözünürlükte kaba bul
-Seviye 2 (1/4 boyut):  tahmini rafine et
-Seviye 1 (1/2 boyut):  daha ince
-Seviye 0 (orijinal):   piksel düzeyinde hassas
-```
-
-```python title="lk_optical_flow.py"
-import cv2
-import numpy as np
-
-# Shi-Tomasi köşe tespiti (Lucas-Kanade için iyi noktalar)
-feature_params = dict(
-    maxCorners=300,
-    qualityLevel=0.01,   # Bu puandan düşük köşeleri atla
-    minDistance=10,       # Noktalar arası min piksel mesafesi
-    blockSize=7
-)
-
-lk_params = dict(
-    winSize=(21, 21),      # Arama penceresi boyutu
-    maxLevel=3,            # Piramit seviyeleri (3 = 8× küçük en alt)
-    criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 30, 0.01)
-)
-
-cap = cv2.VideoCapture(0)
-ret, old_frame = cap.read()
-old_gray = cv2.cvtColor(old_frame, cv2.COLOR_BGR2GRAY)
-p0 = cv2.goodFeaturesToTrack(old_gray, mask=None, **feature_params)
-
-tuval = np.zeros_like(old_frame)
-renkler = np.random.randint(0, 255, (300, 3))
-takip_id = list(range(len(p0)))
-
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
-    frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    # İleri takip
-    p1, st, err = cv2.calcOpticalFlowPyrLK(old_gray, frame_gray, p0, None, **lk_params)
-
-    # Geri takip (doğrulama için)
-    p0_geri, st_geri, _ = cv2.calcOpticalFlowPyrLK(frame_gray, old_gray, p1, None, **lk_params)
-
-    # İleri-geri hata: geri gelen nokta başlangıca yakınsa güvenilir
-    hata = np.abs(p0 - p0_geri).reshape(-1, 2).max(axis=1)
-    iyi = (st.flatten() == 1) & (hata < 1.0)
-
-    for i, (yeni, eski) in enumerate(zip(p1[iyi], p0[iyi])):
-        a, b = yeni.ravel().astype(int)
-        c, d = eski.ravel().astype(int)
-        idx  = np.where(iyi)[0][i]
-        cv2.line(tuval, (a, b), (c, d), renkler[idx % 300].tolist(), 2)
-        cv2.circle(frame, (a, b), 4, renkler[idx % 300].tolist(), -1)
-
-    cv2.imshow("LK Optical Flow", cv2.add(frame, tuval))
-    if cv2.waitKey(30) & 0xFF == ord('q'):
-        break
-
-    old_gray = frame_gray.copy()
-    p0 = p1[iyi].reshape(-1, 1, 2)
-
-    # Nokta sayısı azaldıysa yeni noktalar ekle
-    if len(p0) < 50:
-        yeni_noktalar = cv2.goodFeaturesToTrack(old_gray, mask=None, **feature_params)
-        if yeni_noktalar is not None:
-            p0 = np.vstack([p0, yeni_noktalar])
-```
-
-### Farneback - Yoğun Optik Akış
-
-Tüm piksel için hareket vektörü hesaplar. LK'dan yavaş ama tam alan bilgisi verir.
-
-```python title="farneback.py"
-import cv2
-import numpy as np
-
-cap = cv2.VideoCapture(0)
-ret, old = cap.read()
-old_gray = cv2.cvtColor(old, cv2.COLOR_BGR2GRAY)
-
-while True:
-    ret, frame = cap.read()
-    frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    flow = cv2.calcOpticalFlowFarneback(
-        old_gray, frame_gray, None,
-        pyr_scale=0.5,   # Her seviyede boyut oranı
-        levels=3,        # Piramit seviyesi
-        winsize=15,      # Yerelleştirme penceresi
-        iterations=3,
-        poly_n=5,        # Polinom boyutu
-        poly_sigma=1.2,  # Gaussian sigma
-        flags=0
-    )
-    # flow[y, x, 0] = dx, flow[y, x, 1] = dy
-
-    # Görselleştirme: açı=renk, büyüklük=parlaklık
-    mag, ang = cv2.cartToPolar(flow[..., 0], flow[..., 1])
-    hsv = np.zeros_like(old)
-    hsv[..., 1] = 255
-    hsv[..., 0] = ang * 180 / np.pi / 2
-    hsv[..., 2] = cv2.normalize(mag, None, 0, 255, cv2.NORM_MINMAX)
-    bgr = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
-
-    # Ortalama hareket: kamera mı hareket ediyor?
-    ort_mag = np.mean(mag)
-    if ort_mag > 3.0:
-        cv2.putText(bgr, f"Hareket: {ort_mag:.1f} px/kare", (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-
-    cv2.imshow("Farneback Flow", bgr)
-    old_gray = frame_gray.copy()
-    if cv2.waitKey(30) & 0xFF == ord('q'):
-        break
-```
-
-### Sparse vs Dense Karşılaştırması
-
-|               |  Lucas-Kanade (Seyrek)   |        Farneback (Yoğun)        |
-| ------------- | :----------------------: | :-----------------------------: |
-| Çıktı         | Seçili noktalarda vektör |     Her piksel vektör alanı     |
-| Hız           |     Hızlı (100+ FPS)     |        Yavaş (10-30 FPS)        |
-| Kullanım      |    VIO, nesne takibi     | Segmentasyon, arka plan çıkarma |
-| Büyük hareket |   Piramit ile çözülür    |              Zayıf              |
-| Gürültü       |  İyi (pencere ortalama)  |               Orta              |
-
----
-
-## VIO - Visual Inertial Odometry
-
-### VIO Neden Gerekli?
-
-Sadece kamera (VO) ile robotun nerede olduğunu hesaplamak mümkün ama zor. IMU ekleyince sistem çok daha sağlam hale gelir.
-
-| Sorun                            |      Sadece VO      |         VO + IMU (VIO)         |
-| -------------------------------- | :-----------------: | :----------------------------: |
-| Mono kamerada ölçek belirsizliği |      ✗ Bilinmez     |         ✓ IMU kurtarır         |
-| Hızlı hareket / bulanıklık       |   ✗ Takip bozulur   |       ✓ IMU köprü kurar        |
-| Karanlık / doku yok              | ✗ Özellik bulunamaz |    ✓ IMU kısa süre devralır    |
-| Uzun vadeli drift                |    ✗ Hata birikir   | Kısmen: IMU bias tahmin edilir |
-| Başlangıç oryantasyonu           |       Belirsiz      |      ✓ Yerçekimi vektörü       |
-
-**IMU'nun kendi sorunu:** Bias (sürüklenme) ve gürültü. Statik dururken bile ivmeölçer ve jiroskop sıfır göstermez - hafif sürüklenme (bias) var. Uzun süre entegre edilince büyük hata birikir. VIO bu bias'ı da tahmin eder.
-
-### Sistem Bileşenleri
+IMU'nun da kendi zayıflığı vardır: **bias** (sürüklenme). Sensör tamamen sabit dururken bile ivmeölçer ve jiroskop tam sıfır göstermez; bu küçük sapma zamanla entegre edildikçe büyük konum hatasına dönüşür. VIO'nun temel işlerinden biri de bu bias'ı sistemin durumunun bir parçası olarak sürekli tahmin etmektir.
 
 ```mermaid
 flowchart LR
     subgraph SENS["Sensörler"]
-        CAM["Kamera\n30-60 Hz\nGörüntü"]
-        IMU["IMU\n200-1000 Hz\nİvme + Açısal Hız"]
+        CAM["Kamera<br/>30-60 Hz Görüntü"]
+        IMU["IMU<br/>200-1000 Hz İvme + Açısal Hız"]
     end
-
-    subgraph FRONT["Ön Yüz (Fast)"]
-        FEAT["Özellik Tespiti\nFAST / ORB"]
-        TRACK["LK Takip\nKareler Arası"]
-        PREINT["IMU Ön Entegrasyon\nHız + Pozisyon"]
+    subgraph FRONT["Ön Yüz (Hızlı)"]
+        FEAT["Özellik Tespiti<br/>FAST / ORB"]
+        TRACK["LK Takip<br/>Kareler Arası"]
+        PREINT["IMU Ön Entegrasyon"]
     end
-
-    subgraph BACK["Arka Yüz (Opt.)"]
-        SLIDE["Kayma Penceresi\n(Son N keyframe)"]
-        OPT["Non-linear Optimizer\nCeres / g2o / GTSAM"]
-        MARG["Marjinalizasyon\nEski keyframe özetle"]
+    subgraph BACK["Arka Yüz (Filtre veya Optimizasyon)"]
+        SLIDE["Kayma Penceresi<br/>(Son N keyframe)"]
+        EST["Durum Kestirimi"]
     end
-
     CAM --> FEAT --> TRACK --> SLIDE
     IMU --> PREINT --> SLIDE
-    SLIDE --> OPT --> MARG
-    OPT -->|"Konum, Hız\nIMU Bias"| OUT["Durum Tahmini"]
+    SLIDE --> EST --> OUT["Konum, Hız, IMU Bias"]
 ```
 
-### IMU Ön Entegrasyon
-
-İki kamera karesi arasında IMU 10-100 ölçüm yapabilir. Bu ölçümleri tek bir "delta konum" ve "delta oryantasyon" olarak özetlemek gerekir - buna **IMU preintegration** denir.
-
-```
-Kamera karesi k → Kamera karesi k+1 arasında:
-IMU 20 ölçüm yaptı: [a₁, ω₁], [a₂, ω₂], ..., [a₂₀, ω₂₀]
-
-Ön entegrasyon:
-ΔR_{k,k+1}  = R₁ · R₂ · ... · R₂₀   ← toplam dönüş
-Δv_{k,k+1}  = Σ Rᵢ · (aᵢ - bₐ) · dt  ← hız değişimi
-Δp_{k,k+1}  = Σ [Δvᵢ · dt + ½Rᵢ · aᵢ · dt²]  ← konum değişimi
-
-bₐ = ivmeölçer bias (sürekli tahmin edilir)
-bω = jiroskop bias (sürekli tahmin edilir)
-```
-
-Ön entegrasyon bias tahminleri değiştiğinde Jacobian ile yeniden hesaplamadan düzeltilebilir - bu büyük hesaplama tasarrufu sağlar.
-
-### EKF vs Faktör Grafı
-
-**EKF (Extended Kalman Filter) yaklaşımı:**
-- Anlık durum tahmini: konum, hız, oryantasyon, IMU bias
-- Ölçüm geldiğinde tahmin güncellenir
-- Hızlı ama yakınsama garanti değil, geçmiş göz ardı edilir
-- Kullanım: MSCKF, ROVIO
-
-**Faktör Grafı + Sliding Window yaklaşımı:**
-- Son N keyframe ve aralarındaki kısıtları tutan bir grafik
-- Her yeni ölçüm, bir kenar (faktör) olarak eklenir
-- Grafik minimize edilir (non-linear least squares)
-- Yavaş ama daha doğru, geçmiş bilgiyi kullanır
-- Kullanım: VINS-Mono, ORB-SLAM3, OpenVINS
-
-```mermaid
-graph LR
-    subgraph FACTOR["Faktör Grafı"]
-        P0["Pose 0"] --"IMU"--> P1["Pose 1"]
-        P1 --"IMU"--> P2["Pose 2"]
-        P2 --"IMU"--> P3["Pose 3"]
-        LM1[("Nokta 1")] --"Görüntüleme"--> P0
-        LM1 --"Görüntüleme"--> P1
-        LM2[("Nokta 2")] --"Görüntüleme"--> P1
-        LM2 --"Görüntüleme"--> P2
-        LM2 --"Görüntüleme"--> P3
-    end
-```
-
-### MSCKF - Multi-State Constraint Kalman Filter
-
-MSCKF (Mourikis & Roumeliotis, 2007), VIO'nun temeli olan algoritmadır. Harita noktalarını state'e eklemez - bunun yerine bir özellik noktasının birden fazla kamera pozisyonunda görülmesiyle oluşan geometrik kısıtı kullanır.
-
-```
-Geleneksel EKF-SLAM:
-  State = [robot_pozisyonu, tüm harita noktaları]
-  N harita noktası → N×3 boyutlu state → çok büyük matris
-
-MSCKF:
-  State = [son M kamera pozisyonu, IMU durumu]
-  Harita noktaları state'de YOK
-  Bir nokta M karede görülünce → M ölçüm → tek kısıt
-  
-  Avantaj: Sabit boyutlu state, gerçek zamanlı çalışır
-```
-
-### Kayma Penceresi Optimizasyonu (Sliding Window)
-
-```
-Zaman →
-│ KF₀ │ KF₁ │ KF₂ │ KF₃ │ KF₄ │ KF₅ │
-            ↑ Pencere başlangıcı
-
-Yeni KF₆ gelince:
-- Pencere içindeki tüm faktörler yeniden optimize edilir
-- KF₀ pencerenin dışına çıkar → marjinalizasyon
-```
-
-**Marjinalizasyon:** KF₀'ı doğrudan silmek bilgi kaybına yol açar. Bunun yerine KF₀'ın kısıtları bir prior faktörüne özetlenerek pencereye eklenir.
-
-### Stereo Kamera: VIO'da Avantajları
-
-| Özellik            |  Mono |       Mono+IMU       |   Stereo  | Stereo+IMU |
-| ------------------ | :---: | :------------------: | :-------: | :--------: |
-| Ölçek              |   ✗   | ✓ (başlatma sonrası) |     ✓     |     ✓      |
-| Derinlik           |   ✗   |        Kısmi         |     ✓     |     ✓      |
-| Başlatma kolaylığı | Düşük |         Orta         | **Kolay** |   Kolay    |
-| Hesaplama          |   Az  |         Orta         |    Çok    | **En çok** |
-| Sağlamlık          | Düşük |         Orta         |    İyi    | **En iyi** |
-
-!!! tip "Pratik Öneri"
-    - Küçük drone, ağırlık kritik → **Mono + IMU** (OpenVINS mono)
-    - Kapalı alan, metrik konum → **Stereo + IMU** (OpenVINS stereo-inertial)
-    - Derinlik sensörü olarak → **Stereo** veya RGB-D
+İki kamera karesi arasında IMU onlarca kez ölçüm yapar; bunların hepsini arka yüze tek tek vermek yerine, aradaki tüm ölçümler **IMU ön entegrasyonu (preintegration)** ile tek bir "delta dönüş, delta hız, delta konum" özetine sıkıştırılır. Bu özet, IMU bias tahmini sonradan değişse bile (matematiksel bir düzeltme terimiyle) yeniden ham veriye dönmeden güncellenebilir - bu da ciddi bir hesaplama tasarrufu sağlar.
 
 ---
 
-## OpenVINS - Açık Kaynak VIO Sistemi
+## Arka Yüz Tasarımı: Filtre Tabanlı mı, Optimizasyon Tabanlı mı?
 
-**OpenVINS**, Wisconsin Üniversitesi tarafından geliştirilen MSCKF bazlı VIO sistemidir. Akademik çevrede referans uygulama sayılır.
+Ön yüz (özellik takibi, IMU ön entegrasyonu) hemen hemen tüm VIO sistemlerinde benzer çalışır; asıl mimari fark **arka yüzde** (backend) - yani "biriken ölçümlerden konum/hız/oryantasyon nasıl kestirilir?" sorusunun cevabında ortaya çıkar. İki temel felsefe vardır.
 
-```
-Özellikler:
-✓ MSCKF + Sliding window hybrid
-✓ Mono, Stereo, RGB-D kamera desteği
-✓ Çoklu kamera kalibrasyonu (extrinsic online)
-✓ ROS 1 ve ROS 2 desteği
-✓ Kapsamlı parametre dokümantasyonu
-✓ EuRoC, TUM-VI dataset'leriyle doğrulanmış
-```
+### Filtre Tabanlı Algoritmalar (EKF / UKF)
 
-### Kurulum (ROS 2 Humble)
+Sistemin o anki durumunu (konum, hız, oryantasyon, IMU bias) tek bir olasılık dağılımı olarak tutar. Yeni bir ölçüm geldiğinde (Kalman filtresinin **tahmin** ve **güncelleme** adımlarıyla) bu dağılım güncellenir ve **geçmiş ölçümler bir daha ele alınmaz** - geçmişin etkisi yalnızca güncel durumun içine sıkıştırılmış haldedir. **MSCKF (Multi-State Constraint Kalman Filter)**, bu ailenin VIO'daki en önemli üyesidir: klasik EKF-SLAM'in aksine harita noktalarını durumun bir parçası yapmaz (bu, harita büyüdükçe durumu da büyütüp sistemi yavaşlatırdı); bunun yerine bir noktanın birden fazla kamera pozisyonunda görülmesinden doğan geometrik kısıtı, o noktayı hiç tahmin etmeden doğrudan kamera pozlarını düzeltmek için kullanır. Durum yalnızca son birkaç kamera pozu ve IMU durumundan oluştuğu için **sabit boyutludur** - bu da gerçek zamanlı çalışmayı garanti eder. `ROVIO`, `MSF` bu ailenin diğer örnekleridir.
 
-```bash
-mkdir -p ~/ws_ov/src && cd ~/ws_ov/src
+### Optimizasyon Tabanlı Algoritmalar (Faktör Grafı / Sliding Window)
 
-# OpenVINS kodu
-git clone https://github.com/rpng/open_vins.git
+Son N keyframe'i ve aralarındaki geometrik/eylemsel kısıtları (IMU ön entegrasyonu, ortak görülen noktalar) bir **faktör grafı** olarak tutar; yeni bir ölçüm geldiğinde geçmişteki tüm bu kısıtlar **birlikte**, doğrusal olmayan en küçük kareler (non-linear least squares) problemi olarak yeniden optimize edilir (Ceres, g2o, GTSAM gibi kütüphanelerle). Pencere dolup en eski keyframe dışarı çıkarken, o keyframe'in bilgisini kaybetmemek için doğrudan atmak yerine bir **prior faktörüne özetlenir** (marjinalizasyon) ve pencerede kalır. `VINS-Mono`, `ORB-SLAM3`, `OpenVINS` (MSCKF ile bu yaklaşımın bir hibridi) bu ailenin örnekleridir.
 
-# Bağımlılıklar
-sudo apt install ros-humble-eigen3-cmake-module \
-                 ros-humble-cv-bridge \
-                 ros-humble-image-transport
+**Avantaj / Dezavantaj**
 
-# Derleme
-cd ~/ws_ov
-colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+| Kriter                       | Filtre Tabanlı (EKF/MSCKF)                         | Optimizasyon Tabanlı (Faktör Grafı)                    |
+| ------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
+| Hesaplama maliyeti               | **Düşük**, sabit boyutlu durum                            | Daha yüksek; pencere boyutuyla artar                          |
+| Doğruluk                         | Orta; geçmiş ölçümler tekrar değerlendirilmez               | **Daha yüksek**; geçmiş bilgi tekrar tekrar kullanılır (relinearization) |
+| Doğrusal olmama (nonlinearity) ile başa çıkma | Zayıf; tek bir doğrusallaştırma noktasında sıkışabilir (yanlış yakınsama riski) | **İyi**; her iterasyonda yeniden doğrusallaştırılır             |
+| Gerçek zamanlı garanti            | **Güçlü**; sabit iş yükü                                   | Pencere boyutuna ve donanıma bağlı; garanti daha zayıf           |
+| Gecikmiş/sıra dışı gelen ölçümler  | Zor entegre edilir                                          | Faktör grafına doğal olarak eklenebilir                          |
+| Uygulama karmaşıklığı              | Görece basit                                               | Daha karmaşık (marjinalizasyon, doğrusal olmayan çözücü gerekir) |
+| Tipik örnekler                    | MSCKF, ROVIO, MSF                                            | VINS-Mono, ORB-SLAM3, OpenVINS, Kimera, Basalt                  |
 
-source install/setup.bash
-```
+!!! example "Hangisi Ne Zaman Seçilir?"
+    - **Kaynak kısıtlı, gerçek zamanlılık kritik** (küçük drone, gömülü işlemci) → filtre tabanlı (MSCKF)
+    - **Doğruluk önceliği, yeterli hesaplama gücü var** (yer robotu, offline harita çıkarma) → optimizasyon tabanlı
+    - **İkisi bir arada:** OpenVINS gibi modern sistemler, MSCKF'in verimliliğini sliding-window optimizasyonuyla birleştirerek her iki dünyanın avantajını almaya çalışır - bazı noktalar MSCKF mantığıyla anında elenir, geri kalan kısıtlar pencerede optimize edilir.
 
-### Temel Konfigürasyon
+---
 
-OpenVINS bir YAML konfigürasyon dosyasıyla çalışır. En kritik parametreler:
+## Mono, Stereo ve IMU Kombinasyonları
 
-```yaml title="config/my_camera_imu.yaml"
-# ──────────────────────────────────────────
-# Kamera - IMU zaman senkronizasyonu
-# ──────────────────────────────────────────
-calib_camimu_dt: 0.0        # Kamera-IMU gecikme farkı (saniye)
-                              # Kalibr ile ölçülür
+Kamera sayısı arttıkça sistemin sağlamlığı artar ama hesaplama maliyeti de artar:
 
-# ──────────────────────────────────────────
-# IMU gürültü modeli (IMU datasheet'ten al)
-# ──────────────────────────────────────────
-imu_noises:
-  gyro_n:  0.005     # Jiroskop gürültü yoğunluğu (rad/s/√Hz)
-  accel_n: 0.1       # İvmeölçer gürültü yoğunluğu (m/s²/√Hz)
-  gyro_b:  0.0002    # Jiroskop bias değişim hızı (rad/s²/√Hz)
-  accel_b: 0.002     # İvmeölçer bias değişim hızı (m/s³/√Hz)
+| Özellik              |  Mono  |       Mono + IMU       |   Stereo  | Stereo + IMU |
+| ---------------------- | :------: | :------------------------: | :---------: | :-------------: |
+| Ölçek                  |    ✗     |    ✓ (başlatma sonrası)     |      ✓      |        ✓         |
+| Derinlik               |    ✗     |            Kısmi             |      ✓      |        ✓         |
+| Başlatma kolaylığı      |  Düşük   |            Orta              |  **Kolay**   |      Kolay        |
+| Hesaplama yükü          |    Az    |            Orta              |     Çok      |    **En çok**     |
+| Sağlamlık               |  Düşük   |            Orta              |     İyi      |    **En iyi**     |
 
-# ──────────────────────────────────────────
-# Başlangıç ayarları
-# ──────────────────────────────────────────
-init_window_time: 1.0      # Başlangıç için bekleme süresi (s)
-init_imu_thresh: 1.5       # Başlamak için minimum hareket eşiği (m/s²)
-gravity_mag: 9.81          # Yerçekimi ivmesi (m/s²)
+Stereo kameranın en büyük katkısı, tek bir kareden bile üçgenleme yoluyla gerçek metrik derinlik ölçebilmesidir - bu da sistemin ölçeği anında (IMU hareket beklemeden) bilmesini sağlar. IMU eklenmesi ise hem mono hem stereo sistemlerde hızlı hareket ve doku eksikliğine karşı dayanıklılığı artırır.
 
-# ──────────────────────────────────────────
-# Özellik takip ayarları
-# ──────────────────────────────────────────
-num_pts: 200               # Takip edilecek nokta sayısı
-fast_threshold: 15         # FAST köşe tespiti eşiği
-grid_x: 5                  # Görüntüyü 5×5 ızgaraya böl (uniform dağılım)
-grid_y: 5
-min_px_dist: 10            # Takip noktaları arası min piksel
-knn_ratio: 0.70            # Lowe ratio test eşiği
+!!! tip "Pratik Öneri"
+    - Küçük drone, ağırlık/güç kritik → **Mono + IMU**
+    - Kapalı alan, metrik konum önemli → **Stereo + IMU**
+    - Derinlik sensörü zaten mevcutsa → **Stereo** veya RGB-D doğrudan kullanılabilir
 
-# ──────────────────────────────────────────
-# Durum tahmini
-# ──────────────────────────────────────────
-max_cameras: 1             # 1=Mono, 2=Stereo
-use_stereo: false
-max_clones: 11             # Sliding window boyutu (state'teki max kamera sayısı)
-max_slam: 50               # SLAM noktası sayısı (MSCKF + SLAM hybrid)
+---
 
-# ──────────────────────────────────────────
-# Kamera intrinsic parametreleri (Kalibr'den al)
-# ──────────────────────────────────────────
-camera_config:
-  cam0:
-    camera_model: "pinhole"
-    distortion_model: "radtan"    # radyal-teğetsel
-    intrinsics: [458.654, 457.296, 367.215, 248.375]  # fx fy cx cy
-    distortion_coeffs: [-0.28340811, 0.07395907, 0.00019359, 1.76187114e-05]
-    resolution: [752, 480]
+## OpenVINS - Açık Kaynak Referans VIO Sistemi
 
-# ──────────────────────────────────────────
-# Kamera - IMU extrinsic (Kalibr'den al)
-# ──────────────────────────────────────────
-T_cam_imu:                 # Kameranın IMU çerçevesindeki dönüşümü
-  - [0.0148655, -0.999880,  0.00414695, -0.0216401]
-  - [0.999557,   0.0149672, 0.025715,   -0.064677 ]
-  - [-0.025719,  0.003756,  0.999661,    0.00981073]
-  - [0.0,        0.0,       0.0,         1.0       ]
-```
+**OpenVINS**, Wisconsin Üniversitesi'nin geliştirdiği, MSCKF ile sliding-window optimizasyonunu birleştiren açık kaynaklı bir VIO sistemidir; akademik camiada referans uygulama sayılır. Mono, stereo ve RGB-D kamera girişini destekler, kamera-IMU dış parametrelerini (extrinsic) çalışırken de güncelleyebilir (online kalibrasyon), ve EuRoC/TUM-VI gibi standart veri setleriyle doğrulanmıştır.
 
-### Başlatma ve Çalıştırma
+OpenVINS'in davranışı tek bir yapılandırma dosyasıyla belirlenir; bu dosyadaki parametreler kabaca dört gruba ayrılır:
 
-```bash
-# EuRoC dataset ile test
-ros2 launch ov_msckf subscribe.launch.py \
-    config:=euroc_mav \
-    bag:=/path/to/MH_01_easy.bag
+- **Kamera-IMU senkronizasyonu ve gürültü modeli:** kamera ile IMU arasındaki zaman gecikmesi ve IMU'nun gürültü/bias karakteristiği (bunlar Kalibr ve Allan varyans analiziyle ölçülür).
+- **Başlangıç (initialization) ayarları:** sistemin harekete başlamadan önce ne kadar bekleyeceği ve yerçekimi vektörünü doğru kestirebilmesi için gereken minimum hareket eşiği.
+- **Özellik takibi:** kaç nokta takip edileceği, köşe tespiti hassasiyeti, noktaların görüntüye ne kadar homojen dağıtılacağı (bir ızgaraya bölünerek).
+- **Durum tahmini boyutu:** kaç kamera kullanılacağı (mono/stereo), kayma penceresinin boyutu ve MSCKF ile birlikte tutulan SLAM noktası sayısı.
 
-# Kendi sensörünüzle
-ros2 launch ov_msckf subscribe.launch.py \
-    config:=my_camera_imu \
-    max_cameras:=1
-
-# Parametrelerle doğrudan
-ros2 run ov_msckf run_subscribe_msckf \
-    --ros-args \
-    -p config_path:=/home/user/ws_ov/src/open_vins/config/my_camera_imu.yaml \
-    -p use_stereo:=false \
-    -p num_pts:=150
-```
-
-### Yayınlanan Topic'ler
-
-```bash
-# Durum tahmini
-ros2 topic echo /ov_msckf/odometry          # Pozisyon + Oryantasyon + Hız
-
-# Görselleştirme
-ros2 topic echo /ov_msckf/pathimu           # IMU odometry yolu
-ros2 topic echo /ov_msckf/points_slam       # SLAM nokta bulutu
-ros2 topic echo /ov_msckf/tracking_image    # Takip edilen noktalar (görüntü)
-
-# Kovaryans: belirsizlik büyük → tahmin güvenilir değil
-ros2 topic echo /ov_msckf/odometry | grep covariance
-```
-
-### Performans Değerlendirme
-
-```bash
-# EuRoC üzerinde karşılaştırma
-# Başarı metriği: ATE (Absolute Trajectory Error) - gerçek yol ile tahmini yol farkı
-
-ros2 launch ov_eval comparison.launch.py \
-    path_gt:=/path/to/ground_truth.csv \
-    path_est:=/path/to/estimated_traj.csv
-```
+Sistemin ürettiği en önemli çıktı, zaman damgalı konum/hız/oryantasyon tahmini ve bu tahmine eşlik eden **kovaryans**tır - kovaryans büyüdüğünde sistem kendi tahminine daha az güvendiğini bildirir (örn. uzun süre özellik kaybı sonrası). Bir VIO sisteminin doğruluğu, tahmin edilen yörüngenin gerçek (ground-truth) yörüngeden ne kadar saptığını ölçen **ATE (Absolute Trajectory Error)** metriğiyle karşılaştırılır.
 
 ---
 
 ## Kalibr - Kamera ve IMU Kalibrasyonu
 
-**Kalibr**, ETH Zürich'in geliştirdiği kapsamlı kalibrasyon araç setidir.
+**Kalibr**, ETH Zürich'in geliştirdiği kalibrasyon araç setidir ve VIO'nun doğruluğunu doğrudan belirleyen üç şeyi ölçer: kameranın kendi iç parametreleri (intrinsic: odak uzaklığı, optik merkez, lens distorsiyonu), stereo ise iki kamera arasındaki geometrik ilişki, ve en kritik olanı - kameranın IMU çerçevesine göre tam konumu/yönü (**T_cam_imu**) ile aralarındaki zaman gecikmesi.
 
-```
-Kalibr ile neler yapılır?
-✓ Tek kamera intrinsic kalibrasyonu
-✓ Stereo extrinsic kalibrasyonu (sol-sağ kamera arası)
-✓ Kamera-IMU extrinsic kalibrasyonu (T_cam_imu)
-✓ Kamera-IMU zaman gecikmesi (temporal offset)
-✓ Çoklu kamera kalibrasyonu
-```
+Kalibrasyon, önünde bilinen geometrik desenli fiziksel bir **hedef** (target) hareket ettirilerek yapılır:
 
-### Hedef Tipler
+| Hedef                    | Avantaj                                              | Dezavantaj                       |
+| --------------------------- | -------------------------------------------------------- | -------------------------------------- |
+| **Satranç tahtası**          | Ucuz, kolay üretilir                                       | Kenar noktaları az → zayıf kısıt         |
+| **AprilGrid** (önerilen)      | Her kare kendine özgü işaretli → hedefin bir kısmı görünmese de çalışır | Baskısı daha zordur                     |
+| **CircleGrid**                | Daha fazla merkez noktası                                    | Perspektifte merkez konumu kayabilir      |
 
-Kalibr üç farklı kalibrasyon hedefi destekler:
+Kalibrasyon üç aşamada ilerler:
 
-| Hedef                    | Avantaj                                            | Dezavantaj                    |
-| ------------------------ | -------------------------------------------------- | ----------------------------- |
-| **Satranç tahtası**      | Ucuz, kolay yazdır                                 | Kenar noktaları az → az kısıt |
-| **AprilGrid** (önerilen) | Her kare benzersiz tanımlı → eksik görüşte çalışır | Daha zor baskı                |
-| **CircleGrid**           | Daha fazla merkez noktası                          | Perspektifle özellik kayması  |
+1. **Tek kamera intrinsic kalibrasyonu:** Kamera, hedefi farklı açı ve mesafelerden görecek şekilde yavaşça hareket ettirilerek kaydedilir; çıktı odak uzaklığı, optik merkez ve lens distorsiyon katsayılarıdır. Kalitenin göstergesi **reprojection error**'dur - 0.5 pikselin altı iyi bir kalibrasyon sayılır.
+2. **Stereo extrinsic kalibrasyonu:** İki kamera aynı anda kayıt yapar; çıktı, ikinci kameranın birinciye göre konum ve yönünü (taban çizgisi dahil) verir.
+3. **Kamera-IMU extrinsic kalibrasyonu:** Kamera ve IMU verisi birlikte kaydedilirken sistem tüm eksenlerde hem döndürülür hem ötelenir (hedef her zaman görünür kalacak şekilde) - bu hareket çeşitliliği, kameranın IMU'ya göre tam yerleşimini ve aralarındaki zaman kaymasını gözlemlenebilir kılar. Bu adımın çıktısı, doğrudan VIO yapılandırmasına aktarılan `T_cam_imu` dönüşümüdür.
 
-```python title="april_grid_olustur.py"
-# AprilGrid PDF oluştur (Kalibr ile birlikte gelir)
-# rosrun kalibr kalibr_create_target_pdf --type aprilgrid \
-#   --nx 6 --ny 6 --size 0.088 --spacing 0.3 \
-#   --output april_grid_6x6.pdf
-```
+!!! warning "Kamera-IMU Senkronizasyonu Kritiktir"
+    Zaman damgaları arasındaki fark yanlış tahmin edilirse VIO hiçbir zaman doğru çalışmaz. İki sensörün zaman damgaları arasındaki farkın sabit ve küçük (birkaç milisaniyenin altında) olduğu, ilgili topic'lerin zaman damgaları karşılaştırılarak doğrulanmalıdır.
 
-```yaml title="april_target.yaml"
-target_type: 'aprilgrid'
-tagCols:     6        # Yatay etiket sayısı
-tagRows:     6        # Dikey etiket sayısı
-tagSize:     0.088    # Etiket boyutu (metre cinsinden)
-tagSpacing:  0.3      # Etiketler arası boşluk oranı (tagSize'a göre)
-```
-
-### Kurulum (Docker - Önerilen)
-
-```bash
-# Kalibr'i Docker ile çalıştır (bağımlılık sorunları olmadan)
-docker pull stereolabs/kalibr:latest
-
-# Veya kaynak koddan derleme (ROS 1 Noetic)
-sudo apt install python3-setuptools python3-rosinstall \
-                 ipython3 libeigen3-dev libboost-all-dev \
-                 libsuitesparse-dev
-
-cd ~/catkin_ws/src
-git clone https://github.com/ethz-asl/kalibr.git
-cd ~/catkin_ws
-catkin build -DCMAKE_BUILD_TYPE=Release -j$(nproc)
-```
-
-### 1. Tek Kamera Intrinsic Kalibrasyonu
-
-```bash
-# ROS bag hazırla: kamerayı yavaş hareket ettirerek kayıt al
-# Yaklaşık 60-120 saniye, farklı açılar ve mesafeler
-
-# Kalibrasyon
-rosrun kalibr kalibr_calibrate_cameras \
-    --bag ~/kalibrasyon.bag \
-    --topics /camera/image_raw \
-    --models pinhole-radtan \
-    --target ~/april_target.yaml \
-    --dont-show-report
-
-# Çıktı dosyaları:
-# kalibrasyon-camchain.yaml  ← intrinsic parametreler
-# kalibrasyon-results.txt    ← hata istatistikleri
-# kalibrasyon-report.pdf     ← görsel rapor
-```
-
-```yaml title="camchain.yaml (örnek çıktı)"
-cam0:
-  camera_model: pinhole
-  intrinsics: [460.12, 459.45, 365.23, 244.82]   # fx, fy, cx, cy (piksel)
-  distortion_model: radtan
-  distortion_coeffs: [-0.284, 0.074, 0.0001, -0.00002]  # k1, k2, p1, p2
-  resolution: [752, 480]
-  timeshift_cam_imu: 0.0   # Kamera-IMU zaman farkı (henüz IMU yok)
-  rostopic: /camera/image_raw
-```
-
-**Reprojection error < 0.5 piksel** → iyi kalibrasyon.
-
-### 2. Stereo Kamera Kalibrasyonu
-
-```bash
-# İki kamera aynı anda kayıt
-rosbag record -O stereo_kalib.bag \
-    /cam0/image_raw /cam1/image_raw
-
-# Kalibrasyon
-rosrun kalibr kalibr_calibrate_cameras \
-    --bag stereo_kalib.bag \
-    --topics /cam0/image_raw /cam1/image_raw \
-    --models pinhole-radtan pinhole-radtan \
-    --target ~/april_target.yaml
-```
-
-```yaml title="stereo-camchain.yaml (örnek çıktı)"
-cam0:
-  camera_model: pinhole
-  intrinsics: [458.654, 457.296, 367.215, 248.375]
-  distortion_coeffs: [-0.28340811, 0.07395907, 0.00019359, 1.76187114e-05]
-  resolution: [752, 480]
-  T_cn_cnm1:    # cam0'ın kendi çerçevesi (referans)
-    - [1,0,0,0]
-    - [0,1,0,0]
-    - [0,0,1,0]
-    - [0,0,0,1]
-
-cam1:
-  camera_model: pinhole
-  intrinsics: [457.587, 456.134, 379.999, 255.238]
-  distortion_coeffs: [-0.28368365, 0.07451284, -0.00010473, -3.555e-05]
-  resolution: [752, 480]
-  T_cn_cnm1:    # cam1'in cam0'a göre dönüşümü (extrinsic)
-    - [ 0.99997,   0.00699, -0.00337,  -0.11002]   # Taban çizgisi ~11 cm
-    - [-0.00701,   0.99997, -0.00208,   0.00003]
-    - [ 0.00336,   0.00210,  0.99999,   0.00013]
-    - [ 0.0,       0.0,      0.0,       1.0    ]
-```
-
-### 3. Kamera-IMU Kalibrasyonu (En Önemli Adım)
-
-Bu adım, kameranın IMU çerçevesine göre tam konumunu ve yönünü ölçer. Ayrıca kamera-IMU zaman gecikmesini de tahmin eder.
-
-```bash
-# IMU mesajını kayıt kapsamına ekle
-rosbag record -O cam_imu_kalib.bag \
-    /camera/image_raw \
-    /imu/data
-
-# Kayıt sırasında nasıl hareket etmeli?
-# ✓ Tüm eksenler boyunca döndür (roll, pitch, yaw)
-# ✓ Tüm eksenler boyunca ötelemeli hareket
-# ✓ Hedefi her zaman görünür tut
-# ✓ Yaklaşık 2-5 dakika
-# ✗ Çok hızlı hareket etme (blur)
-# ✗ Çok yavaş hareket etme (IMU gürültüsü dominant)
-```
-
-```bash
-# Kalibrasyon (önceki camchain.yaml gerekli)
-rosrun kalibr kalibr_calibrate_imu_camera \
-    --bag ~/cam_imu_kalib.bag \
-    --cam ~/camchain.yaml \
-    --imu ~/imu_params.yaml \
-    --target ~/april_target.yaml \
-    --dont-show-report
-
-# Çıktı:
-# cam_imu_kalib-results-imucam.txt
-# cam_imu_kalib-camchain.yaml  ← T_cam_imu dahil
-```
-
-```yaml title="imu_params.yaml"
-# IMU gürültü modeli - datasheet veya Allan varyans'tan al
-rostopic: /imu/data
-update_rate: 200.0    # Hz
-
-# Gürültü yoğunlukları (continuous time)
-accelerometer_noise_density:   0.01    # m/s²/√Hz
-accelerometer_random_walk:     0.001   # m/s³/√Hz
-gyroscope_noise_density:       0.005   # rad/s/√Hz
-gyroscope_random_walk:         0.0001  # rad/s²/√Hz
-```
-
-```yaml title="cam_imu_kalib-camchain.yaml (örnek çıktı)"
-cam0:
-  T_cam_imu:          # Kameranın IMU çerçevesindeki yeri
-    - [ 0.01486,  -0.99988,   0.00415,  -0.02164]
-    - [ 0.99956,   0.01497,   0.02572,  -0.06468]
-    - [-0.02572,   0.00376,   0.99966,   0.00981]
-    - [ 0.0,       0.0,       0.0,       1.0    ]
-  timeshift_cam_imu: -0.00246    # saniye - kamera IMU'dan 2.46ms önce geliyor
-  intrinsics: [458.654, 457.296, 367.215, 248.375]
-  distortion_coeffs: [-0.28340811, 0.07395907, 0.00019359, 1.76187114e-05]
-```
-
-### Kalibr Çıktısını OpenVINS'e Aktarma
-
-```python title="kalibr_to_openvins.py"
-"""
-Kalibr YAML → OpenVINS YAML dönüşüm yardımcısı
-"""
-import yaml
-import numpy as np
-
-def kalibr_to_openvins(kalibr_yaml: str, cikis_yaml: str):
-    with open(kalibr_yaml) as f:
-        data = yaml.safe_load(f)
-
-    cam0 = data["cam0"]
-    T_cam_imu = np.array(cam0["T_cam_imu"])
-    T_imu_cam = np.linalg.inv(T_cam_imu)   # OpenVINS T_imu_cam bekler
-
-    fx, fy, cx, cy = cam0["intrinsics"]
-    k1, k2, p1, p2 = cam0["distortion_coeffs"]
-
-    ov_config = {
-        "camera_config": {
-            "cam0": {
-                "camera_model": "pinhole",
-                "distortion_model": "radtan",
-                "intrinsics": [fx, fy, cx, cy],
-                "distortion_coeffs": [k1, k2, p1, p2],
-                "resolution": cam0["resolution"],
-            }
-        },
-        "T_cam_imu": T_cam_imu.tolist(),
-        "calib_camimu_dt": cam0.get("timeshift_cam_imu", 0.0)
-    }
-
-    with open(cikis_yaml, "w") as f:
-        yaml.dump(ov_config, f, default_flow_style=False)
-    print(f"OpenVINS config yazıldı: {cikis_yaml}")
-
-kalibr_to_openvins("cam_imu_kalib-camchain.yaml", "openvins_config.yaml")
-```
+!!! warning "Extrinsic Kalibrasyon Zamanla Bozulur"
+    Stereo kameranın iki kafası arasındaki geometrik ilişki titreşim veya ısıl genleşmeyle kayabilir. Özellikle saha kullanımı öncesi kalibrasyonun güncel olduğu doğrulanmalıdır.
 
 ---
 
-## Allan Varyans - IMU Gürültü Parametrelerini Ölçmek
+## Allan Varyans - IMU Gürültüsünü Ölçmek
 
-IMU datasheet'teki değerler her sensörde farklı. Kendi ölçümünüzü yapın.
-
-```bash
-# IMU'yu sabit tut, 1-2 saat veri kaydet
-rosbag record -O imu_static.bag /imu/data -d 3600
-
-# Allan varyans analizi
-# pip install imu_utils  veya MATLAB/Python araçlarıyla
-python3 imu_allan.py --bag imu_static.bag --imu_topic /imu/data
-
-# Çıktı grafik:
-# - Eğim -½ bölgesi → Angle/Velocity Random Walk (gürültü yoğunluğu)
-# - Minimum nokta → Bias instability
-# - Eğim +½ bölgesi → Rate/Acceleration Random Walk (bias sürüklenme)
-```
+IMU datasheet'indeki gürültü değerleri tipik/ortalama değerlerdir; her fiziksel sensör üretim toleransları yüzünden bir miktar farklıdır. **Allan varyans analizi**, IMU'yu uzun süre (tipik olarak 1-2 saat) tamamen sabit tutup topladığı veriden, sensörün gerçek gürültü karakteristiğini çıkarır. Sonuç grafiğinde iki bölge yorumlanır: eğimin negatif olduğu bölge **rastgele yürüyüş (random walk) gürültüsünü**, eğrinin en düşük noktası ise **bias kararsızlığını (bias instability)** verir. Bu ölçülen değerler doğrudan VIO'nun gürültü modeline (IMU'ya ne kadar güvenileceğine) girdi olur; gerçek ölçüm mümkün değilse datasheet değerinin birkaç katı büyütülerek kullanılması, sistemin sensöre olduğundan fazla güvenmesinden daha güvenlidir.
 
 ---
 
-## Tam Kurulum Akışı (Kamera + IMU)
+## Uçtan Uca Kurulum Akışı
 
 ```mermaid
 flowchart TD
-    A["1. Donanım\nKamera + IMU fiziksel monte"] --> B
-    B["2. ROS Sürücüler\nKamera driver + IMU driver"] --> C
-    C["3. Senkronizasyon\nZaman damgaları senkron mu?"] --> D
-    D["4. Allan Varyans\nIMU gürültü parametrelerini ölç"] --> E
-    E["5. Kamera Intrinsic\nKalibr ile satranç tahtası"] --> F
-    F["6. Kamera-IMU Extrinsic\nKalibr ile AprilGrid + hareket"] --> G
-    G["7. OpenVINS Konfigürasyonu\nKalibr çıktısını OpenVINS'e aktar"] --> H
-    H["8. Test\nEuRoC veya kendi dataset"] --> I{ATE < 5 cm?}
-    I -->|Evet| J["✓ Sistem hazır"]
-    I -->|Hayır| K["Kalibrasyon tekrarla\nveya parametre ayarla"]
+    A["1. Donanım<br/>Kamera + IMU fiziksel monte"] --> B
+    B["2. Sürücüler<br/>Kamera ve IMU verisini yayınla"] --> C
+    C["3. Senkronizasyon Kontrolü<br/>Zaman damgaları tutarlı mı?"] --> D
+    D["4. Allan Varyans<br/>IMU gürültü parametrelerini ölç"] --> E
+    E["5. Kamera Intrinsic<br/>Kalibr ile satranç tahtası"] --> F
+    F["6. Kamera-IMU Extrinsic<br/>Kalibr ile AprilGrid + hareket"] --> G
+    G["7. VIO Yapılandırması<br/>Kalibr çıktısını VIO sistemine aktar"] --> H
+    H["8. Test<br/>Bilinen bir veri seti veya gerçek koşum"] --> I{ATE yeterince düşük mü?}
+    I -->|Evet| J["Sistem hazır"]
+    I -->|Hayır| K["Kalibrasyonu tekrarla<br/>veya parametreleri gözden geçir"]
     K --> F
 ```
 
-### Sık Karşılaşılan Sorunlar
-
-!!! warning "Kamera-IMU Senkronizasyon"
-    Zaman damgaları hatalıysa VIO asla doğru çalışmaz. `timeshift_cam_imu` doğru tahmin edilmeli.
-    
-    Test: `ros2 topic echo /camera/image_raw --field header.stamp` ve `/imu/data --field header.stamp` karşılaştır - fark sabit ve küçük (< 10ms) olmalı.
-
-!!! warning "Kamera Titremeye Karşı Hassas"
-    Stereo kameranın iki kafası arasındaki extrinsic, titreme veya ısıl genleşmeyle değişir. Saha öncesi kalibrasyon yenile.
-
-!!! tip "Hızlı Parametre Tahmini"
-    IMU datasheet değerleri başlangıç için yeterli. Gerçek Allan varyans yoksa `gyro_n` ve `accel_n` için datasheet değerini 10× büyütün - aşırı güvensiz başlamak, çok güvenli başlamaktan iyidir.
-
-!!! tip "OpenVINS Başlatma"
-    Sistem başlarken **2-3 saniye sabit tut** → IMU bias başlangıç tahmini için. Ardından **her eksende yavaş hareket et** → ölçek ve extrinsic hızlı yakınsar.
+!!! tip "Başlatma Sırasında Dikkat"
+    Çoğu VIO sistemi başlarken birkaç saniye tamamen sabit durulmasını bekler (IMU bias'ının ilk tahmini için), ardından her eksende yavaş bir hareket ister (ölçek ve extrinsic parametrelerinin hızlı yakınsaması için). Bu iki adım atlanırsa sistem yanlış bir başlangıç durumundan yola çıkar ve düzeltmesi zaman alır.

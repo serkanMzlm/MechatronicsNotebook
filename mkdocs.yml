@@ -43,6 +43,7 @@ nav:
   - Robotics:
       - ROS2: md/robotics/ros2.md
       - VIO ve Kalibrasyon (OpenVINS / Kalibr): md/robotics/vio.md
+      - Sensör Füzyonu, SLAM ve Planlama: md/robotics/navigation.md
       - Gazebo: md/robotics/gazebo.md
       - Robot Kontrolü: md/robotics/control.md
       

@@ -1131,8 +1131,6 @@
       
         
       
-        
-      
     
     
     
@@ -1321,6 +1319,8 @@
   
     
     
+      
+        
       
         
       
@@ -2818,7 +2818,7 @@
 <ul>
 <li><strong><code>std::future&lt;T&gt;</code>:</strong> Henüz hazır olmayan, ileride bir thread tarafından üretilecek bir <code>T</code> değerine tutulan "bilet" gibidir. <code>f.get()</code> çağrıldığında, değer hazırsa hemen döner; hazır değilse değer üretilene kadar çağıran thread'i bloke eder.</li>
 <li><strong><code>std::async</code>:</strong> Bir fonksiyonu (genellikle ayrı bir thread'de) arka planda çalıştırıp, sonucunu almak için otomatik olarak bir <code>std::future</code> döndüren <strong>yüksek seviye</strong> bir araçtır. Thread'i, senkronizasyonu veya sonucun nasıl taşınacağını elle yönetmeniz gerekmez; sadece çalıştırılacak fonksiyonu verirsiniz.</li>
-<li><strong><code>std::promise</code> / <code>std::future</code> çifti:</strong> <code>std::async</code>'in aksine, sonucun nasıl ve ne zaman üretileceğini <strong>manuel</strong> kontrol etmek istediğinizde kullanılır. <code>std::promise&lt;T&gt;</code>, değeri üretecek tarafta tutulur ve iş bitince <code>.set_value(...)</code> ile değeri "vaat edilen yere koyar"; bu değeri bekleyen taraf ise <code>promise</code>'den alınan eşleşen <code>std::future&lt;T&gt;</code> üzerinden <code>.get()</code> ile o değeri okur. Yani <code>promise</code> <strong>yazma ucu</strong>, <code>future</code> ise <strong>okuma ucudur</strong> — aralarında tek yönlü, tek seferlik bir veri kanalı kurarlar.</li>
+<li><strong><code>std::promise</code> / <code>std::future</code> çifti:</strong> <code>std::async</code>'in aksine, sonucun nasıl ve ne zaman üretileceğini <strong>manuel</strong> kontrol etmek istediğinizde kullanılır. <code>std::promise&lt;T&gt;</code>, değeri üretecek tarafta tutulur ve iş bitince <code>.set_value(...)</code> ile değeri "vaat edilen yere koyar"; bu değeri bekleyen taraf ise <code>promise</code>'den alınan eşleşen <code>std::future&lt;T&gt;</code> üzerinden <code>.get()</code> ile o değeri okur. Yani <code>promise</code> <strong>yazma ucu</strong>, <code>future</code> ise <strong>okuma ucudur</strong> - aralarında tek yönlü, tek seferlik bir veri kanalı kurarlar.</li>
 </ul>
 <div class="language-cpp highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span>
 <span class="normal"><a href="#__codelineno-25-2">2</a></span>

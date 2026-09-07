@@ -1,0 +1,1708 @@
+
+<!doctype html>
+<html lang="tr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Teknik dokümantasyon">
+      
+      
+      
+      
+        <link rel="prev" href="../vio/">
+      
+      
+        <link rel="next" href="../gazebo/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Sensör Füzyonu, SLAM ve Planlama - Dokümantasyon</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sensor-fuzyonu-slam-ve-hareket-planlama" class="md-skip">
+          Ana içeriğe geç
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Başlık">
+    <a href="../../.." title="Dokümantasyon" class="md-header__button md-logo" aria-label="Dokümantasyon" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 4 16 6.41v.18L18.41 9H22v2h-4.41L16 9.41V12h-1a2 2 0 0 1-2-2V7.5H9.86c-.09.37-.24.72-.44 1.05L15.18 19H20a2 2 0 0 1 2 2v1H2v-1a2 2 0 0 1 2-2h6.61l-4.69-8.5a4.006 4.006 0 0 1-3.81-3A4 4 0 0 1 5 2.63c2.13-.55 4.31.73 4.86 2.87H13V3a2 2 0 0 1 2-2h1v2.59L17.59 2H22v2zM6 4.5a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dokümantasyon
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sensör Füzyonu, SLAM ve Planlama
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label=""  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="lime"  aria-label=""  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Ara" placeholder="Ara" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Ara">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Temizle" aria-label="Temizle" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Arama başlatılıyor
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Sekmeler" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../programming/design_pattern/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Programming
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../embedded/concepts/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Embedded
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../linux/basics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Linux
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai/fundamentals/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../communication/ipc/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Communication
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../ros2/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Robotics
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../devops/git/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  DevOps
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigasyon" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Dokümantasyon" class="md-nav__button md-logo" aria-label="Dokümantasyon" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 4 16 6.41v.18L18.41 9H22v2h-4.41L16 9.41V12h-1a2 2 0 0 1-2-2V7.5H9.86c-.09.37-.24.72-.44 1.05L15.18 19H20a2 2 0 0 1 2 2v1H2v-1a2 2 0 0 1 2-2h6.61l-4.69-8.5a4.006 4.006 0 0 1-3.81-3A4 4 0 0 1 5 2.63c2.13-.55 4.31.73 4.86 2.87H13V3a2 2 0 0 1 2-2h1v2.59L17.59 2H22v2zM6 4.5a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2"/></svg>
+
+    </a>
+    Dokümantasyon
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../programming/design_pattern/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Programming
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../embedded/concepts/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../linux/basics/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ai/fundamentals/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../communication/ipc/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Communication
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Robotics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Robotics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ros2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ROS2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VIO ve Kalibrasyon (OpenVINS / Kalibr)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensör Füzyonu, SLAM ve Planlama
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensör Füzyonu, SLAM ve Planlama
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="İçindekiler">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      İçindekiler
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-sensor-fuzyonu-lidar-imu-radar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Sensör Füzyonu (LiDAR, IMU, Radar)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Sensör Füzyonu (LiDAR, IMU, Radar)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kalman-filtresi-ailesi-kf-ekf-ukf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kalman Filtresi Ailesi (KF, EKF, UKF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensor-kalibrasyonu-intrinsic-extrinsic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sensör Kalibrasyonu (Intrinsic / Extrinsic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zaman-senkronizasyonu-time-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zaman Senkronizasyonu (Time Synchronization)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lidar-imu-loose-coupling-vs-tight-coupling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LiDAR-IMU Loose Coupling vs Tight Coupling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-slam-ve-konumlandrma-algoritmalar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. SLAM ve Konumlandırma Algoritmaları
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. SLAM ve Konumlandırma Algoritmaları">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#visual-slam-vs-lidar-slam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visual SLAM vs LiDAR SLAM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graph-based-slam-loop-closure-ve-pose-graph-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Graph-Based SLAM, Loop Closure ve Pose Graph Optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drift-yonetimi-ve-haritalama-stratejileri" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drift Yönetimi ve Haritalama Stratejileri
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-otonom-sistemler-ve-hareket-planlama" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Otonom Sistemler ve Hareket Planlama
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Otonom Sistemler ve Hareket Planlama">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global-planlayc-yol-bulma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Global Planlayıcı (Yol Bulma)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yerel-planlayc-engelden-kacnma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Yerel Planlayıcı / Engelden Kaçınma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kinematik-dinamik-kstlar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kinematik / Dinamik Kısıtlar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#costmap2d-katmanlar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Costmap2D Katmanları
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gazebo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gazebo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Robot Kontrolü
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../devops/git/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sensor-fuzyonu-slam-ve-hareket-planlama">Sensör Füzyonu, SLAM ve Hareket Planlama<a class="headerlink" href="#sensor-fuzyonu-slam-ve-hareket-planlama" title="Permanent link">&para;</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Bu Sayfa Ne Anlatıyor?</p>
+<p>Bir otonom robotun "neredeyim, çevrem nasıl ve nereye nasıl giderim?" sorularını cevaplayan üç katmanlı yığın: ham sensör verisinin güvenilir bir duruma dönüştürülmesi (<strong>sensör füzyonu</strong>), bu durumdan tutarlı bir harita ve konum çıkarılması (<strong>SLAM</strong>), ve bu haritada güvenli bir yol bulunması (<strong>hareket planlama</strong>). PID/LQR/MPC gibi düşük seviye kontrolör teorisi için <a href="../control/">Robot Kontrolü</a> sayfasına, kamera-IMU kalibrasyonu detayları için <a href="../vio/">VIO ve Kalibrasyon</a> sayfasına bakın.</p>
+</div>
+<hr />
+<h2 id="1-sensor-fuzyonu-lidar-imu-radar">1. Sensör Füzyonu (LiDAR, IMU, Radar)<a class="headerlink" href="#1-sensor-fuzyonu-lidar-imu-radar" title="Permanent link">&para;</a></h2>
+<p>Tek bir sensöre güvenmek risklidir - her sensörün kör noktası farklıdır. Sensör füzyonu, birbirini tamamlayan sensörleri birleştirerek tek bir sensörün zayıflığını diğerinin gücüyle kapatır:</p>
+<table>
+<thead>
+<tr>
+<th>Sensör</th>
+<th>Güçlü Yönü</th>
+<th>Zayıf Yönü</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Kamera</strong></td>
+<td>Zengin görsel bilgi (renk, doku, nesne tanıma), ucuz</td>
+<td>Işık/hava koşullarına hassas, tek başına derinlik belirsiz</td>
+</tr>
+<tr>
+<td><strong>LiDAR</strong></td>
+<td>Doğrudan, hassas metrik mesafe; ışıktan bağımsız</td>
+<td>Pahalı, dönen mekanizma (bazı modeller), yağmur/sis'te bozulur, renk/doku bilgisi yok</td>
+</tr>
+<tr>
+<td><strong>Radar</strong></td>
+<td>Hava koşullarından (yağmur, sis, toz) neredeyse etkilenmez, doğrudan hız ölçer (Doppler)</td>
+<td>Düşük açısal çözünürlük, küçük/durağan cisimleri ayırt etmekte zayıf</td>
+</tr>
+<tr>
+<td><strong>IMU</strong></td>
+<td>Çok yüksek frekans (100-1000 Hz), kısa vadede çok hassas</td>
+<td>Zamanla sürüklenir (drift), mutlak konum veremez</td>
+</tr>
+</tbody>
+</table>
+<h3 id="kalman-filtresi-ailesi-kf-ekf-ukf">Kalman Filtresi Ailesi (KF, EKF, UKF)<a class="headerlink" href="#kalman-filtresi-ailesi-kf-ekf-ukf" title="Permanent link">&para;</a></h3>
+<p>Sensör füzyonunun matematiksel çekirdeği, farklı zamanlarda ve farklı güvenilirlikte gelen ölçümleri, sistemin <strong>o anki en olası durumuna</strong> (konum, hız, yönelim...) dönüştüren bir tahmin döngüsüdür. Bu döngü her zaman aynı iki adımdan oluşur: <strong>tahmin</strong> (bir hareket modeliyle bir sonraki durumu öngör) ve <strong>güncelleme</strong> (yeni bir sensör ölçümü geldiğinde bu öngörüyü düzelt). Üç varyantı birbirinden ayıran, sistemin <strong>doğrusal olup olmadığını</strong> nasıl ele aldıklarıdır.</p>
+<table>
+<thead>
+<tr>
+<th>Filtre</th>
+<th>Doğrusallık Varsayımı</th>
+<th>Nasıl Çalışır</th>
+<th style="text-align: center;">Hesaplama Maliyeti</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>KF</strong></td>
+<td>Sistem tamamen doğrusal, gürültü Gauss'yan</td>
+<td>Kapalı-form matris çözümü; belirtilen varsayımlar altında <strong>matematiksel olarak optimal</strong></td>
+<td style="text-align: center;">En düşük</td>
+</tr>
+<tr>
+<td><strong>EKF</strong></td>
+<td>Doğrusal olmayan sistemi anlık durumda <strong>doğrusallaştırır</strong> (Jacobian ile)</td>
+<td>KF'nin doğrusal olmayan sistemlere uyarlanmış hali</td>
+<td style="text-align: center;">Düşük-orta</td>
+</tr>
+<tr>
+<td><strong>UKF</strong></td>
+<td>Doğrusallaştırma yapmaz; birkaç <strong>temsili nokta</strong> (sigma point) sistemin gerçek doğrusal olmayan denkleminden geçirilir</td>
+<td>Doğrusal olmama hatasını Jacobian hesaplamadan, daha doğru yakalar</td>
+<td style="text-align: center;">Orta-yüksek</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Neden EKF her zaman yeterli değildir?</strong> Jacobian, yalnızca mevcut tahminin <strong>yakın çevresindeki</strong> doğrusal davranışı yakalar. Sistem güçlü doğrusal olmayan bir davranış sergiliyorsa (ör. ani dönüşler, keskin ivmelenme) bu yerel doğrusallaştırma gerçek durumdan uzaklaşır ve filtre <strong>ıraksayabilir</strong> (yanlış bir tahminde kilitlenip kalabilir). UKF, gerçek doğrusal olmayan fonksiyonu birkaç seçilmiş nokta üzerinden doğrudan örneklediği için bu hatayı önemli ölçüde azaltır - bedeli, her adımda birden fazla nokta için hesaplama yapmaktır.</p>
+<div class="admonition example">
+<p class="admonition-title">Hangisi Ne Zaman Seçilir?</p>
+<ul>
+<li>Sistem gerçekten doğrusala yakınsa (ör. sabit hızlı düz hareket) → <strong>KF</strong> yeterli ve en ucuzdur.</li>
+<li>Çoğu robotik/IMU füzyon problemi (dönen, ivmelenen robot) → <strong>EKF</strong> endüstri standardıdır, iyi bir denge sunar.</li>
+<li>Güçlü doğrusal olmayan dinamikler veya EKF'nin ıraksadığı durumlar (ör. keskin manevralar yapan hava araçları) → <strong>UKF</strong> tercih edilir.</li>
+<li>Gürültü Gauss'yan değilse veya çok-modlu belirsizlik varsa (ör. hangi koridorda olduğundan emin olunamayan bir robot) ne EKF ne UKF yeterlidir - bu durumda <strong>Parçacık Filtresi (Particle Filter)</strong> gibi örnekleme tabanlı yöntemlere geçilir.</li>
+</ul>
+</div>
+<h3 id="sensor-kalibrasyonu-intrinsic-extrinsic">Sensör Kalibrasyonu (Intrinsic / Extrinsic)<a class="headerlink" href="#sensor-kalibrasyonu-intrinsic-extrinsic" title="Permanent link">&para;</a></h3>
+<p>Füzyonun doğruluğu, girdi verisinin doğruluğundan fazla olamaz. İki farklı kalibrasyon türü ayrı sorunları çözer:</p>
+<ul>
+<li><strong>Intrinsic (iç) kalibrasyon:</strong> Sensörün kendi ölçüm hatalarını düzeltir - kameranın lens distorsiyonu ve odak uzaklığı, IMU'nun ölçek faktörü ve eksen hizalama hatası, LiDAR'ın her bir lazer huzmesinin açısal/mesafe sapması. Bu parametreler sensöre özgüdür ve fiziksel montajdan bağımsızdır.</li>
+<li><strong>Extrinsic (dış) kalibrasyon:</strong> Bir sensörün diğerine (veya robotun gövdesine) göre <strong>konumunu ve yönünü</strong> (bir dönüşüm matrisi olarak) tanımlar. Örneğin LiDAR'ın IMU'ya göre 3 boyutlu yerleşimi.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Küçük Açısal Hata, Büyük Mesafe Hatasına Dönüşür</p>
+<p>Extrinsic kalibrasyondaki 1 derecelik bir açısal hata, sensörden 20 metre uzaktaki bir nokta için ~35 cm'lik konum hatasına yol açar (<code>20m × tan(1°) ≈ 0.35m</code>). Bu yüzden extrinsic kalibrasyon, füzyon zincirindeki en kritik ve en çok ihmal edilen adımdır - kamera-IMU extrinsic kalibrasyonu için bkz. <a href="../vio/#kalibr-kamera-ve-imu-kalibrasyonu">Kalibr</a>.</p>
+</div>
+<h3 id="zaman-senkronizasyonu-time-synchronization">Zaman Senkronizasyonu (Time Synchronization)<a class="headerlink" href="#zaman-senkronizasyonu-time-synchronization" title="Permanent link">&para;</a></h3>
+<p>Her sensör farklı bir hızda (LiDAR ~10 Hz, kamera ~30 Hz, IMU 200-1000 Hz) ve farklı bir işlem gecikmesiyle veri üretir. Bu ölçümler, gerçek zaman damgaları göz ardı edilip "geldikleri sırayla" birleştirilirse, füzyon <strong>farklı anlardaki gerçekliği tek bir ana aitmiş gibi</strong> karıştırır - özellikle hızlı hareket sırasında bu, ciddi ve sistematik bir hataya dönüşür.</p>
+<p>Bu sorun iki seviyede çözülür:</p>
+<ol>
+<li><strong>Donanımsal senkronizasyon:</strong> Sensörlere ortak bir tetikleme sinyali (hardware trigger) veya ortak bir zaman referansı (PPS, PTP) verilerek, ölçümlerin gerçekten aynı ana denk gelmesi sağlanır. Yazılımsal zaman damgalama (işletim sisteminin veriyi aldığı an damgalanması) her zaman işletim sistemi/sürücü gecikmesi kadar belirsizlik taşır.</li>
+<li><strong>Algoritmik telafi:</strong> Donanımsal senkronizasyon mümkün olmadığında, filtre tasarımı gecikmeli/sıra dışı gelen ölçümleri (out-of-sequence measurements) ele alacak şekilde yapılır - yakın geçmişteki durumların bir tamponu tutulur, geç gelen bir ölçüm o anki değil, ait olduğu geçmiş zamana geri gidilerek işlenir ve sonrasındaki tahminler yeniden hesaplanır.</li>
+</ol>
+<div class="admonition danger">
+<p class="admonition-title">NTP Yeterli Değildir</p>
+<p>Standart ağ zaman senkronizasyonu (NTP) milisaniye mertebesinde belirsizlik taşır; hızlı hareket eden bir araçta bu, metrelerce konum hatasına dönüşebilir. Hassas senkronizasyon gerektiren sistemlerde donanımsal tetikleme veya PTP (Precision Time Protocol) şarttır.</p>
+</div>
+<h3 id="lidar-imu-loose-coupling-vs-tight-coupling">LiDAR-IMU Loose Coupling vs Tight Coupling<a class="headerlink" href="#lidar-imu-loose-coupling-vs-tight-coupling" title="Permanent link">&para;</a></h3>
+<p>İki sensörün birleştirilme derinliği, sistemin sağlamlığını doğrudan belirler:</p>
+<table>
+<thead>
+<tr>
+<th>Kriter</th>
+<th>Loose Coupling (Gevşek Bağlaşım)</th>
+<th>Tight Coupling (Sıkı Bağlaşım)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ne birleştirilir</td>
+<td>Her sensörün <strong>kendi başına ürettiği</strong> poz tahmini (iki ayrı çıktı)</td>
+<td>Ham ölçümler (IMU ivme/açısal hız, LiDAR nokta bulutu) <strong>ortak</strong> bir durum/optimizasyonda</td>
+</tr>
+<tr>
+<td>Uygulama karmaşıklığı</td>
+<td>Basit; sensörler birbirinden bağımsız modüller olarak geliştirilebilir</td>
+<td>Karmaşık; ortak bir durum vektörü ve optimizasyon gerektirir</td>
+</tr>
+<tr>
+<td>Doğruluk</td>
+<td>Düşük-orta; ara adımda bilgi/korelasyon kaybı olur</td>
+<td><strong>Yüksek</strong>; ham veri arasındaki korelasyonlar korunur</td>
+</tr>
+<tr>
+<td>Sağlamlık (zayıf geometri, hızlı hareket)</td>
+<td>Zayıf; bir sensör başarısız olursa (ör. LiDAR'ın geometrik olarak "kör" kaldığı bir tünel) o an için elde tutarlı veri kalmaz</td>
+<td><strong>Güçlü</strong>; IMU, LiDAR'ın zayıf kaldığı anlarda köprü görevi görür (ör. FAST-LIO, LIO-SAM)</td>
+</tr>
+<tr>
+<td>Hesaplama maliyeti</td>
+<td>Düşük</td>
+<td>Daha yüksek</td>
+</tr>
+</tbody>
+</table>
+<p>Pratikte, gerçek zamanlı ve sağlam bir sistem hedefleniyorsa (otonom araç, hızlı İHA) tight coupling tercih edilir; hızlı prototipleme veya sensörlerin bağımsız test edilmesi gerektiğinde loose coupling makul bir başlangıç noktasıdır.</p>
+<hr />
+<h2 id="2-slam-ve-konumlandrma-algoritmalar">2. SLAM ve Konumlandırma Algoritmaları<a class="headerlink" href="#2-slam-ve-konumlandrma-algoritmalar" title="Permanent link">&para;</a></h2>
+<p><strong>SLAM</strong> (Simultaneous Localization and Mapping), robotun "nerede olduğumu bilmek için haritaya ihtiyacım var, haritayı çıkarmak için nerede olduğumu bilmem gerekiyor" şeklindeki tavuk-yumurta problemini eş zamanlı olarak çözer.</p>
+<h3 id="visual-slam-vs-lidar-slam">Visual SLAM vs LiDAR SLAM<a class="headerlink" href="#visual-slam-vs-lidar-slam" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kriter</th>
+<th style="text-align: center;">Visual SLAM (ör. ORB-SLAM)</th>
+<th style="text-align: center;">LiDAR SLAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Girdi</td>
+<td style="text-align: center;">Kamera görüntüsü (özellik noktaları)</td>
+<td style="text-align: center;">Doğrudan 3B nokta bulutu</td>
+</tr>
+<tr>
+<td>Işık bağımlılığı</td>
+<td style="text-align: center;">Yüksek; karanlıkta/parlak ışıkta zayıflar</td>
+<td style="text-align: center;">Yok; ışıktan bağımsız çalışır</td>
+</tr>
+<tr>
+<td>Doku (texture) gereksinimi</td>
+<td style="text-align: center;">Yüksek; boş/tekdüze yüzeylerde özellik bulunamaz</td>
+<td style="text-align: center;">Yok; ama <strong>geometrik</strong> olarak tekdüze ortamlarda (uzun düz koridor/tünel) da zayıflar</td>
+</tr>
+<tr>
+<td>Metrik ölçek</td>
+<td style="text-align: center;">Mono'da belirsiz (IMU/stereo gerekir)</td>
+<td style="text-align: center;">Doğrudan mesafe ölçer, her zaman metrik</td>
+</tr>
+<tr>
+<td>Donanım maliyeti</td>
+<td style="text-align: center;">Düşük</td>
+<td style="text-align: center;">Yüksek</td>
+</tr>
+<tr>
+<td>Tipik doğruluk</td>
+<td style="text-align: center;">Orta</td>
+<td style="text-align: center;"><strong>Yüksek</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Visual SLAM ucuz ve hafiftir ama ışık/doku koşullarına bağımlıdır; LiDAR SLAM daha pahalı ama fiziksel olarak daha güvenilirdir. Bu yüzden birçok üretim sistemi ikisini birlikte (ve genelde IMU ile birlikte) kullanır.</p>
+<p><strong>Öne çıkan LiDAR SLAM sistemleri farklı tasarım tercihleri yapar:</strong></p>
+<ul>
+<li><strong>LOAM (LiDAR Odometry and Mapping):</strong> Nokta bulutundan <strong>kenar</strong> (edge - keskin yüzey sınırları) ve <strong>düzlem</strong> (planar - düz yüzeyler) özellik noktaları çıkarır; bu özellikleri kare-kareye (scan-to-scan, hızlı ama sürüklenmeye açık) ve kareyi-haritaya (scan-to-map, daha yavaş ama daha doğru) eşleyerek iki hızlı/yavaş paralel katmanda çalışır. Hafif ve gerçek zamanlıdır ama tek başına IMU kullanmadığı için hızlı/ani hareketlerde kırılgandır.</li>
+<li><strong>LIO-SAM:</strong> LOAM'ın özellik çıkarma fikrini, IMU ile <strong>sıkı bağlaşımlı</strong> (tight coupling) bir faktör grafı üzerinde birleştirir; IMU ön entegrasyonu (bkz. <a href="../vio/">VIO</a>) hem hareket tahmininde hem de LiDAR eşlemesine iyi bir başlangıç noktası vermede kullanılır - bu da geometrik olarak zayıf (tünel gibi) alanlarda LOAM'dan çok daha sağlamdır.</li>
+<li><strong>Cartographer (Google):</strong> Haritayı küçük yerel <strong>alt haritalara</strong> (submap) bölerek oluşturur; her alt harita kendi içinde tutarlıdır, alt haritalar arasındaki tutarlılık ise verimli bir arama algoritmasıyla (branch-and-bound scan matching) sağlanan güçlü bir loop closure mekanizmasıyla korunur. Hem 2B hem 3B LiDAR'da çalışabilen, endüstride yaygın kullanılan olgun bir sistemdir.</li>
+</ul>
+<h3 id="graph-based-slam-loop-closure-ve-pose-graph-optimization">Graph-Based SLAM, Loop Closure ve Pose Graph Optimization<a class="headerlink" href="#graph-based-slam-loop-closure-ve-pose-graph-optimization" title="Permanent link">&para;</a></h3>
+<p>Modern SLAM sistemlerinin çoğu, robotun yörüngesini bir <strong>graf</strong> olarak modeller: her düğüm (node) belirli bir andaki robot pozunu, her kenar (edge) ise iki poz arasındaki göreli ölçümü (odometriden veya iki tarama arası eşlemeden gelen "buradan oraya şu kadar hareket ettim" kısıtını) temsil eder.</p>
+<pre class="mermaid"><code>graph LR
+    P0((Poz 0)) --&gt;|odometri| P1((Poz 1))
+    P1 --&gt;|odometri| P2((Poz 2))
+    P2 --&gt;|odometri| P3((Poz 3))
+    P3 --&gt;|odometri| P4((Poz 4))
+    P4 -.-&gt;|"loop closure&lt;br/&gt;(buraya daha önce gelmiştim)"| P0</code></pre>
+<p>Robot sadece odometriye (tekerlek dönüşü, IMU entegrasyonu, ardışık tarama eşlemesi) güvendiğinde, her adımdaki küçük hatalar zamanla birikir - buna <strong>drift</strong> denir ve dead-reckoning tabanlı her tahminde kaçınılmazdır. <strong>Loop closure</strong>, robot daha önce ziyaret ettiği bir yere geri döndüğünde bunu <strong>tanıyıp</strong>, o anki pozla geçmişteki poz arasına doğrudan yeni bir kenar (kısıt) ekleyerek bu birikmiş hatayı düzeltme fırsatı sunar.</p>
+<p>Loop closure iki aşamada çalışır: önce bir <strong>aday</strong> tespit edilir (görsel SLAM'de "bag-of-words" tabanlı görünüş eşleştirmesi, LiDAR SLAM'de geometrik tanımlayıcı eşleştirmesi gibi yöntemlerle "bu yer daha önce gördüğüm bir yere benziyor" tahmini yapılır), sonra bu aday <strong>geometrik olarak doğrulanır</strong> (gerçekten aynı yer mi, yoksa görünüşte benzer farklı bir yer mi?). Bu doğrulama adımı atlanamaz: yanlış bir loop closure, tüm haritayı geri döndürülemez şekilde bozabilir.</p>
+<p>Yeni bir loop closure kenarı eklendiğinde, artık graf <strong>çelişkili</strong> kısıtlar içerir (odometri "buradayım" derken loop closure "hayır, biraz ötedesin" der) - <strong>Pose Graph Optimization</strong>, tüm düğümlerin konumunu, graftaki <strong>tüm kısıtları toplamda en iyi şekilde</strong> karşılayacak şekilde eş zamanlı olarak yeniden ayarlayan bir doğrusal olmayan en küçük kareler problemidir. Bunun sonucunda hata tek bir noktaya değil, tüm yörünge boyunca yumuşak bir şekilde dağıtılır. Bu optimizasyonu çözen standart kütüphaneler <strong>g2o</strong>, <strong>Ceres Solver</strong> ve <strong>GTSAM</strong>'dır; her biri büyük, seyrek (sparse) graf yapılarını verimli çözecek şekilde tasarlanmıştır.</p>
+<h3 id="drift-yonetimi-ve-haritalama-stratejileri">Drift Yönetimi ve Haritalama Stratejileri<a class="headerlink" href="#drift-yonetimi-ve-haritalama-stratejileri" title="Permanent link">&para;</a></h3>
+<p>Drift tamamen ortadan kaldırılamaz, yalnızca <strong>yönetilebilir</strong>. Pratikte kullanılan stratejiler:</p>
+<ul>
+<li><strong>Keyframe seçimi:</strong> Her tarama/kareyi değil, yalnızca öncekinden yeterince farklı olan (belirgin hareket veya görünüş değişimi olan) kareleri "keyframe" olarak işaretleyip haritaya eklemek - hem hesaplama yükünü azaltır hem de gereksiz redundant veriyi engeller.</li>
+<li><strong>Yerel/global harita ayrımı:</strong> Kısa vadeli, anlık kararlar (engelden kaçınma gibi) sürekli kayan ama tutarlı bir yerel referansa (<code>odom</code>) dayanırken, uzun vadeli konumlandırma periyodik olarak loop closure ile düzeltilen küresel bir referansa (<code>map</code>) dayanır - bu ayrımın nedeni <a href="../ros2/#tf2-koordinat-donusumleri">tf2 sayfasında</a> daha ayrıntılı işlenir.</li>
+<li><strong>Harita gösterimi seçimi:</strong> Occupancy grid (hücre başına "dolu/boş" olasılığı - hafif, engelden kaçınma için ideal), nokta bulutu haritası (yüksek çözünürlük, büyük bellek), özellik haritası (yalnızca ayırt edici noktalar - kompakt ama yeniden oluşturma için yetersiz) - seçim, geri dönük kullanım amacına (navigasyon mu, görselleştirme mi, yeniden yerelleştirme mi) göre yapılır.</li>
+</ul>
+<hr />
+<h2 id="3-otonom-sistemler-ve-hareket-planlama">3. Otonom Sistemler ve Hareket Planlama<a class="headerlink" href="#3-otonom-sistemler-ve-hareket-planlama" title="Permanent link">&para;</a></h2>
+<p>Bir robotun "nereye gideceğine karar vermesi" iki farklı zaman ölçeğinde, iki ayrı planlayıcı tarafından çözülür: <strong>global planlayıcı</strong> tüm haritaya bakarak baştan sona bir rota çizer; <strong>yerel planlayıcı</strong> bu rotayı izlerken anlık olarak ortaya çıkan engelleri gerçek zamanlı olarak aşar.</p>
+<pre class="mermaid"><code>graph LR
+    MAP["Statik Harita&lt;br/&gt;(SLAM çıktısı)"] --&gt; GLOBAL["Global Planlayıcı&lt;br/&gt;(A* / Hybrid A* / RRT*)"]
+    GLOBAL --&gt;|"Genel Rota"| LOCAL["Yerel Planlayıcı&lt;br/&gt;(DWA / TEB / MPC)"]
+    SENSOR["Canlı Sensör Verisi&lt;br/&gt;(anlık engeller)"] --&gt; LOCAL
+    LOCAL --&gt;|"Hız Komutu (v, ω)"| ROBOT["Robot"]</code></pre>
+<h3 id="global-planlayc-yol-bulma">Global Planlayıcı (Yol Bulma)<a class="headerlink" href="#global-planlayc-yol-bulma" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Algoritma</th>
+<th>Yaklaşım</th>
+<th>Optimal mi?</th>
+<th style="text-align: center;">Kinematik Kısıt</th>
+<th>Tipik Kullanım</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dijkstra</strong></td>
+<td>Tüm yönlere eşit "genişlikte" arama, en düşük maliyetli düğümden ilerler</td>
+<td>✓ Garanti</td>
+<td style="text-align: center;">Yok</td>
+<td>Küçük haritalar, kesin optimallik gerektiğinde</td>
+</tr>
+<tr>
+<td><strong>A*</strong></td>
+<td>Dijkstra + hedefe olan tahmini mesafeyi (<strong>sezgisel/heuristic</strong>) kullanarak aramayı hedefe doğru yönlendirir</td>
+<td>✓ Garanti (sezgisel "iyimser" ise)</td>
+<td style="text-align: center;">Yok</td>
+<td>Standart ızgara tabanlı yol planlama</td>
+</tr>
+<tr>
+<td><strong>Hybrid A*</strong></td>
+<td>A*'ı sürekli (continuous) durum uzayında, aracın direksiyon kısıtlarını hesaba katarak çalıştırır</td>
+<td>Yaklaşık</td>
+<td style="text-align: center;"><strong>Var (Ackermann)</strong></td>
+<td>Otonom araç park/manevra, dar alanlarda sürüş yönü önemliyken</td>
+</tr>
+<tr>
+<td><strong>RRT / RRT*</strong></td>
+<td>Durum uzayında rastgele örnekleme yaparak bir arama ağacı büyütür</td>
+<td>RRT: ✗ &nbsp;&nbsp; RRT*: ✓ (sonsuz örnekte)</td>
+<td style="text-align: center;">Uyarlanabilir</td>
+<td>Yüksek boyutlu uzaylar (robot kolu), karmaşık kısıtlı ortamlar</td>
+</tr>
+</tbody>
+</table>
+<p><strong>A* neden Dijkstra'dan hızlıdır?</strong> Dijkstra, hedefin nerede olduğunu bilmeden her yönde eşit şekilde arama yapar; A<em> ise "hedefe kuş uçuşu ne kadar kaldı" bilgisini (heuristic) kullanarak aramayı hedef yönüne eğer - bu sezgisel değer gerçek maliyeti hiç abartmadığı (admissible) sürece A</em> de Dijkstra gibi optimal sonucu garanti eder, ama çok daha az düğüm inceleyerek.</p>
+<p><strong>Neden bazen ızgara tabanlı A* yetmez?</strong> Standart A<em>, robotun herhangi bir hücreden herhangi bir komşu hücreye anında dönebileceğini varsayar - bu, bir diferansiyel sürüşlü robot için sorun değildir ama bir otomobil (Ackermann) için fizik dışıdır (araç anında 90° dönemez). </em><em>Hybrid A*</em><em>, arama uzayını ızgara yerine aracın gerçek kinematiğiyle (konum + yönelim + direksiyon açısı) genişleterek, sonunda gerçekten </em><em>sürülebilir</em>* bir yol üretir.</p>
+<p><strong>RRT ailesi ne zaman devreye girer?</strong> A<em>/Dijkstra, durum uzayı düşük boyutlu ve ızgaraya bölünebilir olduğunda iyi çalışır. Bir robot kolunun eklem açıları gibi yüksek boyutlu uzaylarda ızgara oluşturmak hesaplanamaz hale gelir; RRT bunun yerine uzayı rastgele örnekleyerek hızla </em><em>geçerli bir</em><em> (mutlaka en kısa olmayan) yol bulur. </em><em>RRT*</em>*, bulunan ağacı sürekli "yeniden bağlayarak" (rewiring) zamanla optimale yakınsar - RRT'nin hız avantajını korurken asimptotik optimallik kazandırır.</p>
+<h3 id="yerel-planlayc-engelden-kacnma">Yerel Planlayıcı / Engelden Kaçınma<a class="headerlink" href="#yerel-planlayc-engelden-kacnma" title="Permanent link">&para;</a></h3>
+<p>Global planlayıcının çizdiği rota, harita anındaki bilgiyle çizilmiştir; ama yürüyen bir insan, kapalı bir kapı veya haritada olmayan bir kutu gibi <strong>anlık, dinamik</strong> engeller yalnızca gerçek zamanlı sensör verisiyle görülebilir. Yerel planlayıcının işi, global rotayı olabildiğince izlerken bu tür engellerden kaçınmaktır - ve bunu robotun gerçek hız/ivme limitleri dahilinde yapmalıdır.</p>
+<table>
+<thead>
+<tr>
+<th>Yöntem</th>
+<th>Yaklaşım</th>
+<th style="text-align: center;">Ufuk (Horizon)</th>
+<th style="text-align: center;">Hesaplama Maliyeti</th>
+<th>Zayıf Yönü</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DWA</strong></td>
+<td>Robotun ivme limitleriyle ulaşabileceği hız komutlarını (v, ω) örnekler, her birini kısa bir süre ileri simüle edip puanlar (hedefe ilerleme, engelden uzaklık)</td>
+<td style="text-align: center;">Kısa, tek adım</td>
+<td style="text-align: center;">Düşük</td>
+<td>Açgözlü (greedy); U-şeklinde engellerde yerel minimuma takılabilir</td>
+</tr>
+<tr>
+<td><strong>TEB</strong></td>
+<td>Yolu, zaman aralıklarıyla birlikte bir dizi poz olarak temsil edip, engelden minimum mesafe ve kinematik kısıtları koruyarak bu diziyi optimize eder ("esnek şerit" gibi deforme eder)</td>
+<td style="text-align: center;">Orta, çoklu adım</td>
+<td style="text-align: center;">Orta</td>
+<td>DWA'dan daha karmaşık ayarlama gerektirir</td>
+</tr>
+<tr>
+<td><strong>MPC</strong></td>
+<td>Engelden kaçınmayı ve yörünge takibini, robotun dinamik modelini doğrudan kullanan tek bir optimizasyon problemi olarak çözer (bkz. <a href="../control/#mpc">Robot Kontrolü - MPC</a>)</td>
+<td style="text-align: center;">Uzun, öngörülü</td>
+<td style="text-align: center;"><strong>Yüksek</strong></td>
+<td>Doğru bir dinamik model gerektirir, en pahalı seçenek</td>
+</tr>
+</tbody>
+</table>
+<p>DWA hızlı ve basittir ama kısa ufuklu olduğu için "görebildiği kadarına" göre karar verir - bir U-şeklinde engelin içine girip çıkmazı fark edemeden sıkışabilir. TEB, tüm yolu bir bütün olarak optimize ettiği için bu tür durumlarda daha başarılıdır ve daha akıcı hareket üretir. MPC, robotun dinamiğini (ivmelenme, yalpalanma gibi fiziksel gerçekleri) doğrudan modele dahil ettiği için en doğru sonucu verir - ama bu doğruluk, en yüksek hesaplama maliyeti ve doğru bir dinamik model bulma zorunluluğuyla gelir.</p>
+<h3 id="kinematik-dinamik-kstlar">Kinematik / Dinamik Kısıtlar<a class="headerlink" href="#kinematik-dinamik-kstlar" title="Permanent link">&para;</a></h3>
+<p>Bir planlayıcının ürettiği yol, robot fiziksel olarak <strong>takip edemiyorsa</strong> işe yaramaz. İki temel hareket modeli, planlamanın nasıl yapılması gerektiğini belirler:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Hareket Serbestliği</th>
+<th style="text-align: center;">Minimum Dönüş Yarıçapı</th>
+<th>Planlayıcıya Etkisi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Differential Drive</strong></td>
+<td>İki bağımsız tekerlek; yerinde dönebilir (holonomic'e yakın)</td>
+<td style="text-align: center;">Sıfır (yerinde)</td>
+<td>Izgara tabanlı A* çoğunlukla yeterlidir</td>
+</tr>
+<tr>
+<td><strong>Ackermann</strong> (otomobil)</td>
+<td>Ön tekerlek direksiyonlu; yerinde dönemez</td>
+<td style="text-align: center;">Sabit bir minimum</td>
+<td>Yol, bu minimum yarıçapı ihlal etmemeli → <strong>Hybrid A*</strong> veya TEB gibi kinematik-farkında planlayıcı gerekir</td>
+</tr>
+</tbody>
+</table>
+<p>Bu ayrım, hangi global planlayıcının seçileceğini doğrudan belirler: bir depo robotu (differential drive) için düz A<em> genelde yeterlidir, çünkü robot her yöne anında dönebilir. Bir otonom otomobil veya forklift (Ackermann) için ise A</em>'ın ürettiği "köşeli" yol sürülemez - bu yüzden Hybrid A* gibi, aracın gerçek dönüş kısıtını arama sırasında hesaba katan yöntemler zorunludur.</p>
+<h3 id="costmap2d-katmanlar">Costmap2D Katmanları<a class="headerlink" href="#costmap2d-katmanlar" title="Permanent link">&para;</a></h3>
+<p>Planlayıcıların üzerinde çalıştığı harita, çevreyi ham haliyle değil, her hücreye bir <strong>"maliyet"</strong> (cost) atanmış bir ızgara olarak temsil eder: düşük maliyet = serbest alan, yüksek maliyet = riskli/yasak alan. Bu maliyet haritası, birbiri üzerine binen bağımsız <strong>katmanlardan</strong> oluşur:</p>
+<pre class="mermaid"><code>graph TD
+    STATIC["Statik Katman&lt;br/&gt;(SLAM'den gelen sabit harita)"] --&gt; MASTER
+    OBSTACLE["Engel Katmanı&lt;br/&gt;(canlı sensör: LiDAR/derinlik kamerası)"] --&gt; MASTER
+    INFLATION["Şişirme (Inflation) Katmanı&lt;br/&gt;(engelleri robot yarıçapı + güvenlik payı kadar genişletir)"] --&gt; MASTER
+    MASTER["Ana Costmap&lt;br/&gt;(katmanların birleşimi)"] --&gt; PLANNER["Global / Yerel Planlayıcı"]</code></pre>
+<ul>
+<li><strong>Statik Katman:</strong> SLAM'in ürettiği önceden bilinen, nadiren değişen harita (duvarlar, sabit yapılar).</li>
+<li><strong>Engel Katmanı:</strong> O anki sensör verisiyle güncellenir; haritada olmayan yeni/hareketli engelleri (bir kutu, bir insan) anlık olarak işaretler.</li>
+<li><strong>Şişirme (Inflation) Katmanı:</strong> Planlayıcı robotu genelde tek bir nokta gibi düşünür; bu katman her engelin etrafını robotun gerçek yarıçapı ve ek bir güvenlik payı kadar "şişirerek", nokta-robot varsayımıyla planlama yapılsa bile gerçek robot gövdesinin bir engele çarpmamasını garanti eder.</li>
+</ul>
+<p>Bu katmanlar bağımsız güncellenip en sonunda tek bir maliyet değerinde (genelde en yüksek değeri alarak) birleştirilir. Pratikte <strong>iki ayrı costmap</strong> kullanılır: geniş, düşük frekansta güncellenen bir <strong>global costmap</strong> (global planlayıcı için) ve robotun etrafında küçük, yüksek frekansta güncellenen bir <strong>yerel costmap</strong> (yerel planlayıcı için) - bu ayrım, global rotanın hesaplama maliyetini düşük tutarken, yerel tepkiselliğin gerçek zamanlı kalmasını sağlar.</p>
+<div class="admonition example">
+<p class="admonition-title">Tipik Bir Otonom Navigasyon Zinciri</p>
+<p>LiDAR + IMU (tight coupling) → LIO-SAM ile SLAM (harita + poz) → global costmap üzerinde Hybrid A* ile rota → yerel costmap ve canlı sensör verisiyle TEB/DWA ile anlık engelden kaçınma → hız komutları PID/MPC kontrolörüne (bkz. <a href="../control/">Robot Kontrolü</a>) iletilir.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Başa dön
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Altbilgi" >
+        
+          
+          <a href="../vio/" class="md-footer__link md-footer__link--prev" aria-label="Önceki: VIO ve Kalibrasyon (OpenVINS / Kalibr)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Önceki
+              </span>
+              <div class="md-ellipsis">
+                VIO ve Kalibrasyon (OpenVINS / Kalibr)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../gazebo/" class="md-footer__link md-footer__link--next" aria-label="Sonraki: Gazebo">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Sonraki
+              </span>
+              <div class="md-ellipsis">
+                Gazebo
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.tracking", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.prune", "navigation.indexes", "content.code.copy", "content.code.annotate", "content.tabs.linked", "content.code.select", "content.code.wrap", "content.action.view", "search.suggest", "search.highlight", "toc.integrate", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Kopyaland\u0131", "clipboard.copy": "Kopyala", "search.result.more.one": "Bu sayfada 1 tane daha", "search.result.more.other": "Bu sayfada # tane daha", "search.result.none": "E\u015fle\u015fen dok\u00fcman bulunamad\u0131", "search.result.one": "1 dok\u00fcman bulundu", "search.result.other": "# dok\u00fcman bulundu", "search.result.placeholder": "Aramaya ba\u015flamak i\u00e7in yaz\u0131n", "search.result.term.missing": "Eksik", "select.version": "Versiyon se\u00e7"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../assets/js/extra.js"></script>
+      
+        <script src="../../../assets/js/mathjax-config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

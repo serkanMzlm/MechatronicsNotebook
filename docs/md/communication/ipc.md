@@ -1,7 +1,12 @@
 # IPC - Süreçler Arası İletişim
 
-!!! note "Genel Bakış"
-    **Inter-Process Communication (IPC)**, aynı makinede çalışan bağımsız süreçlerin veri paylaşmasını ve koordineli çalışmasını sağlayan mekanizmalar bütünüdür. Her yöntemin farklı performans, karmaşıklık ve kullanım senaryosu dengesi vardır.
+Aynı makinede çalışan bağımsız süreçlerin veri paylaşmasını ve koordineli çalışmasını sağlayan mekanizmalar bütünüdür. Her yöntemin performans, karmaşıklık ve kullanım senaryosu açısından farklı bir dengesi vardır; doğru yöntemi seçmek genelde şu sorulara verilen cevaba bağlıdır: 
+
+- Süreçler akraba mı? 
+- Ne kadar veri taşınacak?
+- Kaç yönlü iletişim gerekiyor? 
+- Senkronizasyon gerekiyor mu?
+
 
 ```mermaid
 graph LR
@@ -17,7 +22,7 @@ graph LR
     subgraph UDS["Userspace"]
         UDS_SOCK[Unix Domain Socket]
         DBUS[D-Bus]
-        MMAP[mmap\nFile-backed]
+        MMAP["mmap<br/>File-backed"]
     end
     P1[Süreç A] <-->|hızlı/sıralı| PIPE
     P1 <-->|en hızlı| SHM
@@ -33,64 +38,44 @@ graph LR
 
 ---
 
-## Pipe (Anonim Boru)
+## Pipe
 
-Ebeveyn ile alt süreç arasında tek yönlü veri kanalı oluşturur. Kernel tamponunda yaşar; dosya sisteminde görünmez.
+- Ebeveyn süreç ile `fork()` ile türettiği alt süreç arasında tek yönlü bir veri kanalı oluşturur. 
+- Kernel belleğinde yaşar, dosya sisteminde bir karşılığı yoktur; bu yüzden yalnızca ortak bir atadan türeyen süreçler arasında kullanılabilir 
+- Süreç A önce pipe'ı açar, sonra `fork()` ile ikiye bölünür ve her iki taraf da aynı dosya tanımlayıcılarını (fd) miras alır.
+
+| Avantajlar                                                   | Dezavantajlar                                                        |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Kurulumu tek sistem çağrısı (`pipe()`) kadar basit             | Yalnızca akraba (ortak atadan türeyen) süreçler arasında kullanılabilir |
+| Kernel tarafından otomatik senkronize edilir, ekstra kilit gerekmez | Tek yönlüdür; iki yönlü iletişim için iki ayrı pipe gerekir             |
+| Düşük gecikme                                                  | Sınırlı tampon boyutu (tipik 64 KB); mesaj sınırı yoktur, düz byte akışıdır |
+
 
 ```mermaid
 graph LR
-    A[Süreç A\nyazar] -->|write fd[1]| PIPE[Kernel Buffer\n4–64 KB]
-    PIPE -->|read fd[0]| B[Süreç B\nokuyucu]
-```
-
-```c title="pipe_example.c"
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/wait.h>
-
-int main(void) {
-    int fd[2];          /* fd[0] = okuma, fd[1] = yazma */
-    pipe(fd);
-
-    pid_t pid = fork();
-
-    if (pid == 0) {          /* Alt süreç - okuyucu */
-        close(fd[1]);        /* Yazma ucunu kapat */
-        char buf[64];
-        ssize_t n = read(fd[0], buf, sizeof(buf));
-        buf[n] = '\0';
-        printf("Çocuk aldı: %s\n", buf);
-        close(fd[0]);
-    } else {                 /* Ebeveyn - yazıcı */
-        close(fd[0]);        /* Okuma ucunu kapat */
-        const char *msg = "merhaba";
-        write(fd[1], msg, strlen(msg));
-        close(fd[1]);
-        wait(NULL);
-    }
-    return 0;
-}
+    A["Süreç A<br/>yazar"] -->|"write fd[1]"| PIPE["Kernel Buffer<br/>4-64 KB"]
+    PIPE -->|"read fd[0]"| B["Süreç B<br/>okuyucu"]
 ```
 
 !!! tip "Shell'de Pipe"
-    Terminaldeki `|` operatörü da aynı `pipe()` sistem çağrısını kullanır:
+    Terminaldeki `|` operatörü de aynı `pipe()` sistem çağrısını kullanır:
     ```bash
     ls -la | grep ".c" | wc -l
     # Her | için kernel bir pipe tamponu oluşturur
     ```
 
 !!! warning "Dikkat Edilecekler"
-    - Pipe **tek yönlü**dür. İki yönlü iletişim için iki pipe gerekir.
     - Tampon dolduğunda `write()` **bloklar**; tampon boşken `read()` **bloklar**.
     - Yazma ucunun tüm kopyaları kapanırsa `read()` **EOF** döner.
     - Pipe kapasitesi sistemde `ulimit -p` veya `/proc/sys/fs/pipe-max-size` ile görülür.
 
----
+!!! example "Ne Zaman Kullanılır?"
+    Bir ebeveyn sürecin başlattığı alt süreçle (örn. bir worker process) basit, tek yönlü veri/komut aktarımı gerektiğinde. Shell pipeline'ları ve çoğu `popen()` kullanımı bu modele dayanır.
+
 
 ## Named Pipe (FIFO)
 
-İsimli boru, dosya sisteminde görünen özel bir dosya türüdür. Akraba olmayan süreçler arasında da kullanılabilir. `mkfifo` ile oluşturulur.
+Anonim pipe'ın akrabalık kısıtlamasını kaldıran versiyonudur: dosya sisteminde görünen özel bir dosya türü olarak `mkfifo` ile oluşturulur, böylece birbiriyle akraba olmayan iki bağımsız program da aynı FIFO dosyasını açarak haberleşebilir.
 
 ```bash
 # FIFO oluştur
@@ -103,50 +88,27 @@ cat /tmp/myfifo
 echo "veri" > /tmp/myfifo
 ```
 
-```c title="fifo_writer.c"
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <string.h>
+| Özellik                 |       Anonim Pipe          |    Named Pipe (FIFO)       |
+| ----------------------- | :------------------------: | :-----------------------:  |
+| Dosya sistemi           |            Yok             | `/tmp/fifo` gibi görünür   |
+| Akraba olmayan süreçler |             ✗              |             ✓              |
+| Kalıcılık               |  Süreçle birlikte silinir  |   `unlink()` ile silinir   |
+| Yön                     |         Tek yönlü          |         Tek yönlü          |
 
-int main(void) {
-    mkfifo("/tmp/myfifo", 0666);               /* Zaten varsa hata vermez */
-    int fd = open("/tmp/myfifo", O_WRONLY);    /* Okuyucu bağlanana kadar bloklar */
-    const char *msg = "FIFO üzerinden veri";
-    write(fd, msg, strlen(msg));
-    close(fd);
-    return 0;
-}
-```
 
-```c title="fifo_reader.c"
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
+| Avantajlar                                                    | Dezavantajlar                                                                   |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Akrabalık şartı yoktur, herhangi iki süreç kullanabilir        | Hâlâ tek yönlüdür; çift yönlü iletişim için iki FIFO gerekir                      |
+| Dosya sistemi izinleriyle (chmod/chown) erişim kontrolü sağlanır | `open()` çağrısı karşı taraf bağlanana kadar **bloklar**, bu davranış kafa karıştırabilir |
+| Basit API: normal `open`/`read`/`write` yeterlidir              | Birden fazla yazıcı aynı anda yazarsa veri karışabilir (atomiklik garantisi yalnızca `PIPE_BUF` altı yazımlarda vardır) |
 
-int main(void) {
-    int fd = open("/tmp/myfifo", O_RDONLY);
-    char buf[128];
-    ssize_t n = read(fd, buf, sizeof(buf) - 1);
-    buf[n] = '\0';
-    printf("Alındı: %s\n", buf);
-    close(fd);
-    return 0;
-}
-```
+!!! example "Ne Zaman Kullanılır?"
+    Akraba olmayan iki program (örn. bir arka plan servisi ile ayrı bir CLI aracı) arasında basit, tek yönlü ve dosya tabanlı bir kanal yeterli olduğunda; soket kurmanın gereksiz karmaşıklık katacağı durumlarda.
 
-| Özellik                 |       Anonim Pipe        |    Named Pipe (FIFO)     |
-| ----------------------- | :----------------------: | :----------------------: |
-| Dosya sistemi           |           Yok            | `/tmp/fifo` gibi görünür |
-| Akraba olmayan süreçler |            ✗             |            ✓             |
-| Kalıcılık               | Süreçle birlikte silinir |  `unlink()` ile silinir  |
-| Yön                     |        Tek yönlü         |        Tek yönlü         |
 
----
+## Signals 
 
-## Signals (Sinyaller)
-
-Sinyal, bir sürece asenkron olarak iletilen yazılımsal kesme mekanizmasıdır. Kernel veya başka bir süreç gönderebilir.
+Sinyal, bir sürece kernel veya başka bir süreç tarafından asenkron olarak iletilen, yazılımsal bir interrupt mekanizmasıdır. Veri taşımaz; yalnızca "bir olay oldu" bilgisini iletir.
 
 ```mermaid
 sequenceDiagram
@@ -156,61 +118,24 @@ sequenceDiagram
 
     A->>K: kill(pid_B, SIGUSR1)
     K->>B: sinyal teslim et
-    Note over B: signal handler çalışır\nveya varsayılan eylem
+    Note over B: signal handler çalışır<br/>veya varsayılan eylem
 ```
 
-### Önemli Sinyaller
 
 | Sinyal    | Numara | Varsayılan Eylem | Açıklama                                   |
-| --------- | :----: | :--------------: | ------------------------------------------ |
-| `SIGTERM` |   15   |    Sonlandır     | Nezaket isteği; yakalanabilir              |
-| `SIGKILL` |   9    |    Sonlandır     | **Kesin; yakalanmaz ve engellenemez**      |
-| `SIGINT`  |   2    |    Sonlandır     | Ctrl+C                                     |
-| `SIGQUIT` |   3    |    Core dump     | Ctrl+\                                     |
-| `SIGHUP`  |   1    |    Sonlandır     | Terminal kapandı; daemon'lar yeniden yükle |
-| `SIGUSR1` |   10   |    Sonlandır     | Kullanıcı tanımlı 1                        |
-| `SIGUSR2` |   12   |    Sonlandır     | Kullanıcı tanımlı 2                        |
-| `SIGALRM` |   14   |    Sonlandır     | `alarm()` zamanlayıcısı                    |
-| `SIGCHLD` |   17   |      Yoksay      | Alt süreç durdu/sonlandı                   |
-| `SIGPIPE` |   13   |    Sonlandır     | Okuyucusuz pipe'a yazma                    |
-| `SIGSEGV` |   11   |    Core dump     | Geçersiz bellek erişimi                    |
-
-```c title="signal_handler.c"
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
-#include <string.h>
-
-volatile sig_atomic_t running = 1;
-
-void handler(int sig) {
-    if (sig == SIGUSR1) {
-        /* Sinyal handler'da printf tehlikeli; write() kullan */
-        const char msg[] = "SIGUSR1 alındı\n";
-        write(STDOUT_FILENO, msg, sizeof(msg) - 1);
-    } else if (sig == SIGTERM) {
-        running = 0;
-    }
-}
-
-int main(void) {
-    struct sigaction sa = {0};
-    sa.sa_handler = handler;
-    sigemptyset(&sa.sa_mask);
-    sigaction(SIGUSR1, &sa, NULL);
-    sigaction(SIGTERM, &sa, NULL);
-
-    printf("PID: %d\n", getpid());
-    while (running) {
-        pause();    /* Sinyali bekle */
-    }
-    puts("Temiz çıkış");
-    return 0;
-}
-```
+| --------- | :----: | :---------------: | -------------------------------------------- |
+| `SIGTERM` |   15   |     Sonlandır      | Nezaket isteği; yakalanabilir                |
+| `SIGKILL` |   9    |     Sonlandır      | **Kesin; yakalanmaz ve engellenemez**         |
+| `SIGINT`  |   2    |     Sonlandır      | Ctrl+C                                       |
+| `SIGQUIT` |   3    |     Core dump      | Ctrl+\                                       |
+| `SIGHUP`  |   1    |     Sonlandır      | Terminal kapandı; daemon'lar yeniden yükle    |
+| `SIGUSR1/2` | 10/12 |     Sonlandır      | Uygulama tanımlı kullanım                     |
+| `SIGALRM` |   14   |     Sonlandır      | `alarm()` zamanlayıcısı                       |
+| `SIGCHLD` |   17   |       Yoksay        | Alt süreç durdu/sonlandı                      |
+| `SIGPIPE` |   13   |     Sonlandır      | Okuyucusuz pipe'a yazma                       |
+| `SIGSEGV` |   11   |     Core dump       | Geçersiz bellek erişimi                       |
 
 ```bash
-# Başka terminalden:
 kill -SIGUSR1 <PID>
 kill -SIGTERM <PID>
 ```
@@ -218,102 +143,55 @@ kill -SIGTERM <PID>
 !!! danger "Sinyal Handler Güvenliği"
     Sinyal handler'ların içinde yalnızca **async-signal-safe** fonksiyonlar çağrılabilir. `printf`, `malloc`, `free` güvenli değildir - bunları handler içinde çağırmak tanımsız davranışa yol açar. Bunun yerine global bir bayrak (`sig_atomic_t`) set edip ana döngüde işleyin.
 
----
 
-## Shared Memory (Paylaşılan Bellek)
+| Avantajlar                                                | Dezavantajlar                                                                 |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Çok düşük gecikme, çok düşük overhead                        | Veri taşımaz; yalnızca olay/numara bildirir                                        |
+| Kernel tarafından native desteklenir, ek kaynak gerekmez      | Handler içinde kullanılabilecek fonksiyon seti çok kısıtlıdır                       |
+| Asenkron - alıcı süreç ne yapıyor olursa olsun teslim edilir   | Standart (real-time olmayan) sinyaller birikmez/kaybolabilir: aynı sinyal art arda birden fazla gönderilirse tek teslimat olarak görülebilir |
 
-En yüksek bant genişliğine sahip IPC yöntemidir. Verinin kopyalanması gerekmez; iki süreç aynı fiziksel sayfayı eşler.
+!!! example "Ne Zaman Kullanılır?"
+    Süreç yaşam döngüsü kontrolü (durdur/nazikçe kapat), basit asenkron bildirimler (örn. `SIGHUP` ile config yeniden yükleme), watchdog/timeout tetikleyicileri. Veri aktarımı gerekiyorsa sinyal tek başına yetmez, shared memory veya mesaj kuyruğu ile birlikte kullanılır.
+
+
+## Shared Memory 
+
+En yüksek bant genişliğine sahip IPC yöntemidir. İki süreç, `shm_open` + `mmap` ile aynı fiziksel bellek sayfasını kendi sanal adres alanlarına eşler; veri hiç kopyalanmadan doğrudan paylaşılan bölgeye yazılır/okunur.
 
 ```mermaid
 graph LR
-    PA[Süreç A\nVirtual Addr Space] -->|mmap| PHYS[Fiziksel RAM\nShared Page]
-    PB[Süreç B\nVirtual Addr Space] -->|mmap| PHYS
+    PA["Süreç A<br/>Virtual Addr Space"] -->|mmap| PHYS["Fiziksel RAM<br/>Shared Page"]
+    PB["Süreç B<br/>Virtual Addr Space"] -->|mmap| PHYS
     PHYS -.->|shm_open| SHM_OBJ[/dev/shm/myshm]
 ```
-
-=== "Yazıcı Süreci"
-
-    ```c title="shm_writer.c"
-    #include <stdio.h>
-    #include <fcntl.h>
-    #include <sys/mman.h>
-    #include <sys/stat.h>
-    #include <unistd.h>
-    #include <string.h>
-
-    #define SHM_NAME  "/myshm"
-    #define SHM_SIZE  4096
-
-    int main(void) {
-        /* Shared memory nesnesi oluştur */
-        int fd = shm_open(SHM_NAME, O_CREAT | O_RDWR, 0666);
-        ftruncate(fd, SHM_SIZE);
-
-        /* Adres alanına eşle */
-        void *ptr = mmap(NULL, SHM_SIZE,
-                         PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-        close(fd);
-
-        /* Veri yaz */
-        strcpy((char *)ptr, "Shared Memory'den merhaba!");
-
-        printf("Veri yazıldı. Okuyucuyu bekliyor...\n");
-        sleep(5);
-
-        munmap(ptr, SHM_SIZE);
-        shm_unlink(SHM_NAME);    /* Nesneyi sil */
-        return 0;
-    }
-    ```
-
-=== "Okuyucu Süreci"
-
-    ```c title="shm_reader.c"
-    #include <stdio.h>
-    #include <fcntl.h>
-    #include <sys/mman.h>
-    #include <sys/stat.h>
-    #include <unistd.h>
-
-    #define SHM_NAME  "/myshm"
-    #define SHM_SIZE  4096
-
-    int main(void) {
-        int fd = shm_open(SHM_NAME, O_RDONLY, 0666);
-        if (fd == -1) { perror("shm_open"); return 1; }
-
-        void *ptr = mmap(NULL, SHM_SIZE, PROT_READ, MAP_SHARED, fd, 0);
-        close(fd);
-
-        printf("Okunan: %s\n", (char *)ptr);
-
-        munmap(ptr, SHM_SIZE);
-        return 0;
-    }
-    ```
-
-!!! warning "Senkronizasyon Zorunlu"
-    Shared memory yarış koşuluna (race condition) açıktır. Eş zamanlı erişimi korumak için mutlaka **semaphore** veya **mutex** kullanın. Aksi takdirde okuyucu eksik ya da bozuk veri görebilir.
 
 ```bash
 # /dev/shm altında shared memory nesnelerini gör
 ls -la /dev/shm/
-
-# Derleme
-gcc shm_writer.c -o writer -lrt
-gcc shm_reader.c -o reader -lrt
 ```
 
----
+!!! warning "Senkronizasyon Zorunlu"
+    Shared memory yarış koşuluna (race condition) açıktır. Eş zamanlı erişimi korumak için mutlaka **semaphore** veya **mutex** kullanın. Aksi takdirde okuyucu eksik ya da bozuk veri görebilir.
 
-## POSIX Message Queue (Mesaj Kuyruğu)
 
-Yapılandırılmış mesajları öncelik sırasına göre ileten kuyruk yapısıdır. Mesajlar kernel'de saklanır; gönderen ve alıcı aynı anda çalışmak zorunda değildir.
+| Avantajlar                                                       | Dezavantajlar                                                                     |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| **En yüksek performans**: veri kopyalanmaz (zero-copy)               | Senkronizasyon (semaphore/mutex) tamamen geliştiricinin sorumluluğundadır                |
+| Büyük veri hacimleri için idealdir                                    | Race condition riski yüksektir; yanlış kullanım sessizce bozuk veriye yol açar            |
+| Rastgele erişime (random access) izin verir, akış sınırı yoktur       | Veri formatı/serileştirme garantisi yoktur; iki tarafın aynı struct düzenini bilmesi gerekir |
+
+!!! example "Ne Zaman Kullanılır?"
+    Yüksek frekanslı veya büyük hacimli veri paylaşımı gereken senaryolarda: kamera görüntü karesi, sensör tamponu, gerçek zamanlı sinyal işleme, birden fazla sürecin ortak bir durum tablosuna hızlı eriştiği robotik/kontrol yazılımları.
+
+
+## POSIX Message Queue 
+
+Yapılandırılmış mesajları öncelik sırasına göre ileten kuyruk yapısıdır. Pipe'ın aksine mesaj sınırları korunur (her `mq_send` ayrı bir mesaj olarak `mq_receive` ile okunur) ve mesajlar kernel'de saklanır; gönderen ve alıcı aynı anda çalışmak zorunda değildir.
 
 ```mermaid
 sequenceDiagram
     participant S as Gönderici
-    participant K as Kernel\nMQ Buffer
+    participant K as Kernel<br/>MQ Buffer
     participant R as Alıcı
 
     S->>K: mq_send(msg, priority=5)
@@ -325,118 +203,52 @@ sequenceDiagram
     K-->>R: msg (priority=5)
 ```
 
-```c title="mqueue_example.c"
-#include <stdio.h>
-#include <mqueue.h>
-#include <string.h>
-
-#define MQ_NAME  "/mymq"
-
-/* Gönderici */
-void sender(void) {
-    struct mq_attr attr = {
-        .mq_flags   = 0,
-        .mq_maxmsg  = 10,
-        .mq_msgsize = 256,
-        .mq_curmsgs = 0
-    };
-
-    mqd_t mq = mq_open(MQ_NAME, O_CREAT | O_WRONLY, 0666, &attr);
-    const char *msg = "IPC mesajı";
-    mq_send(mq, msg, strlen(msg) + 1, 5);   /* öncelik = 5 */
-    mq_close(mq);
-}
-
-/* Alıcı */
-void receiver(void) {
-    mqd_t mq = mq_open(MQ_NAME, O_RDONLY);
-    char buf[256];
-    unsigned int prio;
-    mq_receive(mq, buf, sizeof(buf), &prio);
-    printf("Alındı (öncelik %u): %s\n", prio, buf);
-    mq_close(mq);
-    mq_unlink(MQ_NAME);
-}
-```
-
 ```bash
 # Aktif message queue'ları listele
 ls /dev/mqueue/
 cat /proc/sys/fs/mqueue/msg_max   # Max mesaj sayısı
 ```
 
+
+| Avantajlar                                                      | Dezavantajlar                                                              |
+| --------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Mesaj sınırları korunur (framing), byte akışıyla uğraşılmaz       | Pipe'a göre daha fazla overhead (kopyalama içerir)                          |
+| Öncelik tabanlı sıralama desteklenir                              | Mesaj boyutu ve kuyruk derinliği sınırlıdır (`mq_msgsize`, `mq_maxmsg`)      |
+| Gönderen ve alıcı aynı anda çalışmak zorunda değildir              | POSIX MQ ile eski Sys V MQ (`msgget`/`msgsnd`) API'leri karıştırılabilir     |
+
+!!! example "Ne Zaman Kullanılır?"
+    Yapılandırılmış, önceliklendirilmiş görevlerin bir üreticiden bir veya birden fazla tüketiciye iletildiği durumlarda (basit görev kuyruğu, event bus benzeri iç sistemler). Ham veri akışı değil, ayrık "mesajlar" söz konusu olduğunda pipe yerine tercih edilir.
+
 ---
 
-## POSIX Semaphore (Semafor)
+## POSIX Semaphore 
 
-Paylaşılan kaynağa eş zamanlı erişimi sınırlayan sayaç mekanizmasıdır. Shared memory ile birlikte sıkça kullanılır.
+Paylaşılan bir kaynağa eş zamanlı erişimi sınırlayan atomik sayaç mekanizmasıdır. Kendi başına veri taşımaz; genelde shared memory ile birlikte, kritik bölgeyi korumak için kullanılır.
 
 ```mermaid
 stateDiagram-v2
     [*] --> Açık: sem_init(count=1)
-    Açık --> Kilitli: sem_wait()\n count→0
-    Kilitli --> Açık: sem_post()\n count→1
-    Kilitli --> Kilitli: sem_wait()\n BLOKLAR
+    Açık --> Kilitli: "sem_wait() count→0"
+    Kilitli --> Açık: "sem_post() count→1"
+    Kilitli --> Kilitli: "sem_wait() BLOKLAR"
 ```
 
-=== "Named Semaphore"
+**Named vs Unnamed:** Named semaphore (`sem_open`) ilişkisiz süreçler arasında dosya sistemi üzerinden paylaşılır; unnamed semaphore (`sem_init`) genelde aynı sürecin thread'leri arasında veya (shared memory bölgesine yerleştirilerek) akraba süreçler arasında kullanılır.
 
-    ```c title="named_sem.c"
-    #include <fcntl.h>
-    #include <semaphore.h>
-    #include <stdio.h>
 
-    int main(void) {
-        /* Adlandırılmış semafor: farklı süreçler arasında */
-        sem_t *sem = sem_open("/mysem", O_CREAT, 0666, 1);
+| Avantajlar                                                    | Dezavantajlar                                                            |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Basit, atomik sayaç mantığı - kernel tarafından garanti edilir   | Veri taşımaz, tek başına yeterli bir IPC yöntemi değildir                     |
+| Hem thread hem process arası kullanılabilir                      | Yanlış kullanım deadlock veya starvation'a yol açabilir                       |
+| Kaynak havuzu sınırlama (N eşzamanlı erişim) için doğal bir araçtır | Hata ayıklaması zordur; kilitlenme sırası hatası sessizce sistemin donmasına neden olabilir |
 
-        sem_wait(sem);           /* Kilitli bölgeye gir (P) */
-        /* --- Kritik bölge --- */
-        puts("Kritik bölgedeyim");
-        /* -------------------- */
-        sem_post(sem);           /* Kilidi serbest bırak (V) */
+!!! example "Ne Zaman Kullanılır?"
+    Shared memory gibi paylaşılan bir kaynağa erişimi senkronize etmek, veya "aynı anda en fazla N süreç şu kaynağı kullanabilir" kuralını uygulamak (örn. sınırlı sayıda donanım kanalı, bağlantı havuzu) gerektiğinde.
 
-        sem_close(sem);
-        sem_unlink("/mysem");
-        return 0;
-    }
-    ```
-
-=== "Unnamed Semaphore (Thread)"
-
-    ```c title="unnamed_sem.c"
-    #include <semaphore.h>
-    #include <pthread.h>
-    #include <stdio.h>
-
-    sem_t sem;
-
-    void *worker(void *arg) {
-        sem_wait(&sem);
-        printf("Thread %ld çalışıyor\n", (long)arg);
-        sem_post(&sem);
-        return NULL;
-    }
-
-    int main(void) {
-        sem_init(&sem, 0, 1);   /* 0 = thread paylaşımı, başlangıç=1 */
-
-        pthread_t t1, t2;
-        pthread_create(&t1, NULL, worker, (void *)1);
-        pthread_create(&t2, NULL, worker, (void *)2);
-        pthread_join(t1, NULL);
-        pthread_join(t2, NULL);
-
-        sem_destroy(&sem);
-        return 0;
-    }
-    ```
-
----
 
 ## Unix Domain Socket (UDS)
 
-Loopback olmadan, dosya sistemi üzerinden çift yönlü iletişim sağlar. Ağ protokol yükü yoktur; TCP/UNIX karşılaştırmasında UDS %30–50 daha hızlıdır.
+Ağ protokol yığınını (TCP/IP) bypass ederek, dosya sistemi üzerinden aynı makinedeki süreçler arasında çift yönlü, güvenilir iletişim sağlar. API'si TCP soketleriyle neredeyse aynıdır (`socket`, `bind`, `listen`, `accept`, `connect`), bu yüzden ağ koduna çok benzer ama loopback TCP'den daha hızlıdır (ağ katmanı overhead'i yoktur).
 
 ```mermaid
 sequenceDiagram
@@ -453,161 +265,53 @@ sequenceDiagram
     K-->>SRV: recv("veri")
 ```
 
-=== "Sunucu"
 
-    ```c title="uds_server.c"
-    #include <stdio.h>
-    #include <sys/socket.h>
-    #include <sys/un.h>
-    #include <unistd.h>
-    #include <string.h>
+| Avantajlar                                                        | Dezavantajlar                                                     |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Çift yönlüdür, TCP'ye benzer güvenilir stream veya datagram modu sunar | Yalnızca aynı makinede çalışır, dağıtık sistemlerde kullanılamaz       |
+| Ağ protokol overhead'i yoktur → TCP loopback'ten daha hızlıdır           | Socket dosyasının varlığı ve temizliği (`unlink`) manuel yönetilmelidir |
+| Dosya sistemi izinleriyle erişim kontrolü sağlanır                       | Sunucu önce ayakta olmalıdır; istemci bağlanmadan önce `bind`+`listen` tamamlanmış olmalı |
 
-    #define SOCK_PATH "/tmp/my.sock"
-
-    int main(void) {
-        int srv_fd = socket(AF_UNIX, SOCK_STREAM, 0);
-
-        struct sockaddr_un addr = {.sun_family = AF_UNIX};
-        strncpy(addr.sun_path, SOCK_PATH, sizeof(addr.sun_path) - 1);
-
-        unlink(SOCK_PATH);
-        bind(srv_fd, (struct sockaddr *)&addr, sizeof(addr));
-        listen(srv_fd, 5);
-
-        int cli_fd = accept(srv_fd, NULL, NULL);
-        char buf[256];
-        ssize_t n = recv(cli_fd, buf, sizeof(buf) - 1, 0);
-        buf[n] = '\0';
-        printf("Sunucu aldı: %s\n", buf);
-        send(cli_fd, "tamam", 5, 0);
-
-        close(cli_fd);
-        close(srv_fd);
-        unlink(SOCK_PATH);
-        return 0;
-    }
-    ```
-
-=== "İstemci"
-
-    ```c title="uds_client.c"
-    #include <stdio.h>
-    #include <sys/socket.h>
-    #include <sys/un.h>
-    #include <unistd.h>
-    #include <string.h>
-
-    #define SOCK_PATH "/tmp/my.sock"
-
-    int main(void) {
-        int fd = socket(AF_UNIX, SOCK_STREAM, 0);
-
-        struct sockaddr_un addr = {.sun_family = AF_UNIX};
-        strncpy(addr.sun_path, SOCK_PATH, sizeof(addr.sun_path) - 1);
-
-        connect(fd, (struct sockaddr *)&addr, sizeof(addr));
-        send(fd, "merhaba sunucu", 14, 0);
-
-        char buf[64];
-        ssize_t n = recv(fd, buf, sizeof(buf) - 1, 0);
-        buf[n] = '\0';
-        printf("Yanıt: %s\n", buf);
-
-        close(fd);
-        return 0;
-    }
-    ```
+!!! example "Ne Zaman Kullanılır?"
+    Aynı makinede çalışan servisler arasında güvenilir, çift yönlü iletişim gerektiğinde (Docker daemon soketi, PostgreSQL yerel bağlantıları, sistem servisleri arası API'ler). TCP kullanmaya göre daha hızlı ve dosya izinleriyle daha kolay yetkilendirilebilir bir alternatiftir.
 
 ---
 
 ## Netlink Socket (Kernel ↔ Userspace)
 
-Netlink, kernel subsystem'larıyla kullanıcı alanı arasında çift yönlü, asenkron iletişim sağlayan özel bir soket ailesidir. `iproute2` araçları (`ip`, `ss`) Netlink kullanır.
+Netlink, kernel subsystem'larıyla kullanıcı alanı arasında çift yönlü, asenkron iletişim sağlayan özel bir soket ailesidir (`AF_NETLINK`). `iproute2` araçları (`ip`, `ss`) ağ arayüzü/route bilgisini almak için Netlink kullanır.
 
 ```mermaid
 graph LR
-    APP[Kullanıcı Uygulaması] <-->|AF_NETLINK| NL[Netlink\nKernel Modülü]
-    NL <--> RTNETLINK[RTNETLINK\nRoute/Link/Addr]
-    NL <--> NETFILTER[NFNETLINK\niptables/nftables]
-    NL <--> AUDIT[AUDIT\nGüvenlik Olayları]
-    NL <--> GENERIC[Generic Netlink\nÖzel driver'lar]
+    APP[Kullanıcı Uygulaması] <-->|AF_NETLINK| NL["Netlink<br/>Kernel Modülü"]
+    NL <--> RTNETLINK["RTNETLINK<br/>Route/Link/Addr"]
+    NL <--> NETFILTER["NFNETLINK<br/>iptables/nftables"]
+    NL <--> AUDIT["AUDIT<br/>Güvenlik Olayları"]
+    NL <--> GENERIC["Generic Netlink<br/>Özel driver'lar"]
 ```
 
-```c title="netlink_example.c" linenums="1"
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <linux/netlink.h>
 
-int main(void) {
-    int sock = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
+| Avantajlar                                                     | Dezavantajlar                                                     |
+| ------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| Kernel ↔ userspace için standart, genişletilebilir bir kanaldır      | Düşük seviyedir; mesaj formatlama (`nlmsghdr`, öznitelik ayrıştırma) karmaşıktır |
+| Çoklu-yayın (multicast) grubu desteği vardır (kernel olaylarını dinleme) | Yalnızca Linux'a özgüdür, taşınabilir değildir                           |
+| Soket tabanlı olduğu için tanıdık bir API (`socket`/`recv`) kullanır | `ioctl`'e göre daha fazla altyapı kurulumu gerektirir                    |
 
-    struct sockaddr_nl addr = {
-        .nl_family = AF_NETLINK,
-        .nl_pid    = getpid(),
-        .nl_groups = 0
-    };
-    bind(sock, (struct sockaddr *)&addr, sizeof(addr));
-
-    /* RTM_GETLINK isteği göndererek ağ arayüzlerini listele */
-    struct {
-        struct nlmsghdr hdr;
-        struct rtgenmsg gen;
-    } req = {
-        .hdr = {
-            .nlmsg_len   = NLMSG_LENGTH(sizeof(struct rtgenmsg)),
-            .nlmsg_type  = RTM_GETLINK,
-            .nlmsg_flags = NLM_F_REQUEST | NLM_F_DUMP,
-            .nlmsg_seq   = 1,
-            .nlmsg_pid   = getpid()
-        },
-        .gen.rtgen_family = AF_PACKET
-    };
-
-    send(sock, &req, req.hdr.nlmsg_len, 0);
-    /* Yanıt işleme ... */
-    close(sock);
-    return 0;
-}
-```
+!!! example "Ne Zaman Kullanılır?"
+    Ağ yönetimi araçları geliştirirken (arayüz/route/adres değişikliklerini izlemek veya değiştirmek) ya da kernel'deki bir olayı (arayüz up/down, cihaz takılması) gerçek zamanlı dinlemek gerektiğinde.
 
 ---
 
 ## ioctl (Device Control)
 
-`ioctl` (input/output control), aygıt sürücülerine `read`/`write` ile ifade edilemeyen özel komutlar göndermek için kullanılan sistem çağrısıdır. Bir "uzak fonksiyon çağrısı" gibi düşünülebilir.
+`ioctl` (input/output control), aygıt sürücülerine `read`/`write` ile ifade edilemeyen özel komutlar göndermek için kullanılan sistem çağrısıdır - genel amaçlı bir "uzak fonksiyon çağrısı" gibi düşünülebilir.
 
 ```mermaid
 graph TD
-    APP[Kullanıcı Uygulaması] -->|ioctl fd, cmd, arg| VFS[Virtual File System]
-    VFS --> DRIV[Aygıt Sürücüsü\n.unlocked_ioctl]
+    APP[Kullanıcı Uygulaması] -->|"ioctl fd, cmd, arg"| VFS[Virtual File System]
+    VFS --> DRIV["Aygıt Sürücüsü<br/>.unlocked_ioctl"]
     DRIV -->|Kontrol| HW[Donanım]
     DRIV -->|Yanıt| APP
-```
-
-```c title="ioctl_example.c"
-#include <stdio.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <net/if.h>
-
-int main(void) {
-    int sock = socket(AF_INET, SOCK_DGRAM, 0);
-
-    /* Ağ arayüzü flag'larını al (SIOCGIFFLAGS) */
-    struct ifreq ifr;
-    strncpy(ifr.ifr_name, "eth0", IFNAMSIZ);
-
-    if (ioctl(sock, SIOCGIFFLAGS, &ifr) == 0) {
-        printf("eth0 flags: 0x%x\n", ifr.ifr_flags);
-        if (ifr.ifr_flags & IFF_UP)
-            puts("Arayüz aktif (UP)");
-    }
-
-    close(sock);
-    return 0;
-}
 ```
 
 ```bash
@@ -615,20 +319,30 @@ int main(void) {
 stty -F /dev/ttyUSB0
 
 # ioctl kullanan araçlar
-ethtool eth0      # Ethernet sürücü kontrolü
-hdparm -I /dev/sda  # Disk bilgisi
-v4l2-ctl --all    # Kamera ioctl çağrıları
+ethtool eth0        # Ethernet sürücü kontrolü
+hdparm -I /dev/sda   # Disk bilgisi
+v4l2-ctl --all       # Kamera ioctl çağrıları
 ```
 
----
+**Avantaj / Dezavantaj**
+
+| Avantajlar                                                      | Dezavantajlar                                                    |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `read`/`write` ile ifade edilemeyen aygıta özel komutlar için standart mekanizmadır | Tip güvenliği yoktur (`void *arg`); yanlış struct/boyut kolayca hataya yol açar |
+| Driver geliştirmede çok yaygın, iyi belgelenmiş bir desendir        | API standart değildir; her sürücü kendi komut setini tanımlar        |
+| Senkron ve basittir (tek sistem çağrısı)                            | Hata ayıklaması zordur; komut numaraları çakışabilir                  |
+
+!!! example "Ne Zaman Kullanılır?"
+    Donanım/sürücü seviyesinde kontrol gerektiğinde: kamera parametreleri (V4L2), seri port yapılandırması, ağ arayüzü bayrakları, disk/aygıt bilgisi sorgulama. Uygulama seviyesi IPC için tercih edilmez.
+
 
 ## D-Bus
 
-D-Bus, masaüstü uygulamaları ve sistem servisleri arasında yüksek seviyeli mesajlaşma sağlayan IPC ara katmanıdır. systemd, NetworkManager, BlueZ gibi kritik servisler D-Bus üzerinden kontrol edilir.
+D-Bus, masaüstü uygulamaları ve sistem servisleri arasında yüksek seviyeli, tip güvenli mesajlaşma sağlayan bir IPC ara katmanıdır. Alt seviyede Unix Domain Socket kullanır, ancak üzerine servis keşfi (introspection), isimlendirme ve nesne/yöntem soyutlaması ekler. `systemd`, `NetworkManager`, `BlueZ` gibi kritik sistem servisleri D-Bus üzerinden kontrol edilir.
 
 ```mermaid
 graph LR
-    APP1[Uygulama A] <-->|Unix Socket| DBUS[D-Bus Daemon\n/run/dbus/system_bus_socket]
+    APP1[Uygulama A] <-->|Unix Socket| DBUS["D-Bus Daemon<br/>/run/dbus/system_bus_socket"]
     APP2[Uygulama B] <-->|Unix Socket| DBUS
     NM[NetworkManager] <-->|D-Bus| DBUS
     BT[bluetoothd] <-->|D-Bus| DBUS
@@ -643,12 +357,6 @@ busctl list
 busctl introspect org.freedesktop.NetworkManager \
     /org/freedesktop/NetworkManager
 
-# Basit D-Bus çağrısı
-busctl call org.freedesktop.NetworkManager \
-    /org/freedesktop/NetworkManager \
-    org.freedesktop.NetworkManager \
-    GetDevices
-
 # Systemd servis başlat
 busctl call org.freedesktop.systemd1 \
     /org/freedesktop/systemd1 \
@@ -656,113 +364,56 @@ busctl call org.freedesktop.systemd1 \
     StartUnit ss nginx.service replace
 ```
 
-```python title="dbus_python.py"
-import dbus
 
-bus = dbus.SystemBus()
-nm = bus.get_object(
-    'org.freedesktop.NetworkManager',
-    '/org/freedesktop/NetworkManager'
-)
-iface = dbus.Interface(nm, 'org.freedesktop.NetworkManager')
-devices = iface.GetDevices()
-for dev in devices:
-    print(dev)
-```
+| Avantajlar                                                       | Dezavantajlar                                                          |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Yüksek seviyelidir: servis keşfi, tip güvenli mesajlaşma sunar     | Diğer IPC yöntemlerine göre yavaştır (daemon üzerinden yönlendirme, ekstra kopyalama) |
+| Standart sistem servisleriyle (systemd, NetworkManager) hazır entegrasyon sağlar | `dbus-daemon` çalışıyor olmalı - ek bir bağımlılıktır                    |
+| Sinyal/yöntem çağrısı gibi soyutlamalarla ham socket kodu yazmaya gerek kalmaz | Gömülü/gerçek zamanlı sistemlerde performans kritikse uygun değildir      |
 
----
+!!! example "Ne Zaman Kullanılır?"
+    Masaüstü veya sistem servisleri arası yüksek seviyeli entegrasyon gerektiğinde (bir GUI uygulamasının NetworkManager veya systemd ile konuşması gibi). Performans kritik, düşük gecikmeli veri yolu ihtiyacında D-Bus yerine socket/shared memory tercih edilir.
+
 
 ## mmap - Bellek Eşlemeli Dosya
 
-`mmap`, bir dosyayı veya anonim belleği sürecin adres alanına doğrudan eşler. Shared memory'nin dosya tabanlı alternatifidir ve sıfır kopyalamayla (zero-copy) dosya I/O gerçekleştirir.
+`mmap`, bir dosyayı veya anonim belleği doğrudan sürecin sanal adres alanına eşler. Shared memory'nin dosya tabanlı, kalıcı alternatifi olarak da düşünülebilir ve sıfır kopyalamayla (zero-copy) dosya G/Ç gerçekleştirir - dosya içeriğine normal bir dizi/pointer gibi erişilir.
 
 ```mermaid
 graph LR
-    FILE[Dosya\n/tmp/data.bin] -->|mmap| VA[Sanal Adres\nSüreci] -->|doğrudan okuma/yazma| PHYS[Fiziksel RAM\nPage Cache]
-    VA2[Başka Sürecin\nSanal Adresi] -->|mmap MAP_SHARED| PHYS
+    FILE["Dosya<br/>/tmp/data.bin"] -->|mmap| VA["Sanal Adres<br/>Süreci"]
+    VA -->|"doğrudan okuma/yazma"| PHYS["Fiziksel RAM<br/>Page Cache"]
+    VA2["Başka Sürecin<br/>Sanal Adresi"] -->|"mmap MAP_SHARED"| PHYS
 ```
 
-=== "Dosya Eşleme"
+**İki kullanım biçimi vardır:** dosya tabanlı eşleme (bir dosyayı belleğe eşleyip normal pointer gibi okuma/yazma, `msync` ile diske senkronize etme) ve `fork()` öncesi oluşturulan anonim `MAP_SHARED` eşleme (ebeveyn/çocuk arasında hızlı, dosyasız paylaşım).
 
-    ```c title="mmap_file.c"
-    #include <stdio.h>
-    #include <fcntl.h>
-    #include <sys/mman.h>
-    #include <sys/stat.h>
-    #include <unistd.h>
 
-    int main(void) {
-        int fd = open("data.bin", O_RDWR | O_CREAT, 0666);
-        ftruncate(fd, 4096);
+| Avantajlar                                                       | Dezavantajlar                                                          |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Zero-copy dosya G/Ç; büyük dosyalarda bellek verimlidir (sayfalar talep üzerine/demand paging yüklenir) | Sayfa boyutu hizalama kısıtlamaları vardır                                |
+| Rastgele erişim (random access) doğal ve hızlıdır                  | Dosya küçültülür/silinirse erişimde `SIGBUS` alınabilir                   |
+| Shared memory'nin dosya tabanlı, kalıcı bir alternatifidir          | Eş zamanlı erişimde senkronizasyon yine geliştiricinin sorumluluğundadır  |
 
-        char *ptr = mmap(NULL, 4096,
-                         PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-        close(fd);
+!!! example "Ne Zaman Kullanılır?"
+    Büyük dosyaları rastgele erişimle işlerken (log analizi, veritabanı motorları, büyük veri setleri); ya da `fork()` sonrası ebeveyn/çocuk arasında dosya tabanlı, kalıcı bir paylaşım gerektiğinde.
 
-        /* Doğrudan pointer üzerinden oku/yaz */
-        ptr[0] = 'A';
-        ptr[1] = 'B';
-
-        msync(ptr, 4096, MS_SYNC);    /* Değişiklikleri diske yaz */
-        munmap(ptr, 4096);
-        return 0;
-    }
-    ```
-
-=== "Anonim Paylaşım (Fork)"
-
-    ```c title="mmap_anon.c"
-    #include <stdio.h>
-    #include <sys/mman.h>
-    #include <sys/wait.h>
-    #include <unistd.h>
-
-    int main(void) {
-        /* Fork öncesi anonim shared mapping */
-        int *counter = mmap(NULL, sizeof(int),
-                            PROT_READ | PROT_WRITE,
-                            MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-        *counter = 0;
-
-        if (fork() == 0) {
-            (*counter)++;    /* Alt süreç paylaşılan sayacı artırır */
-            _exit(0);
-        }
-        wait(NULL);
-        printf("Sayaç: %d\n", *counter);   /* 1 görülmeli */
-        munmap(counter, sizeof(int));
-        return 0;
-    }
-    ```
-
----
 
 ## IPC Yöntemleri Karşılaştırması
 
 | Yöntem             |     Hız      | Veri Kopyası | Yön  | Süreç Sınırı |    Kalıcılık     |
-| ------------------ | :----------: | :----------: | :--: | :----------: | :--------------: |
-| Anonymous Pipe     |     Orta     |   1 kopya    | Tek  |    Akraba    |   Process ömrü   |
-| Named Pipe (FIFO)  |     Orta     |   1 kopya    | Tek  |   Herhangi   |   `unlink` ile   |
-| Signal             |  Çok hızlı   |   Veri yok   | Tek  |   Herhangi   |      Anlık       |
-| Shared Memory      | **En hızlı** | **0 kopya**  | Çift |   Herhangi   | `shm_unlink` ile |
-| Message Queue      |    Hızlı     |   1 kopya    | Çift |   Herhangi   | `mq_unlink` ile  |
-| Semaphore          |      -       |   Veri yok   |  -   |   Herhangi   | `sem_unlink` ile |
-| Unix Domain Socket |    Hızlı     |  1–2 kopya   | Çift | Aynı makine  |   `unlink` ile   |
-| Netlink            |    Hızlı     |   1 kopya    | Çift | User/Kernel  |        -         |
-| D-Bus              |    Yavaş     |   2+ kopya   | Çift |   Herhangi   |        -         |
-| mmap               | **En hızlı** | **0 kopya**  | Çift |   Herhangi   |  Dosya tabanlı   |
+| ------------------- | :-----------: | :------------: | :---: | :------------: | :-----------------: |
+| Anonymous Pipe      |      Orta      |     1 kopya      |  Tek  |     Akraba      |    Process ömrü      |
+| Named Pipe (FIFO)   |      Orta      |     1 kopya      |  Tek  |    Herhangi     |    `unlink` ile      |
+| Signal              |   Çok hızlı    |     Veri yok      |  Tek  |    Herhangi     |        Anlık          |
+| Shared Memory       |  **En hızlı**  |   **0 kopya**    |  Çift |    Herhangi     |  `shm_unlink` ile     |
+| Message Queue       |     Hızlı      |     1 kopya      |  Çift |    Herhangi     |  `mq_unlink` ile      |
+| Semaphore           |       -        |     Veri yok      |   -   |    Herhangi     |  `sem_unlink` ile     |
+| Unix Domain Socket  |     Hızlı      |    1–2 kopya      |  Çift |  Aynı makine    |    `unlink` ile      |
+| Netlink             |     Hızlı      |     1 kopya      |  Çift |  User/Kernel    |          -            |
+| D-Bus               |     Yavaş      |    2+ kopya      |  Çift |    Herhangi     |          -            |
+| mmap                |  **En hızlı**  |   **0 kopya**    |  Çift |    Herhangi     |    Dosya tabanlı      |
 
-```mermaid
-graph LR
-    A[Basit ebeveyn/çocuk] --> PIPE[Pipe]
-    B[Akraba olmayan\nsüreçler sıralı] --> FIFO[Named Pipe]
-    C[Asenkron bildirim] --> SIG[Signal]
-    D[Yüksek bant genişliği] --> SHM[Shared Memory + Semaphore]
-    E[Mesaj önceliği] --> MQ[Message Queue]
-    F[İki yönlü lokal] --> UDS[Unix Domain Socket]
-    G[Kernel iletişimi] --> NL[Netlink / ioctl]
-    H[Sistem servis API] --> DB[D-Bus]
-```
 
 !!! example "Seçim Rehberi"
     - **En yüksek bant genişliği** → Shared Memory + Semaphore

@@ -293,61 +293,6 @@ cat /proc/<PID>/status | grep Sig  # SigPnd, SigBlk, SigIgn, SigCgt
 | /30  | 255.255.255.252 |      2      ||   E   | 240.0.0.0 – 255.255.255.255 | Deneysel / rezerve |
 
 
-## SSH (Secure Shell)
-
-```mermaid
-sequenceDiagram
-    participant C as İstemci
-    participant S as Sunucu (sshd)
-
-    C->>S: TCP bağlantısı (port 22)
-    S->>C: Server Key Exchange (algoritma müzakeresi)
-    C->>S: Client Hello
-    Note over C,S: Diffie-Hellman Anahtar Değişimi
-    C->>S: Kullanıcı kimlik doğrulama<br/>(şifre veya anahtar)
-    S->>C: Kimlik doğrulama başarılı
-    Note over C,S: Şifreli oturum (AES, ChaCha20)
-```
-
-```bash title="/etc/ssh/sshd_config (önemli ayarlar)"
-Port 22                          # Farklı porta taşı
-PermitRootLogin no               # Root girişini engelle
-PasswordAuthentication no        # Sadece anahtar
-PubkeyAuthentication yes
-AuthorizedKeysFile .ssh/authorized_keys
-AllowUsers serkan mert           # Sadece bu kullanıcılar
-ClientAliveInterval 300          # Keep-alive aralığı (s)
-ClientAliveCountMax 3            # Maksimum keep-alive sayısı
-MaxAuthTries 3                   # Maksimum deneme sayısı
-```
-
-```bash
-ssh kullanici@192.168.1.10          # ssh kullanici@hostname.local 'de bağlanılabilir.
-ssh -p 2222 kullanici@host          # Farklı port
-ssh -i ~/.ssh/id_ed25519 user@host  # Belirli anahtar
-
-ssh-keygen -t ed25519 -C "yorum"    # Anahtar çifti oluştur
-ssh-copy-id kullanici@host          # Public key'i sunucuya kopyala
-ssh-add ~/.ssh/id_ed25519           # Agent'a ekle
-
-ssh -L 8080:localhost:80 user@host     # Yerel port yönlendirme
-ssh -R 9090:localhost:3000 user@host   # Uzak port yönlendirme
-ssh -D 1080 user@host                  # SOCKS proxy
-
-ssh user@host "df -h && uptime"
-ssh user@host 'bash -s' < local_script.sh
-
-# mDNS (LAN'da IP olmadan bul)
-ping raspberrypi.local
-avahi-browse -at                       # Ağdaki tüm mDNS servislerini gör
-
-scp dosya.py pi@raspberrypi.local:~/   # -r ile dizin kopyalama
-
-# /etc/ssh/sshd_config düzenleme yapılırsa
-sudo systemctl restart sshd      # Ayarları uygula
-sudo sshd -t                     # Yapılandırmayı doğrula
-```
-
 ## Servis ve Daemon Yapısı (systemd)
 
 ```mermaid

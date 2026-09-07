@@ -1,31 +1,8 @@
 # Haberleşme Protokolleri
 
-!!! note "Genel Bakış"
-    Haberleşme protokolleri; cihazlar, sistemler ve uygulamalar arasında veri alışverişinin nasıl gerçekleşeceğini tanımlayan kurallar bütünüdür. Seri/paralel fiziksel katmandan uygulama seviyesi protokollerine kadar katmanlı bir yapı içinde incelenir.
-
-```mermaid
-graph TD
-    APP[Uygulama\nHTTP / MQTT / SSH] --> TRANS[Taşıma\nTCP / UDP]
-    TRANS --> NET[Ağ\nIP / ICMP]
-    NET --> DL[Veri Bağlantısı\nEthernet / Wi-Fi]
-    DL --> PHY[Fiziksel Katman\nUART / SPI / I²C / CAN / BLE]
-
-    APP2[Uygulama\nCustom Protocol] --> SERIAL[Seri Haberleşme\nUART / RS-232 / RS-485]
-    SERIAL --> PHY2[Fiziksel Hat\nTX/RX / Bus]
-
-    style APP fill:#E3F2FD
-    style TRANS fill:#E8F5E9
-    style NET fill:#FFF9C4
-    style PHY fill:#FCE4EC
-```
-
----
-
 ## UART (Universal Asynchronous Receiver/Transmitter)
 
-UART, saat hattı olmayan eş zamansız seri haberleşme protokolüdür. İki hat (TX/RX) ve ortak toprak yeterlidir. Mikrodenetleyiciler ile PC/modüller arasındaki en yaygın düşük hızlı seri haberleşme yöntemidir.
-
-### Çerçeve Yapısı
+UART, **saat hattı paylaşmayan** (asenkron) noktadan noktaya seri haberleşme protokolüdür. İki taraf da veriyi önceden anlaştıkları sabit bir baud rate'e göre örnekler; bu yüzden saat sinyali yerine her byte'ın başına bir **start bit** eklenerek alıcının senkronize olması sağlanır. TX ve RX hatları birbirinden bağımsız olduğu için **full-duplex**'tir (aynı anda hem gönderip hem alabilir). Mikrodenetleyiciler ile PC/modüller arasındaki en yaygın düşük hızlı seri haberleşme yöntemidir.
 
 ```
 IDLE  START   D0   D1   D2   D3   D4   D5   D6   D7   PARITY  STOP
@@ -33,162 +10,92 @@ IDLE  START   D0   D1   D2   D3   D4   D5   D6   D7   PARITY  STOP
      ←----------------- 1 tam çerçeve ------------------------→
 ```
 
-| Alan         |   Değer   | Açıklama                     |
-| ------------ | :-------: | ---------------------------- |
-| Start bit    |     0     | Çerçeve başladığını bildirir |
-| Veri bitleri |  5–9 bit  | Genellikle 8 bit (1 byte)    |
-| Parity bit   | Opsiyonel | Hata tespiti: Odd/Even/None  |
-| Stop bit     |  1 veya 2 | Hat tekrar IDLE'a döner      |
-
-### Baud Rate Hesaplama
-
-Alıcı ve verici **aynı baud rate**'i kullanmalıdır. Tolerans ±2–3%'tir.
-
-$$\text{Baud} = \frac{f_{clock}}{16 \times \text{BRR}}$$
+| Alan             | Açıklama                                                                 |
+| ------------------ | --------------------------------------------------------------------------- |
+| **Start bit**       | Hat IDLE (1) durumundan 0'a düşer; alıcıya çerçevenin başladığını bildirir ve örnekleme saatini bu kenara göre senkronize eder |
+| **Veri bitleri**    | Genellikle 8 bit (1 byte); LSB önce gönderilir                              |
+| **Parity bit**      | Opsiyonel tek bitlik hata tespiti (Odd/Even/None); yalnızca **tek bit** hatasını yakalar, çift bit hatasını kaçırır |
+| **Stop bit**        | 1 veya 2 bit; hat tekrar IDLE (1) seviyesine döner                          |
 
 | Baud Rate | Veri Hızı (8N1) | Yaygın Kullanım    |
-| :-------: | :-------------: | ------------------ |
-|    9600   |     ~960 B/s    | GPS, eski modüller |
-|   115200  |    ~11.5 KB/s   | Arduino, debug     |
-|   460800  |     ~46 KB/s    | ESP32 flash        |
-|   921600  |     ~92 KB/s    | Yüksek hızlı debug |
-|  4000000  |    ~400 KB/s    | STM32, FTDI FT4232 |
+| :-------: | :-------------: | ------------------- |
+|    9600   |     ~960 B/s     | GPS, eski modüller   |
+|   115200  |    ~11.5 KB/s    | Arduino, debug       |
+|   460800  |     ~46 KB/s     | ESP32 flash          |
+|   921600  |     ~92 KB/s     | Yüksek hızlı debug   |
+|  4000000  |    ~400 KB/s     | STM32, FTDI FT4232   |
 
-```c title="STM32 USART2 - Register Seviyesi"
-/* APB1 clock = 42 MHz, hedef: 115200 baud */
-RCC->APB1ENR |= RCC_APB1ENR_USART2EN;   /* Clock aç */
-GPIOA->MODER |= (2 << 4) | (2 << 6);    /* PA2=TX, PA3=RX → Alternate */
-GPIOA->AFR[0] |= (7 << 8) | (7 << 12); /* AF7 = USART2 */
+Alıcı ve verici **aynı baud rate**'i kullanmalıdır; tolerans genelde ±2–3%'tir, bunun üzerinde sapma bitlerin yanlış örneklenmesine (framing error) yol açar. Mikrodenetleyicide baud rate, çevresel saatten bir bölücü (`BRR` - Baud Rate Register) ile üretilir: $\text{Baud} = \dfrac{f_{clock}}{16 \times \text{BRR}}$.
 
-USART2->BRR = 0x16D;       /* 42MHz / 115200 ≈ 365.0 → 0x16D */
-USART2->CR1 = USART_CR1_TE | USART_CR1_RE | USART_CR1_UE;
+!!! warning "Yaygın UART Hataları"
+    - **Framing Error**: Stop bit beklenen seviyede (1) bulunamadı - genelde baud rate uyuşmazlığından kaynaklanır.
+    - **Overrun Error**: Yeni byte geldiğinde önceki byte alım tamponundan (RX buffer) henüz okunmadı; veri kaybolur. Yüksek hızda ve düşük öncelikli ISR'lerde sık görülür.
+    - **Break Condition**: Hat, bir bayt süresinden uzun süre 0'da tutulursa "break" sinyali sayılır; bazı bootloader'lar bunu resete/DFU moduna girmek için kullanır.
 
-/* Gönder */
-while (!(USART2->SR & USART_SR_TXE));
-USART2->DR = 'A';
-```
-
-```c title="Linux'ta UART (termios)"
-#include <termios.h>
-#include <fcntl.h>
-
-int uart_open(const char *dev) {
-    int fd = open(dev, O_RDWR | O_NOCTTY | O_SYNC);
-    struct termios tty = {0};
-    tcgetattr(fd, &tty);
-    cfsetospeed(&tty, B115200);
-    cfsetispeed(&tty, B115200);
-    tty.c_cflag = CS8 | CREAD | CLOCAL;  /* 8N1 */
-    tty.c_iflag = 0;
-    tty.c_oflag = 0;
-    tty.c_lflag = 0;
-    tty.c_cc[VMIN]  = 1;
-    tty.c_cc[VTIME] = 0;
-    tcsetattr(fd, TCSANOW, &tty);
-    return fd;
-}
-```
+!!! tip "Donanımsal Akış Kontrolü (RTS/CTS)"
+    Yüksek hızlarda alıcı tampon dolabilir. `RTS`/`CTS` hatları eklenerek alıcı, hazır olmadığında vericiye "gönderme" sinyali verebilir (donanımsal flow control). Çoğu mikrodenetleyici UART çevre birimi bunu destekler ama pratikte nadiren kullanılır; genelde yazılımsal tampon yönetimi tercih edilir.
 
 !!! tip "RS-232 vs RS-485"
-    - **RS-232**: Noktadan noktaya, ±3–15V mantık, 15m maks.
-    - **RS-485**: Diferansiyel çift, 32 cihaza kadar bus, 1200m, gürültüye dayanıklı, endüstri standardı.
+    - **RS-232**: Noktadan noktaya, ±3–15V mantık, tek mantık seviyesi (tek uçlu/single-ended), ~15m maks, gürültüye hassas.
+    - **RS-485**: UART'ın kendisi değil, fiziksel katman farklıdır - diferansiyel çift (A/B hatları) kullanır, 32 cihaza kadar bus, ~1200m, gürültüye dayanıklı, endüstri standardı. UART çerçeve formatı aynıdır; RS-485 sadece elektriksel katmanı değiştirir ve yarı-duplex bus paylaşımı için bir yön kontrol pini (`DE`/`RE`) gerektirir.
+
+**Avantaj / Dezavantaj**
+
+| Avantajlar                                                | Dezavantajlar                                                          |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Basit donanım (2 hat + toprak), her mikrodenetleyicide bulunur   | Saat hattı yok; taraflar arası baud rate uyuşmazlığı veri bozulmasına yol açar |
+| Full-duplex, düşük gecikme                                     | Yerleşik adresleme/çoklu cihaz desteği yoktur (noktadan noktaya)              |
+| Hata ayıklama/loglama için kolay erişilebilir (USB-UART köprüleri) | Görece düşük hız; uzun mesafede sinyal bütünlüğü bozulur (RS-232 için ~15m sınırı) |
 
 ---
 
 ## SPI (Serial Peripheral Interface)
 
-SPI, 4 hat kullanan senkron, tam çift yönlü (full-duplex) seri haberleşme protokolüdür. Yüksek hız gerektiren sensörler, flash bellek, ekranlar ve ADC'lerde kullanılır.
-
-```mermaid
-graph LR
-    MCU[Master\nMCU] -->|SCLK| DEV1[Slave 1]
-    MCU -->|MOSI| DEV1
-    DEV1 -->|MISO| MCU
-    MCU -->|CS1 ▼| DEV1
-
-    MCU -->|SCLK| DEV2[Slave 2]
-    MCU -->|MOSI| DEV2
-    DEV2 -->|MISO| MCU
-    MCU -->|CS2 ▼| DEV2
-```
+SPI, ortak bir saat hattı (`SCLK`) etrafında senkronize çalışan, **full-duplex** seri haberleşme protokolüdür: her saat darbesinde master hem bir bit gönderir (`MOSI`) hem de bir bit alır (`MISO`) - veri alışverişi aynı anda, tek bir shift register döngüsü gibi gerçekleşir. Adresleme mekanizması yoktur; cihaz seçimi ayrı bir `CS` (Chip Select) hattıyla yapılır. Yüksek hız gerektiren sensörler, flash bellek, ekranlar ve ADC'lerde kullanılır.
 
 | Hat   | Yön | Açıklama                    |
-| ----- | :-: | --------------------------- |
-| SCLK  | M→S | Saat sinyali; master üretir |
-| MOSI  | M→S | Master Out Slave In         |
-| MISO  | S→M | Master In Slave Out         |
-| CS/SS | M→S | Chip Select; aktif LOW      |
+| ----- | :--: | ----------------------------- |
+| SCLK  | M→S  | Saat sinyali; master üretir   |
+| MOSI  | M→S  | Master Out Slave In            |
+| MISO  | S→M  | Master In Slave Out            |
+| CS/SS | M→S  | Chip Select; aktif LOW          |
 
-### CPOL / CPHA Modları
+Her slave'in kendi `CS` hattı olması gerekir (`N` slave için `N` ayrı CS pini); pin sayısını azaltmak için bazı sensörler (örn. shift register'lar, bazı ekran sürücüleri) **daisy-chain** modunu destekler - veri bir cihazdan diğerine zincirleme aktarılır ve tek `CS` yeterli olur.
 
-| Mod | CPOL | CPHA | Saat Boşta |   Örnekleme    |
-| :-: | :--: | :--: | :--------: | :------------: |
-|  0  |  0   |  0   |    LOW     | Yükselen kenar |
-|  1  |  0   |  1   |    LOW     |  Düşen kenar   |
-|  2  |  1   |  0   |    HIGH    |  Düşen kenar   |
-|  3  |  1   |  1   |    HIGH    | Yükselen kenar |
+`CPOL` (saat boşta seviyesi) ve `CPHA` (örnekleme kenarı) kombinasyonu **SPI Modu**'nu belirler; master ve slave aynı modda olmalıdır, bu bilgi cihazın datasheet'inde yazar:
 
-```c title="STM32 SPI1 - Polling"
-/* Yapılandırma (APB2 = 84 MHz, SPI Clk = 84/16 = 5.25 MHz) */
-SPI1->CR1 = SPI_CR1_MSTR          /* Master */
-          | SPI_CR1_SSM            /* Yazılımsal CS */
-          | SPI_CR1_SSI
-          | (3 << SPI_CR1_BR_Pos) /* BR=011 → ÷16 */
-          | SPI_CR1_SPE;          /* SPI etkinleştir */
+| Mod | CPOL | CPHA | Saat Boşta | Örnekleme       |
+| :--: | :--: | :--: | :---------: | :---------------: |
+|  0   |  0   |  0   |    LOW      | Yükselen kenar     |
+|  1   |  0   |  1   |    LOW      |  Düşen kenar        |
+|  2   |  1   |  0   |    HIGH     |  Düşen kenar        |
+|  3   |  1   |  1   |    HIGH     | Yükselen kenar      |
 
-uint8_t spi_transfer(uint8_t data) {
-    while (!(SPI1->SR & SPI_SR_TXE));   /* TX boş bekle */
-    SPI1->DR = data;
-    while (!(SPI1->SR & SPI_SR_RXNE));  /* RX hazır bekle */
-    return SPI1->DR;
-}
+**Avantaj / Dezavantaj**
 
-/* CS yönetimi */
-#define CS_LOW()  GPIOA->BSRR = GPIO_BSRR_BR4
-#define CS_HIGH() GPIOA->BSRR = GPIO_BSRR_BS4
-
-CS_LOW();
-spi_transfer(0x9F);           /* JEDEC ID oku */
-uint8_t id = spi_transfer(0); /* Boş byte gönder, yanıt al */
-CS_HIGH();
-```
-
-```bash title="Linux SPI (spidev)"
-# spi-tools ile test
-spi-config -d /dev/spidev0.0 -q
-# Transfer: 0x9F gönder
-python3 -c "
-import spidev
-spi = spidev.SpiDev()
-spi.open(0, 0)
-spi.max_speed_hz = 1000000
-resp = spi.xfer2([0x9F, 0x00, 0x00])
-print([hex(x) for x in resp])
-spi.close()
-"
-```
+| Avantajlar                                            | Dezavantajlar                                                      |
+| -------------------------------------------------------- | -------------------------------------------------------------------- |
+| Çok yüksek hız (onlarca MHz'e kadar), full-duplex          | Pin sayısı fazladır; her slave için ayrı CS gerekir (daisy-chain hariç) |
+| Basit donanım, düşük protokol overhead'i                   | Standart bir adresleme/hata denetim (CRC/ACK) mekanizması yoktur      |
+| Yerleşik saat hattı sayesinde baud rate uyuşmazlığı sorunu yok | Kısa mesafeye uygundur; diferansiyel olmadığı için uzun kabloda gürültüye hassastır |
 
 ---
 
 ## I²C (Inter-Integrated Circuit)
 
-I²C, iki hatlı (SDA/SCL) senkron yarı çift yönlü (half-duplex) çoklu master-slave haberleşme protokolüdür. 7-bit adres şeması 128 cihaza kadar bus paylaşımına izin verir.
+I²C, iki hatlı (`SDA`: veri, `SCL`: saat) senkron **half-duplex** protokoldür; SPI'dan farklı olarak birden fazla master'ı ve 7-bit adres şemasıyla 128 cihaza kadar aynı iki hat üzerinde paylaşımı destekler. Her iki hat da **open-drain**'dir; bu yüzden harici pull-up direnci zorunludur (hat, hiçbir cihaz sürmediğinde pull-up sayesinde HIGH'da kalır).
 
-### Elektrik Özellikleri
-
-| Parametre        |          Değer           |
-| ---------------- | :----------------------: |
-| Hız (Standard)   |         100 kHz          |
-| Hız (Fast)       |         400 kHz          |
-| Hız (Fast+)      |          1 MHz           |
-| Hız (High Speed) |         3.4 MHz          |
-| Pull-up          | Genellikle 4.7 kΩ (3.3V) |
-| Mantık düzeyi    |        Open-drain        |
+| Parametre        |          Değer            |
+| ------------------- | :--------------------------: |
+| Hız (Standard)      |          100 kHz             |
+| Hız (Fast)          |          400 kHz             |
+| Hız (Fast+)         |           1 MHz              |
+| Hız (High Speed)    |          3.4 MHz             |
+| Pull-up             |  Genellikle 4.7 kΩ (3.3V)    |
+| Mantık düzeyi       |         Open-drain           |
 
 !!! warning "Pull-up Direnci"
-    I²C hatları açık-drain çalışır; dışarıdan pull-up direnci **zorunludur**. Direnç değeri bus kapasitansına ve hıza göre seçilir. Düşük hız = yüksek direnç, yüksek hız = düşük direnç.
-
-### Bus Sırası
+    I²C hatları açık-drain çalışır; dışarıdan pull-up direnci **zorunludur**. Direnç değeri bus kapasitansına ve hıza göre seçilir: düşük hız = yüksek direnç, yüksek hız = düşük direnç. Bus toplam kapasitansı tipik olarak **400 pF** ile sınırlıdır; bu da pratikte kablo uzunluğunu (~birkaç metre) ve bağlanabilecek cihaz sayısını kısıtlar.
 
 ```mermaid
 sequenceDiagram
@@ -210,120 +117,60 @@ sequenceDiagram
     M->>S: STOP
 ```
 
-=== "HAL Örneği (STM32)"
+Diyagramdaki **REPEATED START**, bus'ı bırakıp (STOP) tekrar almak yerine, yazma işleminden hemen sonra yön değiştirip okumaya geçmeyi sağlar - böylece başka bir master araya giremez ve register-okuma işlemi atomik kalır. Her byte'tan sonra alıcı `ACK` (devam) veya `NACK` (dur/hata) biti gönderir; son byte'ta master bilerek `NACK` göndererek transferi sonlandırır.
 
-    ```c title="i2c_hal.c"
-    #include "stm32f4xx_hal.h"
+**Clock Stretching ve Arbitration:** Bir slave veriyi hazırlamak için zaman gerektiğinde `SCL` hattını LOW'da tutarak master'ı bekletebilir (**clock stretching**) - tüm slave'ler bunu desteklemez, datasheet kontrol edilmelidir. Birden fazla master aynı anda bus'a erişmeye çalışırsa, her master kendi gönderdiği biti hattaki gerçek seviyeyle karşılaştırır; uyuşmazlık gören master geri çekilir (**arbitration**) - bu da I²C'yi multi-master için pipe/SPI'a göre daha uygun kılar.
 
-    extern I2C_HandleTypeDef hi2c1;
-    #define MPU6050_ADDR  (0x68 << 1)
-    #define REG_ACCEL_X   0x3B
+!!! tip "Adres Çakışması"
+    Aynı sabit I²C adresine sahip iki aynı sensör aynı bus'a bağlanamaz. Çözüm: donanımsal adres pinleri (`AD0` gibi) ile adresi değiştirmek, I²C multiplexer (`TCA9548A` vb.) kullanmak veya cihazları ayrı bus'lara (MCU'nun birden fazla I²C periferi varsa) dağıtmak.
 
-    void mpu6050_read(int16_t *accel) {
-        uint8_t buf[6];
-        uint8_t reg = REG_ACCEL_X;
+**Avantaj / Dezavantaj**
 
-        HAL_I2C_Master_Transmit(&hi2c1, MPU6050_ADDR,
-                                &reg, 1, HAL_MAX_DELAY);
-        HAL_I2C_Master_Receive(&hi2c1, MPU6050_ADDR,
-                               buf, 6, HAL_MAX_DELAY);
-
-        accel[0] = (int16_t)(buf[0] << 8 | buf[1]);
-        accel[1] = (int16_t)(buf[2] << 8 | buf[3]);
-        accel[2] = (int16_t)(buf[4] << 8 | buf[5]);
-    }
-    ```
-
-=== "Register Seviyesi (STM32)"
-
-    ```c title="i2c_register.c"
-    /* START koşulu üret */
-    I2C1->CR1 |= I2C_CR1_START;
-    while (!(I2C1->SR1 & I2C_SR1_SB));
-
-    /* Adres + Write gönder */
-    I2C1->DR = (0x68 << 1) | 0;
-    while (!(I2C1->SR1 & I2C_SR1_ADDR));
-    (void)I2C1->SR2;   /* ADDR flag temizle */
-
-    /* Register adresi gönder */
-    I2C1->DR = 0x3B;
-    while (!(I2C1->SR1 & I2C_SR1_TXE));
-
-    /* REPEATED START */
-    I2C1->CR1 |= I2C_CR1_START;
-    while (!(I2C1->SR1 & I2C_SR1_SB));
-
-    /* Adres + Read gönder */
-    I2C1->DR = (0x68 << 1) | 1;
-    while (!(I2C1->SR1 & I2C_SR1_ADDR));
-    (void)I2C1->SR2;
-
-    /* Veri oku */
-    I2C1->CR1 &= ~I2C_CR1_ACK;   /* Son byte için ACK kapat */
-    while (!(I2C1->SR1 & I2C_SR1_RXNE));
-    uint8_t data = I2C1->DR;
-
-    I2C1->CR1 |= I2C_CR1_STOP;
-    ```
-
-=== "Linux i2c-tools"
-
-    ```bash
-    # Bus'ta cihazları tara
-    sudo i2cdetect -y 1
-
-    # Register oku: bus=1, addr=0x68, reg=0x3B
-    sudo i2cget -y 1 0x68 0x3B
-
-    # Register yaz: 0x6B registerına 0x00 yaz (PWR_MGMT_1)
-    sudo i2cset -y 1 0x68 0x6B 0x00
-
-    # Python ile
-    python3 -c "
-    import smbus2
-    bus = smbus2.SMBus(1)
-    data = bus.read_i2c_block_data(0x68, 0x3B, 6)
-    print(data)
-    bus.close()
-    "
-    ```
+| Avantajlar                                                  | Dezavantajlar                                                         |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Sadece 2 hat ile onlarca cihaz bağlanabilir (adresleme dahil)   | Half-duplex ve SPI'a göre yavaştır                                       |
+| Multi-master ve arbitration desteği vardır                     | Bus kapasitansı sınırı yüzünden mesafe/cihaz sayısı kısıtlıdır            |
+| Yerleşik ACK/NACK ile temel hata bildirimi vardır               | Aynı adresli iki cihaz aynı bus'ta çakışır; adres yönetimi gerektirir     |
 
 ---
 
 ## CAN Bus (Controller Area Network)
 
-CAN, çoklu master destekli, diferansiyel çift üzerinden mesaj tabanlı haberleşme protokolüdür. Otomotiv, endüstriyel ve robot sistemlerinde standart haberleşme yöntemidir.
+CAN, çoklu düğüm (multi-master) destekli, diferansiyel çift (`CAN_H`/`CAN_L`) üzerinden **mesaj tabanlı** (adres değil, mesaj ID tabanlı) haberleşme protokolüdür. Bir düğüm değil, bir **mesaj** yayınlanır; bus'taki tüm düğümler her mesajı dinler ve kendileriyle ilgili ID'leri filtreler. OSI modelinde yalnızca fiziksel ve veri bağlantı katmanını tanımlar - mesajın içeriğini yorumlamak için CANopen, J1939 gibi üst katman protokolleri kullanılır. Otomotiv, endüstriyel ve robot sistemlerinde standart haberleşme yöntemidir.
 
 ```mermaid
 graph LR
-    ECU1[ECU 1\nMotor] --- CANB[CAN Bus\nCAN_H / CAN_L]
-    ECU2[ECU 2\nFren] --- CANB
-    ECU3[ECU 3\nGövde] --- CANB
-    ECU4[Teşhis\nCAN-PC] --- CANB
+    ECU1["ECU 1<br/>Motor"] --- CANB["CAN Bus<br/>CAN_H / CAN_L"]
+    ECU2["ECU 2<br/>Fren"] --- CANB
+    ECU3["ECU 3<br/>Gövde"] --- CANB
+    ECU4["Teşhis<br/>CAN-PC"] --- CANB
     R1[120Ω] --- CANB
     CANB --- R2[120Ω]
 ```
 
-### CAN Çerçeve Yapısı (Standard Frame)
+Hat, iki uçta **120Ω** terminasyon direnciyle sonlandırılır (yansımaları önlemek için); diferansiyel sinyal iki durumdan birindedir: **dominant (0)** - her iki hat aktif sürülür, **recessive (1)** - hat pasif/yüksek empedanstadır. Bir düğüm dominant gönderirken bir diğeri recessive gönderirse, bus dominant seviyede kalır; bu fiziksel özellik, arbitration mekanizmasının temelidir.
 
-| Alan           |   Bit    | Açıklama                                     |
-| -------------- | :------: | -------------------------------------------- |
-| SOF            |    1     | Start of Frame                               |
-| Arbitration ID |    11    | Mesaj kimliği; **düşük ID = yüksek öncelik** |
-| RTR            |    1     | Remote Transmission Request                  |
-| Control        |    6     | DLC (data length code: 0–8 byte)             |
-| Data           | 0–64 bit | Taşınan veri                                 |
-| CRC            |    15    | Cyclic Redundancy Check                      |
-| ACK            |    2     | Alıcı onayı                                  |
-| EOF            |    7     | End of Frame                                 |
+| Alan           |    Bit    | Açıklama                                     |
+| -------------- | :--------: | --------------------------------------------- |
+| SOF            |     1      | Start of Frame                                 |
+| Arbitration ID | 11 (Standart) / 29 (Extended) | Mesaj kimliği; **düşük ID = yüksek öncelik** (dominant bit daha çok kazanır) |
+| RTR            |     1      | Remote Transmission Request (veri isteği çerçevesi) |
+| Control        |     6      | DLC (data length code: 0–8 byte)                |
+| Data           |  0–64 bit  | Taşınan veri (klasik CAN: maks. 8 byte)          |
+| CRC            |    15      | Cyclic Redundancy Check                         |
+| ACK            |     2      | Alıcı onayı                                     |
+| EOF            |     7      | End of Frame                                    |
 
-### Bit Arbitrasyon
+!!! note "Standart (CAN 2.0A) vs Extended (CAN 2.0B) Çerçeve"
+    Standart çerçeve 11-bit ID kullanır (2048 farklı mesaj kimliği); Extended çerçeve 29-bit ID ile (11-bit temel ID + 18-bit uzantı) çok daha fazla benzersiz ID sağlar. Aynı bus üzerinde iki tür bir arada bulunabilir; extended ID her zaman standart ID'den düşük önceliklidir (arbitration alanındaki ekstra bit dominant kabul edilir).
+
+!!! tip "CAN FD (Flexible Data-Rate)"
+    Klasik CAN veri alanı 8 byte ile sınırlıdır. **CAN FD**, aynı fiziksel katmanı kullanarak veri alanını 64 byte'a çıkarır ve veri fazında (arbitration sonrası) daha yüksek bit hızına geçebilir; günümüz otomotiv/robotik sistemlerinde klasik CAN'ın yerini almaktadır. Standart CAN kontrolcüleri CAN FD çerçevelerini okuyamaz - donanım desteği gerekir.
 
 ```mermaid
 sequenceDiagram
-    participant A as Node A\n(ID=0x100)
-    participant B as Node B\n(ID=0x080)
+    participant A as Node A<br/>(ID=0x100)
+    participant B as Node B<br/>(ID=0x080)
     participant BUS as CAN Bus
 
     A->>BUS: ID bit 8 = 1
@@ -334,99 +181,50 @@ sequenceDiagram
     Note over B: Node B kazandı (daha düşük ID)
 ```
 
-### Hız / Mesafe Tablosu
-
 | Bit Rate | Maks. Kablo Uzunluğu |
-| :------: | :------------------: |
-|  1 Mbps  |         25 m         |
-| 500 kbps |        100 m         |
-| 250 kbps |        250 m         |
-| 125 kbps |        500 m         |
-| 50 kbps  |        1000 m        |
-| 10 kbps  |        5000 m        |
-
-### Hata Durumları
+| :-------: | :---------------------: |
+|  1 Mbps   |          25 m           |
+| 500 kbps  |         100 m           |
+| 250 kbps  |         250 m           |
+| 125 kbps  |         500 m           |
+| 50 kbps   |        1000 m           |
+| 10 kbps   |        5000 m           |
 
 ```mermaid
 stateDiagram-v2
-    [*] --> ErrorActive: Başlangıç\n(TEC=REC=0)
-    ErrorActive --> ErrorPassive: TEC > 127\nveya REC > 127
-    ErrorPassive --> ErrorActive: TEC < 128\nve REC < 128
-    ErrorPassive --> BusOff: TEC > 255
-    BusOff --> ErrorActive: 128 × 11 recessive bit\n(Manuel reset)
+    [*] --> ErrorActive: "Başlangıç (TEC=REC=0)"
+    ErrorActive --> ErrorPassive: "TEC > 127 veya REC > 127"
+    ErrorPassive --> ErrorActive: "TEC < 128 ve REC < 128"
+    ErrorPassive --> BusOff: "TEC > 255"
+    BusOff --> ErrorActive: "128 × 11 recessive bit (Manuel reset)"
 ```
 
 !!! danger "Bus-Off Durumu"
-    TEC (Transmit Error Counter) 255'i aşarsa node bus-off olur ve bus'tan tamamen kopar. Geri dönüş için manuel reset veya donanım yeniden başlatma gerekir.
+    TEC (Transmit Error Counter) 255'i aşarsa node bus-off olur ve bus'tan tamamen kopar. Geri dönüş için manuel reset veya donanım yeniden başlatma gerekir. Sık tekrar eden bus-off genelde yanlış terminasyon, hatalı bit-rate ayarı veya donanım arızasına işaret eder.
 
-=== "STM32 bxCAN TX"
+**Avantaj / Dezavantaj**
 
-    ```c title="can_tx.c"
-    CAN_TxHeaderTypeDef hdr = {
-        .StdId = 0x100,
-        .IDE   = CAN_ID_STD,
-        .RTR   = CAN_RTR_DATA,
-        .DLC   = 4
-    };
-    uint8_t data[4] = {0x01, 0x02, 0x03, 0x04};
-    uint32_t mailbox;
-    HAL_CAN_AddTxMessage(&hcan1, &hdr, data, &mailbox);
-    ```
-
-=== "STM32 bxCAN Filtre"
-
-    ```c title="can_filter.c"
-    CAN_FilterTypeDef f = {
-        .FilterIdHigh         = 0x100 << 5,
-        .FilterIdLow          = 0,
-        .FilterMaskIdHigh     = 0x7FF << 5,   /* Tam eşleşme */
-        .FilterMaskIdLow      = 0,
-        .FilterFIFOAssignment = CAN_RX_FIFO0,
-        .FilterBank           = 0,
-        .FilterMode           = CAN_FILTERMODE_IDMASK,
-        .FilterScale          = CAN_FILTERSCALE_32BIT,
-        .FilterActivation     = ENABLE
-    };
-    HAL_CAN_ConfigFilter(&hcan1, &f);
-    ```
-
-=== "Linux SocketCAN"
-
-    ```bash
-    # Sanal CAN arayüzü
-    sudo modprobe vcan
-    sudo ip link add vcan0 type vcan
-    sudo ip link set vcan0 up
-
-    # CAN çerçevesi gönder
-    cansend vcan0 100#01020304
-
-    # Dinle (tüm çerçeveler)
-    candump vcan0
-
-    # Hata analizi
-    canbusload vcan0
-    ```
-
-    ```python title="python-can"
-    import can
-    bus = can.interface.Bus(channel='vcan0', interface='socketcan')
-    msg = can.Message(arbitration_id=0x100,
-                      data=[0x01, 0x02, 0x03, 0x04],
-                      is_extended_id=False)
-    bus.send(msg)
-    received = bus.recv(timeout=1.0)
-    print(received)
-    bus.shutdown()
-    ```
+| Avantajlar                                                    | Dezavantajlar                                                         |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Gerçek zamanlı, önceliklendirilmiş mesajlaşma (arbitration)         | Klasik CAN veri alanı küçüktür (8 byte); büyük veri için CAN FD gerekir  |
+| Gürültüye çok dayanıklıdır (diferansiyel sinyal, endüstriyel ortamlar için tasarlanmıştır) | Mesaj içeriğinin anlamı protokolde tanımlı değildir; üst katman (CANopen/J1939) gerekir |
+| Yerleşik hata tespiti/yönetimi (CRC, ACK, error counter'lar)         | Şifreleme/kimlik doğrulama yoktur; bus'a fiziksel erişim = tam kontrol   |
 
 ---
 
 ## TCP / IP
 
-TCP (Transmission Control Protocol), güvenilir, sıralı, çift yönlü bağlantı odaklı taşıma katmanı protokolüdür. IP, paketleri kaynak'tan hedef'e yönlendiren ağ katmanı protokolüdür.
+**TCP/IP**, internetin temelini oluşturan katmanlı protokol ailesidir. **IP (Internet Protocol)**, paketleri (IP adresi kullanarak) kaynaktan hedefe yönlendiren ağ katmanı protokolüdür - güvenilirlik garantisi vermez, sadece "en iyi çaba" (best-effort) ile teslim etmeye çalışır. **TCP (Transmission Control Protocol)**, IP üzerine inşa edilen, güvenilir, sıralı, çift yönlü bağlantı odaklı taşıma katmanı protokolüdür; kayıp paketleri yeniden gönderir, sırasını düzeltir ve akış kontrolü yapar.
 
-### Bağlantı Kurma - Three-Way Handshake
+| Katman (TCP/IP) | Örnek Protokoller           | Görev                                          |
+| ------------------ | ------------------------------ | ------------------------------------------------- |
+| Uygulama           | HTTP, SSH, DNS, MQTT           | Uygulamaya özgü mesaj formatı                       |
+| Taşıma             | TCP, UDP                       | Uçtan uca iletim, port numaralandırma               |
+| Ağ (Internet)      | IP, ICMP                       | Adresleme ve yönlendirme (routing)                  |
+| Bağlantı           | Ethernet, Wi-Fi, ARP           | Aynı fiziksel ağdaki (LAN) çerçeve iletimi           |
+
+!!! tip "Port Numaraları"
+    Bir IP adresi makineyi, **port numarası** (16-bit, 0–65535) o makinedeki hangi uygulamaya/servise ait olduğunu belirtir. `0–1023`: well-known port'lar (root yetkisi gerektirir, örn. 22=SSH, 80=HTTP, 443=HTTPS); `1024–49151`: kayıtlı port'lar; `49152–65535`: dinamik/geçici (ephemeral) port'lar - istemcilerin kısa ömürlü bağlantıları genelde buradan seçilir.
 
 ```mermaid
 sequenceDiagram
@@ -436,7 +234,7 @@ sequenceDiagram
     C->>S: SYN (seq=100)
     S-->>C: SYN-ACK (seq=200, ack=101)
     C->>S: ACK (seq=101, ack=201)
-    Note over C,S: Bağlantı kuruldu
+    Note over C,S: Bağlantı kuruldu (3-way handshake)
 
     C->>S: Veri (seq=101, len=50)
     S-->>C: ACK (ack=151)
@@ -445,161 +243,82 @@ sequenceDiagram
     S-->>C: ACK
     S-->>C: FIN
     C->>S: ACK
-    Note over C,S: Bağlantı kapatıldı
+    Note over C,S: Bağlantı kapatıldı (4-way, her yön ayrı kapanır)
 ```
 
-### TCP vs UDP Karşılaştırması
+!!! note "MTU ve Parçalanma (Fragmentation)"
+    Ethernet'te tipik MTU (Maximum Transmission Unit) **1500 byte**'tır. Bu boyuttan büyük bir IP paketi, ağ katmanında parçalara bölünür (fragmentation) - performansı düşürür ve bazı ağ cihazlarında sorun çıkarabilir. TCP, bağlantı kurulurken MSS (Maximum Segment Size) değerini bu sınırın altında tutmaya çalışarak parçalanmayı önler.
 
-| Özellik       |      TCP       |          UDP          |
-| ------------- | :------------: | :-------------------: |
-| Bağlantı      |   Bağlantılı   |      Bağlantısız      |
-| Güvenilirlik  |   ✓ Garanti    |     ✗ Best-effort     |
-| Sıralama      |       ✓        |           ✗           |
-| Akış kontrolü |       ✓        |           ✗           |
-| Gecikme       |     Yüksek     |       **Düşük**       |
-| Boyut         |    Değişken    |      Maks. 64 KB      |
-| Kullanım      | HTTP, SSH, FTP | DNS, DHCP, RTSP, Oyun |
+| Özellik        |       TCP       |           UDP           |
+| --------------- | :---------------: | :------------------------: |
+| Bağlantı        |    Bağlantılı     |       Bağlantısız          |
+| Güvenilirlik    |    ✓ Garanti      |      ✗ Best-effort          |
+| Sıralama        |        ✓          |            ✗                |
+| Akış kontrolü   |        ✓          |            ✗                |
+| Gecikme         |      Yüksek       |        **Düşük**            |
+| Boyut           |     Değişken       |       Maks. 64 KB            |
+| Kullanım        |  HTTP, SSH, FTP    |  DNS, DHCP, RTSP, Oyun       |
 
-```c title="TCP Server (POSIX)"
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <stdio.h>
+**Avantaj / Dezavantaj**
 
-int main(void) {
-    int srv = socket(AF_INET, SOCK_STREAM, 0);
+| Avantajlar (TCP)                                          | Dezavantajlar (TCP)                                                |
+| -------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Güvenilir teslimat, sıralama ve akış kontrolü uygulama katmanına iş bırakmaz | El sıkışma ve yeniden gönderim mekanizmaları gecikmeyi artırır       |
+| Tıkanıklık kontrolü (congestion control) ağı korur               | Gerçek zamanlı/kayıp toleranslı veri (ses, video akışı) için gereksiz overhead getirir - bu senaryolarda UDP tercih edilir |
 
-    int opt = 1;
-    setsockopt(srv, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-
-    struct sockaddr_in addr = {
-        .sin_family      = AF_INET,
-        .sin_addr.s_addr = INADDR_ANY,
-        .sin_port        = htons(8080)
-    };
-    bind(srv, (struct sockaddr *)&addr, sizeof(addr));
-    listen(srv, 10);
-
-    struct sockaddr_in cli_addr;
-    socklen_t cli_len = sizeof(cli_addr);
-    int cli = accept(srv, (struct sockaddr *)&cli_addr, &cli_len);
-
-    printf("Bağlantı: %s\n", inet_ntoa(cli_addr.sin_addr));
-
-    char buf[1024];
-    ssize_t n = recv(cli, buf, sizeof(buf) - 1, 0);
-    buf[n] = '\0';
-    printf("Alındı: %s\n", buf);
-    send(cli, "200 OK\r\n", 8, 0);
-
-    close(cli);
-    close(srv);
-    return 0;
-}
-```
-
-```c title="UDP Örneği"
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
-
-/* Alıcı */
-int sock = socket(AF_INET, SOCK_DGRAM, 0);
-struct sockaddr_in addr = {
-    .sin_family      = AF_INET,
-    .sin_addr.s_addr = INADDR_ANY,
-    .sin_port        = htons(5000)
-};
-bind(sock, (struct sockaddr *)&addr, sizeof(addr));
-
-char buf[1024];
-struct sockaddr_in sender;
-socklen_t len = sizeof(sender);
-recvfrom(sock, buf, sizeof(buf), 0, (struct sockaddr *)&sender, &len);
-```
+---
 
 ## Bluetooth Classic ve BLE
 
-### Bluetooth Protokol Yığını
+```mermaid
+graph TD
+    APP["Uygulama Profili<br/>A2DP / HFP / SPP / GATT"] --> HOST["Host Stack<br/>L2CAP / RFCOMM / ATT"]
+    HOST --> HCI["HCI<br/>Host-Controller Interface"]
+    HCI --> CTRL["Bluetooth Controller<br/>LMP / LL"]
+    CTRL --> RF["2.4 GHz RF<br/>FHSS / DSSS"]
+```
+
+Bluetooth Classic (BR/EDR) sürekli veri akışı (ses, dosya transferi) için tasarlanmıştır; BLE ise kısa, seyrek veri paketleri gönderip çoğu zamanı düşük güçlü uyku modunda geçirecek şekilde tasarlanmıştır - bu yüzden IoT sensörlerinde ve giyilebilir cihazlarda BLE tercih edilir.
+
+| Özellik           | Bluetooth Classic (BR/EDR)  | Bluetooth Low Energy (BLE)   |
+| ------------------- | :----------------------------: | :------------------------------: |
+| Kullanım            |        Ses/Veri akışı          |     Kısa periyodik veri           |
+| Frekans kanalları   |          79 × 1 MHz            |          40 × 2 MHz               |
+| Veri hızı           |        1–3 Mbps (EDR)          |      125 Kbps – 2 Mbps            |
+| Güç tüketimi        |            Yüksek               |        **Çok düşük**              |
+| Bağlantı süresi     |             ~100 ms             |             < 3 ms                 |
+| Piconet             |      1 Master + 7 Slave        |   Sınırsız (Mesh/Broadcast)        |
+| Profil              |        A2DP, HFP, SPP           |   GATT (Generic Attribute)         |
 
 ```mermaid
 graph TD
-    APP[Uygulama Profili\nA2DP / HFP / SPP / GATT] --> HOST[Host Stack\nL2CAP / RFCOMM / ATT]
-    HOST --> HCI[HCI\nHost-Controller Interface]
-    HCI --> CTRL[Bluetooth Controller\nLMP / LL]
-    CTRL --> RF[2.4 GHz RF\nFHSS / DSSS]
+    CENTRAL["Central<br/>Telefon/PC"] <-->|ATT Protocol| PERIPH["Peripheral<br/>Sensör"]
+    PERIPH --> SVC1["Service: Battery 0x180F"]
+    PERIPH --> SVC2["Service: Heart Rate 0x180D"]
+    SVC1 --> CHAR1["Char: Battery Level<br/>0x2A19 | READ NOTIFY"]
+    SVC2 --> CHAR2["Char: HR Measurement<br/>0x2A37 | NOTIFY"]
+    CHAR2 --> DESC["CCC Descriptor<br/>0x2902 | Notify Enable"]
 ```
 
-### Classic vs BLE Karşılaştırması
+| Yapı           | Açıklama                                                                    |
+| ---------------- | -------------------------------------------------------------------------------- |
+| **Piconet**       | 1 Master + maks. 7 aktif Slave                                                    |
+| **Scatternet**    | Birden fazla Piconet'in örtüşmesi; bir cihaz iki Piconet'te rol alabilir           |
+| **FHSS**          | 79 kanalda saniyede 1600 hop - parazit/girişim direnci                            |
+| **Service/Characteristic** | GATT'ta veri, hiyerarşik olarak Service (işlevsel grup, örn. Battery) → Characteristic (tek bir değer, örn. Battery Level) → Descriptor (meta veri, örn. bildirim aç/kapa) şeklinde organize edilir |
 
-| Özellik           | Bluetooth Classic (BR/EDR) | Bluetooth Low Energy (BLE) |
-| ----------------- | :------------------------: | :------------------------: |
-| Kullanım          |       Ses/Veri akışı       |    Kısa periyodik veri     |
-| Frekans kanalları |         79 × 1 MHz         |         40 × 2 MHz         |
-| Veri hızı         |       1–3 Mbps (EDR)       |     125 Kbps – 2 Mbps      |
-| Güç tüketimi      |           Yüksek           |       **Çok düşük**        |
-| Bağlantı süresi   |          ~100 ms           |           < 3 ms           |
-| Piconet           |     1 Master + 7 Slave     | Sınırsız (Mesh/Broadcast)  |
-| Profil            |       A2DP, HFP, SPP       |  GATT (Generic Attribute)  |
+!!! tip "BLE Eşleştirme (Pairing) Güvenlik Seviyeleri"
+    - **Just Works**: Kullanıcı etkileşimi yok, MITM saldırısına açık - yalnızca düşük riskli senaryolarda kullanılmalı.
+    - **Passkey Entry**: Bir tarafta ekran, diğerinde tuş takımı varsa 6 haneli kod girilir.
+    - **Numeric Comparison**: Her iki tarafta da ekran varsa aynı kodun gösterilip onaylanması istenir - MITM'e karşı en güçlü seçenek.
 
-### BLE GATT Mimarisi
+**Avantaj / Dezavantaj**
 
-```mermaid
-graph TD
-    CENTRAL[Central\nTelefon/PC] <-->|ATT Protocol| PERIPH[Peripheral\nSensör]
-    PERIPH --> SVC1[Service: Battery 0x180F]
-    PERIPH --> SVC2[Service: Heart Rate 0x180D]
-    SVC1 --> CHAR1[Char: Battery Level\n0x2A19 | READ NOTIFY]
-    SVC2 --> CHAR2[Char: HR Measurement\n0x2A37 | NOTIFY]
-    CHAR2 --> DESC[CCC Descriptor\n0x2902 | Notify Enable]
-```
-
-```bash
-# Linux'ta BLE araçları
-bluetoothctl
-  power on
-  scan on
-  connect AA:BB:CC:DD:EE:FF
-  info AA:BB:CC:DD:EE:FF
-
-# GATT okuma
-gatttool -b AA:BB:CC:DD:EE:FF --char-read -a 0x0025
-
-# Düşük seviye izleme
-sudo btmon | grep -A5 "HCI Event"
-```
-
-```python title="BLE Python (bleak)"
-import asyncio
-from bleak import BleakClient
-
-DEVICE = "AA:BB:CC:DD:EE:FF"
-HR_CHAR = "00002a37-0000-1000-8000-00805f9b34fb"
-
-async def main():
-    async with BleakClient(DEVICE) as client:
-        services = await client.get_services()
-        for svc in services:
-            print(f"Service: {svc.uuid}")
-
-        def hr_callback(sender, data):
-            print(f"HR: {data[1]} bpm")
-
-        await client.start_notify(HR_CHAR, hr_callback)
-        await asyncio.sleep(10)
-        await client.stop_notify(HR_CHAR)
-
-asyncio.run(main())
-```
-
-### Piconet ve Scatternet
-
-| Yapı           | Açıklama                                                                 |
-| -------------- | ------------------------------------------------------------------------ |
-| **Piconet**    | 1 Master + maks. 7 aktif Slave                                           |
-| **Scatternet** | Birden fazla Piconet'in örtüşmesi; bir cihaz iki Piconet'te rol alabilir |
-| **FHSS**       | 79 kanalda saniyede 1600 hop - parazit direnci                           |
+| Avantajlar                                                | Dezavantajlar                                                         |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| BLE: çok düşük güç tüketimi, uzun pil ömrü                       | Kısa menzil (tipik 10–100m, ortama bağlı)                                |
+| Yaygın donanım desteği (telefon, PC, çoğu MCU)                   | Classic BR/EDR ile BLE farklı protokol yığınlarıdır; her ikisi gerekiyorsa "dual-mode" çip gerekir |
+| GATT ile standartlaştırılmış, keşfedilebilir veri modeli          | BLE veri hızı düşüktür; büyük veri transferi için uygun değildir          |
 
 ---
 
@@ -607,16 +326,18 @@ asyncio.run(main())
 
 ### TLS/SSL El Sıkışması
 
+Aşağıdaki diyagram, RSA anahtar değişimi kullanan **klasik TLS 1.2** el sıkışmasını gösterir (2 round-trip gerektirir):
+
 ```mermaid
 sequenceDiagram
     participant C as İstemci
     participant S as Sunucu
 
-    C->>S: ClientHello\n(desteklenen cipher suites, TLS sürümü)
-    S-->>C: ServerHello\n(seçilen cipher suite)
+    C->>S: ClientHello<br/>(desteklenen cipher suites, TLS sürümü)
+    S-->>C: ServerHello<br/>(seçilen cipher suite)
     S-->>C: Sertifika (X.509)
     S-->>C: ServerHelloDone
-    C->>S: ClientKeyExchange\n(pre-master secret, RSA ile şifreli)
+    C->>S: ClientKeyExchange<br/>(pre-master secret, RSA ile şifreli)
     C->>S: ChangeCipherSpec
     C->>S: Finished (HMAC)
     S-->>C: ChangeCipherSpec
@@ -624,16 +345,22 @@ sequenceDiagram
     Note over C,S: Şifreli kanal kuruldu
 ```
 
+!!! note "TLS 1.3 Farkı"
+    TLS 1.3, el sıkışmasını **1 round-trip**'e indirir ve RSA yerine zorunlu olarak (Ephemeral) Diffie-Hellman anahtar değişimi kullanır. Bu, **forward secrecy** sağlar: sunucunun uzun ömürlü özel anahtarı ileride ele geçirilse bile, geçmişte kaydedilmiş trafik çözülemez (RSA anahtar değişiminde bu garanti yoktur). Modern sistemlerde TLS 1.2'nin yalnızca güçlü (PFS destekli) cipher suite'lerle kullanılması, TLS 1.0/1.1'in ise tamamen devre dışı bırakılması önerilir.
+
+!!! tip "Hibrit Şifreleme"
+    Gerçek TLS trafiğinde veri, RSA/DH gibi yavaş asimetrik algoritmalarla değil, el sıkışma sırasında üretilen bir **oturum anahtarıyla** hızlı simetrik bir algoritma (AES-GCM, ChaCha20) kullanılarak şifrelenir. Asimetrik kriptografi yalnızca bu oturum anahtarını güvenli şekilde değiştirmek için kullanılır - bu yaklaşıma **hibrit şifreleme** denir.
+
 ### RSA (Asimetrik Şifreleme)
 
-RSA güvenliği, büyük sayıların asal çarpanlarına ayrılmasının hesaplama zorluğuna dayanır.
+RSA güvenliği, büyük sayıların asal çarpanlarına ayrılmasının (factorization) hesaplama zorluğuna dayanır.
 
-| Kavram                 | Açıklama                                         |
-| ---------------------- | ------------------------------------------------ |
-| **Public Key**         | Herkesle paylaşılır; yalnızca şifreler           |
-| **Private Key**        | Gizli tutulur; şifreyi çözer ve imzalar          |
-| **Anahtar uzunluğu**   | Minimum 2048-bit (≥4096-bit önerilir)            |
-| **Matematiksel temel** | n = p × q (büyük asal sayılar); e·d ≡ 1 mod φ(n) |
+| Kavram                 | Açıklama                                          |
+| ------------------------- | ---------------------------------------------------- |
+| **Public Key**             | Herkesle paylaşılır; yalnızca şifreler ya da imza doğrular |
+| **Private Key**            | Gizli tutulur; şifreyi çözer ve imzalar                |
+| **Anahtar uzunluğu**       | Minimum 2048-bit (≥4096-bit önerilir)                  |
+| **Matematiksel temel**     | n = p × q (büyük asal sayılar); e·d ≡ 1 mod φ(n)       |
 
 ```bash
 # RSA anahtar çifti oluştur
@@ -649,139 +376,75 @@ openssl dgst -sha256 -sign private.pem -out sig.bin data.txt
 openssl dgst -sha256 -verify public.pem -signature sig.bin data.txt
 ```
 
+!!! warning "RSA Doğrudan Veri Şifrelemede Kullanılmaz"
+    RSA yalnızca kendi anahtar boyutundan küçük verileri şifreleyebilir ve simetrik algoritmalara göre çok yavaştır. Pratikte RSA (veya DH) sadece bir simetrik oturum anahtarını taşımak/imzalamak için kullanılır (bkz. "Hibrit Şifreleme"); büyük verinin kendisi AES gibi bir simetrik algoritma ile şifrelenir.
+
 ### SSH (Secure Shell)
 
-SSH, OSI uygulama katmanında çalışan, **TCP 22** portunu kullanan şifreli uzaktan erişim protokolüdür.
-
-|   Kimlik Doğrulama   |  Güvenlik  | Avantaj                           |
-| :------------------: | :--------: | --------------------------------- |
-|        Parola        |    Orta    | Kolay kurulum                     |
-| RSA/Ed25519 Anahtar  | **Yüksek** | Şifresiz, brute-force'a dayanıklı |
-| FIDO2 / Hardware Key | En yüksek  | Kimlik avına karşı dirençli       |
-
-```bash
-# Ed25519 anahtar çifti (RSA'dan daha küçük ve hızlı)
-ssh-keygen -t ed25519 -C "serkan@host"
-
-# Public key'i sunucuya kopyala
-ssh-copy-id user@server
-# veya
-cat ~/.ssh/id_ed25519.pub | ssh user@server "cat >> ~/.ssh/authorized_keys"
-
-# SSH bağlantısı
-ssh -p 2222 user@server            # Özel port
-ssh -i ~/.ssh/id_ed25519 user@server  # Belirli anahtar
-
-# Tünel - yerel yönlendirme (L)
-ssh -L 8080:localhost:80 user@server   # localhost:8080 → sunucu:80
-
-# Tünel - uzak yönlendirme (R)
-ssh -R 9090:localhost:3000 user@server # sunucu:9090 → yerel:3000
-
-# SOCKS5 proxy
-ssh -D 1080 user@server   # Tüm trafiği sunucu üzerinden geçir
-```
-
-```ini title="/etc/ssh/sshd_config - Güvenlik Ayarları"
-Port 2222                      # Varsayılan 22'yi değiştir
-PermitRootLogin no             # Root girişi engelle
-PasswordAuthentication no      # Sadece anahtar
-PubkeyAuthentication yes
-MaxAuthTries 3
-LoginGraceTime 30
-X11Forwarding no
-AllowUsers serkan admin        # Sadece belirtilen kullanıcılar
-```
-
----
-
-## MAVLink
-
-MAVLink (Micro Air Vehicle Link), insansız hava araçları (UAV/drone) ve otonom sistemler için tasarlanmış, son derece hafif ikili (binary) haberleşme protokolüdür. 2009'da Lorenz Meier tarafından geliştirilmiştir. ArduPilot, PX4 ve PX4-based tüm uçuş denetleyicileri MAVLink'i standart iletişim protokolü olarak kullanır.
+SSH, OSI uygulama katmanında çalışan, varsayılan olarak **TCP 22** portunu kullanan şifreli uzaktan erişim protokolüdür. Bağlantı, TLS'e benzer şekilde bir anahtar değişimiyle başlar, ardından kullanıcı kimlik doğrulaması yapılır.
 
 ```mermaid
-graph LR
-    subgraph ARAÇ["Araç (Vehicle)"]
-        FC[Uçuş Denetleyici\nPixhawk / CubePilot]
-        ESC[ESC / Motor]
-        GPS[GPS Modülü]
-        FC --- ESC
-        FC --- GPS
-    end
-    subgraph GCS["Yer Kontrol İstasyonu (GCS)"]
-        QGC[QGroundControl]
-        MP[Mission Planner]
-        PY[Python / pymavlink]
-        ROS[ROS2 / MAVROS]
-    end
+sequenceDiagram
+    participant C as İstemci
+    participant S as Sunucu (sshd)
 
-    FC <-->|MAVLink v2\nUART / UDP / TCP| TELM[Telemetri\nRadio 915 MHz]
-    TELM <-->|MAVLink v2| QGC
-    FC <-->|MAVLink v2\nUSB / UDP| MP
-    FC <-->|MAVLink v2\nUDP 14550| PY
-    FC <-->|MAVROS Bridge\nUDP / Serial| ROS
-
-    style ARAÇ fill:#E3F2FD,stroke:#1565C0
-    style GCS fill:#E8F5E9,stroke:#2E7D32
+    C->>S: TCP bağlantısı (port 22)
+    S->>C: Server Key Exchange (algoritma müzakeresi)
+    C->>S: Client Hello
+    Note over C,S: Diffie-Hellman Anahtar Değişimi
+    C->>S: Kullanıcı kimlik doğrulama<br/>(şifre veya anahtar)
+    S->>C: Kimlik doğrulama başarılı
+    Note over C,S: Şifreli oturum (AES, ChaCha20)
 ```
 
-### MAVLink v1 vs v2
+|   Kimlik Doğrulama    |  Güvenlik   | Avantaj                            |
+| :----------------------: | :-----------: | ------------------------------------- |
+|         Parola          |     Orta      | Kolay kurulum                          |
+|  RSA/Ed25519 Anahtar     |  **Yüksek**   | Şifresiz, brute-force'a dayanıklı       |
+|  FIDO2 / Hardware Key    |   En yüksek   | Kimlik avına karşı dirençli             |
 
-| Özellik            |   MAVLink v1  |        MAVLink v2       |
-| ------------------ | :-----------: | :---------------------: |
-| Magic byte         |     `0xFE`    |          `0xFD`         |
-| Maks. payload      |    255 byte   |         255 byte        |
-| Message ID         | 8 bit (0–255) |      24 bit (0–16M)     |
-| İmzalama           |       ✗       |     ✓ (13 byte imza)    |
-| Boş alan atlama    |       ✗       |         ✓ (trim)        |
-| Component metadata |       ✗       |            ✓            |
-| Kullanım           |     Legacy    | **Standart (önerilen)** |
+!!! danger "known_hosts ve MITM"
+    İlk bağlantıda SSH, sunucunun host key parmak izini gösterip onay ister; onaylanan anahtar `~/.ssh/known_hosts`'a kaydedilir. Sunucunun host key'i beklenmedik şekilde değişirse (`REMOTE HOST IDENTIFICATION HAS CHANGED!` uyarısı) bu **meşru bir sunucu yeniden kurulumu** ya da **bir man-in-the-middle saldırısı** olabilir - bilmeden onaylamayın; sunucu tarafını doğrulayın.
 
-### Paket Yapısı
+```bash
+ssh kullanici@192.168.1.10          # ssh kullanici@hostname.local 'de bağlanılabilir.
+ssh -p 2222 kullanici@host          # Farklı port
+ssh -i ~/.ssh/id_ed25519 user@host  # Belirli anahtar
 
-=== "MAVLink v1"
+ssh-keygen -t ed25519 -C "yorum"    # Anahtar çifti oluştur
+ssh-copy-id kullanici@host          # Public key'i sunucuya kopyala
+ssh-add ~/.ssh/id_ed25519           # Agent'a ekle
 
-    ```
-    Byte:  0      1      2      3      4      5     6..N+5   N+6  N+7
-           ┌──────┬──────┬──────┬──────┬──────┬──────┬───────┬──────┬──────┐
-           │ 0xFE │ LEN  │ SEQ  │ SYS  │ COMP │ MSG  │ DATA  │ CRC  │ CRC  │
-           │ STX  │(0-255│(0-255│  ID  │  ID  │  ID  │Payload│ LOW  │ HIGH │
-           └──────┴──────┴──────┴──────┴──────┴──────┴───────┴──────┴──────┘
-    ```
+ssh -L 8080:localhost:80 user@host     # Yerel port yönlendirme
+ssh -R 9090:localhost:3000 user@host   # Uzak port yönlendirme
+ssh -D 1080 user@host                  # SOCKS proxy
 
-=== "MAVLink v2"
+ssh user@host "df -h && uptime"
+ssh user@host 'bash -s' < local_script.sh
 
-    ```
-    Byte:  0      1      2      3      4      5     6  7  8   9..N+8   N+9 N+10  N+11..N+22
-           ┌──────┬──────┬──────┬──────┬──────┬──────┬─────────┬──────────┬──────┬──────┬──────────────┐
-           │ 0xFD │ LEN  │IFlag │CFlag │ SEQ  │ SYS  │  COMP   │  MSG ID  │ DATA │ CRC  │ SIGNATURE    │
-           │  STX │      │      │      │      │  ID  │   ID    │ 24-bit   │      │2byte │ (opsiyonel)  │
-           └──────┴──────┴──────┴──────┴──────┴──────┴─────────┴──────────┴──────┴──────┴──────────────┘
-    ```
+# mDNS (LAN'da IP olmadan bul)
+ping raspberrypi.local
+avahi-browse -at                       # Ağdaki tüm mDNS servislerini gör
 
-| Alan        | Açıklama                                         |
-| ----------- | ------------------------------------------------ |
-| **STX**     | Start of Frame sihirli byte                      |
-| **LEN**     | Payload uzunluğu (byte)                          |
-| **SEQ**     | Paket sıra numarası; kayıp tespiti için          |
-| **SYS ID**  | Sistemi tanımlar (1–255; GCS genellikle 255)     |
-| **COMP ID** | Bileşeni tanımlar (Autopilot=1, Camera=100, vb.) |
-| **MSG ID**  | Mesaj tipi kimliği                               |
-| **CRC**     | CRC-16/MCRF4XX + mesaj extra CRC                 |
+scp dosya.py pi@raspberrypi.local:~/   # -r ile dizin kopyalama
 
-## Protokol Seçim Rehberi
+# /etc/ssh/sshd_config düzenleme yapılırsa
+sudo systemctl restart sshd      # Ayarları uygula
+sudo sshd -t                     # Yapılandırmayı doğrula
 
-| Senaryo                            | Önerilen Protokol  |
-| ---------------------------------- | :----------------: |
-| MCU ↔ Sensör (kısa mesafe, hızlı)  |        SPI         |
-| MCU ↔ Çoklu sensör (bus paylaşımı) |        I²C         |
-| MCU ↔ PC debug / GPS / modem       |        UART        |
-| Araç içi ECU ağı                   |      CAN Bus       |
-| Güvenilir ağ iletişimi             |       TCP/IP       |
-| Düşük gecikme, kayıp tolere        |        UDP         |
-| Kısa mesafe kablosuz, ses          | Bluetooth Classic  |
-| Pil ömrü kritik IoT                |        BLE         |
-| Uzaktan terminal erişimi           |        SSH         |
-| Yerel süreçler arası hızlı         | Unix Domain Socket |
-| Kernel ↔ Userspace                 |  Netlink / ioctl   |
-| UAV / Drone iletişimi              |     MAVLink v2     |
+# ProxyJump - bir bastion/jump host üzerinden iç ağdaki sunucuya bağlan
+ssh -J bastion.example.com user@ic-sunucu
+```
+
+```bash title="/etc/ssh/sshd_config (önemli ayarlar)"
+Port 22                          # Farklı porta taşı
+PermitRootLogin no               # Root girişini engelle
+PasswordAuthentication no        # Sadece anahtar
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+AllowUsers serkan mert           # Sadece bu kullanıcılar
+ClientAliveInterval 300          # Keep-alive aralığı (s)
+ClientAliveCountMax 3            # Maksimum keep-alive sayısı
+MaxAuthTries 3                   # Maksimum deneme sayısı
+```
+
